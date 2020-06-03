@@ -1,0 +1,5 @@
+export const SETTINGS = 'settings'
+export const CLIENT_DETAILS = 'clientDetails'
+export const PREMIUM_FEATURES = 'premiumFeatures'
+export const ADMIN_DETAILS = 'adminDetails'
+export const BANDWIDTH_DETAILS = 'bandwidthDetails'

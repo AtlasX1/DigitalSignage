@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30" height="30" viewBox="0 0 30 30" xml:space="preserve">
+    <g transform="translate(-90 -260)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="server-network-plus-7">
+		<path d="M114,266H96v5h18V266z M113,270H97v-3h16V270z"/>
+		<rect x="98" y="268" width="1" height="1"/>
+		<rect x="100" y="268" width="1" height="1"/>
+		<rect x="102" y="268" width="1" height="1"/>
+		<rect x="98" y="275" width="1" height="1"/>
+		<rect x="100" y="275" width="1" height="1"/>
+		<rect x="102" y="275" width="1" height="1"/>
+		<path d="M117,276.51V263H93v18h12.15c-0.098,0.484-0.15,0.986-0.15,1.5c0,0.169,0.014,0.334,0.025,0.5H103v1H92v1h11v1h2.869    c1.258,2.378,3.753,4,6.631,4c4.143,0,7.5-3.357,7.5-7.5C120,280.049,118.818,277.878,117,276.51z M94,280v-16h22v11.869    c-0.621-0.328-1.291-0.575-2-0.719V273H96v5h10.51c-0.453,0.604-0.817,1.275-1.074,2H94z M97,277v-3h16v1.025    c-0.166-0.011-0.331-0.025-0.5-0.025c-1.967,0-3.75,0.763-5.088,2H97z M104,285v-1h1.15c0.07,0.344,0.17,0.675,0.285,1H104z     M112.5,289c-3.59,0-6.5-2.91-6.5-6.5s2.91-6.5,6.5-6.5s6.5,2.91,6.5,6.5S116.09,289,112.5,289z"/>
+		<polygon points="113,283 117,283 117,282 113,282 113,278 112,278 112,282 108,282 108,283 112,283 112,287 113,287   "/>
+	</g>
+	
+    </g>
+</svg>

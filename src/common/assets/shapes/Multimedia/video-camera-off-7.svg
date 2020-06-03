@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30" height="30" viewBox="0 0 30 30" xml:space="preserve">
+    <g transform="translate(-510 -80)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="video-camera-off-7_1_">
+		<path d="M527,101c0,0.551-0.448,1-1,1h-12c-0.552,0-1-0.449-1-1V89c0-0.551,0.448-1,1-1h2.586l-1-1H514c-1.104,0-2,0.896-2,2v12    c0,1.104,0.896,2,2,2h12c1.104,0,2-0.896,2-2v-1.586l-1-1V101z"/>
+		<path d="M537.215,102.789c0.433,0.387,0.785,0.227,0.785-0.357V87.568c0-0.584-0.353-0.744-0.785-0.357l-7.891,7.084    c-0.432,0.388-0.432,1.022,0,1.41L537.215,102.789z M537,88.75v12.5l-7.008-6.289L537,88.75z"/>
+		<path d="M537.729,107.728l0.707-0.707L528,96.586V89c0-1.104-0.896-2-2-2h-7.586l-5.436-5.435l-0.707,0.707L537.729,107.728z     M526,88c0.552,0,1,0.449,1,1v6.586L519.414,88H526z"/>
+	</g>
+	
+    </g>
+</svg>

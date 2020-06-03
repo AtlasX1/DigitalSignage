@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30" height="30" viewBox="0 0 30 30" xml:space="preserve">
+    <g transform="translate(-210 -260)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="embassy-7">
+		<path d="M237,274h-24v12h-1v1h26v-1h-1V274z M221,286h-4v-6h4V286z M236,286h-14v-7h-6v7h-2v-11h22V286z"/>
+		<rect x="224" y="279" width="4" height="1"/>
+		<rect x="230" y="279" width="4" height="1"/>
+		<path d="M237,268v-4h-5v-1h-1v9h-7v-4h5v-4h-5v-1h-1v9h-9v1h22v-1h-4v-4H237z M232,265h4v2h-4V265z M224,265h4v2h-4V265z"/>
+	</g>
+	
+    </g>
+</svg>

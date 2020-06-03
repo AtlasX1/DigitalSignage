@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="29" height="30" viewBox="0 0 29 30" xml:space="preserve">
+    <g transform="translate(-390 -560)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="man-lift-7">
+		<path d="M416,564h-23v-3h-3v7h3v-3h3v8c0,0.553,0.447,1,1,1h4v5h-3c-1.104,0-2,0.896-2,2v7c0,0.553,0.447,1,1,1h1    c0.553,0,1-0.447,1-1v-5h11v5c0,0.553,0.447,1,1,1h1c0.553,0,1-0.447,1-1v-7c0-1.104-0.896-2-2-2h-3v-5h4c0.553,0,1-0.447,1-1v-8    h3v3h3v-7h-3V564z M392,567h-1v-5h1V567z M399,565h11v6h-2.35c0.218-0.456,0.35-0.961,0.35-1.5c0-1.934-1.566-3.5-3.5-3.5    s-3.5,1.566-3.5,3.5c0,0.539,0.132,1.044,0.35,1.5H399V565z M407,569.5c0,1.379-1.121,2.5-2.5,2.5s-2.5-1.121-2.5-2.5    s1.121-2.5,2.5-2.5S407,568.121,407,569.5z M412,573h-5v7h4c0.552,0,1,0.448,1,1v7h-1v-6h-13v6h-1v-7c0-0.552,0.448-1,1-1h4v-7h-5    v-8h1v7h4.055c0.631,0.617,1.492,1,2.445,1s1.814-0.383,2.445-1H411v-7h1V573z M417,562h1v5h-1V562z"/>
+	</g>
+	
+    </g>
+</svg>

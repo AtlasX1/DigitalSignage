@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30" height="30" viewBox="0 0 30 30" xml:space="preserve">
+    <g transform="translate(-450 -140)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="golf-stick-7">
+		<path d="M474,160.048L478,142h-2l-4,16.048c0,0-6-4.048-17-4.048c-3,0-5,4.048-2,11.048S472,165.048,474,160.048z     M453.207,156.017c0.438-0.665,1.059-1.017,1.793-1.017c9.889,0,15.664,3.393,16.369,3.832l1.411,1.411    c-1.852,2.967-8.981,6.758-14.243,6.758c-0.001,0-0.001,0-0.001,0c-2.396,0-3.95-0.79-4.617-2.346    C452.339,160.966,452.072,157.737,453.207,156.017z"/>
+		<rect x="456" y="159" width="11" height="1"/>
+		<rect x="456" y="163" width="6.875" height="1"/>
+		<rect x="456" y="165" width="2.875" height="1"/>
+		<rect x="456" y="157" width="6.5" height="1"/>
+		<rect x="456" y="161" width="9.625" height="1"/>
+	</g>
+	
+    </g>
+</svg>

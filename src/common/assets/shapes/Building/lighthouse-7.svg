@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30" height="30" viewBox="0 0 30 30" xml:space="preserve">
+    <g transform="translate(-570 -200)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="lighthouse-7">
+		<defs>
+			<filter id="Adobe_OpacityMaskFilter" filterUnits="userSpaceOnUse" x="584" y="205" width="13" height="6">
+				<feFlood style="flood-color:white;flood-opacity:1" result="back"/>
+				<feBlend in="SourceGraphic" in2="back" mode="normal"/>
+			</filter>
+		</defs>
+		<mask maskUnits="userSpaceOnUse" x="584" y="205" width="13" height="6" id="SVGID_1_">
+			<g style="filter:url(#Adobe_OpacityMaskFilter);">
+				<linearGradient id="SVGID_2_" gradientUnits="userSpaceOnUse" x1="584" y1="208" x2="597" y2="208">
+					<stop offset="0" style="stop-color:#FFFFFF"/>
+					<stop offset="1" style="stop-color:#000000"/>
+				</linearGradient>
+				<polygon style="fill:url(#SVGID_2_);" points="597,211 584,209 584,207 597,205     "/>
+			</g>
+		</mask>
+		<polygon style="mask:url(#SVGID_1_);" points="597,211 584,209 584,207 597,205   "/>
+		<path d="M598,227h-14.053L583,209v-3h1v-1h-2v-2h-2v-2h-1v2h-2v2h-2v1h1v3l-0.947,18H572v1h26V227z M578,204h3v1h-3V204z M582,206    v3h-2v-3H582z M577,206h2v3h-2V206z M576.949,210h5.102l0.264,5h-5.629L576.949,210z M576.633,216h5.734l0.21,4h-6.154    L576.633,216z M576.054,227l0.316-6h6.26l0.316,6H576.054z"/>
+	</g>
+	
+    </g>
+</svg>

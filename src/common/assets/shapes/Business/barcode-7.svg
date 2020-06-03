@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="29" height="30" viewBox="0 0 29 30" xml:space="preserve">
+    <g transform="translate(-30 -380)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="barcode-7">
+		<rect x="35" y="388" width="1" height="14"/>
+		<rect x="53" y="388" width="1" height="14"/>
+		<rect x="38" y="388" width="1" height="10"/>
+		<rect x="50" y="388" width="1" height="10"/>
+		<rect x="44" y="388" width="1" height="14"/>
+		<rect x="41" y="388" width="1" height="10"/>
+		<rect x="47" y="388" width="1" height="10"/>
+		<rect x="41" y="399" width="1" height="3"/>
+		<polygon points="39,400 40,400 40,399 38,399 38,402 39,402   "/>
+		<rect x="47" y="399" width="1" height="3"/>
+		<polygon points="50,402 51,402 51,399 49,399 49,400 50,400   "/>
+		<path d="M57,385H32v20h25V385z M56,404H33v-18h23V404z"/>
+	</g>
+	
+    </g>
+</svg>

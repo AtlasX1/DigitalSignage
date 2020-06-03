@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30" height="30" viewBox="0 0 30 30" xml:space="preserve">
+    <g transform="translate(-330 -380)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="car-battery-7">
+		<path d="M355,384h-5v2h-10v-2h-5v2h-3v20h26v-20h-3V384z M357,387v18h-24v-18H357z"/>
+		<rect x="350" y="391" width="5" height="1"/>
+		<polygon points="337,394 338,394 338,392 340,392 340,391 338,391 338,389 337,389 337,391 335,391 335,392 337,392   "/>
+	</g>
+	
+    </g>
+</svg>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30" height="30" viewBox="0 0 30 30" xml:space="preserve">
+    <g transform="translate(-90 -80)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="jeans-7">
+		<path d="M104,90h1l3,18h6V82H95v26h6L104,90z M113,83v4c-3.936,0-3.999-3.838-4-4H113z M96,83h4c0,0.163-0.045,4-4,4V83z M96,107    V88c4.943,0,5-4.95,5-5h3v5h1v-5h3c0,0.05,0.057,5,5,5v19h-4.152l-3-18h-2.695l-3,18H96z"/>
+	</g>
+	
+    </g>
+</svg>

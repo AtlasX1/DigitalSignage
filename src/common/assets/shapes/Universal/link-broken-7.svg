@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30" height="30" viewBox="0 0 30 30" xml:space="preserve">
+    <g transform="translate(-390 -620)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="link-broken-7">
+		<path d="M393.611,646.389c2.147,2.148,5.63,2.148,7.777,0l4.597-4.596l-0.707-0.707l-4.597,4.596    c-1.754,1.755-4.609,1.755-6.363,0c-1.755-1.754-1.755-4.609,0-6.363l4.596-4.597l-0.707-0.707l-4.596,4.597    C391.463,640.758,391.463,644.241,393.611,646.389z"/>
+		<path d="M416.389,623.61c-2.147-2.147-5.63-2.147-7.777,0l-4.597,4.597l0.707,0.707l4.597-4.597c1.754-1.754,4.609-1.754,6.363,0    c1.755,1.755,1.755,4.609,0,6.364l-4.596,4.597l0.707,0.707l4.596-4.597C418.537,629.241,418.537,625.759,416.389,623.61z"/>
+		<rect x="401" y="622" width="1" height="6"/>
+		<rect x="392" y="631" width="6" height="1"/>
+		
+			<rect x="393.904" y="626.404" transform="matrix(0.7071 0.7071 -0.7071 0.7071 559.5387 -97.0374)" width="5.999" height="1.001"/>
+		<rect x="408" y="642" width="1" height="6"/>
+		<rect x="412" y="638" width="6" height="1"/>
+		<rect x="412.596" y="640.096" transform="matrix(0.7071 -0.7071 0.7071 0.7071 -333.7444 480.4612)" width="1" height="5.999"/>
+	</g>
+	
+    </g>
+</svg>

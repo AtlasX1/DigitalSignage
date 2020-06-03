@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30" height="30" viewBox="0 0 30 30" xml:space="preserve">
+    <g transform="translate(-30 -320)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="solar-panel-7_1_">
+		<path d="M54.5,321c-1.934,0-3.5,1.567-3.5,3.5s1.566,3.5,3.5,3.5s3.5-1.567,3.5-3.5S56.434,321,54.5,321z M54.5,327    c-1.379,0-2.5-1.121-2.5-2.5s1.121-2.5,2.5-2.5s2.5,1.121,2.5,2.5S55.879,327,54.5,327z"/>
+		<path d="M39,330l-6,11h24l-6-11H39z M43.527,331h2.945l0.667,2H42.86L43.527,331z M47.473,334l0.667,2H41.86l0.667-2H47.473z     M39.594,331h2.879l-0.667,2h-3.303L39.594,331z M37.957,334h3.516l-0.667,2h-3.939L37.957,334z M39.473,340h-4.788l1.637-3h4.151    L39.473,340z M40.527,340l1-3h6.945l1,3H40.527z M55.315,340h-4.788l-1-3h4.151L55.315,340z M53.134,336h-3.939l-0.667-2h3.516    L53.134,336z M48.194,333l-0.667-2h2.879l1.091,2H48.194z"/>
+		<polygon points="46,342 44,342 44,347 41,347 41,348 49,348 49,347 46,347   "/>
+	</g>
+	
+    </g>
+</svg>

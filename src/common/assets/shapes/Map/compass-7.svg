@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30" height="30" viewBox="0 0 30 30" xml:space="preserve">
+    <g transform="translate(-390 -320)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="compass-7">
+		<path d="M405,322c-7.18,0-13,5.82-13,13s5.82,13,13,13s13-5.82,13-13S412.18,322,405,322z M405,347c-6.617,0-12-5.384-12-12    c0-6.617,5.383-12,12-12s12,5.383,12,12C417,341.616,411.617,347,405,347z"/>
+		<polygon points="405,344 406.921,337.277 403.67,339.346   "/>
+		<polygon points="402.723,333.079 396,335 400.654,336.33   "/>
+		<polygon points="407.277,336.921 414,335 409.346,333.67   "/>
+		<polygon points="405,326 403.079,332.723 406.33,330.654   "/>
+		<path d="M411.363,328.636l-7.777,4.95l-4.95,7.777l7.778-4.949L411.363,328.636z M405,336c-0.552,0-1-0.448-1-1    c0-0.553,0.448-1,1-1c0.553,0,1,0.447,1,1C406,335.552,405.553,336,405,336z"/>
+	</g>
+	
+    </g>
+</svg>

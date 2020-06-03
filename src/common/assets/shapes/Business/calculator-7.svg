@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="29" height="30" viewBox="0 0 29 30" xml:space="preserve">
+    <g transform="translate(-570 -200)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="calculator-7">
+		<path d="M576,203c-1.104,0-2,0.896-2,2v20c0,1.104,0.896,2,2,2h17c1.104,0,2-0.896,2-2v-20c0-1.104-0.896-2-2-2H576z M594,205v20    c0,0.552-0.448,1-1,1h-17c-0.552,0-1-0.448-1-1v-20c0-0.552,0.448-1,1-1h17C593.552,204,594,204.448,594,205z"/>
+		<path d="M577,211h15v-5h-15V211z M578,207h13v3h-13V207z"/>
+		<path d="M577,216h3v-3h-3V216z M578,214h1v1h-1V214z"/>
+		<path d="M581,216h3v-3h-3V216z M582,214h1v1h-1V214z"/>
+		<path d="M585,216h3v-3h-3V216z M586,214h1v1h-1V214z"/>
+		<path d="M589,216h3v-3h-3V216z M590,214h1v1h-1V214z"/>
+		<path d="M577,220h3v-3h-3V220z M578,218h1v1h-1V218z"/>
+		<path d="M581,220h3v-3h-3V220z M582,218h1v1h-1V218z"/>
+		<path d="M585,220h3v-3h-3V220z M586,218h1v1h-1V218z"/>
+		<path d="M577,224h3v-3h-3V224z M578,222h1v1h-1V222z"/>
+		<path d="M581,224h3v-3h-3V224z M582,222h1v1h-1V222z"/>
+		<path d="M585,224h3v-3h-3V224z M586,222h1v1h-1V222z"/>
+		<path d="M589,224h3v-7h-3V224z M590,218h1v5h-1V218z"/>
+	</g>
+	
+    </g>
+</svg>

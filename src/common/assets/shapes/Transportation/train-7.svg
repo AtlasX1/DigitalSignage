@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="48" height="30" viewBox="0 0 48 30" xml:space="preserve">
+    <g transform="translate(-186 -260)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="train-7">
+		<path d="M192,282c0.736,0,1.375-0.405,1.722-1h0.557c0.347,0.595,0.985,1,1.722,1s1.375-0.405,1.722-1H201v-1h2v1h2.278    c0.347,0.595,0.985,1,1.722,1s1.375-0.405,1.722-1h0.557c0.347,0.595,0.985,1,1.722,1s1.375-0.405,1.722-1h9.557    c0.347,0.595,0.985,1,1.722,1s1.375-0.405,1.722-1h0.557c0.347,0.595,0.985,1,1.722,1s1.375-0.405,1.722-1H233v-6l-8-6h-22v10h-2    v-10h-14v1h13v10h-13v1h3.278C190.625,281.595,191.264,282,192,282z M230.001,274H222v-2h5.334L230.001,274z M204,270h20.667    l1.333,1h-5v4h10.334l0.666,0.5v4.5h-28V270z"/>
+		<path d="M219,271h-4v4h4V271z M218,274h-2v-2h2V274z"/>
+		<path d="M210,275h4v-4h-4V275z M211,272h2v2h-2V272z"/>
+		<path d="M194,271v4h4v-4H194z M197,274h-2v-2h2V274z"/>
+		<path d="M189,271v4h4v-4H189z M192,274h-2v-2h2V274z"/>
+		<rect x="219" y="277" width="1" height="1"/>
+		<rect x="205" y="267" width="6" height="1"/>
+		<rect x="192" y="267" width="6" height="1"/>
+		<rect x="221" y="277" width="10" height="1"/>
+		<rect x="187" y="283" width="46" height="1"/>
+	</g>
+	
+    </g>
+</svg>

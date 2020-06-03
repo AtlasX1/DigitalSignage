@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30" height="30" viewBox="0 0 30 30" xml:space="preserve">
+    <g transform="translate(-570 -380)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="headphone-7">
+		<path d="M595,395c0-5.514-4.486-10-10-10s-10,4.486-10,10v3h-3v7h4v-10c0-4.963,4.037-9,9-9s9,4.037,9,9v10h4v-7h-3V395z M575,404    h-2v-5h2V404z M597,399v5h-2v-5H597z"/>
+	</g>
+	
+    </g>
+</svg>

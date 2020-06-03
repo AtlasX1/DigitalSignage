@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="29" height="30" viewBox="0 0 29 30" xml:space="preserve">
+    <g transform="translate(-150 -260)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="film-minus-7">
+		<path d="M152,264v23h1v-2h2v2h1v-2h8.436c1.031,2.911,3.801,5,7.064,5c4.143,0,7.5-3.357,7.5-7.5c0-1.966-0.763-3.75-2-5.087V264    h-1v2h-2v-2h-1v2h-17v-2h-1v2h-2v-2H152z M178,282.5c0,3.59-2.91,6.5-6.5,6.5s-6.5-2.91-6.5-6.5s2.91-6.5,6.5-6.5    S178,278.91,178,282.5z M176,276.51c-0.246-0.185-0.501-0.355-0.77-0.51H176V276.51z M174,267h2v2h-2V267z M174,270h2v2h-2V270z     M174,273h2v2h-2V273z M156,267h17v8h-17V267z M156,276h11.77c-2.251,1.295-3.77,3.718-3.77,6.5c0,0.514,0.053,1.016,0.15,1.5H156    V276z M155,284h-2v-2h2V284z M155,281h-2v-2h2V281z M155,278h-2v-2h2V278z M155,275h-2v-2h2V275z M155,272h-2v-2h2V272z M155,267    v2h-2v-2H155z"/>
+		<polygon points="176,283 176,282 174,282 167,282 167,283   "/>
+	</g>
+	
+    </g>
+</svg>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30" height="30" viewBox="0 0 30 30" xml:space="preserve">
+    <g transform="translate(-30 -200)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="paint-roller-7">
+		<path d="M56,202H35v9h21V202z M55,210H36v-7h19V210z"/>
+		<path d="M33,205v8h12v6h-1v9h3v-9h-1v-7H34v-7H33z M46,227h-1v-7h1V227z"/>
+		<rect x="37" y="204" width="17" height="1"/>
+	</g>
+	
+    </g>
+</svg>

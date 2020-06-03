@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30" height="30" viewBox="0 0 30 30" xml:space="preserve">
+    <g transform="translate(-450 -380)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="folder-connect-7">
+		<rect x="459" y="405" width="1" height="1"/>
+		<rect x="461" y="405" width="1" height="1"/>
+		<rect x="463" y="405" width="1" height="1"/>
+		<rect x="457" y="405" width="1" height="1"/>
+		<rect x="455" y="405" width="1" height="1"/>
+		<rect x="453" y="403" width="1" height="1"/>
+		<rect x="453" y="405" width="1" height="1"/>
+		<rect x="453" y="401" width="1" height="1"/>
+		<rect x="453" y="399" width="1" height="1"/>
+		<rect x="453" y="397" width="1" height="1"/>
+		<rect x="453" y="395" width="1" height="1"/>
+		<rect x="470" y="385" width="1" height="1"/>
+		<rect x="468" y="385" width="1" height="1"/>
+		<rect x="466" y="385" width="1" height="1"/>
+		<rect x="472" y="385" width="1" height="1"/>
+		<rect x="474" y="385" width="1" height="1"/>
+		<rect x="476" y="387" width="1" height="1"/>
+		<rect x="476" y="385" width="1" height="1"/>
+		<rect x="476" y="389" width="1" height="1"/>
+		<rect x="476" y="391" width="1" height="1"/>
+		<rect x="476" y="393" width="1" height="1"/>
+		<rect x="476" y="395" width="1" height="1"/>
+		<path d="M456,382h-4v12h13v-10h-6L456,382z M464,393h-11v-10h2.697l3,2H464V393z"/>
+		<path d="M465,408h13v-10h-6l-3-2h-4V408z M466,397h2.697l3,2H477v8h-11V397z"/>
+	</g>
+	
+    </g>
+</svg>

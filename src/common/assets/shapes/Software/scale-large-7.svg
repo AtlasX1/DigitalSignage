@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30" height="30" viewBox="0 0 30 30" xml:space="preserve">
+    <g transform="translate(-450 -560)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="scale-large-7">
+		<path d="M453,587h24v-24h-24V587z M454,564h22v22h-22V564z"/>
+		<polygon points="471.146,568.146 466.646,572.646 467.354,573.354 471.854,568.854 474,571 474,566 469,566   "/>
+		<rect x="455" y="574" width="1" height="1"/>
+		<rect x="457" y="574" width="1" height="1"/>
+		<rect x="459" y="574" width="1" height="1"/>
+		<rect x="461" y="574" width="1" height="1"/>
+		<rect x="463" y="574" width="1" height="1"/>
+		<rect x="465" y="574" width="1" height="1"/>
+		<rect x="465" y="576" width="1" height="1"/>
+		<rect x="465" y="578" width="1" height="1"/>
+		<rect x="465" y="580" width="1" height="1"/>
+		<rect x="465" y="582" width="1" height="1"/>
+		<rect x="465" y="584" width="1" height="1"/>
+	</g>
+	
+    </g>
+</svg>

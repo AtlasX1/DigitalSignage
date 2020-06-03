@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="29" height="30" viewBox="0 0 29 30" xml:space="preserve">
+    <g transform="translate(-150 -500)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="clock-stopwatch-7">
+		<path d="M164,508v7.092c-0.581,0.207-1,0.756-1,1.408s0.419,1.201,1,1.408V520h1v-2.092c0.581-0.207,1-0.756,1-1.408    s-0.419-1.201-1-1.408V508H164z"/>
+		<path d="M163,502v3.109c-5.641,0.736-10,5.549-10,11.391c0,6.352,5.148,11.5,11.5,11.5s11.5-5.148,11.5-11.5    c0-2.996-1.152-5.718-3.031-7.762l0.724-0.724l0.707,0.707l1.414-1.414l-2.121-2.121l-1.414,1.414l0.707,0.707l-0.725,0.725    c-1.698-1.554-3.861-2.609-6.261-2.923V502H163z M175,516.5c0,5.79-4.71,10.5-10.5,10.5s-10.5-4.71-10.5-10.5s4.71-10.5,10.5-10.5    S175,510.71,175,516.5z"/>
+	</g>
+	
+    </g>
+</svg>

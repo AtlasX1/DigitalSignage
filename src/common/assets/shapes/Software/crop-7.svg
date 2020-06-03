@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30" height="30" viewBox="0 0 30 30" xml:space="preserve">
+    <g transform="translate(-270 -260)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="crop-7">
+		<polygon points="296.646,262.646 293.293,266 294,266 294,266.707 297.354,263.354   "/>
+		<polygon points="273.354,287.354 276.707,284 276,284 276,283.293 272.646,286.646   "/>
+		<polygon points="288,272 287.293,272 282,277.293 282,278 282.707,278 288,272.707   "/>
+		<polygon points="277,272 277,283 288,283 288,282 278,282 278,272   "/>
+		<polygon points="294,282 294,283 297,283 297,279 294,279 294,280 296,280 296,282   "/>
+		<polygon points="288,279 281,279 281,272 280,272 280,280 288,280   "/>
+		<polygon points="281,266 281,263 277,263 277,266 278,266 278,264 280,264 280,266   "/>
+		<path d="M273,271h16v16h4v-20h-20V271z M274,268h18v18h-2v-16h-16V268z"/>
+	</g>
+	
+    </g>
+</svg>

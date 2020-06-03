@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30" height="30" viewBox="0 0 30 30" xml:space="preserve">
+    <g transform="translate(-570 -80)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="animal-element-7">
+		<path d="M585,108c7.18,0,13-5.82,13-13s-5.82-13-13-13s-13,5.82-13,13S577.82,108,585,108z M585,83c6.617,0,12,5.383,12,12    s-5.383,12-12,12s-12-5.383-12-12S578.383,83,585,83z"/>
+		<ellipse cx="578" cy="93.5" rx="2" ry="2.5"/>
+		<path d="M581.031,97.618C579.201,98.25,578,99.304,578,100.5c0,1.933,3.134,3.5,7,3.5s7-1.567,7-3.5    c0-1.196-1.201-2.25-3.031-2.882C588.811,95.038,587.104,93,585,93S581.189,95.038,581.031,97.618z"/>
+		<ellipse cx="592" cy="93.5" rx="2" ry="2.5"/>
+		<ellipse cx="582" cy="88.5" rx="2" ry="2.5"/>
+		<ellipse cx="588" cy="88.5" rx="2" ry="2.5"/>
+	</g>
+	
+    </g>
+</svg>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30" height="30" viewBox="0 0 30 30" xml:space="preserve">
+    <g transform="translate(-270 -680)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="emoticon-blur-7">
+		<path d="M285,682c-7.18,0-13,5.82-13,13s5.82,13,13,13s13-5.82,13-13S292.18,682,285,682z M285,707c-6.617,0-12-5.383-12-12    s5.383-12,12-12s12,5.383,12,12S291.617,707,285,707z"/>
+		<path d="M285,699c-4.219,0-6.328,3.091-6.416,3.223l0.832,0.555C279.435,702.75,281.311,700,285,700    c3.67,0,5.508,2.665,5.585,2.778l0.831-0.556C291.328,702.091,289.219,699,285,699z"/>
+		<polygon points="279,696 280,696 280,694 282,694 282,693 280,693 280,691 279,691 279,693 277,693 277,694 279,694   "/>
+		<polygon points="291,691 290,691 290,693 288,693 288,694 290,694 290,696 291,696 291,694 293,694 293,693 291,693   "/>
+	</g>
+	
+    </g>
+</svg>

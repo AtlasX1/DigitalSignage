@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30" height="30" viewBox="0 0 30 30" xml:space="preserve">
+    <g transform="translate(-210 -140)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="house-star-7">
+		<path d="M235,155.436v-2.686l1.4,1.05l1.199-1.6L232,148v-4h-2v2.5l-5-3.75l-12.6,9.45l1.199,1.6l1.4-1.05V166h-2v1h13.51    c1.369,1.819,3.539,3,5.99,3c4.143,0,7.5-3.358,7.5-7.5C240,159.236,237.911,156.467,235,155.436z M222,159v7h-6v-14l9-6.75    l9,6.75v3.15c-0.484-0.098-0.986-0.15-1.5-0.15c-2.877,0-5.373,1.622-6.631,4H222z M232.5,169c-3.59,0-6.5-2.91-6.5-6.5    s2.91-6.5,6.5-6.5s6.5,2.91,6.5,6.5S236.09,169,232.5,169z"/>
+		<polygon points="233.568,161 232.5,157.785 231.43,161 228,161 230.768,163.079 229.717,166.344 232.5,164.336 235.278,166.344     234.23,163.079 237,161   "/>
+	</g>
+	
+    </g>
+</svg>

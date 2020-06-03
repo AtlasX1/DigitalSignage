@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30" height="30" viewBox="0 0 30 30" xml:space="preserve">
+    <g transform="translate(-150 -80)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="bank-tick-7">
+		<path d="M156.303,91h17.395l2.748,1.832l1.109-1.664L165,82.798l-12.555,8.37l1.109,1.664L156.303,91z M165,85.202L172.197,90    h-14.395L165,85.202z"/>
+		<path d="M173,95.025V92h-1v3.025c-1.497,0.099-2.871,0.635-4,1.485V92h-1v5.413c-1.237,1.337-2,3.121-2,5.087    c0,1.265,0.316,2.455,0.869,3.5H164v-1h-1V92h-1v13h-1v1h-2v-1h-1V92h-1v13h-1v1h-3v1h13.51c1.369,1.819,3.539,3,5.99,3    c4.143,0,7.5-3.358,7.5-7.5C180,98.527,176.908,95.284,173,95.025z M172.5,109c-3.59,0-6.5-2.91-6.5-6.5s2.91-6.5,6.5-6.5    s6.5,2.91,6.5,6.5S176.09,109,172.5,109z"/>
+		<polygon points="171.086,104.268 168.965,102.146 168.258,102.854 171.086,105.682 176.742,100.025 176.035,99.318   "/>
+	</g>
+	
+    </g>
+</svg>

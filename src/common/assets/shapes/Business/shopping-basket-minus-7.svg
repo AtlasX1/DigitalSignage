@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="29" height="30" viewBox="0 0 29 30" xml:space="preserve">
+    <g transform="translate(-150 -440)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="shopping-basket-minus-7">
+		<path d="M166.979,468c1.383,1.237,3.229,2,5.262,2c4.286,0,7.759-3.357,7.759-7.5c0-2.878-1.678-5.373-4.138-6.631V454h-6.051    l-4.846-12.18L164,442.18l4.704,11.82h-11.545l4.704-11.82l-0.966-0.359L156.05,454H150v2h1.035l2.069,12H166.979z M178.965,462.5    c0,3.59-3.01,6.5-6.724,6.5c-3.713,0-6.724-2.91-6.724-6.5s3.011-6.5,6.724-6.5C175.955,456,178.965,458.91,178.965,462.5z     M168.382,456c-2.329,1.295-3.899,3.718-3.899,6.5c0,1.691,0.586,3.246,1.562,4.5h-12.065l-1.896-11H168.382z"/>
+		<rect x="158.276" y="458" width="1.035" height="6"/>
+		<rect x="162.414" y="458" width="1.035" height="6"/>
+		<rect x="167.586" y="462" width="9.31" height="1"/>
+	</g>
+	
+    </g>
+</svg>

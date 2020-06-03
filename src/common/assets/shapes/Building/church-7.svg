@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="29" height="30" viewBox="0 0 29 30" xml:space="preserve">
+    <g transform="translate(-330 -200)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="church-7">
+		<path d="M357,227h-2v-6h1v-1h-5v-5.304l2.733,1.727l0.533-0.846L349,212.251v-6.817l1.566,0.989l0.533-0.846l-6.6-4.169    l-6.6,4.169l0.533,0.846l1.566-0.989v6.817l-5.267,3.326l0.533,0.846l2.733-1.727V220h-5v1h1v6h-2v1h25V227z M338,227h-3v-6h3V227    z M341,204.802l3.5-2.21l3.5,2.21v6.817l-3.5-2.211l-3.5,2.211V204.802z M350,227h-11v-12.936l5.5-3.473l5.5,3.473V227z M354,227    h-3v-6h3V227z"/>
+		<polygon points="344,215 344,217 342,217 342,218 344,218 344,224 345,224 345,218 347,218 347,217 345,217 345,215   "/>
+	</g>
+	
+    </g>
+</svg>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="29" height="30" viewBox="0 0 29 30" xml:space="preserve">
+    <g transform="translate(-270 -140)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="mobile-server-connect-7">
+		<path d="M273,158h7c0.553,0,1-0.448,1-1v-13c0-0.552-0.447-1-1-1h-7c-0.553,0-1,0.448-1,1v13C272,157.552,272.447,158,273,158z     M273,144h7v1h-7V144z M273,146h7v9h-7V146z M273,156h7v1h-7V156z"/>
+		<rect x="284" y="148" width="1" height="1"/>
+		<rect x="282" y="148" width="1" height="1"/>
+		<rect x="286" y="148" width="1" height="1"/>
+		<rect x="288" y="148" width="1" height="1"/>
+		<rect x="290" y="148" width="1" height="1"/>
+		<rect x="290" y="150" width="1" height="1"/>
+		<rect x="290" y="152" width="1" height="1"/>
+		<rect x="284" y="163" width="1" height="1"/>
+		<rect x="282" y="163" width="1" height="1"/>
+		<rect x="280" y="163" width="1" height="1"/>
+		<rect x="278" y="163" width="1" height="1"/>
+		<rect x="276" y="161" width="1" height="1"/>
+		<rect x="276" y="163" width="1" height="1"/>
+		<rect x="276" y="159" width="1" height="1"/>
+		<path d="M286,155v11c0,0.552,0.447,1,1,1h9c0.553,0,1-0.448,1-1v-11c0-0.552-0.447-1-1-1h-9C286.447,154,286,154.448,286,155z     M296,166h-9v-3h9V166z M296,162h-9v-3h9V162z M296,158h-9v-3h9V158z"/>
+		<rect x="288" y="156" width="1" height="1"/>
+		<rect x="288" y="160" width="1" height="1"/>
+		<rect x="288" y="164" width="1" height="1"/>
+	</g>
+	
+    </g>
+</svg>

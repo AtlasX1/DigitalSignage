@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30" height="30" viewBox="0 0 30 30" xml:space="preserve">
+    <g transform="translate(-150 -980)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="compound-3-7">
+		<rect x="164" y="1006" width="1" height="1"/>
+		<rect x="162" y="1006" width="1" height="1"/>
+		<rect x="160" y="1006" width="1" height="1"/>
+		<rect x="166" y="1006" width="1" height="1"/>
+		<rect x="170" y="1006" width="1" height="1"/>
+		<rect x="168" y="1006" width="1" height="1"/>
+		<rect x="153" y="993" width="1" height="1"/>
+		<rect x="153" y="995" width="1" height="1"/>
+		<polygon points="154,1006 154,1005 153,1005 153,1007 155,1007 155,1006   "/>
+		<rect x="153" y="1003" width="1" height="1"/>
+		<rect x="153" y="1001" width="1" height="1"/>
+		<rect x="153" y="997" width="1" height="1"/>
+		<rect x="170" y="1004" width="1" height="1"/>
+		<rect x="158" y="1006" width="1" height="1"/>
+		<rect x="156" y="1006" width="1" height="1"/>
+		<path d="M161,989h-2v2v10h9h3v-2v-10H161z M160,1000v-10h10v10H160z"/>
+		<rect x="153" y="999" width="1" height="1"/>
+		<rect x="157" y="989" width="1" height="1"/>
+		<rect x="153" y="989" width="1" height="1"/>
+		<rect x="170" y="1002" width="1" height="1"/>
+		<rect x="155" y="989" width="1" height="1"/>
+		<rect x="153" y="991" width="1" height="1"/>
+		<rect x="174" y="1000" width="1" height="1"/>
+		<rect x="176" y="1000" width="1" height="1"/>
+		<rect x="176" y="992" width="1" height="1"/>
+		<rect x="176" y="990" width="1" height="1"/>
+		<rect x="176" y="988" width="1" height="1"/>
+		<rect x="176" y="986" width="1" height="1"/>
+		<rect x="176" y="998" width="1" height="1"/>
+		<rect x="172" y="1000" width="1" height="1"/>
+		<rect x="165" y="983" width="1" height="1"/>
+		<rect x="167" y="983" width="1" height="1"/>
+		<rect x="163" y="983" width="1" height="1"/>
+		<rect x="159" y="987" width="1" height="1"/>
+		<rect x="173" y="983" width="1" height="1"/>
+		<polygon points="176,984 176,985 177,985 177,983 175,983 175,984   "/>
+		<rect x="161" y="983" width="1" height="1"/>
+		<rect x="159" y="983" width="1" height="1"/>
+		<rect x="159" y="985" width="1" height="1"/>
+		<rect x="176" y="994" width="1" height="1"/>
+		<rect x="169" y="983" width="1" height="1"/>
+		<rect x="176" y="996" width="1" height="1"/>
+		<rect x="171" y="983" width="1" height="1"/>
+	</g>
+	
+    </g>
+</svg>

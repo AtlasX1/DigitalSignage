@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30" height="30" viewBox="0 0 30 30" xml:space="preserve">
+    <g transform="translate(-390 -620)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="binocular-7">
+		<path d="M407,644v3h10c0-10-3-21-3-21h-1v-2h-5v2h-2v2h-2v-2h-2v-2h-5v2h-1c0,0-3,11-3,21h10v-3v-1v-7h1v1h2v-1h1v7V644z M408,646    v-2h7.911c0.036,0.668,0.066,1.335,0.079,2H408z M409,625h3v1h-3V625z M398,625h3v1h-3V625z M402,646h-7.99    c0.013-0.665,0.043-1.332,0.079-2H402V646z M404,635v-4h2v4H404z M407,635v-5h-4v5h-1v8h-7.853c0.492-7.027,2.077-13.805,2.627-16    H397h5h1v2h4v-2h1h5h0.226c0.55,2.196,2.135,8.976,2.627,16H408v-8H407z"/>
+	</g>
+	
+    </g>
+</svg>

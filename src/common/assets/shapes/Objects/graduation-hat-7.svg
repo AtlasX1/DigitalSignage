@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30" height="30" viewBox="0 0 30 30" xml:space="preserve">
+    <g transform="translate(-570 -380)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="graduation-hat-7">
+		<path d="M577,394.118l-1-0.5V401c0,0,0.544,0,2,0v-1h-1V394.118z"/>
+		<path d="M593,400h-3c-2.286,0-4.036,1.413-5,2.431c-0.817-0.862-2.205-2.001-4-2.33v1.015c2.436,0.543,4,2.885,4,2.885s2-3,5-3    s4,0,4,0v-7.382l-1,0.5V400z"/>
+		<polygon points="585,384.118 596.764,390 585,395.882 581.008,393.886 581,393.891 581,395 585,397 599,390 585,383 571,390     578,393.5 578,392.382 573.236,390   "/>
+		<path d="M585,391c0.553,0,1-0.447,1-1c0-0.552-0.447-1-1-1c-0.543,0-0.979,0.435-0.994,0.974L579,392.703V406h1v-12.703    l4.496-2.453C584.646,390.934,584.813,391,585,391z"/>
+	</g>
+	
+    </g>
+</svg>

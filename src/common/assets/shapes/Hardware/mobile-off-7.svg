@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30" height="30" viewBox="0 0 30 30" xml:space="preserve">
+    <g transform="translate(-210 -80)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="mobile-off-7">
+		<path d="M232,106c0,0.551-0.449,1-1,1h-12c-0.551,0-1-0.449-1-1v-3h13.586l-1-1H218V89.414l-1-1V106c0,1.104,0.896,2,2,2h12    c1.104,0,2-0.896,2-2v-1.586l-1-1V106z"/>
+		<circle cx="225" cy="105" r="1"/>
+		<rect x="222" y="84" width="1" height="1"/>
+		<rect x="224" y="84" width="4" height="1"/>
+		<path d="M237.729,107.728l0.707-0.707L233,101.586V84c0-1.104-0.896-2-2-2h-12c-1.104,0-2,0.896-2,2v1.586l-4.021-4.021    l-0.707,0.707L237.729,107.728z M218.414,87H232v13.586L218.414,87z M218,84c0-0.551,0.449-1,1-1h12c0.551,0,1,0.449,1,1v2h-14V84    z"/>
+	</g>
+	
+    </g>
+</svg>

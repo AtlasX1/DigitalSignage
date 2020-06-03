@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30" height="30" viewBox="0 0 30 30" xml:space="preserve">
+    <g transform="translate(-510 -500)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="list-simple-star-7">
+		<polygon points="516.955,524 518.5,522.827 520.045,524 519.462,522.092 521,521 519.2,521 518.5,519 517.8,521 516,521     517.539,522.092   "/>
+		<polygon points="516.955,518 518.5,516.827 520.045,518 519.462,516.092 521,515 519.2,515 518.5,513 517.8,515 516,515     517.539,516.092   "/>
+		<polygon points="516.955,512 518.5,510.827 520.045,512 519.462,510.092 521,509 519.2,509 518.5,507 517.8,509 516,509     517.539,510.092   "/>
+		<rect x="523" y="509" width="11" height="1"/>
+		<rect x="523" y="515" width="11" height="1"/>
+		<path d="M537,504h-24v23h24V504z M536,526h-22v-21h22V526z"/>
+		<rect x="523" y="521" width="11" height="1"/>
+	</g>
+	
+    </g>
+</svg>

@@ -1,0 +1,50 @@
+.DarkTheme {
+  .GenerateCustomReport-Filters-Filter-Popup__CardContainer {
+    .DateRangePicker {
+      .DateRangePickerInput {
+        background: #15263d;
+
+        &__withBorder {
+          border-radius: 5px;
+        }
+
+        .DateInput_input {
+          border-color: #1e3966;
+        }
+      }
+    }
+  }
+}
+
+.GenerateCustomReport-Filters-Filter-Popup__CardContainer {
+  .DateRangePicker {
+    width: 100%;
+
+    .DateRangePickerInput {
+      height: 34px;
+      border: 0;
+
+      .DateInput_input {
+        height: 100%;
+        color: #9394a0;
+        font-family: 'Nunito Sans';
+        font-size: 12px;
+        letter-spacing: -0.01px;
+        font-weight: 400;
+        padding-left: 15px;
+        line-height: 1;
+        border: 1px solid #ced4da;
+        border-radius: 4px;
+        position: relative;
+
+        &::placeholder {
+          font-weight: 400;
+        }
+      }
+
+      .DateRangePickerInput_arrow {
+        opacity: 0;
+      }
+    }
+  }
+}

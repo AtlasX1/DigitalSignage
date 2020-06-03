@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="29" height="30" viewBox="0 0 29 30" xml:space="preserve">
+    <g transform="translate(-210 -560)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="man-open-arms-7">
+		<path d="M212,569v1c0,0.553,0.447,1,1,1h8v17c0,0.553,0.447,1,1,1h5c0.553,0,1-0.447,1-1v-17h8c0.553,0,1-0.447,1-1v-1    c0-0.553-0.447-1-1-1h-9.055c0.649-0.635,1.055-1.52,1.055-2.5c0-1.934-1.566-3.5-3.5-3.5s-3.5,1.566-3.5,3.5    c0,0.98,0.405,1.865,1.055,2.5H213C212.447,568,212,568.447,212,569z M222,565.5c0-1.379,1.121-2.5,2.5-2.5s2.5,1.121,2.5,2.5    s-1.121,2.5-2.5,2.5S222,566.879,222,565.5z M236,569v1h-9v18h-2v-10h-1v10h-2v-18h-9v-1H236z"/>
+	</g>
+	
+    </g>
+</svg>

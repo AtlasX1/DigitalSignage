@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30" height="30" viewBox="0 0 30 30" xml:space="preserve">
+    <g transform="translate(-90 -380)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="thumbdrive-tick-7">
+		<rect x="102" y="385" width="2" height="2"/>
+		<rect x="106" y="385" width="2" height="2"/>
+		<path d="M113,395.025V392h-2v-10H99v10h-2v16h10.412c1.338,1.237,3.121,2,5.088,2c4.143,0,7.5-3.357,7.5-7.5    C120,398.526,116.908,395.283,113,395.025z M100,383h10v9h-10V383z M98,393h14v2.025c-3.908,0.258-7,3.501-7,7.475    c0,1.691,0.566,3.246,1.51,4.5H98V393z M112.5,409c-3.59,0-6.5-2.91-6.5-6.5s2.91-6.5,6.5-6.5s6.5,2.91,6.5,6.5    S116.09,409,112.5,409z"/>
+		<polygon points="111.086,404.268 108.965,402.146 108.258,402.854 111.086,405.682 116.742,400.025 116.035,399.318   "/>
+	</g>
+	
+    </g>
+</svg>

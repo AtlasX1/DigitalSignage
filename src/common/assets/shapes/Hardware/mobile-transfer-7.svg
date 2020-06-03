@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30" height="30" viewBox="0 0 30 30" xml:space="preserve">
+    <g transform="translate(-510 -140)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="mobile-transfer-7">
+		<path d="M528,166c0,1.104,0.896,2,2,2h10v-1h-10c-0.551,0-1-0.449-1-1v-3h11v-1h-11v-7h4.994l-3.074,2.857l0.682,0.732    l4.398-4.089l-4.398-4.09l-0.682,0.732l3.072,2.856H529v-7h11v-1h-11v-2c0-0.551,0.449-1,1-1h10v-1h-10c-1.104,0-2,0.896-2,2v10    h-1h-4h-1v-10c0-1.104-0.896-2-2-2h-10v1h10c0.551,0,1,0.449,1,1v2h-11v1h11v7h-5v1h5v7h-11v1h11v3c0,0.551-0.449,1-1,1h-10v1h10    c1.104,0,2-0.896,2-2v-11h1h4h1V166z"/>
+		<circle cx="536" cy="165" r="1"/>
+		<rect x="533" y="144" width="1" height="1"/>
+		<rect x="535" y="144" width="4" height="1"/>
+		<circle cx="514" cy="165" r="1"/>
+		<rect x="511" y="144" width="1" height="1"/>
+		<rect x="513" y="144" width="4" height="1"/>
+	</g>
+	
+    </g>
+</svg>

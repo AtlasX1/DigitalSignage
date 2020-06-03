@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30" height="30" viewBox="0 0 30 30" xml:space="preserve">
+    <g transform="translate(-450 -320)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="forklift-7">
+		<path d="M470,323h-1v18h-1v-2l-1.727-0.609L463.404,325H453v8.706L451,333v14h1.184c0.413,1.163,1.512,2,2.816,2    s2.403-0.837,2.816-2h3.367c0.413,1.163,1.512,2,2.816,2s2.403-0.837,2.816-2H468v-5h1v4h1v-13h9v-1h-9V323z M454,326h8.596    l2.571,12L457,335.117V331h-1v3.765l-2-0.706V326z M455,348c-1.104,0-2-0.896-2-2s0.896-2,2-2s2,0.896,2,2S456.104,348,455,348z     M464,348c-1.104,0-2-0.896-2-2s0.896-2,2-2s2,0.896,2,2S465.104,348,464,348z M467,346c0-1.657-1.343-3-3-3s-3,1.343-3,3h-3    c0-1.657-1.343-3-3-3s-3,1.343-3,3v-11.587l15,5.294V346z"/>
+		<path d="M471,323v8h8v-8H471z M478,330h-6v-6h6V330z"/>
+		<circle cx="455" cy="346" r="1"/>
+		<circle cx="464" cy="346" r="1"/>
+	</g>
+	
+    </g>
+</svg>

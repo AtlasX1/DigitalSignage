@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30" height="30" viewBox="0 0 30 30" xml:space="preserve">
+    <g transform="translate(-150 -80)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="drawer-7">
+		<path d="M154,108h4v-1h14v1h4v-1h1V82h-24v25h1V108z M154,83h22v7h-22V83z M154,91h22v7h-22V91z M154,99h22v7h-22V99z"/>
+		<polygon points="168,86 162,86 162,85 161,85 161,87 169,87 169,85 168,85   "/>
+		<polygon points="168,94 162,94 162,93 161,93 161,95 169,95 169,93 168,93   "/>
+		<polygon points="168,102 162,102 162,101 161,101 161,103 169,103 169,101 168,101   "/>
+	</g>
+	
+    </g>
+</svg>

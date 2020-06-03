@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="29" height="30" viewBox="0 0 29 30" xml:space="preserve">
+    <g transform="translate(-330 -140)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="tuner-7">
+		<path d="M335.5,156c2.209,0,4-1.791,4-4s-1.791-4-4-4s-4,1.791-4,4S333.291,156,335.5,156z M335.5,149c1.654,0,3,1.346,3,3    s-1.346,3-3,3s-3-1.346-3-3S333.846,149,335.5,149z"/>
+		<path d="M349.5,152c0,2.209,1.791,4,4,4s4-1.791,4-4s-1.791-4-4-4S349.5,149.791,349.5,152z M356.5,152c0,1.654-1.346,3-3,3    s-3-1.346-3-3s1.346-3,3-3S356.5,150.346,356.5,152z"/>
+		<path d="M340.5,158c0,2.209,1.791,4,4,4s4-1.791,4-4s-1.791-4-4-4S340.5,155.791,340.5,158z M344.5,155c1.654,0,3,1.346,3,3    s-1.346,3-3,3s-3-1.346-3-3S342.846,155,344.5,155z"/>
+		<rect x="335" y="143" width="1" height="4"/>
+		<rect x="344" y="163" width="1" height="4"/>
+		<rect x="335" y="157" width="1" height="10"/>
+		<rect x="353" y="143" width="1" height="4"/>
+		<rect x="353" y="157" width="1" height="10"/>
+		<rect x="344" y="143" width="1" height="10"/>
+	</g>
+	
+    </g>
+</svg>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30" height="30" viewBox="0 0 30 30" xml:space="preserve">
+    <g transform="translate(-330 -80)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="plant-element-7">
+		<path d="M345,82c-7.18,0-13,5.82-13,13s5.82,13,13,13s13-5.82,13-13S352.18,82,345,82z M345,107c-6.617,0-12-5.383-12-12    s5.383-12,12-12s12,5.383,12,12S351.617,107,345,107z"/>
+		<path d="M348,91.5c0-3.037-3-5.5-3-5.5s-3,2.463-3,5.5s1.344,4.5,3,4.5S348,94.537,348,91.5z"/>
+		<path d="M336.178,95c0,0-0.38,3.862,1.768,6.01s4.132,2.232,5.303,1.061c1.172-1.171,1.087-3.155-1.061-5.303    S336.178,95,336.178,95z"/>
+		<path d="M347.813,96.768c-2.147,2.147-2.232,4.132-1.061,5.303c1.171,1.172,3.155,1.087,5.303-1.061s1.768-6.01,1.768-6.01    S349.96,94.62,347.813,96.768z"/>
+	</g>
+	
+    </g>
+</svg>

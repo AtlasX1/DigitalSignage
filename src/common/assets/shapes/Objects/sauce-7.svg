@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30" height="30" viewBox="0 0 30 30" xml:space="preserve">
+    <g transform="translate(-570 -320)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="sauce-7">
+		<path d="M596.814,321.771l-1.414,1.414l-0.707-0.707l-4.951,4.949c0,0-9.898,4.244-17.678,12.021    c-0.391,0.391-0.391,1.023,0,1.414l7.072,7.072c0.391,0.391,1.023,0.391,1.414,0c7.777-7.779,12.021-17.678,12.021-17.678    l2.828-2.83l2.121-2.121l-0.707-0.707l1.414-1.414L596.814,321.771z M579.844,347.227l-7.072-7.07    c2.892-2.891,6.1-5.289,8.967-7.156h8.365C588.244,336.502,584.753,342.317,579.844,347.227z M591.729,329.686l-0.076,0.178    c-0.012,0.027-0.369,0.841-1.027,2.137h-7.303c3.851-2.359,6.762-3.63,6.814-3.654l0.178-0.074l2.965-2.965l1.414,1.414    L591.729,329.686z M595.4,326.014l-0.707-0.707l-0.707-0.707l0.707-0.707l1.414,1.414L595.4,326.014z"/>
+		<rect x="582" y="335" width="1" height="1"/>
+		<rect x="581" y="338" width="1" height="1"/>
+		<rect x="584" y="338" width="1" height="1"/>
+		<rect x="578" y="337" width="1" height="1"/>
+		<rect x="579" y="343" width="1" height="1"/>
+		<rect x="581" y="341" width="1" height="1"/>
+		<rect x="577" y="340" width="1" height="1"/>
+		<rect x="585" y="335" width="1" height="1"/>
+	</g>
+	
+    </g>
+</svg>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30" height="30" viewBox="0 0 30 30" xml:space="preserve">
+    <g transform="translate(-450 -320)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="toothbrush-7">
+		<polygon points="471.17,333.072 465.867,332.719 450.857,347.729 451.564,348.436 466.254,333.746 471.557,334.1 479.143,326.516     478.436,325.809   "/>
+		<rect x="473.105" y="323.187" transform="matrix(0.7069 0.7073 -0.7073 0.7069 368.3387 -241.5279)" width="5.001" height="1"/>
+		<rect x="471.692" y="324.602" transform="matrix(0.7071 0.7071 -0.7071 0.7071 368.769 -240.0839)" width="4.999" height="1"/>
+		<rect x="470.278" y="326.016" transform="matrix(0.7071 0.7071 -0.7071 0.7071 369.3547 -238.6699)" width="4.999" height="1"/>
+		<rect x="468.864" y="327.43" transform="matrix(0.7071 0.7071 -0.7071 0.7071 369.9404 -237.2558)" width="4.999" height="1"/>
+		<rect x="467.449" y="328.844" transform="matrix(0.7071 0.7071 -0.7071 0.7071 370.5261 -235.8417)" width="4.999" height="1"/>
+	</g>
+	
+    </g>
+</svg>

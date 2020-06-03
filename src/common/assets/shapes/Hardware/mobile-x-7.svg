@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30" height="30" viewBox="0 0 30 30" xml:space="preserve">
+    <g transform="translate(-570 -140)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="mobile-x-7">
+		<path d="M591,142h-12c-1.104,0-2,0.896-2,2v22c0,1.104,0.896,2,2,2h12c1.104,0,2-0.896,2-2v-22C593,142.896,592.104,142,591,142z     M592,166c0,0.551-0.449,1-1,1h-12c-0.551,0-1-0.449-1-1v-3h14V166z M592,162h-14v-15h14V162z M592,146h-14v-2    c0-0.551,0.449-1,1-1h12c0.551,0,1,0.449,1,1V146z"/>
+		<circle cx="585" cy="165" r="1"/>
+		<rect x="582" y="144" width="1" height="1"/>
+		<rect x="584" y="144" width="4" height="1"/>
+		<polygon points="580.354,159.854 585,155.207 589.646,159.854 590.354,159.146 585.707,154.5 590.354,149.854 589.646,149.146     585,153.793 580.354,149.146 579.646,149.854 584.293,154.5 579.646,159.146   "/>
+	</g>
+	
+    </g>
+</svg>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30" height="30" viewBox="0 0 30 30" xml:space="preserve">
+    <g transform="translate(-330 -260)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="server-network-off-7">
+		<polygon points="334,280 334,265.414 333,264.414 333,281 349.586,281 348.586,280   "/>
+		<polygon points="339.586,271 338.586,270 337,270 337,268.414 336,267.414 336,271   "/>
+		<rect x="342" y="268" width="1" height="1"/>
+		<polygon points="336,278 346.586,278 345.586,277 337,277 337,274 342.586,274 341.586,273 336,273   "/>
+		<rect x="338" y="275" width="1" height="1"/>
+		<rect x="340" y="275" width="1" height="1"/>
+		<rect x="342" y="275" width="1" height="1"/>
+		<path d="M347,284v-1h-4v1h-11v1h11v1h4v-1h6.586l-1-1H347z M346,285h-2v-1h2V285z"/>
+		<path d="M358,285v-1h-2.586l-3-3H357v-18h-22.586l-1.436-1.436l-0.707,0.707l25.457,25.457l0.707-0.707L356.414,285H358z     M340.414,269H341v-1h-1v0.586L338.414,267H353v3h-11.586L340.414,269z M345.414,274H353v3h-4.586L345.414,274z M349.414,278H354    v-5h-9.586l-2-2H354v-5h-16.586l-2-2H356v16h-4.586L349.414,278z"/>
+	</g>
+	
+    </g>
+</svg>

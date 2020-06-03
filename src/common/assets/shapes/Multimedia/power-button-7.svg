@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="29" height="30" viewBox="0 0 29 30" xml:space="preserve">
+    <g transform="translate(-210 -380)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="power-button-7">
+		<path d="M222,386.345v-1.032c-4.59,1.123-8,5.252-8,10.188c0,5.799,4.701,10.5,10.5,10.5s10.5-4.701,10.5-10.5    c0-4.936-3.41-9.064-8-10.188v1.032c4.027,1.102,7,4.783,7,9.155c0,5.238-4.262,9.5-9.5,9.5s-9.5-4.262-9.5-9.5    C215,391.128,217.973,387.446,222,386.345z"/>
+		<polygon points="225,384 225,383 224,383 224,384 224,396 225,396   "/>
+	</g>
+	
+    </g>
+</svg>

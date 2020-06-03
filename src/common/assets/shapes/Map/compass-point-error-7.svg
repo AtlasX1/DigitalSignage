@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30" height="30" viewBox="0 0 30 30" xml:space="preserve">
+    <g transform="translate(-150 -320)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="compass-point-error-7">
+		<path d="M177,335c0-7.18-5.82-13-13-13s-13,5.82-13,13s5.82,13,13,13c0.074,0,0.146-0.01,0.221-0.011L163,350h17l-4.957-8.165    C176.275,339.848,177,337.511,177,335z M164,347c-6.617,0-12-5.383-12-12s5.383-12,12-12s12,5.383,12,12    c0,2.132-0.564,4.132-1.544,5.869L171.5,336l-6.652,10.957C164.566,346.977,164.286,347,164,347z M178.223,349h-13.445    l6.723-11.073L178.223,349z"/>
+		<path d="M161.879,337.121l1.414,5.657l6.364-13.435l-13.436,6.363L161.879,337.121z M163.586,339.824l-0.883-3.527l-3.527-0.883    l8.379-3.969L163.586,339.824z"/>
+		<rect x="171" y="341" width="1" height="5"/>
+		<rect x="171" y="347" width="1" height="1"/>
+	</g>
+	
+    </g>
+</svg>

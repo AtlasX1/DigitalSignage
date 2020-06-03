@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30" height="30" viewBox="0 0 30 30" xml:space="preserve">
+    <g transform="translate(-390 -200)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="airplane-descending-7">
+		<path d="M406.878,214.081l-1.301-11.307l-2.962-1.079l-1.09,10.438l-5.264-1.916l-0.52-4.522l-2.87-1.045L392,213l22.961,8.357    c1.056,0.384,2.224-0.161,2.609-1.217c0.385-1.057-0.16-2.226-1.217-2.609L406.878,214.081z M416.631,219.798    c-0.195,0.536-0.791,0.814-1.329,0.619l-22.227-8.09l0.659-6.299l1.085,0.395l0.52,4.523l7.048,2.565l1.09-10.437l1.177,0.428    l1.301,11.308l10.058,3.661c0.115,0.042,0.22,0.102,0.312,0.179C416.656,218.928,416.779,219.39,416.631,219.798z"/>
+		<rect x="391" y="225" width="28" height="1"/>
+	</g>
+	
+    </g>
+</svg>

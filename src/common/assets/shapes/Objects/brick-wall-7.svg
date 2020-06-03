@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="29" height="30" viewBox="0 0 29 30" xml:space="preserve">
+    <g transform="translate(-450 -200)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="brick-wall-7">
+		<path d="M477,204h-25v22h25V204z M465,205h5v2h-5V205z M470,219h-5v-2h5V219z M473,220v2h-5v-2H473z M459,219v-2h5v2H459z     M461,220v2h-5v-2H461z M459,211h5v2h-5V211z M456,210v-2h5v2H456z M462,210v-2h5v2H462z M467,214v2h-5v-2H467z M461,214v2h-5v-2    H461z M462,220h5v2h-5V220z M468,216v-2h5v2H468z M470,213h-5v-2h5V213z M468,210v-2h5v2H468z M459,205h5v2h-5V205z M453,205h5v2    h-5V205z M453,208h2v2h-2V208z M453,211h5v2h-5V211z M453,214h2v2h-2V214z M453,217h5v2h-5V217z M453,220h2v2h-2V220z M458,225h-5    v-2h5V225z M464,225h-5v-2h5V225z M470,225h-5v-2h5V225z M476,225h-5v-2h5V225z M476,222h-2v-2h2V222z M476,219h-5v-2h5V219z     M476,216h-2v-2h2V216z M476,213h-5v-2h5V213z M476,210h-2v-2h2V210z M476,207h-5v-2h5V207z"/>
+	</g>
+	
+    </g>
+</svg>

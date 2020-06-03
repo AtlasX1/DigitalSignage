@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30" height="30" viewBox="0 0 30 30" xml:space="preserve">
+    <g transform="translate(-330 -320)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="radio-7">
+		<path d="M356,320.923L355.613,320l-21.453,9H332v19h26v-19h-21.254L356,320.923z M344,347v-1h2v1H344z M357,347h-10v-2h-4v2h-10    v-13h24V347z M357,330v3h-24v-3H357z"/>
+		<path d="M338,345c2.209,0,4-1.791,4-4s-1.791-4-4-4s-4,1.791-4,4S335.791,345,338,345z M338,338c1.657,0,3,1.343,3,3s-1.343,3-3,3    s-3-1.343-3-3S336.343,338,338,338z"/>
+		<circle cx="338" cy="341" r="1"/>
+		<path d="M352,345c2.209,0,4-1.791,4-4s-1.791-4-4-4s-4,1.791-4,4S349.791,345,352,345z M352,338c1.657,0,3,1.343,3,3s-1.343,3-3,3    s-3-1.343-3-3S350.343,338,352,338z"/>
+		<circle cx="352" cy="341" r="1"/>
+		<rect x="334" y="331" width="13" height="1"/>
+		<rect x="353" y="331" width="1" height="1"/>
+		<rect x="355" y="331" width="1" height="1"/>
+	</g>
+	
+    </g>
+</svg>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30" height="30" viewBox="0 0 30 30" xml:space="preserve">
+    <g transform="translate(-30 -260)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="mansion-7">
+		<path d="M53.6,270.2l-8.6-6.45l-8.6,6.45l1.199,1.6l1.066-0.8h12.668l1.066,0.8L53.6,270.2z M40,270l5-3.75l5,3.75H40z"/>
+		<path d="M58,275h1l-1-2h-6v2h5v11h-7v-13h1v-1h-3v1h1v13h-1v-7h-6v7h-1v-13h1v-1h-3v1h1v13h-7v-11h5v-2h-6l-1,2h1v11h-2v1h30v-1    h-2V275z M47,286h-4v-6h4V286z"/>
+		<rect x="34" y="279" width="4" height="1"/>
+		<rect x="52" y="279" width="4" height="1"/>
+	</g>
+	
+    </g>
+</svg>

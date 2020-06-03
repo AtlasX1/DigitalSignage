@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="29" height="30" viewBox="0 0 29 30" xml:space="preserve">
+    <g transform="translate(-150 -620)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="business-man-suitcase-7">
+		<path d="M160,649h5c0.553,0,1-0.447,1-1v-9c1.104,0,2-0.896,2-2v-7c0-1.104-0.896-2-2-2h-1.055c0.649-0.635,1.055-1.52,1.055-2.5    c0-1.934-1.566-3.5-3.5-3.5s-3.5,1.566-3.5,3.5c0,0.98,0.405,1.865,1.055,2.5H159c-1.104,0-2,0.896-2,2v7c0,1.104,0.896,2,2,2v9    C159,648.553,159.447,649,160,649z M160,625.5c0-1.379,1.121-2.5,2.5-2.5s2.5,1.121,2.5,2.5s-1.121,2.5-2.5,2.5    S160,626.879,160,625.5z M158,637v-7c0-0.552,0.448-1,1-1h7c0.552,0,1,0.448,1,1v7c0,0.552-0.448,1-1,1v-6h-1v16h-2v-10h-1v10h-2    v-16h-1v6C158.448,638,158,637.552,158,637z"/>
+		<rect x="162" y="630" width="1" height="1"/>
+		<rect x="162" y="632" width="1" height="4"/>
+		<path d="M172,642h-2v-2h-1v2h-2v7h5V642z M171,648h-3v-5h3V648z"/>
+	</g>
+	
+    </g>
+</svg>

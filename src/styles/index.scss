@@ -1,0 +1,16 @@
+@import '../../node_modules/@mdi/font/css/materialdesignicons.min.css';
+// Base
+@import './base/base';
+@import './base/fonts';
+
+// Effects
+@import './effects/2d-transitions/grow';
+@import './effects/2d-transitions/fade-in';
+@import './effects/background-transitions/radial-out';
+@import './effects/background-transitions/back-pulse';
+
+// Tables
+@import 'tables/tableHead';
+
+// OktaSignInWidget styles override
+@import 'oktaWidget/oktaWidjetStyles';

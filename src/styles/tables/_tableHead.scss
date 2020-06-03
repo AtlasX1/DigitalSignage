@@ -1,0 +1,9 @@
+.Enhanced-table-head {
+  &__table-sort-label {
+    &:hover {
+      svg {
+        opacity: 1;
+      }
+    }
+  }
+}

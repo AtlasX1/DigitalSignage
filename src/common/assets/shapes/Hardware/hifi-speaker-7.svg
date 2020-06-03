@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30" height="30" viewBox="0 0 30 30" xml:space="preserve">
+    <g transform="translate(-390 -320)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="hifi-speaker-7">
+		<path d="M405,332c2.21,0,4-1.79,4-4s-1.79-4-4-4s-4,1.79-4,4S402.79,332,405,332z M405,325c1.656,0,3,1.344,3,3s-1.344,3-3,3    s-3-1.344-3-3S403.344,325,405,325z"/>
+		<path d="M405,333c-3.314,0-6,2.686-6,6s2.686,6,6,6s6-2.686,6-6S408.314,333,405,333z M405,344c-2.758,0-5-2.242-5-5s2.242-5,5-5    s5,2.242,5,5S407.758,344,405,344z"/>
+		<circle cx="405" cy="339" r="2"/>
+		<path d="M414,349v-1h1v-27h-20v27h1v1h3v-1h12v1H414z M396,347v-1h1v-1h-1v-21h1v-1h-1v-1h18v1h-1v1h1v21h-1v1h1v1H396z"/>
+		<circle cx="405" cy="328" r="1"/>
+	</g>
+	
+    </g>
+</svg>

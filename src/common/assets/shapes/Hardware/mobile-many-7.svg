@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30" height="30" viewBox="0 0 30 30" xml:space="preserve">
+    <g transform="translate(-30 -140)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="mobile-many-7">
+		<path d="M56,142h-2.78c0.261,0.289,0.463,0.626,0.597,1H56c0.551,0,1,0.449,1,1v2h-3v1h3v15h-3v1h3v3c0,0.551-0.449,1-1,1h-2.184    c-0.134,0.374-0.336,0.711-0.597,1H56c1.104,0,2-0.896,2-2v-22C58,142.896,57.104,142,56,142z"/>
+		<path d="M53,166v-21v-1c0-1.104-0.896-2-2-2h-2.78c0.261,0.289,0.463,0.626,0.597,1H51c0.551,0,1,0.449,1,1v2h-3v1h3v15h-3v1h3v3    c0,0.551-0.449,1-1,1h-2.184c-0.134,0.374-0.336,0.711-0.597,1H51C52.104,168,53,167.104,53,166z"/>
+		<path d="M48,166v-21v-1c0-1.104-0.896-2-2-2h-2h-5h-5c-1.104,0-2,0.896-2,2v22c0,1.104,0.896,2,2,2h5h5h2    C47.104,168,48,167.104,48,166z M33,144c0-0.551,0.449-1,1-1h5h5h2c0.551,0,1,0.449,1,1v1v1h-4h-5h-5V144z M33,147h5h5h4v15h-4h-5    h-5V147z M39,167h-5c-0.551,0-1-0.449-1-1v-3h5h5h4v3c0,0.551-0.449,1-1,1h-2H39z"/>
+		<circle cx="40" cy="165" r="1"/>
+		<rect x="37" y="144" width="1" height="1"/>
+		<polygon points="39,145 42,145 43,145 43,144 42,144 39,144   "/>
+	</g>
+	
+    </g>
+</svg>

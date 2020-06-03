@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30" height="30" viewBox="0 0 30 30" xml:space="preserve">
+    <g transform="translate(-210 -380)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="credit-card-7">
+		<path d="M238,385h-26v20h26V385z M237,404h-24v-11h24V404z M237,390h-24v-4h24V390z"/>
+		<rect x="215" y="395" width="3" height="1"/>
+		<rect x="219" y="395" width="3" height="1"/>
+		<rect x="223" y="395" width="3" height="1"/>
+		<rect x="227" y="395" width="3" height="1"/>
+	</g>
+	
+    </g>
+</svg>

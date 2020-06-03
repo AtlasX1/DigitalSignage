@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="29" height="30" viewBox="0 0 29 30" xml:space="preserve">
+    <g transform="translate(-150 -380)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="game-controller-7">
+		<path d="M177,390h-10v-1h-5v1h-10c-0.553,0-1,0.447-1,1v11c0,0.553,0.447,1,1,1h25c0.553,0,1-0.447,1-1v-11    C178,390.447,177.553,390,177,390z M177,402h-25v-11h25V402z"/>
+		<polygon points="156,399 157,399 157,397 159,397 159,396 157,396 157,394 156,394 156,396 154,396 154,397 156,397   "/>
+		<circle cx="171" cy="395" r="1"/>
+		<circle cx="174" cy="395" r="1"/>
+		<circle cx="171" cy="398" r="1"/>
+		<circle cx="174" cy="398" r="1"/>
+		<rect x="162" y="398" width="2" height="1"/>
+		<rect x="165" y="398" width="2" height="1"/>
+	</g>
+	
+    </g>
+</svg>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30" height="30" viewBox="0 0 30 30" xml:space="preserve">
+    <g transform="translate(-90 -260)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="sport-shirt-7">
+		<path d="M113,263h-4c0,2.209-1.791,4-4,4s-4-1.791-4-4h-4h-0.053l-5.822,4.657l3.748,4.686l2.127-1.7V287h16v-16.357l2.125,1.7    l3.748-4.686l-5.82-4.657H113z M92.531,267.813l1.39-1.112l2.499,3.125l-1.391,1.111L92.531,267.813z M112,286H98v-17.438    l-0.799,0.639l-2.5-3.125L97.297,264h2.803c0.465,2.279,2.484,4,4.9,4c2.414,0,4.434-1.721,4.898-4h2.803l2.597,2.077    l-2.499,3.124L112,268.563V286z M114.969,270.938l-1.389-1.111l2.499-3.124l1.39,1.111L114.969,270.938z"/>
+		<rect x="102" y="271" width="1" height="6"/>
+		<path d="M104,277h4v-6h-4V277z M105,272h2v4h-2V272z"/>
+	</g>
+	
+    </g>
+</svg>

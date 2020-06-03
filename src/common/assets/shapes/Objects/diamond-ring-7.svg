@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30" height="30" viewBox="0 0 30 30" xml:space="preserve">
+    <g transform="translate(-150 -380)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="diamond-ring-7">
+		<path d="M154,397c0,6.075,4.925,11,11,11s11-4.925,11-11c0-4.219-2.377-7.878-5.862-9.724l-0.751,0.751    c3.318,1.629,5.613,5.033,5.613,8.973c0,5.514-4.486,10-10,10s-10-4.486-10-10c0-3.939,2.295-7.344,5.613-8.973l-0.751-0.751    C156.377,389.122,154,392.781,154,397z"/>
+		<path d="M159,385l6,6l6-6l-2-3h-8L159,385z M168.465,383l1.248,1.873L165,389.586l-4.713-4.713l1.248-1.873H168.465z"/>
+	</g>
+	
+    </g>
+</svg>

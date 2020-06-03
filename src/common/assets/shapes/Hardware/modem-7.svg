@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30" height="30" viewBox="0 0 30 30" xml:space="preserve">
+    <g transform="translate(-570 -260)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="modem-7">
+		<rect x="575" y="281" width="1" height="1"/>
+		<rect x="577" y="281" width="1" height="1"/>
+		<rect x="579" y="281" width="1" height="1"/>
+		<rect x="581" y="281" width="1" height="1"/>
+		<rect x="594" y="281" width="1" height="1"/>
+		<path d="M595,263h-1v14h-18v-14h-1v14h-3v9h2v1h3v-1h16v1h3v-1h2v-9h-3V263z M597,278v7h-24v-7H597z"/>
+	</g>
+	
+    </g>
+</svg>

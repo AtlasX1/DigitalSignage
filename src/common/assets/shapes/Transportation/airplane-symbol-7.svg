@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30" height="30" viewBox="0 0 30 30" xml:space="preserve">
+    <g transform="translate(-210 -200)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="airplane-symbol-7">
+		<path d="M225,202c-7.18,0-13,5.82-13,13s5.82,13,13,13s13-5.82,13-13S232.18,202,225,202z M225,227c-6.617,0-12-5.383-12-12    s5.383-12,12-12s12,5.383,12,12S231.617,227,225,227z"/>
+		<path d="M228,214l-3.999-7H223l2,7h-6v-2h-1v6h1v-2h6l-2,7h1.001l3.999-7h5c0.553,0,1-0.447,1-1s-0.447-1-1-1H228z"/>
+	</g>
+	
+    </g>
+</svg>

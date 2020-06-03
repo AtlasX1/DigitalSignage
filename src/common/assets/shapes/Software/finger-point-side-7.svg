@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="29" height="30" viewBox="0 0 29 30" xml:space="preserve">
+    <g transform="translate(-450 -320)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="finger-point-side-7">
+		<path d="M454,342h8h4c1.104,0,2-0.896,2-2c0-0.415-0.127-0.8-0.343-1.12c0.78-0.273,1.343-1.007,1.343-1.88    c0-0.415-0.127-0.8-0.343-1.12c0.78-0.273,1.343-1.007,1.343-1.88c0-0.366-0.105-0.705-0.277-1H475c1.104,0,2-0.896,2-2    s-0.896-2-2-2h-13h-8c-1.104,0-2,0.896-2,2v9C452,341.104,452.896,342,454,342z M453,331c0-0.551,0.449-1,1-1h5h2h2h12    c0.552,0,1,0.448,1,1s-0.448,1-1,1h-7h-5v1h5c0.552,0,1,0.448,1,1s-0.448,1-1,1h-1h-4v1h4c0.552,0,1,0.448,1,1s-0.448,1-1,1h-1h-3    v1h3c0.552,0,1,0.448,1,1s-0.448,1-1,1h-3h-2h-2h-5c-0.552,0-1-0.449-1-1V331z"/>
+	</g>
+	
+    </g>
+</svg>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="48" height="30" viewBox="0 0 48 30" xml:space="preserve">
+    <g transform="translate(-264 -260)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="cruise-7">
+		<path d="M300,273h-1.8l-1.601-2h-11.7l-0.8-1H283v-1l-4-2l-3-1l-0.8,4H274l-2.4,3H270l-3.2,4H265l2,7h36l8-7h-7.8L300,273z     M276.759,267.307l1.857,0.619l3.384,1.692V270h-5.78L276.759,267.307z M270.48,274H275v-1h-2.12l1.601-2h9.139l0.8,1h11.7    l0.801,1H286v1h13.52l0.8,1H290v1h11.119l0.8,1h-33.838L270.48,274z M308.339,278l-5.715,5h-34.87l-0.571-2H271v-1h-4.103    l-0.571-2H304H308.339z"/>
+		<rect x="294" y="280" width="8" height="1"/>
+		<rect x="292" y="280" width="1" height="1"/>
+		<rect x="272" y="280" width="1" height="1"/>
+		<rect x="283" y="273" width="1" height="1"/>
+		<rect x="280" y="273" width="1" height="1"/>
+		<rect x="277" y="273" width="1" height="1"/>
+		<rect x="287" y="275" width="1" height="1"/>
+		<rect x="284" y="275" width="1" height="1"/>
+		<rect x="281" y="275" width="1" height="1"/>
+		<rect x="278" y="275" width="1" height="1"/>
+		<rect x="275" y="275" width="1" height="1"/>
+		<rect x="272" y="275" width="1" height="1"/>
+	</g>
+	
+    </g>
+</svg>

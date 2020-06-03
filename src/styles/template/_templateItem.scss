@@ -1,0 +1,15 @@
+.TemplateItem--container {
+  .TemplateItem__buttons-container {
+    .TemplateItem__button {
+      opacity: 0;
+    }
+  }
+
+  &:hover {
+    .TemplateItem__buttons-container {
+      .TemplateItem__button {
+        opacity: 1;
+      }
+    }
+  }
+}

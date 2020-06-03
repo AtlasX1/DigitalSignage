@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30" height="30" viewBox="0 0 30 30" xml:space="preserve">
+    <g transform="translate(-450 -260)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="factory-big-7">
+		<polygon points="475,273 475,267 476,267 476,266 469,266 469,267 470,267 470,273 471,273 471,267 474,267 474,273   "/>
+		<polygon points="467,268.848 467,267 468,267 468,266 461,266 461,267 462,267 462,271.705 463,271.134 463,267 466,267     466,269.42   "/>
+		<path d="M477,274h-10v-4l-7,4v-4l-7,4v12h-1v1h26v-1h-1V274z M464,286h-7v-5h7V286z M476,286h-11v-6h-9v6h-2v-11.42l5-2.857v4l7-4    V274v1h10V286z"/>
+		<rect x="471" y="279" width="3" height="1"/>
+		<rect x="467" y="279" width="3" height="1"/>
+		<rect x="471" y="281" width="3" height="1"/>
+		<rect x="467" y="281" width="3" height="1"/>
+	</g>
+	
+    </g>
+</svg>

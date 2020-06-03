@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30" height="30" viewBox="0 0 30 30" xml:space="preserve">
+    <g transform="translate(-30 -980)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="compound-1-7">
+		<rect x="45" y="989" width="1" height="1"/>
+		<rect x="41" y="989" width="1" height="1"/>
+		<rect x="47" y="989" width="1" height="1"/>
+		<polygon points="50,990 50,991 51,991 51,989 49,989 49,990   "/>
+		<rect x="43" y="989" width="1" height="1"/>
+		<rect x="50" y="992" width="1" height="1"/>
+		<rect x="50" y="998" width="1" height="1"/>
+		<rect x="50" y="994" width="1" height="1"/>
+		<rect x="50" y="996" width="1" height="1"/>
+		<rect x="46" y="1000" width="1" height="1"/>
+		<rect x="39" y="993" width="1" height="1"/>
+		<rect x="44" y="1000" width="1" height="1"/>
+		<rect x="42" y="1000" width="1" height="1"/>
+		<rect x="39" y="997" width="1" height="1"/>
+		<rect x="39" y="995" width="1" height="1"/>
+		<polygon points="40,1000 40,999 39,999 39,1001 41,1001 41,1000   "/>
+		<rect x="39" y="991" width="1" height="1"/>
+		<rect x="48" y="1000" width="1" height="1"/>
+		<path d="M39,989h-6v18h18v-6h6v-18H39V989z M40,984h16v16h-4h-2v2v4H34v-16h4h2v-2V984z"/>
+	</g>
+	
+    </g>
+</svg>

@@ -1,0 +1,74 @@
+
+image: node:10
+
+stages:
+ - build
+ - deploy
+
+build_development:
+  image: node:10
+  stage: build
+  environment:
+    name: development
+  variables:
+    NODE_OPTIONS: "--max_old_space_size=4096"
+  before_script:
+    - yarn install
+  script:
+    - echo $REACT_APP_API_URL
+    - yarn run sync-translations
+    - yarn run build
+  artifacts:
+    paths:
+      - build
+    expire_in: 1 week
+  only:
+    - master
+
+build_production:
+  image: node:10
+  stage: build
+  environment:
+    name: production
+  variables:
+    NODE_OPTIONS: "--max_old_space_size=4096"
+  before_script:
+    - yarn install
+  script:
+    - echo $REACT_APP_API_URL
+    - yarn run sync-translations
+    - yarn run build
+  artifacts:
+    paths:
+      - build
+    expire_in: 1 week
+  only:
+    - tags
+
+deploy_development:
+  image: python:3.6.6-stretch
+  stage: deploy
+  environment:
+    name: development
+  before_script:
+    - pip install awscli
+  script:
+    - echo "deploying UI3.0 to $S3_BUCKET_NAME..."
+    - aws s3 sync ./build s3://$S3_BUCKET_NAME/ --exclude ".git*"
+  only:
+    - master
+  allow_failure: false
+
+deploy_production:
+  image: python:3.6.6-stretch
+  stage: deploy
+  environment:
+    name: production
+  before_script:
+    - pip install awscli
+  script:
+   - echo "deploying UI3.0 to $S3_BUCKET_NAME..."
+   - aws s3 sync ./build s3://$S3_BUCKET_NAME/ --exclude ".git*"
+  only:
+   - tags
+  allow_failure: false

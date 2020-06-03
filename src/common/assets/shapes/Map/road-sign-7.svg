@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30" height="30" viewBox="0 0 30 30" xml:space="preserve">
+    <g transform="translate(-270 -380)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="road-sign-7">
+		<path d="M272,395l13,13l13-13l-13-13L272,395z M285,406.586L273.414,395L285,383.414L296.586,395L285,406.586z"/>
+		<path d="M282,394v6h1v-6c0-0.552,0.448-1,1-1h3v2l4-2.5l-4-2.5v2h-3C282.897,392,282,392.897,282,394z"/>
+	</g>
+	
+    </g>
+</svg>

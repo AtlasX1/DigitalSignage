@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="32" height="24" viewBox="0 0 8.467 6.35">
+  <defs>
+    <linearGradient id="b">
+      <stop offset="0" stop-color="#0077ba"/>
+      <stop offset="1" stop-color="#7ad1e9"/>
+    </linearGradient>
+    <linearGradient id="a">
+      <stop offset="0" stop-color="#0077ba"/>
+      <stop offset="1" stop-color="#7ad1e9"/>
+    </linearGradient>
+    <linearGradient id="c">
+      <stop offset="0" stop-color="#0077ba"/>
+      <stop offset="1" stop-color="#7ad1e9"/>
+    </linearGradient>
+    <linearGradient id="d" x1="4.288" x2="4.288" y1="295.441" y2="290.941" gradientTransform="matrix(.875 0 0 1 .53 .28)" gradientUnits="userSpaceOnUse" xlink:href="#a"/>
+    <linearGradient id="e" x1="4.288" x2="4.288" y1="295.441" y2="290.941" gradientTransform="matrix(1 0 0 1.99203 0 -293.337)" gradientUnits="userSpaceOnUse" xlink:href="#b"/>
+    <linearGradient id="f" x1="4.288" x2="4.288" y1="295.441" y2="290.941" gradientTransform="translate(0 .28)" gradientUnits="userSpaceOnUse" xlink:href="#c"/>
+  </defs>
+  <g paint-order="stroke fill markers" transform="translate(0 -290.65)">
+    <rect width="7.408" height="4.583" x=".529" y="291.185" fill="url(#d)" ry=".336"/>
+    <rect width="3.756" height=".4" x="2.355" y="296.274" fill="url(#e)" ry=".079"/>
+    <path fill="url(#f)" d="M3.489 295.756h1.488v.52H3.489z"/>
+  </g>
+</svg>

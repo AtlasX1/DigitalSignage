@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30" height="30" viewBox="0 0 30 30" xml:space="preserve">
+    <g transform="translate(-30 -920)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="heart-7">
+		<path d="M45,947c22.063-15.094,10.343-23,5.86-23c-4.481,0-5.86,3-5.86,3s-1.38-3-5.859-3C34.657,924,22.937,931.906,45,947z     M39.141,925c3.733,0,4.907,2.328,4.955,2.428l0.925,1.902l0.888-1.912c0.044-0.09,1.217-2.418,4.952-2.418    c1.849,0,5.012,1.582,5.896,4.441c0.78,2.521,0.261,7.969-11.757,16.344c-12.018-8.375-12.537-13.822-11.757-16.344    C34.128,926.582,37.292,925,39.141,925z"/>
+	</g>
+	
+    </g>
+</svg>

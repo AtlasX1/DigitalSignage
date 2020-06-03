@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30" height="30" viewBox="0 0 30 30" xml:space="preserve">
+    <g transform="translate(-390 -380)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="circuit-board-7">
+		<path d="M394,384v22h22v-18l-4-4H394z M415,405h-4v-5.092c0.581-0.207,1-0.756,1-1.408c0-0.828-0.672-1.5-1.5-1.5    s-1.5,0.672-1.5,1.5c0,0.652,0.419,1.201,1,1.408V405h-7v-7.293l6.857-6.857c0.195,0.094,0.411,0.15,0.643,0.15    c0.828,0,1.5-0.672,1.5-1.5s-0.672-1.5-1.5-1.5s-1.5,0.672-1.5,1.5c0,0.231,0.057,0.447,0.15,0.643l-7.15,7.15V405h-7v-15h5.092    c0.207,0.581,0.756,1,1.408,1c0.828,0,1.5-0.672,1.5-1.5s-0.672-1.5-1.5-1.5c-0.652,0-1.201,0.419-1.408,1H395v-4h16.586    l3.414,3.414V405z"/>
+	</g>
+	
+    </g>
+</svg>

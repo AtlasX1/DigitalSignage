@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30" height="30" viewBox="0 0 30 30" xml:space="preserve">
+    <g transform="translate(-30 -80)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="fire-element-7">
+		<path d="M43.257,103c0,0-2.378-4.8,2.379-7.2c-0.792,3.2,1.066,2.954,1.585,4c0.52,1.046-0.793,3.2-0.793,3.2    c6.318-2.911,5.932-7.527,3.171-11.2c-0.818,1.465-2.63,2.438-2.63,2.438s1.056-2.004,1.045-4.038c-1.4-1.532-2.378-2.4-4.757-3.2    c1.917,6.133-4.757,5.294-4.757,10.398C38.5,100.537,43.257,103,43.257,103z"/>
+		<path d="M45,108c7.18,0,13-5.82,13-13s-5.82-13-13-13s-13,5.82-13,13S37.82,108,45,108z M45,83c6.617,0,12,5.383,12,12    s-5.383,12-12,12s-12-5.383-12-12S38.383,83,45,83z"/>
+	</g>
+
+    </g>
+</svg>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30" height="30" viewBox="0 0 30 30" xml:space="preserve">
+    <g transform="translate(-150 -80)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="home-bird-7">
+		<path d="M153.58,90.514L156.578,108h16.844l2.998-17.486l1.296,0.897l0.568-0.822L165,81.393l-13.284,9.196l0.568,0.822    L153.58,90.514z M165,82.607l10.571,7.319l-0.064-0.011L172.578,107h-15.156l-2.929-17.084l-0.064,0.011L165,82.607z"/>
+		<path d="M165,97c2.762,0,5-2.238,5-5s-2.238-5-5-5s-5,2.238-5,5S162.238,97,165,97z M165,88c2.21,0,4,1.791,4,4c0,2.21-1.79,4-4,4    c-2.209,0-4-1.79-4-4C161,89.791,162.791,88,165,88z"/>
+		<path d="M165,99c-1.656,0-3,1.344-3,3s1.344,3,3,3s3-1.344,3-3S166.656,99,165,99z M165,104c-1.104,0-2-0.896-2-2s0.896-2,2-2    s2,0.896,2,2S166.104,104,165,104z"/>
+	</g>
+	
+    </g>
+</svg>

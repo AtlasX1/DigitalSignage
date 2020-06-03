@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30" height="30" viewBox="0 0 30 30" xml:space="preserve">
+    <g transform="translate(-450 -740)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="judge-hammer-7">
+		<path d="M462,763h-11v3h-1v3h13v-3h-1V763z M452,764h9v2h-9V764z M462,768h-11v-1h11V768z"/>
+		<path d="M467.808,747.908l0.707,0.707l2.828-2.828l-5.656-5.657l-2.829,2.829l0.707,0.707l-7.07,7.07l-0.707-0.707l-2.829,2.829    l5.657,5.656l2.828-2.828l-0.707-0.707l2.121-2.121L477,767l2.828-2.828l-14.142-14.143L467.808,747.908z M465.687,741.544    l4.242,4.243l-1.414,1.414l-4.242-4.242L465.687,741.544z M458.615,757.101l-4.243-4.242l1.415-1.414l4.242,4.242L458.615,757.101    z M460.029,754.272l-2.828-2.828l7.071-7.071l2.828,2.828L460.029,754.272z M478.414,764.172L477,765.586l-13.436-13.435    l1.415-1.415L478.414,764.172z"/>
+	</g>
+	
+    </g>
+</svg>

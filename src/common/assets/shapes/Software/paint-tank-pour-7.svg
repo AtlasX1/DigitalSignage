@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30" height="30" viewBox="0 0 30 30" xml:space="preserve">
+    <g transform="translate(-570 -140)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="paint-tank-pour-7">
+		<path d="M598.586,154.728l-0.707,0.707l-11.313-11.314l0.707-0.707L585.858,142l-0.707,0.707l0,0l-5.304,5.304L576.858,151H573v1    v1v15h2v-12.817l0.252,0.252l0.707-0.707l11.313,11.314l-0.707,0.707l1.414,1.414l0.707-0.707l0,0l5.304-5.304l6.01-6.01    L598.586,154.728z M585.151,152.606l4.242,4.243l-4.949,4.95l-4.243-4.242L585.151,152.606z M590.808,156.849l-5.656-5.657    l-5.657,5.657l-2.828-2.828l9.192-9.192l11.313,11.313l-9.192,9.192l-2.828-2.828L590.808,156.849z"/>
+		<rect x="587.126" y="145.718" transform="matrix(0.7071 -0.7071 0.7071 0.7071 66.9525 459.0727)" width="1" height="6"/>
+		<rect x="590.161" y="151.753" transform="matrix(0.7074 0.7069 -0.7069 0.7074 280.6248 -373.3134)" width="2" height="1"/>
+		<rect x="592.43" y="153.521" transform="matrix(-0.7071 0.7071 -0.7071 -0.7071 1121.1035 -156.3343)" width="1" height="1"/>
+	</g>
+	
+    </g>
+</svg>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="29" height="30" viewBox="0 0 29 30" xml:space="preserve">
+    <g transform="translate(-510 -380)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="meter-error-7">
+		<rect x="522" y="385" width="1" height="2"/>
+		<rect x="517.75" y="386.139" transform="matrix(0.8658 -0.5003 0.5003 0.8658 -124.1671 311.246)" width="0.999" height="2"/>
+		<rect x="514.138" y="389.75" transform="matrix(-0.8661 -0.4999 0.4999 -0.8661 766.1921 985.7625)" width="2" height="0.999"/>
+		<rect x="514.637" y="397.749" transform="matrix(-0.5007 -0.8656 0.8656 -0.5007 427.8655 1044.3118)" width="1.001" height="2"/>
+		<rect x="529.362" y="389.249" transform="matrix(0.5 0.866 -0.866 0.5 602.871 -263.7512)" width="0.998" height="2"/>
+		<rect x="526.25" y="386.138" transform="matrix(0.866 0.5 -0.5 0.866 264.1627 -211.5179)" width="0.998" height="2"/>
+		<path d="M523,397.092V389h-1v8.092c-0.581,0.207-1,0.756-1,1.408c0,0.828,0.672,1.5,1.5,1.5s1.5-0.672,1.5-1.5    C524,397.848,523.581,397.299,523,397.092z"/>
+		<path d="M535,394.5c0-6.903-5.597-12.5-12.5-12.5s-12.5,5.597-12.5,12.5s5.597,12.5,12.5,12.5c0.463,0,0.919-0.029,1.369-0.078    L522,410h17l-5.651-9.308C534.395,398.865,535,396.756,535,394.5z M522.5,406c-6.341,0-11.5-5.159-11.5-11.5s5.159-11.5,11.5-11.5    s11.5,5.159,11.5,11.5c0,1.871-0.459,3.634-1.255,5.197L530.5,396l-1.143,1.882l-0.112-0.064l-0.5,0.865l0.094,0.054L526,403.412    V403h-1v1h0.643l-1.097,1.807C523.881,405.927,523.199,406,522.5,406z M537.223,409h-13.445l6.723-11.073L537.223,409z"/>
+		<rect x="513" y="394" width="2" height="1"/>
+		<rect x="530" y="394" width="2" height="1"/>
+		<rect x="519" y="403" width="1" height="1"/>
+		<rect x="521" y="403" width="1" height="1"/>
+		<rect x="523" y="403" width="1" height="1"/>
+		<rect x="530" y="401" width="1" height="5"/>
+		<rect x="530" y="407" width="1" height="1"/>
+	</g>
+	
+    </g>
+</svg>

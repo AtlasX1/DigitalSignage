@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="29" height="30" viewBox="0 0 29 30" xml:space="preserve">
+    <g transform="translate(-450 -320)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="piano-key-7">
+		<rect x="467" y="325" width="1" height="1"/>
+		<polygon points="469,328 469,337 472,337 472,328 472,324 469,324   "/>
+		<rect x="461" y="325" width="1" height="1"/>
+		<polygon points="459,347 464,347 465,347 470,347 471,347 477,347 477,325 473,325 473,326 476,326 476,346 471,346 471,338     470,338 470,346 465,346 465,338 464,338 464,346 459,346 459,338 458,338 458,346 453,346 453,326 456,326 456,325 452,325     452,347 458,347   "/>
+		<polygon points="457,328 457,337 460,337 460,328 460,324 457,324   "/>
+		<polygon points="463,328 463,337 466,337 466,328 466,324 463,324   "/>
+	</g>
+	
+    </g>
+</svg>

@@ -1,0 +1,26 @@
+.intl-tel-input {
+  .form-control {
+    font-family: 'Nunito Sans', '-apple-system', 'BlinkMacSystemFont';
+    font-weight: 400;
+  }
+}
+
+.country-list {
+  width: 100%;
+
+  .country {
+    display: flex;
+
+    .country-name {
+      display: block;
+      font-size: 14px;
+      max-width: 80px;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+
+    .dial-code {
+      font-size: 14px;
+    }
+  }
+}

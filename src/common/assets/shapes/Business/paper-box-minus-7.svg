@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30" height="30" viewBox="0 0 30 30" xml:space="preserve">
+    <g transform="translate(-150 -560)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="paper-box-minus-7">
+		<path d="M177,576.51V570h1v-7h-26v7h1v17h13.51c1.369,1.818,3.539,3,5.99,3c4.143,0,7.5-3.357,7.5-7.5    C180,580.049,178.818,577.879,177,576.51z M153,564h24v5h-24V564z M154,586v-16h22v5.869c-1.045-0.553-2.235-0.869-3.5-0.869    c-0.878,0-1.717,0.158-2.5,0.436V574h-10v2h8.77c-2.251,1.295-3.77,3.718-3.77,6.5c0,1.265,0.316,2.455,0.869,3.5H154z M172.5,589    c-3.59,0-6.5-2.91-6.5-6.5s2.91-6.5,6.5-6.5s6.5,2.91,6.5,6.5S176.09,589,172.5,589z"/>
+		<rect x="168" y="582" width="9" height="1"/>
+	</g>
+	
+    </g>
+</svg>

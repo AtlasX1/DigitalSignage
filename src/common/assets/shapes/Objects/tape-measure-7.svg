@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30" height="30" viewBox="0 0 30 30" xml:space="preserve">
+    <g transform="translate(-150 -200)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="tape-measure-7">
+		<path d="M164,222c3.865,0,7-3.134,7-7s-3.135-7-7-7s-7,3.134-7,7S160.135,222,164,222z M164,209c3.309,0,6,2.692,6,6s-2.691,6-6,6    s-6-2.692-6-6S160.691,209,164,209z"/>
+		<polygon points="162,217 163,217 163,213 162,213 161,213 161,214 162,214   "/>
+		<path d="M164,216v1h1h1h1v-1v-2v-1h-1h-1h-1v1V216z M166,214v2h-1v-2H166z"/>
+		<path d="M176,223v-9h-0.051c-0.51-6.158-5.659-11-11.949-11c-6.289,0-11.439,4.842-11.949,11H152v11c0,1.104,0.896,2,2,2h20    c1.104,0,2-0.896,2-2v-1h1v5h1v-5v-1h-1H176z M164,204c6.065,0,11,4.935,11,11s-4.935,11-11,11s-11-4.935-11-11    S157.935,204,164,204z M154,226c-0.551,0-1-0.449-1-1v-5.211c1.21,2.774,3.437,5.001,6.211,6.211H154z M175,225    c0,0.551-0.449,1-1,1h-5.211c2.775-1.21,5.001-3.436,6.211-6.211V223v1V225z"/>
+	</g>
+	
+    </g>
+</svg>

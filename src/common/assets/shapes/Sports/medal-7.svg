@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30" height="30" viewBox="0 0 30 30" xml:space="preserve">
+    <g transform="translate(-30 -320)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="medal-7">
+		<path d="M35,338c0,5.522,4.477,10,10,10s10-4.478,10-10c0-3.699-2.014-6.922-5-8.651V327l5-6h-9l-1,1.2l-1-1.2h-9l5,6v2.349    C37.014,331.078,35,334.301,35,338z M54,338c0,4.963-4.037,9-9,9s-9-4.037-9-9s4.037-9,9-9S54,333.037,54,338z M46.469,322h6.396    l-3.334,4h-1.365l-2.516-3.019L46.469,322z M37.135,322h6.396l3.334,4h-3.73h-2.666L37.135,322z M41,327h8v1.838    c-1.226-0.536-2.576-0.838-4-0.838s-2.774,0.302-4,0.838V327z"/>
+		<path d="M45,333c-2.762,0-5,2.238-5,5s2.238,5,5,5s5-2.238,5-5S47.762,333,45,333z M45,342c-2.206,0-4-1.795-4-4s1.794-4,4-4    s4,1.795,4,4S47.206,342,45,342z"/>
+	</g>
+	
+    </g>
+</svg>

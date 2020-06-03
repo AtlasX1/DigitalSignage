@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="29" height="30" viewBox="0 0 29 30" xml:space="preserve">
+    <g transform="translate(-210 -140)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="bar-chart-7">
+		<path d="M219,168h2h7h2h7h1v-1h-1v-25h-7v25h-2v-19h-7v19h-2v-14h-7v14h-1v1h1H219z M231,143h5v24h-5V143z M222,149h5v18h-5V149z     M213,154h5v13h-5V154z"/>
+	</g>
+	
+    </g>
+</svg>

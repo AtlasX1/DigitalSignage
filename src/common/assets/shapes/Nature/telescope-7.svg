@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30" height="30" viewBox="0 0 30 30" xml:space="preserve">
+    <g transform="translate(-90 -320)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="telescope-7">
+		<path d="M93.01,333.201l0.438,0.898l-1.798,0.876l1.313,2.697l1.797-0.876l0.438,0.899L104,333.41V335h3v-3.052l10.675-5.199    l-2.189-4.495L93.01,333.201z M95.66,336.359l-1.313-2.697l20.678-10.072l1.313,2.697L95.66,336.359z"/>
+		<polygon points="108,337 108,336 103,336 103,337 104.899,337 99.084,345.723 99.916,346.277 105,338.651 105,348 106,348     106,338.651 111.084,346.277 111.916,345.723 106.101,337   "/>
+	</g>
+	
+    </g>
+</svg>

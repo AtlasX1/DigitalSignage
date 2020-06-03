@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="29" height="30" viewBox="0 0 29 30" xml:space="preserve">
+    <g transform="translate(-330 -260)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="film-off-7">
+		<path d="M336,284v-8h8.086l-1-1H336v-7.086L334.086,266H333v-1.086L332.086,264H332v23h1v-2h2v2h1v-2h17v2h1v-1.086L352.086,284    H336z M335,284h-2v-2h2V284z M335,281h-2v-2h2V281z M335,278h-2v-2h2V278z M335,275h-2v-2h2V275z M335,272h-2v-2h2V272z M335,269    h-2v-2h2V269z"/>
+		<path d="M357.229,287.729l0.707-0.707L357,286.086V264h-1v2h-2v-2h-1v2h-16.086L336,265.086V264h-1v0.086l-2.521-2.521    l-0.707,0.707L357.229,287.729z M346.914,276H353v6.086L346.914,276z M355.914,285H356v0.086L355.914,285z M354,267h2v2h-2V267z     M354,270h2v2h-2V270z M354,273h2v2h-2V273z M354,276h2v2h-2V276z M354,279h2v2h-2V279z M356,282v2h-1.086L354,283.086V282H356z     M353,267v8h-7.086l-8-8H353z"/>
+	</g>
+	
+    </g>
+</svg>

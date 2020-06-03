@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30" height="30" viewBox="0 0 30 30" xml:space="preserve">
+    <g transform="translate(-210 -200)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="garage-off-7">
+		<polygon points="213.586,205 213,205 213,208 216.586,208   "/>
+		<polygon points="233.586,225 232,225 232,223.414 231,222.414 231,225 219,225 219,211 219.586,211 218.586,210 218,210 218,225     215,225 215,209 214,209 214,225 212,225 212,226 234.586,226   "/>
+		<polygon points="220,213 220,214 222.586,214 221.586,213   "/>
+		<polygon points="220,217 225.586,217 224.586,216 220,216   "/>
+		<polygon points="220,220 228.586,220 227.586,219 220,219   "/>
+		<rect x="220" y="222" width="10" height="1"/>
+		<path d="M238,226v-1h-1.586L236,224.586V209h-1.125v14.336l-2.875-2.75V210h-10.586l-2-2H237v-3h-20.586l-3.436-3.436    l-0.707,0.707l25.457,25.457l0.707-0.707L237.414,226H238z M231,219.586L228.414,217H230v-1h-2.586l-2-2H230v-1h-5.586l-2-2H231    V219.586z"/>
+	</g>
+	
+    </g>
+</svg>

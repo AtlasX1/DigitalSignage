@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="29" height="30" viewBox="0 0 29 30" xml:space="preserve">
+    <g transform="translate(-90 -260)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="film-plus-7">
+		<path d="M117,264h-1v2h-2v-2h-1v2H96v-2h-1v2h-2v-2h-1v23h1v-2h2v2h1v-2h8.436c1.031,2.911,3.801,5,7.064,5    c4.143,0,7.5-3.357,7.5-7.5c0-1.966-0.763-3.75-2-5.087V264z M95,284h-2v-2h2V284z M95,281h-2v-2h2V281z M95,278h-2v-2h2V278z     M95,275h-2v-2h2V275z M95,272h-2v-2h2V272z M95,269h-2v-2h2V269z M116,276.51c-0.246-0.185-0.501-0.355-0.77-0.51H116V276.51z     M114,267h2v2h-2V267z M114,270h2v2h-2V270z M114,273h2v2h-2V273z M96,267h17v8H96V267z M96,284v-8h11.77    c-2.251,1.295-3.77,3.718-3.77,6.5c0,0.514,0.053,1.016,0.15,1.5H96z M118,282.5c0,3.59-2.91,6.5-6.5,6.5s-6.5-2.91-6.5-6.5    s2.91-6.5,6.5-6.5S118,278.91,118,282.5z"/>
+		<polygon points="112,283 116,283 116,282 114,282 112,282 112,278 111,278 111,282 107,282 107,283 111,283 111,287 112,287   "/>
+	</g>
+	
+    </g>
+</svg>

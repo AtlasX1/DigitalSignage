@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30" height="30" viewBox="0 0 30 30" xml:space="preserve">
+    <g transform="translate(-450 -320)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="keyboard-7">
+		<path d="M452,343h26v-16h-26V343z M453,328h24v14h-24V328z"/>
+		<rect x="456" y="330" width="2" height="2"/>
+		<rect x="460" y="330" width="2" height="2"/>
+		<rect x="456" y="338" width="2" height="2"/>
+		<rect x="472" y="338" width="2" height="2"/>
+		<rect x="460" y="338" width="10" height="2"/>
+		<rect x="464" y="330" width="2" height="2"/>
+		<rect x="464" y="334" width="2" height="2"/>
+		<rect x="468" y="334" width="2" height="2"/>
+		<rect x="460" y="334" width="2" height="2"/>
+		<rect x="456" y="334" width="2" height="2"/>
+		<rect x="468" y="330" width="2" height="2"/>
+		<rect x="472" y="330" width="2" height="2"/>
+		<rect x="472" y="334" width="2" height="2"/>
+	</g>
+	
+    </g>
+</svg>

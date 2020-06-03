@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30" height="30" viewBox="0 0 30 30" xml:space="preserve">
+    <g transform="translate(-510 -80)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="car-side-7">
+		<path d="M513,101h2c0,1.657,1.344,3,3,3s3-1.343,3-3h8c0,1.657,1.344,3,3,3s3-1.343,3-3h4v-3h-1v-2l-5-2l-4-5h-13l-2,5h-1v2h-1v4    h1V101z M518,103c-1.104,0-2-0.897-2-2s0.896-2,2-2s2,0.897,2,2S519.104,103,518,103z M532,103c-1.104,0-2-0.897-2-2s0.896-2,2-2    s2,0.897,2,2S533.104,103,532,103z M522,90h6.52l3.199,4H522V90z M516.678,90H521v4h-5.923L516.678,90z M513,97h1v-2h18.807    L537,96.677V99h1v1h-3.184c-0.414-1.163-1.512-2-2.816-2s-2.402,0.837-2.816,2h-8.367c-0.414-1.163-1.512-2-2.816-2    s-2.402,0.837-2.816,2H514v-1h-1V97z"/>
+	</g>
+	
+    </g>
+</svg>

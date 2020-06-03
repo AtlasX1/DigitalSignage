@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="29" height="30" viewBox="0 0 29 30" xml:space="preserve">
+    <g transform="translate(-330 -320)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="wooden-box-off-7">
+		<path d="M349,346v-5.086l-1-1V346h-7v-2.758l5.164-5.164l-0.707-0.707L336.828,346H334v-2.828l8.629-8.629l-0.707-0.707    L341,334.758v-1.844l-1-1v3.844l-6,6v-15.844l-1-1V347h8h14.086l-1-1H349z M340,346h-1.758l1.758-1.758V346z"/>
+		<path d="M334.914,324l-2.436-2.436l-0.707,0.707l25.457,25.457l0.707-0.707L356,345.086V324H334.914z M349,325h1.758L349,326.758    V325z M335.914,325H340v4.086L335.914,325z M341,330.086V325h7v2.758l-4.664,4.664L341,330.086z M344.043,333.129l8.129-8.129H355    v2.828l-8.129,8.129L344.043,333.129z M347.578,336.664l0.422-0.422v0.844L347.578,336.664z M349,338.086v-2.844l6-6v14.844    L349,338.086z"/>
+	</g>
+	
+    </g>
+</svg>

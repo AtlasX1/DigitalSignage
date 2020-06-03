@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="48" height="30" viewBox="0 0 48 30" xml:space="preserve">
+    <g transform="translate(-108 -260)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="bullet-train-7">
+		<rect x="109" y="283" width="46" height="1"/>
+		<path d="M109,268h28.728l3.399,2H127v2h17.527l5.473,3.219V279h-41v1v1h21v-1h1c0,1.104,0.896,2,2,2s2-0.896,2-2    c0,1.104,0.896,2,2,2s2-0.896,2-2c0,1.104,0.896,2,2,2s2-0.896,2-2h1v1h6h1h3v-1h1v-3l-17-10h-29V268z M151,275.808l3,1.765V279    h-3V275.808z"/>
+		<rect x="109" y="270" width="16" height="2"/>
+		<rect x="141" y="275" width="4" height="1"/>
+		<rect x="139" y="275" width="1" height="1"/>
+	</g>
+	
+    </g>
+</svg>

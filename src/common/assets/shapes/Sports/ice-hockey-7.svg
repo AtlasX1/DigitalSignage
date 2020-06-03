@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="29" height="30" viewBox="0 0 29 30" xml:space="preserve">
+    <g transform="translate(-570 -80)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="ice-hockey-7">
+		<path d="M584.5,104c6.352,0,11.5-1.791,11.5-4v-8c0-2.209-5.148-4-11.5-4S573,89.791,573,92v8C573,102.209,578.148,104,584.5,104z     M584.5,103c-6.794,0-10.5-1.982-10.5-3v-6.374c1.793,1.398,5.815,2.374,10.5,2.374s8.707-0.976,10.5-2.374V100    C595,101.018,591.294,103,584.5,103z M584.5,89c6.794,0,10.5,1.982,10.5,3s-3.706,3-10.5,3S574,93.018,574,92S577.706,89,584.5,89    z"/>
+	</g>
+	
+    </g>
+</svg>

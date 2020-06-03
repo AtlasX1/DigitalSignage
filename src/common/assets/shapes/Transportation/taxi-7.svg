@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30" height="30" viewBox="0 0 30 30" xml:space="preserve">
+    <g transform="translate(-30 -140)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="taxi-7">
+		<path d="M59,158h-1v-2l-5-2l-4-5h-5v-2h-4v2h-4l-2,5h-1v2h-1v4h1v1h2c0,1.657,1.344,3,3,3s3-1.343,3-3h8c0,1.657,1.344,3,3,3    s3-1.343,3-3h4V158z M48.52,150l3.199,4H42v-4H48.52z M41,148h2v1h-2V148z M36.678,150H41v4h-5.923L36.678,150z M38,163    c-1.104,0-2-0.897-2-2s0.896-2,2-2s2,0.897,2,2S39.104,163,38,163z M52,163c-1.104,0-2-0.897-2-2s0.896-2,2-2s2,0.897,2,2    S53.104,163,52,163z M58,160h-3.184c-0.414-1.163-1.512-2-2.816-2s-2.402,0.837-2.816,2h-8.367c-0.414-1.163-1.512-2-2.816-2    s-2.402,0.837-2.816,2H34v-1h-1v-2h1v-2h18.807L57,156.677V159h1V160z"/>
+		<rect x="41" y="156" width="1" height="1"/>
+		<rect x="42" y="157" width="1" height="1"/>
+		<rect x="43" y="156" width="1" height="1"/>
+		<rect x="44" y="157" width="1" height="1"/>
+		<rect x="45" y="156" width="1" height="1"/>
+		<rect x="47" y="156" width="1" height="1"/>
+		<rect x="46" y="157" width="1" height="1"/>
+	</g>
+	
+    </g>
+</svg>

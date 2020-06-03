@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30" height="30" viewBox="0 0 30 30" xml:space="preserve">
+    <g transform="translate(-510 -200)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="sprayer-7">
+		<path d="M514,228h11v-18h-2v-5h-7v5h-2V228z M517,206h5v4h-5V206z M515,215h4v8h-4V215z M515,224h5v-10h-5v-3h9v16h-9V224z"/>
+		<rect x="524.675" y="203.5" transform="matrix(0.9487 -0.3162 0.3162 0.9487 -37.2613 178.3855)" width="12.649" height="1.001"/>
+		
+			<rect x="524.675" y="209.5" transform="matrix(-0.9487 -0.3162 0.3162 -0.9487 968.343 577.1404)" width="12.649" height="1.001"/>
+	</g>
+	
+    </g>
+</svg>

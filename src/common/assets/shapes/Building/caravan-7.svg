@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30" height="30" viewBox="0 0 30 30" xml:space="preserve">
+    <g transform="translate(-390 -200)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="caravan-7">
+		<path d="M407.142,223H397v-14c0-0.551,0.448-1,1-1h17c0.552,0,1,0.449,1,1v14h-1.142c0.083,0.321,0.142,0.652,0.142,1h2v-15    c0-1.104-0.896-2-2-2h-17c-1.104,0-2,0.896-2,2v14h-3v-1h-1v2h15C407,223.652,407.059,223.321,407.142,223z"/>
+		<path d="M408,224c0,1.656,1.343,3,3,3s3-1.344,3-3s-1.343-3-3-3S408,222.344,408,224z M413,224c0,1.104-0.895,2-2,2s-2-0.896-2-2    s0.895-2,2-2S413,222.896,413,224z"/>
+		<path d="M414,212h-14v4h14V212z M404,215h-3v-2h3V215z M413,215h-8v-2h8V215z"/>
+	</g>
+	
+    </g>
+</svg>

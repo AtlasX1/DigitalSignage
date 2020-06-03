@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30" height="30" viewBox="0 0 30 30" xml:space="preserve">
+    <g transform="translate(-390 -140)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="test-tube-7">
+		<circle cx="406" cy="142" r="1"/>
+		<path d="M400,146v1h1v18c0,2.209,1.791,4,4,4s4-1.791,4-4v-18h1v-1h-1h-8H400z M408,165c0,1.654-1.346,3-3,3s-3-1.346-3-3v-10h6    V165z M408,147v7h-6v-7H408z"/>
+		<circle cx="403" cy="144" r="1"/>
+		<circle cx="404" cy="158" r="1"/>
+		<circle cx="406" cy="161" r="1"/>
+		<circle cx="405" cy="164" r="1"/>
+	</g>
+	
+    </g>
+</svg>

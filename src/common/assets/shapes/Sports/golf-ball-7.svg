@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="29" height="30" viewBox="0 0 29 30" xml:space="preserve">
+    <g transform="translate(-510 -140)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="golf-ball-7">
+		<path d="M531,148.5c0-3.59-2.91-6.5-6.5-6.5s-6.5,2.91-6.5,6.5s2.91,6.5,6.5,6.5S531,152.09,531,148.5z M524.5,154    c-3.032,0-5.5-2.467-5.5-5.5s2.468-5.5,5.5-5.5s5.5,2.467,5.5,5.5S527.532,154,524.5,154z"/>
+		<path d="M525,168v-7c0-2,1-4,2-4s1,0,1,0v-1h-7v1c0,0,0,0,1,0s2,2,2,4v7H525z"/>
+		<rect x="524" y="144" width="1" height="1"/>
+		<rect x="524" y="146" width="1" height="1"/>
+		<rect x="522" y="145" width="1" height="1"/>
+		<rect x="522" y="147" width="1" height="1"/>
+		<rect x="520" y="147" width="1" height="1"/>
+		<rect x="520" y="149" width="1" height="1"/>
+	</g>
+	
+    </g>
+</svg>

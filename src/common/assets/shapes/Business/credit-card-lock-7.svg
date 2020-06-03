@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30" height="30" viewBox="0 0 30 30" xml:space="preserve">
+    <g transform="translate(-330 -380)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="credit-card-lock-7">
+		<rect x="334" y="395" width="3" height="1"/>
+		<rect x="338" y="395" width="3" height="1"/>
+		<rect x="342" y="395" width="3" height="1"/>
+		<rect x="346" y="395" width="3" height="1"/>
+		<path d="M358,397c0-1.063-0.384-2.027-1-2.797V385h-26v20h16v4h13v-11h-2V397z M356,393.26c-0.15-0.101-0.316-0.178-0.479-0.26    H356V393.26z M357,397v1h-7v-1c0-1.93,1.57-3.5,3.5-3.5S357,395.07,357,397z M332,386h24v4h-24V386z M332,404v-11h19.479    c-1.465,0.742-2.479,2.246-2.479,4v1h-2v6H332z M359,399v9h-11v-9H359z"/>
+		<path d="M354,403.908c0.581-0.207,1-0.756,1-1.408c0-0.828-0.672-1.5-1.5-1.5s-1.5,0.672-1.5,1.5c0,0.652,0.419,1.201,1,1.408V406    h1V403.908z"/>
+	</g>
+	
+    </g>
+</svg>

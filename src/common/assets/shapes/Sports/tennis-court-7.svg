@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="47" height="30" viewBox="0 0 47 30" xml:space="preserve">
+    <g transform="translate(-244 -200)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="tennis-court-7">
+		<path d="M288,203h-41v25h41V203z M248,204h19v2h-19V204z M279,224h-11v-8h11V224z M279,215h-11v-8h11V215z M256,207h11v8h-11V207z     M256,216h11v8h-11V216z M248,216h1v-1h-1v-8h7v17h-7V216z M248,227v-2h19v2H248z M287,227h-19v-2h19V227z M287,215h-1v1h1v8h-7    v-17h7V215z M287,206h-19v-2h19V206z"/>
+	</g>
+	
+    </g>
+</svg>

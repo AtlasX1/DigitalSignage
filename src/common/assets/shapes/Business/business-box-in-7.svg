@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="29" height="30" viewBox="0 0 29 30" xml:space="preserve">
+    <g transform="translate(-90 -200)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="business-box-in-7">
+		<path d="M118,214l-5-6h-1v1h0.531l4.167,5H109c0,2.485-2.015,4.5-4.5,4.5s-4.5-2.015-4.5-4.5h-7.698l4.167-5H97v-1h-1l-5,6v13h27    V214z M117,226H92v-11h7.091c0.472,2.557,2.718,4.5,5.409,4.5s4.938-1.943,5.409-4.5H117V226z"/>
+		<path d="M104,202v10.293l-4.803-4.804l-0.707,0.707l5.656,5.657c0.094,0.094,0.221,0.146,0.354,0.146s0.26-0.053,0.354-0.146    l5.656-5.657l-0.707-0.707L105,212.293V202H104z"/>
+	</g>
+	
+    </g>
+</svg>

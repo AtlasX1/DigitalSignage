@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="29" height="30" viewBox="0 0 29 30" xml:space="preserve">
+    <g transform="translate(-390 -680)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="calculator-app-7">
+		<path d="M392,708h25v-25h-25V708z M405,684h11v11h-11V684z M405,696h11v11h-11V696z M393,684h11v11h-11V684z M393,696h11v11h-11    V696z"/>
+		<polygon points="399,686 398,686 398,689 395,689 395,690 398,690 398,693 399,693 399,690 402,690 402,689 399,689   "/>
+		<rect x="407" y="689" width="7" height="1"/>
+		<rect x="407" y="700" width="7" height="1"/>
+		<rect x="407" y="702" width="7" height="1"/>
+		<polygon points="400.621,698.672 398.5,700.793 396.379,698.672 395.672,699.379 397.793,701.5 395.672,703.621 396.379,704.328     398.5,702.207 400.621,704.328 401.328,703.621 399.207,701.5 401.328,699.379   "/>
+	</g>
+	
+    </g>
+</svg>

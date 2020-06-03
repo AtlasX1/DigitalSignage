@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30" height="30" viewBox="0 0 30 30" xml:space="preserve">
+    <g transform="translate(-270 -80)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="filing-7">
+		<path d="M280,84h-8v22h8V84z M279,105h-6V85h6V105z"/>
+		<rect x="274" y="87" width="4" height="1"/>
+		<rect x="274" y="89" width="4" height="1"/>
+		<rect x="274" y="91" width="4" height="1"/>
+		<path d="M276,104c1.104,0,2-0.896,2-2c0-1.104-0.896-2-2-2c-1.104,0-2,0.896-2,2C274,103.104,274.896,104,276,104z M276,101    c0.552,0,1,0.448,1,1s-0.448,1-1,1s-1-0.448-1-1S275.448,101,276,101z"/>
+		<path d="M289,84h-8v22h8V84z M288,105h-6V85h6V105z"/>
+		<rect x="283" y="87" width="4" height="1"/>
+		<rect x="283" y="89" width="4" height="1"/>
+		<rect x="283" y="91" width="4" height="1"/>
+		<path d="M285,104c1.104,0,2-0.896,2-2c0-1.104-0.896-2-2-2c-1.104,0-2,0.896-2,2C283,103.104,283.896,104,285,104z M285,101    c0.552,0,1,0.448,1,1s-0.448,1-1,1s-1-0.448-1-1S284.448,101,285,101z"/>
+		<path d="M298,84h-8v22h8V84z M297,105h-6V85h6V105z"/>
+		<rect x="292" y="87" width="4" height="1"/>
+		<rect x="292" y="89" width="4" height="1"/>
+		<rect x="292" y="91" width="4" height="1"/>
+		<path d="M294,104c1.104,0,2-0.896,2-2c0-1.104-0.896-2-2-2c-1.104,0-2,0.896-2,2C292,103.104,292.896,104,294,104z M294,101    c0.552,0,1,0.448,1,1s-0.448,1-1,1s-1-0.448-1-1S293.448,101,294,101z"/>
+	</g>
+	
+    </g>
+</svg>

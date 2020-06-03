@@ -1,0 +1,18 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box !important;
+  outline: none;
+}
+
+body {
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+img,
+svg {
+  vertical-align: top;
+}

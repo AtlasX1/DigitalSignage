@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30" height="30" viewBox="0 0 30 30" xml:space="preserve">
+    <g transform="translate(-210 -200)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="business-tick-7">
+		<path d="M233.797,203l-3.496,6.864c-1.637-1.169-3.635-1.864-5.801-1.864c-5.523,0-10,4.477-10,10s4.477,10,10,10s10-4.477,10-10    c0-2.885-1.229-5.477-3.182-7.302l3.982-7.698H233.797z M233.5,218c0,4.963-4.037,9-9,9s-9-4.037-9-9s4.037-9,9-9    c2,0,3.844,0.664,5.34,1.771l-4.938,9.696c-0.27,0.502-0.536,1.069-0.708,1.458h-0.022c0.019-0.41,0.007-0.956-0.044-1.458    l-0.692-7.857l-3.493,1.298l0.146,1.071l1.876-0.707L223,224h1.436l6.405-12.38C232.482,213.251,233.5,215.509,233.5,218z"/>
+	</g>
+	
+    </g>
+</svg>

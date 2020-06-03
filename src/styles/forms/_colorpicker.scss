@@ -1,0 +1,30 @@
+.DarkTheme {
+  .sketch-picker {
+    background: #15263d !important;
+
+    .flexbox-fix {
+      border-top-color: #1e3966 !important;
+      span {
+        color: #fff !important;
+      }
+    }
+  }
+}
+
+.sketch-picker {
+  box-shadow: none !important;
+}
+
+.ColorPicker--with-tabs-SASS {
+  .sketch-picker {
+    width: 100% !important;
+    border-radius: 0 0 5px 5px !important;
+  }
+}
+
+.flexbox-fix {
+  input,
+  span {
+    font-family: 'Nunito Sans', Roboto, sans-serif;
+  }
+}

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30" height="30" viewBox="0 0 30 30" xml:space="preserve">
+    <g transform="translate(-90 -440)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="gas-station-7">
+		<rect x="98" y="446" width="9" height="1"/>
+		<rect x="98" y="448" width="9" height="1"/>
+		<rect x="98" y="450" width="9" height="1"/>
+		<path d="M112.624,445.329l2.376,2.716V454h1v8c0,0.827-0.673,1.5-1.5,1.5s-1.5-0.673-1.5-1.5v-10c0-1.379-1.121-2.5-2.5-2.5H110    V443H95v23h-2v1h19v-1h-2v-15.5h0.5c0.827,0,1.5,0.673,1.5,1.5v10c0,1.379,1.121,2.5,2.5,2.5s2.5-1.121,2.5-2.5v-8v-5v-0.188    l-3.624-4.142L112.624,445.329z M109,466H96v-22h13V466z"/>
+	</g>
+	
+    </g>
+</svg>

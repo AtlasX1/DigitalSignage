@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30" height="30" viewBox="0 0 30 30" xml:space="preserve">
+    <g transform="translate(-450 -740)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="door-out-7">
+		<polygon points="460,755 461,755 461,743 477,743 477,767 461,767 461,760 460,760 460,768 478,768 478,742 460,742   "/>
+		<path d="M456.804,763.51l0.707-0.707L452.707,758H470v-1h-17.293l4.804-4.804l-0.707-0.707l-5.657,5.657    c-0.094,0.094-0.146,0.221-0.146,0.354s0.053,0.26,0.146,0.354L456.804,763.51z"/>
+	</g>
+	
+    </g>
+</svg>

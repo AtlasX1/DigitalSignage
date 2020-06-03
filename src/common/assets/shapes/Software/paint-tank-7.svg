@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30" height="30" viewBox="0 0 30 30" xml:space="preserve">
+    <g transform="translate(-510 -140)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="paint-tank-7_1_">
+		<path d="M514,166v2h1h20h1v-2h-1v-21h1v-2h-1h-20h-1v2h1v21H514z M516,150h11v11h-11V150z M516,162h12v-13h-12v-4h18v21h-18V162z"/>
+		<rect x="532" y="146" width="1" height="11"/>
+		<rect x="532" y="158" width="1" height="2"/>
+		<rect x="532" y="161" width="1" height="1"/>
+		<rect x="532" y="163" width="1" height="1"/>
+	</g>
+	
+    </g>
+</svg>

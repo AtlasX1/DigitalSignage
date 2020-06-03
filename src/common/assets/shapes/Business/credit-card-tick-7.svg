@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30" height="30" viewBox="0 0 30 30" xml:space="preserve">
+    <g transform="translate(-270 -380)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="credit-card-tick-7">
+		<path d="M298,385h-26v20h13.436c1.031,2.911,3.801,5,7.064,5c4.143,0,7.5-3.357,7.5-7.5c0-1.966-0.762-3.75-2-5.087V385z M273,386    h24v4h-24V386z M273,404v-11h24v3.51c-1.254-0.944-2.809-1.51-4.5-1.51c-0.878,0-1.717,0.159-2.5,0.436V395h-3v1h1.77    c-2.251,1.294-3.77,3.718-3.77,6.5c0,0.514,0.053,1.016,0.15,1.5H273z M299,402.5c0,3.59-2.91,6.5-6.5,6.5s-6.5-2.91-6.5-6.5    s2.91-6.5,6.5-6.5S299,398.91,299,402.5z"/>
+		<rect x="275" y="395" width="3" height="1"/>
+		<rect x="279" y="395" width="3" height="1"/>
+		<rect x="283" y="395" width="3" height="1"/>
+		<polygon points="296.742,400.025 296.035,399.318 291.086,404.268 288.965,402.146 288.258,402.854 291.086,405.682   "/>
+	</g>
+	
+    </g>
+</svg>

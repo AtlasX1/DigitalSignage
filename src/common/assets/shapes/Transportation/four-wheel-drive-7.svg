@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30" height="30" viewBox="0 0 30 30" xml:space="preserve">
+    <g transform="translate(-390 -140)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="four-wheel-drive-7">
+		<path d="M393,162h2c0,1.657,1.344,3,3,3s3-1.343,3-3h1v1h6v-1h1c0,1.657,1.344,3,3,3s3-1.343,3-3h4v-3h-1v2h-1v-7h-7l-2-6h-2v-1h1    v-1h-11v1h1v1h-2l-2,5h-2v7h2V162z M398,164c-1.103,0-2-0.897-2-2s0.897-2,2-2s2,0.897,2,2S399.103,164,398,164z M412,164    c-1.103,0-2-0.897-2-2s0.897-2,2-2s2,0.897,2,2S413.103,164,412,164z M407.279,149l1.667,5H399v-5H407.279z M398,147h7v1h-7V147z     M394,153.192l1.677-4.192H398v5h-4V153.192z M394,155h15.279H416v6h-1.184c-0.414-1.163-1.513-2-2.816-2s-2.402,0.837-2.816,2    h-8.367c-0.414-1.163-1.513-2-2.816-2s-2.402,0.837-2.816,2H394V155z M392,159v-5h1v5H392z"/>
+		<rect x="411" y="156" width="4" height="1"/>
+		<rect x="409" y="156" width="1" height="1"/>
+	</g>
+	
+    </g>
+</svg>

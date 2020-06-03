@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30" height="30" viewBox="0 0 30 30" xml:space="preserve">
+    <g transform="translate(-90 -440)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="cd-cover-many-7">
+		<path d="M95,468h20v-20H95V468z M96,449h18v18H96V449z"/>
+		<path d="M102,454.762v1v5.075c-0.508-0.136-1.135-0.079-1.725,0.212c-1.029,0.509-1.539,1.518-1.139,2.253    s1.559,0.919,2.588,0.411c0.9-0.445,1.275-0.938,1.275-1.951v-6.125l6-0.75v4.95c-0.508-0.136-1.135-0.079-1.725,0.212    c-1.029,0.509-1.539,1.518-1.139,2.253s1.559,0.919,2.588,0.411c0.9-0.445,1.275-0.938,1.275-1.951v-6v-1v-1l-8,1V454.762z"/>
+		<rect x="97" y="450" width="1" height="1"/>
+		<rect x="99" y="450" width="1" height="1"/>
+		<rect x="101" y="450" width="1" height="1"/>
+		<rect x="97" y="445" width="16" height="1"/>
+		<rect x="99" y="442" width="12" height="1"/>
+	</g>
+	
+    </g>
+</svg>

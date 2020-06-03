@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30" height="30" viewBox="0 0 30 30" xml:space="preserve">
+    <g transform="translate(-510 -380)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="cheque-tick-7">
+		<path d="M538,387h-26v17h13.15c0.695,3.424,3.721,6,7.35,6c4.143,0,7.5-3.357,7.5-7.5c0-1.966-0.763-3.75-2-5.087V387z M515,403    v-15h22v8.51c-1.254-0.944-2.809-1.51-4.5-1.51c-1.359,0-2.632,0.367-3.731,1H516v1h11.413c-1.48,1.37-2.413,3.324-2.413,5.5    c0,0.169,0.015,0.334,0.025,0.5H515z M539,402.5c0,3.59-2.91,6.5-6.5,6.5s-6.5-2.91-6.5-6.5s2.91-6.5,6.5-6.5    S539,398.91,539,402.5z"/>
+		<path d="M536,389h-8v3h8V389z M535,391h-6v-1h6V391z"/>
+		<polygon points="536,394 516,394 516,395 532.5,395 536,395   "/>
+		<rect x="520" y="401" width="1" height="1"/>
+		<rect x="522" y="401" width="1" height="1"/>
+		<rect x="524" y="401" width="1" height="1"/>
+		<rect x="516" y="389" width="1" height="1"/>
+		<rect x="518" y="389" width="1" height="1"/>
+		<polygon points="536.742,400.025 536.035,399.318 531.086,404.268 528.965,402.146 528.258,402.854 531.086,405.682   "/>
+	</g>
+	
+    </g>
+</svg>

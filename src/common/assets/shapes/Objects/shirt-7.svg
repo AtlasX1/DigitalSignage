@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30" height="30" viewBox="0 0 30 30" xml:space="preserve">
+    <g transform="translate(-30 -80)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="shirt-7">
+		<path d="M37,90.643V107h16V90.643l2.126,1.7l3.748-4.686L53.053,83H53h-4c0,2.209-1.791,4-4,4s-4-1.791-4-4h-4h-0.053    l-5.821,4.657l3.748,4.686L37,90.643z M37.298,84h2.803c0.465,2.279,2.484,4,4.899,4s4.435-1.721,4.899-4h2.803l4.767,3.813    l-2.499,3.124L52,88.563V106H38V88.563l-2.97,2.375l-2.499-3.124L37.298,84z"/>
+	</g>
+
+    </g>
+</svg>

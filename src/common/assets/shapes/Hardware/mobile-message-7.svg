@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30" height="30" viewBox="0 0 30 30" xml:space="preserve">
+    <g transform="translate(-150 -80)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="mobile-message-7">
+		<path d="M155,108h12c1.104,0,2-0.896,2-2V94h-1v8h-14V87h7v-1h-7v-2c0-0.551,0.449-1,1-1h6v-1h-6c-1.104,0-2,0.896-2,2v22    C153,107.104,153.896,108,155,108z M154,103h14v3c0,0.551-0.449,1-1,1h-12c-0.551,0-1-0.449-1-1V103z"/>
+		<circle cx="161" cy="105" r="1"/>
+		<rect x="158" y="84" width="1" height="1"/>
+		<rect x="160" y="84" width="1" height="1"/>
+		<path d="M162,93h2v5l3-5h10V82h-10h-5V93z M167,83h9v9h-9.566L165,94.39V92h-2v-9H167z"/>
+	</g>
+	
+    </g>
+</svg>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30" height="30" viewBox="0 0 30 30" xml:space="preserve">
+    <g transform="translate(-210 -140)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="spatula-7">
+		<path d="M225,168c7.18,0,13-5.82,13-13s-5.82-13-13-13s-13,5.82-13,13S217.82,168,225,168z M230,165.895    c-0.326,0.15-0.659,0.284-1,0.405v-4.325l-2-4.09v-6.551l5-2.084v8.635l-2,4.09V165.895z M225,143c6.617,0,12,5.383,12,12    c0,4.43-2.419,8.298-6,10.377v-3.17l2-4.092V147.75l-7,2.916v7.449l2,4.092v4.398c-0.961,0.248-1.963,0.395-3,0.395    c-1.404,0-2.746-0.255-4-0.7V159h3v-10h-7v10h3v6.895c-4.125-1.9-7-6.063-7-10.895C213,148.383,218.383,143,225,143z M220,158v-8    h1v8H220z M222,158v-8h1v8H222z M219,150v8h-1v-8H219z"/>
+	</g>
+	
+    </g>
+</svg>

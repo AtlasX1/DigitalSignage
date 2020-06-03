@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30" height="30" viewBox="0 0 30 30" xml:space="preserve">
+    <g transform="translate(-270 -80)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="metal-element-7">
+		<path d="M274,101.906V102h0.058c2.311,3.604,6.343,6,10.942,6s8.632-2.396,10.942-6H296v-0.094c1.26-2.002,2-4.365,2-6.906    s-0.74-4.903-2-6.906V88h-0.058c-2.311-3.604-6.343-6-10.942-6s-8.632,2.396-10.942,6H274v0.094c-1.26,2.002-2,4.365-2,6.906    S272.74,99.903,274,101.906z M285,107c-4.003,0-7.546-1.978-9.728-5h19.455C292.546,105.022,289.003,107,285,107z M295.376,101    h-20.752c-1.026-1.768-1.624-3.813-1.624-6s0.598-4.232,1.624-6h20.752c1.026,1.768,1.624,3.813,1.624,6    S296.402,99.232,295.376,101z M285,83c4.003,0,7.546,1.978,9.728,5h-19.455C277.454,84.978,280.997,83,285,83z"/>
+		<rect x="275" y="90" width="2" height="2"/>
+		<rect x="281" y="90" width="2" height="2"/>
+		<rect x="287" y="90" width="2" height="2"/>
+		<rect x="293" y="90" width="2" height="2"/>
+		<rect x="275" y="98" width="2" height="2"/>
+		<rect x="281" y="98" width="2" height="2"/>
+		<rect x="287" y="98" width="2" height="2"/>
+		<rect x="293" y="98" width="2" height="2"/>
+	</g>
+	
+    </g>
+</svg>

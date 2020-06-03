@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30" height="30" viewBox="0 0 30 30" xml:space="preserve">
+    <g transform="translate(-270 -140)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="slicer-7">
+		<path d="M288.236,156.78l2.563,2.563l0.707-0.708l-0.707-0.707l8.485-8.485l-7.071-7.071l-8.485,8.485l-0.707-0.707l-0.707,0.707    l1.414,1.414L271,165l14.143-1.415L288.236,156.78z M292.214,143.787l5.656,5.657l-7.777,7.778l-5.657-5.657L292.214,143.787z     M284.436,152.979l3.045,3.045l-1.062,2.335l-8.183,0.819L284.436,152.979z M273.688,163.726l3.433-3.432l8.82-0.882l-1.471,3.236    L273.688,163.726z"/>
+		<rect x="271" y="167" width="3" height="1"/>
+		<rect x="277" y="167" width="3" height="1"/>
+		<rect x="283" y="167" width="3" height="1"/>
+		<rect x="289" y="167" width="3" height="1"/>
+		<rect x="295" y="167" width="3" height="1"/>
+	</g>
+	
+    </g>
+</svg>

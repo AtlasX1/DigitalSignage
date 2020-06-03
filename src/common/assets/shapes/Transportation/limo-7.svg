@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="48" height="30" viewBox="0 0 48 30" xml:space="preserve">
+    <g transform="translate(-420 -260)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="limo-7">
+		<path d="M460,284c1.656,0,3-1.344,3-3h4v-3h-1v-2l-8-2l-5-5h-25l-3,5h-3v2h-1v4h1v1h3c0,1.656,1.344,3,3,3s3-1.344,3-3h26    C457,282.656,458.344,284,460,284z M460,283c-1.104,0-2-0.896-2-2s0.896-2,2-2s2,0.896,2,2S461.104,283,460,283z M452.586,270    l3.999,4H448v-4H452.586z M447,270v4h-13v-4H447z M428.566,270H433v4h-6.834L428.566,270z M428,283c-1.104,0-2-0.896-2-2    s0.896-2,2-2s2,0.896,2,2S429.104,283,428,283z M430.829,280c-0.413-1.164-1.525-2-2.829-2s-2.416,0.836-2.829,2H423v-1h-1v-2h1    v-2h2h0.566h32.309l7.125,1.781V279h1v1h-3.171c-0.413-1.164-1.525-2-2.829-2s-2.416,0.836-2.829,2H430.829z"/>
+	</g>
+	
+    </g>
+</svg>

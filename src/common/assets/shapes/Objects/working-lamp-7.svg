@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30" height="30" viewBox="0 0 30 30" xml:space="preserve">
+    <g transform="translate(-270 -260)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="working-lamp-7">
+		<path d="M281.899,274.071c1.581-1.581,2.069-3.817,1.518-5.829l0.794-1.324l9.332,9.332L287,282.793V285h-2v1h-4v1h13v-1h-4v-1h-2    v-1.793l6.25-6.25l3.396,3.396l0.707-0.707l-13.611-13.612l0.693-1.155l-2.828-2.829l-3.364,2.019    c-2.011-0.552-4.248-0.063-5.829,1.518L272,267l8.485,8.485L281.899,274.071z M282.452,263.31l1.724,1.724l-1.061,1.768    l-2.432-2.431L282.452,263.31z M274.121,266.293c1.949-1.949,5.122-1.949,7.071,0c1.95,1.949,1.95,5.121,0,7.071l-0.707,0.707    L273.414,267L274.121,266.293z"/>
+	</g>
+	
+    </g>
+</svg>

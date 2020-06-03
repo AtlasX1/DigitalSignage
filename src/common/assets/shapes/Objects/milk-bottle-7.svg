@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30" height="30" viewBox="0 0 30 30" xml:space="preserve">
+    <g transform="translate(-150 -320)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="milk-bottle-7">
+		<path d="M165,321c-0.553,0-1,0.447-1,1v1.109c-1.957,0.398-3.502,1.933-3.899,3.891H159v2h-1v19h14v-19h-1v-2h-1.101    c-0.397-1.958-1.942-3.492-3.899-3.891V322C166,321.447,165.553,321,165,321z M171,332h-6v1h6v2h-3v1h3v2h-6v1h6v2h-3v1h3v2h-6v1    h6v2h-12v-17h12V332z M168.92,327.199l0.162,0.801H170v1h-10v-1h0.918l0.162-0.801c0.377-1.854,2.025-3.199,3.92-3.199    S168.543,325.346,168.92,327.199z"/>
+	</g>
+	
+    </g>
+</svg>

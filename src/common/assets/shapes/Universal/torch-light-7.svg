@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30" height="30" viewBox="0 0 30 30" xml:space="preserve">
+    <g transform="translate(-390 -500)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="torch-light-7">
+		<path d="M408,528v-18l3-4v-1v-3h-12v3v1l3,4v18H408z M407,527h-4v-2h4V527z M400,503h10v2h-10V503z M400.25,506h9.5l-2.75,3.667    V524h-4v-14.333L400.25,506z"/>
+		<path d="M405,516c0.553,0,1-0.447,1-1v-2c0-0.553-0.447-1-1-1s-1,0.447-1,1v2C404,515.553,404.447,516,405,516z"/>
+	</g>
+	
+    </g>
+</svg>

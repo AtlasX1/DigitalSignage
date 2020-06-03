@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="29" height="30" viewBox="0 0 29 30" xml:space="preserve">
+    <g transform="translate(-150 -560)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="man-exercise-7">
+		<path d="M176,572c0.553,0,1-0.447,1-1v-1c0-0.553-0.447-1-1-1h-9.055c0.649-0.635,1.055-1.52,1.055-2.5c0-1.934-1.566-3.5-3.5-3.5    s-3.5,1.566-3.5,3.5c0,0.98,0.405,1.865,1.055,2.5H153c-0.553,0-1,0.447-1,1v1c0,0.553,0.447,1,1,1h8v5h-3c-1.104,0-2,0.896-2,2v7    c0,0.553,0.447,1,1,1h1c0.553,0,1-0.447,1-1v-5h11v5c0,0.553,0.447,1,1,1h1c0.553,0,1-0.447,1-1v-7c0-1.104-0.896-2-2-2h-3v-5H176    z M162,566.5c0-1.379,1.121-2.5,2.5-2.5s2.5,1.121,2.5,2.5s-1.121,2.5-2.5,2.5S162,567.879,162,566.5z M171,578    c0.552,0,1,0.448,1,1v7h-1v-6h-13v6h-1v-7c0-0.552,0.448-1,1-1h4v-7h-9v-1h23v1h-9v7H171z"/>
+	</g>
+	
+    </g>
+</svg>

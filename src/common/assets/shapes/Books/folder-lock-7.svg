@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30" height="30" viewBox="0 0 30 30" xml:space="preserve">
+    <g transform="translate(-330 -560)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="folder-lock-7">
+		<path d="M358,578v-11c0-0.55-0.45-1-1-1h-12c-0.55,0-1.36-0.27-1.8-0.6l-2.4-1.801c-0.439-0.33-1.25-0.6-1.8-0.6h-6    c-0.55,0-1,0.45-1,1v22c0,0.55,0.45,1,1,1h14v3h13v-11h-2V578z M333,564h6c0.33,0,0.936,0.201,1.199,0.4l2.401,1.8    c0.606,0.456,1.639,0.8,2.399,0.8h12v3h-24V564z M333,586v-15h24v4.203c-0.824-1.03-2.077-1.703-3.5-1.703    c-2.485,0-4.5,2.015-4.5,4.5v1h-2v7H333z M357,578v1h-7v-1c0-1.93,1.57-3.5,3.5-3.5S357,576.07,357,578z M359,580v9h-11v-9H359z"/>
+		<path d="M354,584.908c0.581-0.207,1-0.756,1-1.408c0-0.828-0.672-1.5-1.5-1.5s-1.5,0.672-1.5,1.5c0,0.652,0.419,1.201,1,1.408V587    h1V584.908z"/>
+	</g>
+	
+    </g>
+</svg>

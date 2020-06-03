@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30" height="30" viewBox="0 0 30 30" xml:space="preserve">
+    <g transform="translate(-510 -320)">
+        <path xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="radar-tower-7" d="M513,347v1h24v-1h-7.167l-1.333-8c2.432,0,4.863-0.928,6.718-2.782l-6.364-6.364l5.657-5.657   l-0.707-0.707l-5.657,5.657l-6.364-6.364c-3.709,3.71-3.709,9.726,0,13.436c0.051,0.051,0.106,0.093,0.157,0.143L520.167,347H513z    M521.823,324.238l11.939,11.938c-1.494,1.182-3.329,1.823-5.263,1.823c-2.271,0-4.405-0.885-6.011-2.489   C519.415,332.436,519.193,327.571,521.823,324.238z M522.828,337.108c1.392,1.039,2.999,1.653,4.648,1.831l1.343,8.061h-7.639   L522.828,337.108z"/>
+	
+    </g>
+</svg>

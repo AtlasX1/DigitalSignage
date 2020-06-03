@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30" height="30" viewBox="0 0 30 30" xml:space="preserve">
+    <g transform="translate(-390 -260)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="wallet-7">
+		<path d="M415,270h-0.315L409,262l-11.259,8H395c-1.104,0-2,0.896-2,2v13c0,1.104,0.896,2,2,2h20c1.104,0,2-0.896,2-2v-12v-1    C417,270.896,416.104,270,415,270z M408.764,263.395l4.693,6.605h-13.989L408.764,263.395z M416,280h-6v-3h6V280z M416,273v3h-7v5    h7v4c0,0.551-0.448,1-1,1h-20c-0.552,0-1-0.449-1-1v-13c0-0.551,0.448-1,1-1h20c0.552,0,1,0.449,1,1h-8v1H416z"/>
+		<rect x="411" y="278" width="1" height="1"/>
+		<rect x="406" y="272" width="1" height="1"/>
+		<rect x="404" y="272" width="1" height="1"/>
+	</g>
+	
+    </g>
+</svg>

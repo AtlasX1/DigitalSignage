@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="29" height="30" viewBox="0 0 29 30" xml:space="preserve">
+    <g transform="translate(-510 -320)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="small-pin-area">
+		<path d="M518.52,328c-0.136-0.321-0.243-0.655-0.326-1H512v22h25v-22h-6.193c-0.083,0.345-0.19,0.679-0.326,1H536v6h-7v-3.848    c-0.307,0.295-0.639,0.563-1,0.795V334h-1v1h1v6h-7v-6h1v-1h-1v-3.053c-0.361-0.231-0.693-0.5-1-0.795V334h-7v-6H518.52z M529,335    h7v6h-7V335z M529,342h7v6h-7V342z M521,342h7v6h-7V342z M520,348h-7v-6h7V348z M520,335v6h-7v-6H520z"/>
+		<path d="M525,338v-8.051c2.246-0.252,4-2.135,4-4.449c0-2.485-2.016-4.5-4.5-4.5c-2.485,0-4.5,2.015-4.5,4.5    c0,2.314,1.753,4.197,4,4.449V338H525z M521,325.5c0-1.934,1.567-3.5,3.5-3.5s3.5,1.566,3.5,3.5s-1.567,3.5-3.5,3.5    S521,327.434,521,325.5z"/>
+	</g>
+	
+    </g>
+</svg>

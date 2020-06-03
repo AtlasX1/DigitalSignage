@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="29" height="30" viewBox="0 0 29 30" xml:space="preserve">
+    <g transform="translate(-270 -440)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="vector-7">
+		<path d="M275.345,462H273v5h5v-5h-1.623c0.826-2.68,2.943-4.797,5.623-5.623V458h5v-2h6.092c0.207,0.58,0.758,1,1.408,1    c0.827,0,1.5-0.673,1.5-1.5s-0.673-1.5-1.5-1.5c-0.65,0-1.201,0.42-1.408,1h-4.375c2.398-1.195,4.219-3.369,4.938-6H296v-5h-5v5    h1.623c-0.826,2.68-2.943,4.797-5.623,5.623V453h-5v2h-6.092c-0.207-0.58-0.758-1-1.408-1c-0.827,0-1.5,0.673-1.5,1.5    s0.673,1.5,1.5,1.5c0.65,0,1.201-0.42,1.408-1h4.375C277.885,457.195,276.064,459.369,275.345,462z M277,463v3h-3v-3H277z     M292,448v-3h3v3H292z M283,454h3v3h-3V454z"/>
+	</g>
+	
+    </g>
+</svg>

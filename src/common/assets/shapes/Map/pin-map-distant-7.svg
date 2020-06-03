@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="29" height="30" viewBox="0 0 29 30" xml:space="preserve">
+    <g transform="translate(-210 -140)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="pin-map-distant-7">
+		<path d="M222,150.884c0-3.25-2.686-5.884-6-5.884s-6,2.635-6,5.884c0,4.577,6,11.116,6,11.116S222,155.461,222,150.884z M216,146    c2.757,0,5,2.191,5,4.884c0,2.989-3.134,7.362-5,9.594c-1.865-2.234-5-6.61-5-9.594C211,148.191,213.243,146,216,146z"/>
+		<circle cx="216" cy="151.5" r="2.5"/>
+		<path d="M239,150.884c0-3.25-2.686-5.884-6-5.884s-6,2.635-6,5.884c0,4.577,6,11.116,6,11.116S239,155.461,239,150.884z M233,146    c2.757,0,5,2.191,5,4.884c0,2.989-3.134,7.362-5,9.594c-1.865-2.234-5-6.61-5-9.594C228,148.191,230.243,146,233,146z"/>
+		<circle cx="233" cy="151.5" r="2.5"/>
+		<rect x="216" y="163" width="1" height="1"/>
+		<rect x="218" y="163" width="1" height="1"/>
+		<rect x="220" y="163" width="1" height="1"/>
+		<rect x="222" y="163" width="1" height="1"/>
+		<rect x="224" y="163" width="1" height="1"/>
+		<rect x="226" y="163" width="1" height="1"/>
+		<rect x="228" y="163" width="1" height="1"/>
+		<rect x="230" y="163" width="1" height="1"/>
+		<rect x="232" y="163" width="1" height="1"/>
+	</g>
+	
+    </g>
+</svg>

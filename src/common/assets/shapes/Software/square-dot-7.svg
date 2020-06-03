@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30" height="30" viewBox="0 0 30 30" xml:space="preserve">
+    <g transform="translate(-90 -500)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="square-dot-7">
+		<polygon points="117,503 113,503 113,504 116,504 116,507 117,507   "/>
+		<rect x="108" y="526" width="4" height="1"/>
+		<rect x="103" y="526" width="4" height="1"/>
+		<rect x="98" y="526" width="4" height="1"/>
+		<rect x="93" y="518" width="1" height="4"/>
+		<polygon points="93,527 97,527 97,526 94,526 94,523 93,523   "/>
+		<rect x="116" y="513" width="1" height="4"/>
+		<rect x="93" y="513" width="1" height="4"/>
+		<polygon points="117,523 116,523 116,526 113,526 113,527 117,527   "/>
+		<rect x="116" y="508" width="1" height="4"/>
+		<rect x="116" y="518" width="1" height="4"/>
+		<polygon points="94,504 97,504 97,503 93,503 93,507 94,507   "/>
+		<rect x="103" y="503" width="4" height="1"/>
+		<rect x="98" y="503" width="4" height="1"/>
+		<rect x="108" y="503" width="4" height="1"/>
+		<rect x="93" y="508" width="1" height="4"/>
+	</g>
+	
+    </g>
+</svg>

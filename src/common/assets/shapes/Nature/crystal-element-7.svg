@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30" height="30" viewBox="0 0 30 30" xml:space="preserve">
+    <g transform="translate(-510 -80)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="crystal-element-7">
+		<path d="M525,108c7.18,0,13-5.82,13-13s-5.82-13-13-13s-13,5.82-13,13S517.82,108,525,108z M525,83c6.617,0,12,5.383,12,12    s-5.383,12-12,12s-12-5.383-12-12S518.383,83,525,83z"/>
+		<polygon points="531.196,94.125 534.125,94.125 525.875,85.875 525.875,88.804   "/>
+		<polygon points="518.804,95.875 515.875,95.875 524.125,104.125 524.125,101.196   "/>
+		<polygon points="524.125,88.804 524.125,85.875 515.875,94.125 518.804,94.125   "/>
+		<polygon points="525.875,101.196 525.875,104.125 534.125,95.875 531.196,95.875   "/>
+		<path d="M525,99l4-4l-4-4l-4,4L525,99z M525,93l2,2l-2,2l-2-2L525,93z"/>
+	</g>
+	
+    </g>
+</svg>

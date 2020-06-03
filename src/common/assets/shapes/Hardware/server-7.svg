@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30" height="30" viewBox="0 0 30 30" xml:space="preserve">
+    <g transform="translate(-30 -200)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="server-7">
+		<rect x="36" y="206" width="1" height="1"/>
+		<rect x="38" y="206" width="1" height="1"/>
+		<rect x="40" y="206" width="1" height="1"/>
+		<rect x="36" y="214" width="1" height="1"/>
+		<rect x="38" y="214" width="1" height="1"/>
+		<rect x="40" y="214" width="1" height="1"/>
+		<path d="M33,220v5c0,1.104,0.896,2,2,2h20c1.104,0,2-0.896,2-2v-5c0-0.601-0.271-1.133-0.689-1.5    C56.729,218.133,57,217.601,57,217v-5c0-0.601-0.271-1.133-0.689-1.5C56.729,210.133,57,209.601,57,209v-5c0-1.104-0.896-2-2-2H35    c-1.104,0-2,0.896-2,2v5c0,0.601,0.271,1.133,0.689,1.5C33.271,210.867,33,211.399,33,212v5c0,0.601,0.271,1.133,0.689,1.5    C33.271,218.867,33,219.399,33,220z M34,209v-5c0-0.551,0.448-1,1-1h20c0.552,0,1,0.449,1,1v5c0,0.551-0.448,1-1,1H35    C34.448,210,34,209.551,34,209z M34,217v-5c0-0.551,0.448-1,1-1h20c0.552,0,1,0.449,1,1v5c0,0.551-0.448,1-1,1H35    C34.448,218,34,217.551,34,217z M55,219c0.552,0,1,0.449,1,1v5c0,0.551-0.448,1-1,1H35c-0.552,0-1-0.449-1-1v-5    c0-0.551,0.448-1,1-1H55z"/>
+		<rect x="36" y="222" width="1" height="1"/>
+		<rect x="38" y="222" width="1" height="1"/>
+		<rect x="40" y="222" width="1" height="1"/>
+	</g>
+	
+    </g>
+</svg>

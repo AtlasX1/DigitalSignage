@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30" height="30" viewBox="0 0 30 30" xml:space="preserve">
+    <g transform="translate(-270 -500)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="paper-piece-off-7">
+		<path d="M297,502h-23.586l-0.436-0.436l-0.707,0.707l25.457,25.457l0.707-0.707l-2.229-2.229L297,524V502z M274.414,503H277v1h-1    v0.586L274.414,503z M278,506h-0.586L277,505.586V505h1V506z M278.414,507H279v-3h-1v-1h4v1h-1v3h3v-3h-1v-1h4v1h-1v3h3v-3h-1v-1    h4v1h-1v3h3v-3h-1v-1h3v20h-1.586L278.414,507z M283,505v1h-1v-1H283z M288,505v1h-1v-1H288z M293,505v1h-1v-1H293z"/>
+		<polygon points="292,523.414 292,527 274,527 274,505.414 273,504.414 273,528 293,528 294.793,526.207   "/>
+	</g>
+	
+    </g>
+</svg>

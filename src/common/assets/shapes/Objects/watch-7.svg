@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="29" height="30" viewBox="0 0 29 30" xml:space="preserve">
+    <g transform="translate(-90 -380)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="watch-7">
+		<path d="M100,382v6.299c-2.399,1.502-4,4.161-4,7.201s1.601,5.699,4,7.201V409h9v-6.299c2.399-1.502,4-4.161,4-7.201    s-1.601-5.699-4-7.201V382H100z M101,385h4v-1h-4v-1h7v4.76c-1.068-0.483-2.251-0.76-3.5-0.76s-2.432,0.276-3.5,0.76V385z     M108,408h-7v-1h4v-1h-4v-2.76c1.068,0.483,2.251,0.76,3.5,0.76s2.432-0.276,3.5-0.76V408z M112,395.5c0,4.136-3.364,7.5-7.5,7.5    s-7.5-3.364-7.5-7.5s3.364-7.5,7.5-7.5S112,391.364,112,395.5z"/>
+		<polygon points="105,395 105,390 104,390 104,395 104,396 105,396 110,396 110,395   "/>
+		<rect x="106" y="384" width="1" height="1"/>
+		<rect x="106" y="406" width="1" height="1"/>
+	</g>
+	
+    </g>
+</svg>

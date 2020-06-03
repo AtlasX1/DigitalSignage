@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30" height="30" viewBox="0 0 30 30" xml:space="preserve">
+    <g transform="translate(-330 -440)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="button-fast-forward-7">
+		<path d="M345,442c-7.18,0-13,5.82-13,13s5.82,13,13,13s13-5.82,13-13S352.18,442,345,442z M345,467c-6.617,0-12-5.383-12-12    s5.383-12,12-12s12,5.383,12,12S351.617,467,345,467z"/>
+		<path d="M346,455v5l7-5l-7-5V455z M347,451.943l4.279,3.057L347,458.057V451.943z"/>
+		<path d="M339,460l7-5l-7-5V460z M340,451.943l4.279,3.057L340,458.057V451.943z"/>
+	</g>
+	
+    </g>
+</svg>

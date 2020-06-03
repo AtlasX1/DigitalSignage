@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="29" height="30" viewBox="0 0 29 30" xml:space="preserve">
+    <g transform="translate(-210 -500)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="note-standard-tick-7">
+		<path d="M218,502v2h-4v24h12.413c1.337,1.237,3.121,2,5.087,2c4.143,0,7.5-3.357,7.5-7.5c0-2.878-1.622-5.373-4-6.631V504h-4v-2    h-1v2h-3v-2h-1v2h-3v-2h-1v2h-3v-2H218z M238,522.5c0,3.59-2.91,6.5-6.5,6.5s-6.5-2.91-6.5-6.5s2.91-6.5,6.5-6.5    S238,518.91,238,522.5z M222,505v1h1v-1h3v1h1v-1h3v1h1v-1h3v10.436c-0.783-0.277-1.622-0.436-2.5-0.436    c-2.451,0-4.621,1.182-5.99,3H218v1h6.869c-0.553,1.045-0.869,2.235-0.869,3.5c0,1.691,0.566,3.246,1.51,4.5H215v-22h3v1h1v-1H222    z"/>
+		<rect x="218" y="510" width="13" height="1"/>
+		<rect x="218" y="514" width="13" height="1"/>
+		<polygon points="218,522 218,523 224,523 224,522.5 224,522   "/>
+		<polygon points="230.086,524.268 227.965,522.146 227.258,522.854 230.086,525.682 235.742,520.025 235.035,519.318   "/>
+	</g>
+	
+    </g>
+</svg>

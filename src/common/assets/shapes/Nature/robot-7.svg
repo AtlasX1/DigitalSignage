@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30" height="30" viewBox="0 0 30 30" xml:space="preserve">
+    <g transform="translate(-450 -320)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="robot-7">
+		<path d="M475,329c0-2.209-1.791-4-4-4h-3v-2h-6v2h-3c-2.209,0-4,1.791-4,4v4h-2v5h2v5c0,2.209,1.791,4,4,4h12c2.209,0,4-1.791,4-4    v-5h2v-5h-2V329z M463,324h4v1h-4V324z M454,337v-3h1v3H454z M474,343c0,1.654-1.346,3-3,3h-12c-1.654,0-3-1.346-3-3v-5v-1v-3v-1    v-4c0-1.654,1.346-3,3-3h12c1.654,0,3,1.346,3,3v4v1v3v1V343z M476,334v3h-1v-3H476z"/>
+		<path d="M464,334c0-1.657-1.343-3-3-3s-3,1.343-3,3s1.343,3,3,3S464,335.657,464,334z M461,336c-1.103,0-2-0.897-2-2s0.897-2,2-2    s2,0.897,2,2S462.103,336,461,336z"/>
+		<path d="M469,331c-1.657,0-3,1.343-3,3s1.343,3,3,3s3-1.343,3-3S470.657,331,469,331z M469,336c-1.103,0-2-0.897-2-2s0.897-2,2-2    s2,0.897,2,2S470.103,336,469,336z"/>
+		<path d="M462,342v1v1h6v-1v-1v-1h-6V342z M467,342v1h-4v-1H467z"/>
+		<rect x="464" y="337" width="2" height="2"/>
+	</g>
+	
+    </g>
+</svg>

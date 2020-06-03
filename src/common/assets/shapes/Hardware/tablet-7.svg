@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="29" height="30" viewBox="0 0 29 30" xml:space="preserve">
+    <g transform="translate(-270 -80)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="tablet-7">
+		<path d="M277,108h15c1.104,0,2-0.896,2-2V84c0-1.104-0.896-2-2-2h-15c-1.104,0-2,0.896-2,2v22C275,107.104,275.896,108,277,108z     M276,84c0-0.551,0.449-1,1-1h15c0.551,0,1,0.449,1,1v1h-17V84z M276,86h17v17h-17V86z M276,104h17v2c0,0.551-0.449,1-1,1h-15    c-0.551,0-1-0.449-1-1V104z"/>
+		<rect x="284" y="105" width="1" height="1"/>
+	</g>
+	
+    </g>
+</svg>

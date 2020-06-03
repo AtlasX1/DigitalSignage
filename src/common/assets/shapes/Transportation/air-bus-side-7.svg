@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30" height="30" viewBox="0 0 30 30" xml:space="preserve">
+    <g transform="translate(-150 -200)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="air-bus-side-7">
+		<path d="M155,217h8l-2,11h4l4-11h10c0,0,0-5-5-5c-1.426,0-3.314,0-5.363,0L165,202h-4l1.818,10c-1.893,0-3.702,0-5.214,0l-1.575-3    H151L155,217z M162.198,203h2.102l3.272,9h-3.738L162.198,203z M157,213h17c1.314,0,2.19,0.428,2.783,1H174v1h3.512    c0.172,0.348,0.285,0.694,0.357,1H168.3l-4,11h-2.102l2-11h-8.58l-3-6h2.807L157,213z"/>
+		<rect x="172" y="214" width="1" height="1"/>
+		<rect x="170" y="214" width="1" height="1"/>
+		<rect x="168" y="214" width="1" height="1"/>
+		<rect x="166" y="214" width="1" height="1"/>
+		<rect x="164" y="214" width="1" height="1"/>
+		<rect x="162" y="214" width="1" height="1"/>
+		<rect x="160" y="214" width="1" height="1"/>
+		<rect x="158" y="214" width="1" height="1"/>
+	</g>
+	
+    </g>
+</svg>

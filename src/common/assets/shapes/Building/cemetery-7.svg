@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="29" height="30" viewBox="0 0 29 30" xml:space="preserve">
+    <g transform="translate(-90 -320)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="cemetery-7_1_">
+		<path d="M111,334c0-3.421-2.645-6.219-6-6.475V325h2v-1h-2v-2h-1v2h-2v1h2v2.525c-3.355,0.256-6,3.054-6,6.475v12h-4v1h21v-1h-4    V334z M110,346H99v-12c0-3.032,2.467-5.5,5.5-5.5s5.5,2.468,5.5,5.5V346z"/>
+		<rect x="101" y="334" width="7" height="1"/>
+		<rect x="101" y="337" width="7" height="1"/>
+		<rect x="101" y="340" width="7" height="1"/>
+	</g>
+	
+    </g>
+</svg>

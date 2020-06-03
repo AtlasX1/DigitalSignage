@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="47" height="30" viewBox="0 0 47 30" xml:space="preserve">
+    <g transform="translate(-321 -200)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="badminton-court-7">
+		<path d="M321,228h47v-12v-1v-12h-47V228z M327,227v-3h10v3H327z M352,215v-7h10v7H352z M362,216v7h-10v-7H362z M351,223h-13v-15    h13V223z M337,215h-10v-7h10V215z M337,216v7h-10v-7H337z M338,227v-3h13v3H338z M352,227v-3h10v3H352z M367,227h-4v-3h4V227z     M367,223h-4v-7h4V223z M363,215v-7h4v7H363z M367,204v3h-4v-3H367z M362,204v3h-10v-3H362z M351,204v3h-13v-3H351z M337,204v3    h-10v-3H337z M322,204h4v3h-4V204z M322,208h4v7h-4V208z M322,216h4v7h-4V216z M322,224h4v3h-4V224z"/>
+		<rect x="344" y="225" width="1" height="1"/>
+		<rect x="344" y="221" width="1" height="1"/>
+		<rect x="344" y="219" width="1" height="1"/>
+		<rect x="344" y="217" width="1" height="1"/>
+		<rect x="344" y="215" width="1" height="1"/>
+		<rect x="344" y="213" width="1" height="1"/>
+		<rect x="344" y="211" width="1" height="1"/>
+		<rect x="344" y="209" width="1" height="1"/>
+		<rect x="344" y="205" width="1" height="1"/>
+	</g>
+	
+    </g>
+</svg>

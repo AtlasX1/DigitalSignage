@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="29" height="30" viewBox="0 0 29 30" xml:space="preserve">
+    <g transform="translate(-570 -80)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="phablet-write-7">
+		<path d="M575.775,109h15c1.104,0,2-0.93,2-2.077V92.707l-1,1.26v9.841h-17V87.192h17v1.876l1-1.26v-3.731    c0-1.147-0.896-2.077-2-2.077h-15c-1.104,0-2,0.93-2,2.077v22.846C573.775,108.07,574.671,109,575.775,109z M574.775,84.077    c0-0.573,0.449-1.039,1-1.039h15c0.551,0,1,0.466,1,1.039v2.077h-17V84.077z M574.775,104.846h17v2.077    c0,0.573-0.449,1.039-1,1.039h-15c-0.551,0-1-0.466-1-1.039V104.846z"/>
+		<rect x="581.775" y="105.885" width="3" height="1.038"/>
+		<rect x="581.775" y="84.077" width="3" height="1.038"/>
+		<polygon points="584.614,99.724 585.386,100.384 598.593,83.745 597.821,83.084   "/>
+	</g>
+	
+    </g>
+</svg>

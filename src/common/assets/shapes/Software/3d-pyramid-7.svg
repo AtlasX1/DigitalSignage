@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="29" height="30" viewBox="0 0 29 30" xml:space="preserve">
+    <g transform="translate(-450 -980)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="_x33_d-pyramid-7">
+		<path d="M451,1006h27l-13.5-22L451,1006z M452.787,1005l11.713-19.088L476.213,1005H452.787z"/>
+		<rect x="464" y="988" width="1" height="2"/>
+		<rect x="464" y="992" width="1" height="2"/>
+		<rect x="464" y="996" width="1" height="2"/>
+		<rect x="458.778" y="1000.801" transform="matrix(-0.4394 -0.8983 0.8983 -0.4394 -238.839 1854.5466)" width="1" height="2"/>
+		<rect x="455.185" y="1002.56" transform="matrix(-0.4394 -0.8983 0.8983 -0.4394 -245.5903 1853.8508)" width="1" height="2"/>
+		<rect x="462.371" y="999.043" transform="matrix(-0.4394 -0.8983 0.8983 -0.4394 -232.0877 1855.2424)" width="1" height="2"/>
+		<rect x="472.315" y="1003.06" transform="matrix(0.898 0.44 -0.44 0.898 489.8109 -105.8937)" width="2" height="1"/>
+		<rect x="468.722" y="1001.301" transform="matrix(0.898 0.44 -0.44 0.898 488.6707 -104.4923)" width="2" height="1"/>
+		<rect x="465.129" y="999.542" transform="matrix(0.898 0.44 -0.44 0.898 487.5305 -103.0911)" width="2" height="1"/>
+	</g>
+	
+    </g>
+</svg>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="29" height="30" viewBox="0 0 29 30" xml:space="preserve">
+    <g transform="translate(-510 -500)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="timetable-7">
+		<path d="M512,526h25v-21h-25V526z M531,506h5v3h-5V506z M531,510h5v3h-5V510z M531,514h5v3h-5V514z M531,518h5v3h-5V518z M531,522    h5v3h-5V522z M525,506h5v3h-5V506z M525,510h5v3h-5V510z M525,514h5v3h-5V514z M525,518h5v3h-5V518z M525,522h5v3h-5V522z     M519,506h5v3h-5V506z M519,510h5v3h-5V510z M519,514h5v3h-5V514z M519,518h5v3h-5V518z M519,522h5v3h-5V522z M513,506h5v3h-5V506    z M513,510h5v3h-5V510z M513,514h5v3h-5V514z M513,518h5v3h-5V518z M513,522h5v3h-5V522z"/>
+		<rect x="514" y="519" width="3" height="1"/>
+		<rect x="514" y="523" width="3" height="1"/>
+		<rect x="514" y="515" width="3" height="1"/>
+		<rect x="514" y="511" width="3" height="1"/>
+		<rect x="514" y="507" width="3" height="1"/>
+		<rect x="520" y="507" width="3" height="1"/>
+		<rect x="526" y="507" width="3" height="1"/>
+		<rect x="532" y="507" width="3" height="1"/>
+	</g>
+	
+    </g>
+</svg>

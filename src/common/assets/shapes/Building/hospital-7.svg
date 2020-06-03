@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="29" height="30" viewBox="0 0 29 30" xml:space="preserve">
+    <g transform="translate(-150 -260)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="hospital-7">
+		<rect x="154" y="277" width="3" height="1"/>
+		<rect x="154" y="281" width="3" height="1"/>
+		<rect x="172" y="277" width="3" height="1"/>
+		<rect x="172" y="281" width="3" height="1"/>
+		<path d="M170,265h1v-1h-13v1h1v6h-9v1h1v14h-1v1h29v-1h-1v-14h1v-1h-9V265z M159,286h-7v-13h7V286z M166,286h-3v-4h3V286z     M169,286h-2v-5h-5v5h-2v-20h9V286z M177,273v13h-7v-13H177z"/>
+		<polygon points="164,275 165,275 165,273 167,273 167,272 165,272 165,270 164,270 164,272 162,272 162,273 164,273   "/>
+	</g>
+	
+    </g>
+</svg>

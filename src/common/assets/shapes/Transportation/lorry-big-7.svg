@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30" height="30" viewBox="0 0 30 30" xml:space="preserve">
+    <g transform="translate(-330 -140)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="lorry-big-7">
+		<path d="M332,157l4.254,1.418C334.926,159.069,334,160.423,334,162c0,2.206,1.795,4,4,4s4-1.794,4-4    c0-0.658-0.176-1.271-0.458-1.819L347,162h2c0,2.206,1.795,4,4,4s4-1.794,4-4h2v-8l-2-4h-7.23l0.23-1h2.912v-1H346v2h-15v1h1V157z     M338,165c-1.654,0-3-1.346-3-3s1.346-3,3-3s3,1.346,3,3S339.654,165,338,165z M353,165c-1.654,0-3-1.346-3-3s1.346-3,3-3    s3,1.346,3,3S354.654,165,353,165z M353,151h3.382l1.618,3.236V155h-5V151z M352,151v5h6v5h-1.143c-0.447-1.721-1.999-3-3.857-3    c-1.857,0-3.41,1.279-3.857,3h-1.912l2.309-10H352z M333,151h14v-2h1.974l-2.7,11.703l-6.025-2.008    c-0.58-0.396-1.271-0.628-2.015-0.672L333,156.279V151z"/>
+		<circle cx="338" cy="162" r="1"/>
+		<circle cx="353" cy="162" r="1"/>
+		<rect x="339" y="152" width="7" height="1"/>
+		<rect x="337" y="152" width="1" height="1"/>
+	</g>
+	
+    </g>
+</svg>

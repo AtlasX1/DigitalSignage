@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30" height="30" viewBox="0 0 30 30" xml:space="preserve">
+    <g transform="translate(-510 -380)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="bible-7">
+		<path d="M514,384.5v21c0,1.379,1.121,2.5,2.5,2.5H536v-22h-19.5c-0.827,0-1.5-0.673-1.5-1.5s0.673-1.5,1.5-1.5H536v-1h-19.5    C515.121,382,514,383.121,514,384.5z M516.5,387H535v20h-18.5c-0.827,0-1.5-0.673-1.5-1.5v-19.013    C515.419,386.805,515.936,387,516.5,387z"/>
+		<rect x="517" y="384" width="18" height="1"/>
+		<polygon points="525,404 526,404 526,394 530,394 530,393 526,393 526,390 525,390 525,393 521,393 521,394 525,394   "/>
+	</g>
+	
+    </g>
+</svg>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="48" height="30" viewBox="0 0 48 30" xml:space="preserve">
+    <g transform="translate(-390 -140)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="sea-house-7">
+		<path d="M413,157.72h-5v-8.345l1.47,0.845l1.061-1.561l-8.53-4.905l-8.53,4.905l1.061,1.561l1.47-0.845v8.345h-4V166h44v-0.92h-21    L413,157.72z M397,148.8l5-2.875l5,2.875v8.92h-10V148.8z M393,165.08v-6.44h19.219l1.75,6.44H393z"/>
+		<rect x="416" y="158.64" width="3" height="0.92"/>
+		<rect x="421" y="158.64" width="3" height="0.92"/>
+		<rect x="426" y="158.64" width="3" height="0.92"/>
+		<rect x="431" y="158.64" width="3" height="0.92"/>
+		<path d="M429.5,149.44c1.933,0,3.5-1.441,3.5-3.22c0-1.779-1.567-3.22-3.5-3.22s-3.5,1.441-3.5,3.22    C426,147.999,427.567,149.44,429.5,149.44z M429.5,143.92c1.381,0,2.5,1.03,2.5,2.3c0,1.27-1.119,2.3-2.5,2.3s-2.5-1.03-2.5-2.3    C427,144.95,428.119,143.92,429.5,143.92z"/>
+		<path d="M400,154.04h4v-3.68h-4V154.04z M401,151.28h2v1.84h-2V151.28z"/>
+	</g>
+	
+    </g>
+</svg>

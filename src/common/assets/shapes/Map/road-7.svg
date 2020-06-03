@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="29" height="30" viewBox="0 0 29 30" xml:space="preserve">
+    <g transform="translate(-30 -440)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="road-7">
+		<polygon points="31,468 33,468 41,442 40,442   "/>
+		<polygon points="48,442 56,468 58,468 49,442   "/>
+		<rect x="44" y="442" width="1" height="4"/>
+		<rect x="44" y="450" width="1" height="5"/>
+		<rect x="44" y="459" width="1" height="7"/>
+	</g>
+	
+    </g>
+</svg>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30" height="30" viewBox="0 0 30 30" xml:space="preserve">
+    <g transform="translate(-510 -740)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="door-in-7">
+		<path d="M523.489,762.803l0.707,0.707l5.657-5.656c0.094-0.094,0.146-0.221,0.146-0.354s-0.053-0.26-0.146-0.354l-5.657-5.657    l-0.707,0.707l4.804,4.804H511v1h17.293L523.489,762.803z"/>
+		<polygon points="520,755 521,755 521,743 537,743 537,767 521,767 521,760 520,760 520,768 538,768 538,742 520,742   "/>
+	</g>
+	
+    </g>
+</svg>

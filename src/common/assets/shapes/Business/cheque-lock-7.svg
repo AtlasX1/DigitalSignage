@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30" height="30" viewBox="0 0 30 30" xml:space="preserve">
+    <g transform="translate(-570 -380)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="cheque-lock-7">
+		<path d="M596,389h-8v3h8V389z M595,391h-6v-1h6V391z"/>
+		<rect x="580" y="401" width="1" height="1"/>
+		<rect x="582" y="401" width="1" height="1"/>
+		<rect x="584" y="401" width="1" height="1"/>
+		<rect x="576" y="389" width="1" height="1"/>
+		<rect x="578" y="389" width="1" height="1"/>
+		<path d="M598,399v-1v-11h-26v17h15v6h13v-11H598z M575,403v-15h22v7.203c-0.288-0.36-0.616-0.686-1-0.943V394h-0.479    c-0.61-0.309-1.291-0.5-2.021-0.5s-1.411,0.191-2.021,0.5H576v1h14.168c-0.271,0.3-0.497,0.635-0.68,1H576v1h13.12    c-0.073,0.323-0.12,0.655-0.12,1v1h-2v2h-1v1h1v1H575z M590,398c0-1.93,1.57-3.5,3.5-3.5s3.5,1.57,3.5,3.5v1h-7V398z M599,409h-11    v-9h11V409z"/>
+		<path d="M595,403.5c0-0.828-0.672-1.5-1.5-1.5s-1.5,0.672-1.5,1.5c0,0.652,0.419,1.201,1,1.408V407h1v-2.092    C594.581,404.701,595,404.152,595,403.5z"/>
+	</g>
+	
+    </g>
+</svg>

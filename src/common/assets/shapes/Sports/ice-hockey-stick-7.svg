@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30" height="30" viewBox="0 0 30 30" xml:space="preserve">
+    <g transform="translate(-330 -140)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="ice-hockey-stick-7">
+		<path d="M352,164l-5.445-6.655l-0.908,1.111L351,165c3,3,8,2,8,1s-1-1-4-1C353,165,352,164,352,164z"/>
+		<polygon points="333,143 343.445,155.766 344.354,154.655 334,142   "/>
+		<path d="M339,165l18-22l-1-1l-18,22c0,0-1,1-3,1c-3,0-4,0-4,1S336,168,339,165z"/>
+	</g>
+	
+    </g>
+</svg>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30" height="30" viewBox="0 0 30 30" xml:space="preserve">
+    <g transform="translate(-330 -260)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="file-barchart-7">
+		<path d="M335,287h20v-19l-5-5h-15V287z M336,264h14v4h4v18h-18V264z"/>
+		<rect x="338" y="282" width="14" height="1"/>
+		<rect x="340" y="272" width="2" height="9"/>
+		<rect x="348" y="275" width="2" height="6"/>
+		<rect x="344" y="269" width="2" height="12"/>
+	</g>
+	
+    </g>
+</svg>

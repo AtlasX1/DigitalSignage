@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="48" height="30" viewBox="0 0 48 30" xml:space="preserve">
+    <g transform="translate(-498 -260)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="zeppelin-7">
+		<path d="M535,268h-22c-1.562,0-4.223,0.815-6.732,1.958L505,267h-4v6.255c-0.62,0.614-1,1.212-1,1.745s0.38,1.131,1,1.745V283h4    l1.268-2.958c2.51,1.142,5.171,1.958,6.732,1.958h13v2c0,0.553,0.447,1,1,1h6c0.553,0,1-0.447,1-1v-2h1c3.59,0,9-4.308,9-7    S538.59,268,535,268z M502,268h2.341l1.023,2.389c-1.262,0.625-2.433,1.318-3.364,2.018V268z M504.341,282H502v-4.407    c0.932,0.7,2.103,1.394,3.364,2.018L504.341,282z M533,284h-6v-2h6V284z M535,281h-1h-8h-13c-3.778,0-12-4.419-12-6s8.222-6,12-6    h22c3.139,0,8,3.986,8,6S538.139,281,535,281z"/>
+		<rect x="525" y="271" width="11" height="1"/>
+		<rect x="523" y="271" width="1" height="1"/>
+		<rect x="521" y="271" width="1" height="1"/>
+	</g>
+	
+    </g>
+</svg>

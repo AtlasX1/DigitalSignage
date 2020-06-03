@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30" height="30" viewBox="0 0 30 30" xml:space="preserve">
+    <g transform="translate(-30 -320)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="globe-ball-7">
+		<path d="M53.839,340.839l-0.707-0.707c-4.483,4.483-11.779,4.483-16.264,0c-4.483-4.484-4.483-11.78,0-16.264l-0.707-0.707    c-4.873,4.873-4.873,12.804,0,17.678c2.184,2.183,4.979,3.38,7.839,3.607V347h-3v1h8v-1h-3v-2.554    C48.86,344.219,51.656,343.021,53.839,340.839z"/>
+		<path d="M45,322c-5.522,0-10,4.479-10,10s4.478,10,10,10s10-4.479,10-10S50.522,322,45,322z M45,341c-4.962,0-9-4.037-9-9    s4.038-9,9-9s9,4.037,9,9S49.962,341,45,341z"/>
+	</g>
+	
+    </g>
+</svg>

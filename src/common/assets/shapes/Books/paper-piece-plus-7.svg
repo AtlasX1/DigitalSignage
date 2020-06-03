@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30" height="30" viewBox="0 0 30 30" xml:space="preserve">
+    <g transform="translate(-90 -440)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="paper-piece-plus-7">
+		<path d="M117,456.51V442H93v26h14.413c1.337,1.237,3.121,2,5.087,2c4.143,0,7.5-3.357,7.5-7.5    C120,460.049,118.818,457.879,117,456.51z M94,443h3v1h-1v3h3v-3h-1v-1h4v1h-1v3h3v-3h-1v-1h4v1h-1v3h3v-3h-1v-1h4v1h-1v3h3v-3h-1    v-1h3v12.869c-1.045-0.553-2.235-0.869-3.5-0.869c-4.143,0-7.5,3.357-7.5,7.5c0,1.691,0.566,3.246,1.51,4.5H94V443z M98,445v1h-1    v-1H98z M103,445v1h-1v-1H103z M108,445v1h-1v-1H108z M113,445v1h-1v-1H113z M112.5,469c-3.59,0-6.5-2.91-6.5-6.5    s2.91-6.5,6.5-6.5s6.5,2.91,6.5,6.5S116.09,469,112.5,469z"/>
+		<polygon points="113,462 113,458 112,458 112,462 108,462 108,463 112,463 112,467 112.586,467 113,467 113,463 117,463 117,462       "/>
+	</g>
+	
+    </g>
+</svg>

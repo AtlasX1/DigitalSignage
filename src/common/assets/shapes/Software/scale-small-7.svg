@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30" height="30" viewBox="0 0 30 30" xml:space="preserve">
+    <g transform="translate(-510 -560)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="scale-small-7">
+		<path d="M513,587h12v-12h-12V587z M514,576h10v10h-10V576z"/>
+		<polygon points="526,574 531,574 528.854,571.854 534.354,566.354 533.646,565.646 528.146,571.146 526,569   "/>
+		<rect x="526" y="586.001" width="1" height="1"/>
+		<rect x="528" y="586.001" width="1" height="1"/>
+		<rect x="532" y="586.001" width="1" height="1"/>
+		<rect x="530" y="586.001" width="1" height="1"/>
+		<rect x="534" y="586.001" width="1" height="1"/>
+		<rect x="533" y="563" width="1" height="1"/>
+		<rect x="529" y="563" width="1" height="1"/>
+		<rect x="531" y="563" width="1" height="1"/>
+		<rect x="525" y="563" width="1" height="1"/>
+		<rect x="527" y="563" width="1" height="1"/>
+		<rect x="521" y="563" width="1" height="1"/>
+		<rect x="523" y="563" width="1" height="1"/>
+		<rect x="517" y="563" width="1" height="1"/>
+		<rect x="519" y="563" width="1" height="1"/>
+		<rect x="513" y="565" width="1" height="1"/>
+		<rect x="513" y="563" width="1" height="1"/>
+		<rect x="515" y="563" width="1" height="1"/>
+		<rect x="513" y="573" width="1" height="1"/>
+		<rect x="513" y="569" width="1" height="1"/>
+		<rect x="513" y="571" width="1" height="1"/>
+		<rect x="513" y="567" width="1" height="1"/>
+		<rect x="536" y="584" width="1" height="1"/>
+		<rect x="536" y="586" width="1" height="1"/>
+		<rect x="536" y="580" width="1" height="1"/>
+		<rect x="536" y="582" width="1" height="1"/>
+		<rect x="536" y="576" width="1" height="1"/>
+		<rect x="536" y="578" width="1" height="1"/>
+		<rect x="536" y="572" width="1" height="1"/>
+		<rect x="536" y="574" width="1" height="1"/>
+		<rect x="536" y="568" width="1" height="1"/>
+		<rect x="536" y="570" width="1" height="1"/>
+		<polygon points="537,563 536,563 535,563 535,564 536,564 536,565 537,565   "/>
+		<rect x="536" y="566" width="1" height="1"/>
+	</g>
+	
+    </g>
+</svg>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="29" height="30" viewBox="0 0 29 30" xml:space="preserve">
+    <g transform="translate(-570 -260)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="wooden-fences-7">
+		<path d="M572,278v5h1v4h7v-4h1v4h7v-4h1v4h7v-4h1v-5h-1v-4h1v-5h-1v-3l-3.5-3l-3.5,3v3h-1v-3l-3.5-3l-3.5,3v3h-1v-3l-3.5-3l-3.5,3    v3h-1v5h1v4H572z M590,266.46l2.5-2.143l2.5,2.143V286h-5V266.46z M588,274h1v4h-1V274z M582,266.46l2.5-2.143l2.5,2.143V286h-5    V266.46z M580,274h1v4h-1V274z M574,266.46l2.5-2.143l2.5,2.143V286h-5V266.46z"/>
+		<rect x="576" y="271" width="1" height="1"/>
+		<rect x="576" y="280" width="1" height="1"/>
+		<rect x="584" y="271" width="1" height="1"/>
+		<rect x="584" y="280" width="1" height="1"/>
+		<rect x="592" y="271" width="1" height="1"/>
+		<rect x="592" y="280" width="1" height="1"/>
+	</g>
+	
+    </g>
+</svg>

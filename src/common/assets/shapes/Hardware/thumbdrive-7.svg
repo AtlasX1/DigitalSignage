@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30" height="30" viewBox="0 0 30 30" xml:space="preserve">
+    <g transform="translate(-30 -380)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="thumbdrive-7">
+		<path d="M51,382H39v10h-2v16h16v-16h-2V382z M40,383h10v9H40V383z M52,393v14H38v-14H52z"/>
+		<rect x="42" y="385" width="2" height="2"/>
+		<rect x="46" y="385" width="2" height="2"/>
+	</g>
+	
+    </g>
+</svg>

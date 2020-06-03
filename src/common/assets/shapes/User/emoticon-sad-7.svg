@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30" height="30" viewBox="0 0 30 30" xml:space="preserve">
+    <g transform="translate(-90 -680)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="emoticon-sad-7">
+		<path d="M105,682c-7.18,0-13,5.82-13,13s5.82,13,13,13s13-5.82,13-13S112.18,682,105,682z M105,707c-6.617,0-12-5.383-12-12    s5.383-12,12-12s12,5.383,12,12S111.617,707,105,707z"/>
+		<circle cx="100" cy="693" r="2"/>
+		<circle cx="110" cy="693" r="2"/>
+		<path d="M105,699c-4.219,0-6.328,3.091-6.416,3.223l0.832,0.555C99.435,702.75,101.311,700,105,700    c3.67,0,5.508,2.665,5.585,2.778l0.831-0.556C111.328,702.091,109.219,699,105,699z"/>
+	</g>
+	
+    </g>
+</svg>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30" height="30" viewBox="0 0 30 30" xml:space="preserve">
+    <g transform="translate(-390 -80)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="flower-element-7">
+		<path d="M405,82c-7.18,0-13,5.82-13,13s5.82,13,13,13s13-5.82,13-13S412.18,82,405,82z M405,107c-6.617,0-12-5.383-12-12    s5.383-12,12-12s12,5.383,12,12S411.617,107,405,107z"/>
+		<ellipse cx="405" cy="89.5" rx="1" ry="3.5"/>
+		<ellipse cx="405" cy="100.5" rx="1" ry="3.5"/>
+		<ellipse transform="matrix(0.7071 0.7071 -0.7071 0.7071 181.8907 -256.9315)" cx="401.111" cy="91.111" rx="3.5" ry="1"/>
+		<ellipse transform="matrix(-0.7071 -0.7071 0.7071 -0.7071 628.1102 457.9314)" cx="408.889" cy="98.889" rx="3.5" ry="1"/>
+		<ellipse cx="399.5" cy="95" rx="3.5" ry="1"/>
+		<ellipse cx="410.5" cy="95" rx="3.5" ry="1.001"/>
+		<ellipse transform="matrix(-0.707 -0.7072 0.7072 -0.707 614.7529 452.4791)" cx="401.111" cy="98.889" rx="0.999" ry="3.5"/>
+		<ellipse transform="matrix(0.7069 0.7074 -0.7074 0.7069 184.3082 -262.5204)" cx="408.89" cy="91.111" rx="1" ry="3.499"/>
+	</g>
+	
+    </g>
+</svg>

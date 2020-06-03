@@ -1,0 +1,86 @@
+.react-numeric-input {
+  height: 28px;
+  width: 60px;
+  border: 1px solid #d4dce7;
+  border-radius: 3px;
+
+  b {
+    width: 18px !important;
+    height: 50% !important;
+    right: 0 !important;
+    background: #fff !important;
+    border: none !important;
+    border-left: 1px solid #d4dce7 !important;
+    box-shadow: none !important;
+
+    i {
+      transform: translate(-50%, -50%) !important;
+      margin: 0 !important;
+    }
+  }
+
+  b:nth-of-type(1) {
+    top: 0 !important;
+    border-bottom: 1px solid #d4dce7 !important;
+    border-radius: 0 2px 0 0 !important;
+
+    i {
+      border-style: solid !important;
+      border-width: 0 3px 4px 3px !important;
+      border-color: transparent transparent #9fadbf transparent !important;
+    }
+  }
+
+  b:nth-of-type(2) {
+    bottom: 0 !important;
+    border-radius: 0 0 2px 0 !important;
+
+    i {
+      border-style: solid !important;
+      border-width: 4px 3px 0 3px !important;
+      border-color: #9fadbf transparent transparent transparent !important;
+    }
+  }
+
+  input {
+    font-size: 14px;
+    display: block !important;
+    width: 100% !important;
+    height: 100% !important;
+    border: none !important;
+
+    &:focus {
+      outline: none !important;
+    }
+  }
+}
+
+.CreateTemplateSettings__slider-Input {
+  .react-numeric-input {
+    b {
+      height: 9px !important;
+    }
+  }
+}
+
+.DarkTheme {
+  .react-numeric-input {
+    border-color: #162949;
+
+    b {
+      background: #0a1526 !important;
+      border-left-color: #162949 !important;
+      border-bottom-color: #162949 !important;
+
+      i {
+        border-color: transparent transparent #fff transparent !important;
+      }
+    }
+
+    b:nth-of-type(2) {
+      i {
+        border-color: #fff transparent transparent transparent !important;
+      }
+    }
+  }
+}

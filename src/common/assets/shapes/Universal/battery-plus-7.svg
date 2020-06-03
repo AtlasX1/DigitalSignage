@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30" height="30" viewBox="0 0 30 30" xml:space="preserve">
+    <g transform="translate(-90 -680)">
+        <g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="battery-plus-7">
+		<path d="M100,682v2h-3v24h7.413c1.337,1.237,3.121,2,5.087,2c4.143,0,7.5-3.357,7.5-7.5s-3.357-7.5-7.5-7.5    c-0.169,0-0.334,0.015-0.5,0.025V684h-3v-2H100z M109.5,696c3.59,0,6.5,2.91,6.5,6.5s-2.91,6.5-6.5,6.5s-6.5-2.91-6.5-6.5    S105.91,696,109.5,696z M102,702.5c0,1.691,0.566,3.246,1.51,4.5H98v-17h10v5.15C104.576,695.846,102,698.871,102,702.5z M108,685    v4H98v-4H108z"/>
+		<polygon points="105,702 105,703 109,703 109,707 110,707 110,703 114,703 114,702 110,702 110,698 109,698 109,702   "/>
+	</g>
+	
+    </g>
+</svg>
