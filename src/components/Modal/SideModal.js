@@ -21,7 +21,8 @@ const styles = ({ palette, type }) => ({
     zIndex: 11
   },
   sideModal: {
-    height: '100%',
+    minHeight: '100%',
+    height: 'max-content',
     background: palette[type].sideModal.background,
     borderRadius: '0 8px 8px 0'
   },
@@ -67,7 +68,8 @@ const SideModal = ({
   footerClassName,
   footerLayout,
   width,
-  animated = true
+  animated = true,
+  refModalHeight
 }) => {
   const [mounted, setMounted] = useState(true)
   const [transitionDuration] = useState(animated ? TRANSITION_DURATION : 0)
@@ -99,74 +101,79 @@ const SideModal = ({
         }}
       >
         <div id="draggable" />
-        <Slide
-          direction="left"
-          mountOnEnter
-          unmountOnExit
-          in={mounted}
-          timeout={transitionDuration}
-        >
-          <Grid
-            container
-            direction="column"
-            alignItems="stretch"
-            wrap="nowrap"
-            style={{
-              width
-            }}
-            className={classNames(
-              classes.sideModal,
-              { [classes.leftRadius]: leftBorderRadius },
-              innerClassName
-            )}
+        <div ref={refModalHeight} style={{ display: 'contents' }}>
+          <Slide
+            direction="left"
+            mountOnEnter
+            unmountOnExit
+            in={mounted}
+            timeout={transitionDuration}
           >
-            <Grid item>
-              <header
-                className={[classes.sideModalHeader, headerClassName].join(' ')}
-              >
-                <Grid container justify="space-between">
-                  <Grid item>
-                    <Typography className={classes.sideModalHeaderTitle}>
-                      {title}
-                    </Typography>
-                  </Grid>
-                  {closeLink && (
-                    <Grid item>
-                      <CircleIconButton
-                        className={[classes.icon, 'hvr-grow'].join(' ')}
-                        // component={Link}
-                        // to={closeLink}
-                        onClick={handleCloseClick}
-                      >
-                        <Close />
-                      </CircleIconButton>
-                    </Grid>
-                  )}
-                </Grid>
-              </header>
-            </Grid>
             <Grid
-              item
+              container
+              direction="column"
+              alignItems="stretch"
+              wrap="nowrap"
+              style={{
+                width
+              }}
               className={classNames(
-                classes.sideModalContent,
-                childrenWrapperClass
+                classes.sideModal,
+                { [classes.leftRadius]: leftBorderRadius },
+                innerClassName
               )}
             >
-              {children}
-            </Grid>
-            {footerLayout ? (
               <Grid item>
-                <footer
-                  className={[classes.sideModalFooter, footerClassName].join(
+                <header
+                  className={[classes.sideModalHeader, headerClassName].join(
                     ' '
                   )}
                 >
-                  <Grid container>{footerLayout}</Grid>
-                </footer>
+                  <Grid container justify="space-between">
+                    <Grid item>
+                      <Typography className={classes.sideModalHeaderTitle}>
+                        {title}
+                      </Typography>
+                    </Grid>
+                    {closeLink && (
+                      <Grid item>
+                        <CircleIconButton
+                          className={[classes.icon, 'hvr-grow'].join(' ')}
+                          // component={Link}
+                          // to={closeLink}
+                          onClick={handleCloseClick}
+                        >
+                          <Close />
+                        </CircleIconButton>
+                      </Grid>
+                    )}
+                  </Grid>
+                </header>
               </Grid>
-            ) : null}
-          </Grid>
-        </Slide>
+
+              <Grid
+                item
+                className={classNames(
+                  classes.sideModalContent,
+                  childrenWrapperClass
+                )}
+              >
+                {children}
+              </Grid>
+              {footerLayout ? (
+                <Grid item>
+                  <footer
+                    className={[classes.sideModalFooter, footerClassName].join(
+                      ' '
+                    )}
+                  >
+                    <Grid container>{footerLayout}</Grid>
+                  </footer>
+                </Grid>
+              ) : null}
+            </Grid>
+          </Slide>
+        </div>
       </div>
     </Fade>
   )

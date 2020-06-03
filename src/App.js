@@ -78,6 +78,7 @@ import { apiConstants } from './constants'
 import { getGoogleFonts } from 'actions/fontsActions'
 import { getUserDetailsAction } from 'actions/userActions'
 import { updateTokenAction } from 'actions/authenticationActions'
+
 import { isExpired } from 'utils/date'
 import routeByName from 'constants/routes'
 import {
@@ -108,9 +109,10 @@ const {
   CustomWidget
 } = featureConstants
 
-const appWrapperMapStateToProps = ({ user, login }) => ({
+const appWrapperMapStateToProps = ({ user, login, appReducer }) => ({
   login: login,
-  details: user.details
+  details: user.details,
+  modalHeight: appReducer.height
 })
 
 const appWrapperMapDispatchToProps = dispatch =>
@@ -131,10 +133,12 @@ const AppWrapper = connect(
       classes,
       details = {},
       login = {},
+      modalHeight,
       getUserDetailsAction,
       updateTokenAction,
       ...props
     }) => {
+      console.log(modalHeight)
       useEffect(() => {
         const isLoggedOut = isExpired()
 
@@ -345,6 +349,7 @@ const AppWrapper = connect(
             <Route path="/custom-report/:id" component={CustomReport} />
             <Route path="/system/tags-library" component={TagsLibrary} />
             <Route exact path="/system" component={AdminDashboard} />
+
             <Footer />
           </div>
         </Fragment>

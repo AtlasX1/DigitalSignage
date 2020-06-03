@@ -50,6 +50,7 @@ import impersonateReducer from 'reducers/impersonateReducer'
 import clientUsers from './clientUsersReducer'
 import whiteLabel from './whiteLabelReducer'
 import quoteReducer from './quoteReducer'
+import appReducer from './appReducer'
 
 const editorReducer = combineReducers({
   designGallery,
@@ -99,7 +100,8 @@ const rootReducer = combineReducers({
   whiteLabel,
   quoteReducer,
   clientUsers,
-  alert
+  alert,
+  appReducer
 })
 
 export default rootReducer
