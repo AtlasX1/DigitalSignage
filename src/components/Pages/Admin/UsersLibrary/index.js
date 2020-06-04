@@ -1,11 +1,4 @@
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-  useRef,
-  useLayoutEffect
-} from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { translate } from 'react-i18next'
 import { Link, Route } from 'react-router-dom'
 import { withStyles } from '@material-ui/core'
@@ -72,29 +65,6 @@ import {
 import { impersonateUserAction } from 'actions/authenticationActions'
 import UserItem from 'components/Pages/Admin/UsersLibrary/UserItem'
 import EmailLink from 'components/EmailLink'
-
-const useResizeObserver = () => {
-  const [entry, setEntry] = useState({})
-  const [node, setNode] = useState(null)
-  const observer = useRef(null)
-
-  const disconnect = useCallback(() => {
-    const { current } = observer
-    current && current.disconnect()
-  }, [])
-
-  const observe = useCallback(() => {
-    observer.current = new ResizeObserver(([entry]) => setEntry(entry))
-    node && observer.current.observe(node.childNodes[0])
-  }, [node])
-
-  useLayoutEffect(() => {
-    observe()
-    return () => disconnect()
-  }, [disconnect, observe])
-
-  return [setNode, entry]
-}
 
 const styles = ({ palette, type }) => ({
   actionIcons: {
@@ -170,7 +140,7 @@ const UsersLibrary = ({
   deleteGroupItemReducer,
   ungroupedUsers,
   getUngroupedUsers,
-  setHeight
+  modalHeight
 }) => {
   const [showInactive, toggleShowInactive] = useState(false)
   const searchParams = useMemo(() => {
@@ -354,21 +324,8 @@ const UsersLibrary = ({
     }
   }, [postGroupItemReducer, deleteGroupItemReducer, getUngroupedUsers])
 
-  const [refModalHeight, modalEntry] = useResizeObserver()
-
-  let componentHeight = '100%'
-
-  if (
-    modalEntry.contentRect != undefined &&
-    modalEntry.target.offsetHeight > 0
-  ) {
-    componentHeight = modalEntry.contentRect.height.toString() + 'px'
-  }
-  useEffect(() => {
-    setHeight(componentHeight)
-  }, [componentHeight])
   return (
-    <div style={{ height: componentHeight }}>
+    <div style={{ height: modalHeight }}>
       <PageContainer
         pageTitle={translate.title}
         PageTitleComponent={
@@ -475,7 +432,7 @@ const UsersLibrary = ({
               postGroupItemReducer={postGroupItemReducer}
               deleteGroupItemReducer={deleteGroupItemReducer}
               clearGroupItemsInfo={clearUsersGroupItemsInfo}
-              refModalHeight={refModalHeight}
+              displayOverflow={true}
               itemsPopupProps={{
                 getGroupItems: getUsersGroupItems,
                 onDeleteItem: handleDeleteGroupItem,
@@ -531,7 +488,12 @@ const UsersLibrary = ({
   )
 }
 
-const mapStateToProps = ({ impersonateReducer, users, preference }) => ({
+const mapStateToProps = ({
+  impersonateReducer,
+  users,
+  preference,
+  appReducer
+}) => ({
   items: users.items.response,
   meta: users.items.meta,
   put: users.put,
@@ -542,7 +504,8 @@ const mapStateToProps = ({ impersonateReducer, users, preference }) => ({
   postGroupItemReducer: users.postGroupItem,
   groupItemsReducer: users.groupItems,
   deleteGroupItemReducer: users.deleteGroupItem,
-  ungroupedUsers: users.ungroupedUsers.response
+  ungroupedUsers: users.ungroupedUsers.response,
+  modalHeight: appReducer.height
 })
 
 const mapDispatchToProps = dispatch =>

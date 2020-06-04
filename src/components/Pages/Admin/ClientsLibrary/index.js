@@ -108,7 +108,8 @@ const ClientsLibrary = ({
   postClientNote,
   clearGetClientNoteInfo,
   clearPostClientNoteInfo,
-  clearGetClientsGroupItemsInfo
+  clearGetClientsGroupItemsInfo,
+  modalHeight
 }) => {
   const role = useUserRole()
 
@@ -177,133 +178,141 @@ const ClientsLibrary = ({
   )
 
   return (
-    <PageContainer
-      pageTitle={translate.title}
-      PageTitleComponent={
-        <PageTitle selectedCount={selectedList.count} title={translate.title} />
-      }
-      ActionButtonsComponent={
-        <>
-          <WhiteButton
-            className={`hvr-radial-out ${classes.actionIcons}`}
-            component={Link}
-            to={getUrlPrefix(routeByName.clients.groups)}
-          >
-            <i
-              className={`${classes.iconColor} icon-navigation-show-more-vertical`}
-            />
-            {translate.groups}
-          </WhiteButton>
-          <WhiteButton className={`hvr-radial-out ${classes.actionIcons}`}>
-            <i
-              className={`${classes.iconColor} icon-navigation-show-more-vertical`}
-            />
-            {translate.more}
-          </WhiteButton>
-          <WhiteButton className={`hvr-radial-out ${classes.actionIcons}`}>
-            <i className={`${classes.iconColor} icon-interface-alert-circle`} />
-            {translate.setAlerts}
-          </WhiteButton>
-          <WhiteButton
-            className={`hvr-radial-out ${classes.actionIcons}`}
-            component={Link}
-            to={getUrlPrefix(routeByName.clients.add)}
-          >
-            <i className={`${classes.iconColor} icon-folder-video`} />
-            {translate.add}
-          </WhiteButton>
-        </>
-      }
-      SubHeaderLeftActionComponent={
-        <CheckboxSwitcher label={translate.teamviewer} />
-      }
-      SubHeaderMenuComponent={
-        <Filter fetcher={getItems} perPage={meta.perPage} />
-      }
-    >
-      <BaseTable
-        meta={meta}
-        fetcher={getItems}
-        columns={preference.columns}
-        preferenceActions={preference.actions}
-        selectedList={selectedList}
-        placeholderMessage={translate.placeholder}
+    <div style={{ height: modalHeight }}>
+      <PageContainer
+        pageTitle={translate.title}
+        PageTitleComponent={
+          <PageTitle
+            selectedCount={selectedList.count}
+            title={translate.title}
+          />
+        }
+        ActionButtonsComponent={
+          <>
+            <WhiteButton
+              className={`hvr-radial-out ${classes.actionIcons}`}
+              component={Link}
+              to={getUrlPrefix(routeByName.clients.groups)}
+            >
+              <i
+                className={`${classes.iconColor} icon-navigation-show-more-vertical`}
+              />
+              {translate.groups}
+            </WhiteButton>
+            <WhiteButton className={`hvr-radial-out ${classes.actionIcons}`}>
+              <i
+                className={`${classes.iconColor} icon-navigation-show-more-vertical`}
+              />
+              {translate.more}
+            </WhiteButton>
+            <WhiteButton className={`hvr-radial-out ${classes.actionIcons}`}>
+              <i
+                className={`${classes.iconColor} icon-interface-alert-circle`}
+              />
+              {translate.setAlerts}
+            </WhiteButton>
+            <WhiteButton
+              className={`hvr-radial-out ${classes.actionIcons}`}
+              component={Link}
+              to={getUrlPrefix(routeByName.clients.add)}
+            >
+              <i className={`${classes.iconColor} icon-folder-video`} />
+              {translate.add}
+            </WhiteButton>
+          </>
+        }
+        SubHeaderLeftActionComponent={
+          <CheckboxSwitcher label={translate.teamviewer} />
+        }
+        SubHeaderMenuComponent={
+          <Filter fetcher={getItems} perPage={meta.perPage} />
+        }
       >
-        {items.map(row => (
-          <TableRow
-            key={`client-row-${row.id}`}
-            row={row}
-            role={role}
-            preference={preference.columns}
-            selected={selectedList.isSelect(row.id)}
-            onToggleSelect={selectedList.toggle}
-            onUnselect={selectedList.unselect}
-          />
-        ))}
-      </BaseTable>
-      <Route
-        path={getUrlPrefix(routeByName.clients.add)}
-        component={AddEditClient}
-      />
-      <Route
-        path={getUrlPrefix(routeByName.clients.edit)}
-        component={AddEditClient}
-      />
-      <Route
-        path={getUrlPrefix(routeByName.clients.groups)}
-        render={props => (
-          <GroupModal
-            {...props}
-            title={t('Client Groups')}
-            closeLink={getUrlPrefix(routeByName.clients.root)}
-            entity={entityGroupsConstants.Client}
-            groupItemsTitle={t('Clients')}
-            dropItemType={dndConstants.clientItemTypes.CLIENT_ITEM}
-            onMoveItem={handleMoveItem}
-            itemsLoading={meta.isLoading}
-            groupItemsReducer={groupItems}
-            postGroupItemReducer={postGroupItem}
-            deleteGroupItemReducer={deleteGroupItem}
-            clearGroupItemsInfo={clearClientGroupItemsInfo}
-            itemsPopupProps={{
-              getGroupItems: getClientGroupItems,
-              onDeleteItem: handleDeleteGroupItem,
-              clearGroupItemsInfo: clearGetClientsGroupItemsInfo
-            }}
-          >
-            <Grid container>
-              {items.map(item => (
-                <ClientGroupItem key={item.id} item={item} />
-              ))}
-            </Grid>
-          </GroupModal>
-        )}
-      />
-      <Route
-        path="/system/clients-library/:id/super-admin-settings"
-        component={SuperAdminSettings}
-      />
-      <Route
-        path="/system/clients-library/:id/white-label-super-admin-settings"
-        component={SuperAdminSettings}
-      />
-      <Route
-        path={getUrlPrefix(routeByName.clients.notes())}
-        render={props => (
-          <NoteDialog
-            {...props}
-            closeLink={path}
-            dialogTitle={t('Client Notes')}
-            noteData={!!clientNotes.response && clientNotes.response.note}
-            postNoteReducer={postNoteReducer}
-            getNotesAction={getClientNotes}
-            postNoteAction={postClientNote}
-            clearGetNoteInfo={clearGetClientNoteInfo}
-            clearPostNoteInfo={clearPostClientNoteInfo}
-          />
-        )}
-      />
-    </PageContainer>
+        <BaseTable
+          meta={meta}
+          fetcher={getItems}
+          columns={preference.columns}
+          preferenceActions={preference.actions}
+          selectedList={selectedList}
+          placeholderMessage={translate.placeholder}
+        >
+          {items.map(row => (
+            <TableRow
+              key={`client-row-${row.id}`}
+              row={row}
+              role={role}
+              preference={preference.columns}
+              selected={selectedList.isSelect(row.id)}
+              onToggleSelect={selectedList.toggle}
+              onUnselect={selectedList.unselect}
+            />
+          ))}
+        </BaseTable>
+        <Route
+          path={getUrlPrefix(routeByName.clients.add)}
+          component={AddEditClient}
+        />
+        <Route
+          path={getUrlPrefix(routeByName.clients.edit)}
+          component={AddEditClient}
+        />
+        <Route
+          path={getUrlPrefix(routeByName.clients.groups)}
+          render={props => (
+            <GroupModal
+              {...props}
+              title={t('Client Groups')}
+              closeLink={getUrlPrefix(routeByName.clients.root)}
+              entity={entityGroupsConstants.Client}
+              groupItemsTitle={t('Clients')}
+              dropItemType={dndConstants.clientItemTypes.CLIENT_ITEM}
+              onMoveItem={handleMoveItem}
+              itemsLoading={meta.isLoading}
+              groupItemsReducer={groupItems}
+              postGroupItemReducer={postGroupItem}
+              deleteGroupItemReducer={deleteGroupItem}
+              clearGroupItemsInfo={clearClientGroupItemsInfo}
+              displayOverflow={true}
+              itemsPopupProps={{
+                getGroupItems: getClientGroupItems,
+                onDeleteItem: handleDeleteGroupItem,
+                clearGroupItemsInfo: clearGetClientsGroupItemsInfo
+              }}
+            >
+              <Grid container>
+                {items.map(item => (
+                  <ClientGroupItem key={item.id} item={item} />
+                ))}
+              </Grid>
+            </GroupModal>
+          )}
+        />
+        <Route
+          path="/system/clients-library/:id/super-admin-settings"
+          component={SuperAdminSettings}
+        />
+        <Route
+          path="/system/clients-library/:id/white-label-super-admin-settings"
+          component={SuperAdminSettings}
+        />
+        <Route
+          path={getUrlPrefix(routeByName.clients.notes())}
+          render={props => (
+            <NoteDialog
+              {...props}
+              closeLink={path}
+              dialogTitle={t('Client Notes')}
+              noteData={!!clientNotes.response && clientNotes.response.note}
+              postNoteReducer={postNoteReducer}
+              getNotesAction={getClientNotes}
+              postNoteAction={postClientNote}
+              clearGetNoteInfo={clearGetClientNoteInfo}
+              clearPostNoteInfo={clearPostClientNoteInfo}
+            />
+          )}
+        />
+      </PageContainer>
+    </div>
   )
 }
 
@@ -318,7 +327,8 @@ const mapStateToProps = ({
     deleteGroupItem,
     note,
     postNote
-  }
+  },
+  appReducer
 }) => ({
   meta,
   put,
@@ -329,7 +339,8 @@ const mapStateToProps = ({
   postGroupItem,
   deleteGroupItem,
   clientNotes: note,
-  postNoteReducer: postNote
+  postNoteReducer: postNote,
+  modalHeight: appReducer.height
 })
 
 const mapDispatchToProps = dispatch =>

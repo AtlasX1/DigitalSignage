@@ -133,7 +133,8 @@ const DeviceLibrary = ({
   disableAlertAction,
   clearDisableAlertInfoAction,
   disableAlertReducer,
-  getAlertTypesAction
+  getAlertTypesAction,
+  modalHeight
 }) => {
   const role = useUserRole()
   const [deleteAllAlertsDialog, setDeleteAllAlertsDialog] = useState(false)
@@ -210,200 +211,203 @@ const DeviceLibrary = ({
   )
 
   return (
-    <PageContainer
-      pageTitle={t('Device page title')}
-      PageTitleComponent={
-        selected > 0 && (
-          <div
-            key="selectTitle"
-            style={{ display: 'flex', alignItems: 'center' }}
-          >
-            <Typography component="h2" className={classes.selectTitle}>
-              {`${t('Device page title')} |`}
-            </Typography>
-            {'\u00A0'}
-            <Typography
-              component="h3"
-              variant="subtitle1"
-              className={classes.selectSubTitle}
+    <div style={{ height: modalHeight }}>
+      <PageContainer
+        pageTitle={t('Device page title')}
+        PageTitleComponent={
+          selected > 0 && (
+            <div
+              key="selectTitle"
+              style={{ display: 'flex', alignItems: 'center' }}
             >
-              {`${selected} ${t('selected')}`}
-            </Typography>
-          </div>
-        )
-      }
-      ActionButtonsComponent={
-        <Fragment>
-          <WhiteButton
-            className={`hvr-radial-out ${classes.actionIcons}`}
-            component={Link}
-            to={getUrlPrefix(routeByName.device.groups)}
-          >
-            <i className={`${classes.iconColor} icon-network-computer-1`} />
-            {t('Groups')}
-          </WhiteButton>
-          {role.org && (
-            <WhiteButton
-              className={`hvr-radial-out ${classes.actionAccentIcons}`}
-              component={Link}
-              to={getUrlPrefix(
-                routeByName.device.alerts.getByName('hurricane')
-              )}
-            >
-              <i
-                className={`${classes.iconColor} ${classes.iconAccent} icon-interface-alert-circle`}
-              />
-              {t('Set Alerts table action')}
-            </WhiteButton>
-          )}
-          {role.org && (
-            <WhiteButton
-              className={`hvr-radial-out ${classes.actionAccentIcons}`}
-              onClick={() => setDeleteAllAlertsDialog(true)}
-            >
-              <i
-                className={`${classes.iconColor} ${classes.iconAccent} icon-bin`}
-              />
-              {t('Remove all alerts')}
-            </WhiteButton>
-          )}
-          {role.system && (
+              <Typography component="h2" className={classes.selectTitle}>
+                {`${t('Device page title')} |`}
+              </Typography>
+              {'\u00A0'}
+              <Typography
+                component="h3"
+                variant="subtitle1"
+                className={classes.selectSubTitle}
+              >
+                {`${selected} ${t('selected')}`}
+              </Typography>
+            </div>
+          )
+        }
+        ActionButtonsComponent={
+          <Fragment>
             <WhiteButton
               className={`hvr-radial-out ${classes.actionIcons}`}
               component={Link}
-              to={getUrlPrefix(routeByName.device.add)}
+              to={getUrlPrefix(routeByName.device.groups)}
             >
-              <i className={`${classes.iconColor} icon-folder-video`} />
-              {t('Add Device table action')}
+              <i className={`${classes.iconColor} icon-network-computer-1`} />
+              {t('Groups')}
             </WhiteButton>
-          )}
-        </Fragment>
-      }
-      SubHeaderLeftActionComponent={
-        role.system ? (
-          <CheckboxSwitcher label={t('Show Teamviewer Status')} />
-        ) : null
-      }
-      SubHeaderMenuComponent={
-        <DeviceSearchForm
-          initialValues={filterParams}
-          onSubmit={handleSubmitSearchForm}
-          onReset={handleResetSearchForm}
-        />
-      }
-      SubHeaderRightActionComponent={
-        <Fragment>
-          <CircleIconButton
-            className={`hvr-grow ${classes.circleButton}`}
-            component={Link}
-            to={getUrlPrefix(routeByName.device.grid)}
-          >
-            <GridOn />
-          </CircleIconButton>
-          <CircleIconButton
-            className={`hvr-grow ${classes.circleButton}`}
-            component={Link}
-            to={getUrlPrefix(routeByName.device.list)}
-          >
-            <List />
-          </CircleIconButton>
-        </Fragment>
-      }
-    >
-      <Route
-        exact
-        path={getUrlPrefix(routeByName.device.root)}
-        render={() => <Redirect to={getUrlPrefix(routeByName.device.list)} />}
-      />
-      <Route
-        path={getUrlPrefix(routeByName.device.list)}
-        render={props => (
-          <DeviceTableView
-            {...props}
-            onChangeSelection={handleChangeSelectionItems}
-            filterParams={transformedFilterParams}
+            {role.org && (
+              <WhiteButton
+                className={`hvr-radial-out ${classes.actionAccentIcons}`}
+                component={Link}
+                to={getUrlPrefix(
+                  routeByName.device.alerts.getByName('hurricane')
+                )}
+              >
+                <i
+                  className={`${classes.iconColor} ${classes.iconAccent} icon-interface-alert-circle`}
+                />
+                {t('Set Alerts table action')}
+              </WhiteButton>
+            )}
+            {role.org && (
+              <WhiteButton
+                className={`hvr-radial-out ${classes.actionAccentIcons}`}
+                onClick={() => setDeleteAllAlertsDialog(true)}
+              >
+                <i
+                  className={`${classes.iconColor} ${classes.iconAccent} icon-bin`}
+                />
+                {t('Remove all alerts')}
+              </WhiteButton>
+            )}
+            {role.system && (
+              <WhiteButton
+                className={`hvr-radial-out ${classes.actionIcons}`}
+                component={Link}
+                to={getUrlPrefix(routeByName.device.add)}
+              >
+                <i className={`${classes.iconColor} icon-folder-video`} />
+                {t('Add Device table action')}
+              </WhiteButton>
+            )}
+          </Fragment>
+        }
+        SubHeaderLeftActionComponent={
+          role.system ? (
+            <CheckboxSwitcher label={t('Show Teamviewer Status')} />
+          ) : null
+        }
+        SubHeaderMenuComponent={
+          <DeviceSearchForm
+            initialValues={filterParams}
+            onSubmit={handleSubmitSearchForm}
+            onReset={handleResetSearchForm}
           />
-        )}
-      />
-      <Route
-        path={getUrlPrefix(routeByName.device.edit)}
-        render={props => <AddEditDevice backTo="list" {...props} />}
-      />
-      <Route
-        path={getUrlPrefix(routeByName.device.editGrid)}
-        render={props => <AddEditDevice backTo="grid" {...props} />}
-      />
-      <Route
-        path={getUrlPrefix(routeByName.device.note)}
-        component={NoteDialog}
-      />
-      <Route
-        path={getUrlPrefix(routeByName.device.alerts.set)}
-        component={SetAlerts}
-      />
-      <Route
-        path={getUrlPrefix(routeByName.device.add)}
-        component={AddEditDevice}
-      />
-      <Route
-        path={getUrlPrefix(routeByName.device.grid)}
-        render={props => (
-          <DeviceGridView {...props} filterParams={transformedFilterParams} />
-        )}
-      />
-      <Route
-        path={getUrlPrefix(routeByName.device.screenPreview)}
-        component={ScreenPreviews}
-      />
-      <Route
-        path={getUrlPrefix(routeByName.device.channelsPreview)}
-        component={ChannelPreviews}
-      />
-      <Route
-        path={getUrlPrefix(routeByName.device.groups)}
-        render={props => (
-          <GroupModal
-            {...props}
-            title={t('Device Groups')}
-            closeLink={getUrlPrefix(routeByName.device.grid)}
-            entity={entityGroupsConstants.Device}
-            groupItemsTitle={t('Devices')}
-            dropItemType={dndConstants.deviceGroupsItemTypes.DEVICE_ITEM}
-            onMoveItem={handleMoveItem}
-            itemsLoading={loading}
-            groupItemsReducer={groupItemsReducer}
-            postGroupItemReducer={postGroupItemReducer}
-            deleteGroupItemReducer={deleteGroupItemReducer}
-            clearGroupItemsInfo={clearDeviceGroupItemsInfo}
-            itemsPopupProps={{
-              getGroupItems: id =>
-                getDeviceGroupItemsAction(id, {
-                  order: 'asc',
-                  sort: 'name',
-                  fields: 'id,name'
-                }),
-              onDeleteItem: handleDeleteGroupItem,
-              clearGroupItemsInfo: clearGetDeviceGroupItemsInfoAction
-            }}
-          >
-            <Grid container className={classes.devicesList}>
-              {libraryUtils.sortByName(devices).map((device, index) => (
-                <DeviceItem key={`device-${index}`} device={device} />
-              ))}
-            </Grid>
-          </GroupModal>
-        )}
-      />
+        }
+        SubHeaderRightActionComponent={
+          <Fragment>
+            <CircleIconButton
+              className={`hvr-grow ${classes.circleButton}`}
+              component={Link}
+              to={getUrlPrefix(routeByName.device.grid)}
+            >
+              <GridOn />
+            </CircleIconButton>
+            <CircleIconButton
+              className={`hvr-grow ${classes.circleButton}`}
+              component={Link}
+              to={getUrlPrefix(routeByName.device.list)}
+            >
+              <List />
+            </CircleIconButton>
+          </Fragment>
+        }
+      >
+        <Route
+          exact
+          path={getUrlPrefix(routeByName.device.root)}
+          render={() => <Redirect to={getUrlPrefix(routeByName.device.list)} />}
+        />
+        <Route
+          path={getUrlPrefix(routeByName.device.list)}
+          render={props => (
+            <DeviceTableView
+              {...props}
+              onChangeSelection={handleChangeSelectionItems}
+              filterParams={transformedFilterParams}
+            />
+          )}
+        />
+        <Route
+          path={getUrlPrefix(routeByName.device.edit)}
+          render={props => <AddEditDevice backTo="list" {...props} />}
+        />
+        <Route
+          path={getUrlPrefix(routeByName.device.editGrid)}
+          render={props => <AddEditDevice backTo="grid" {...props} />}
+        />
+        <Route
+          path={getUrlPrefix(routeByName.device.note)}
+          component={NoteDialog}
+        />
+        <Route
+          path={getUrlPrefix(routeByName.device.alerts.set)}
+          component={SetAlerts}
+        />
+        <Route
+          path={getUrlPrefix(routeByName.device.add)}
+          component={AddEditDevice}
+        />
+        <Route
+          path={getUrlPrefix(routeByName.device.grid)}
+          render={props => (
+            <DeviceGridView {...props} filterParams={transformedFilterParams} />
+          )}
+        />
+        <Route
+          path={getUrlPrefix(routeByName.device.screenPreview)}
+          component={ScreenPreviews}
+        />
+        <Route
+          path={getUrlPrefix(routeByName.device.channelsPreview)}
+          component={ChannelPreviews}
+        />
+        <Route
+          path={getUrlPrefix(routeByName.device.groups)}
+          render={props => (
+            <GroupModal
+              {...props}
+              title={t('Device Groups')}
+              closeLink={getUrlPrefix(routeByName.device.grid)}
+              entity={entityGroupsConstants.Device}
+              groupItemsTitle={t('Devices')}
+              dropItemType={dndConstants.deviceGroupsItemTypes.DEVICE_ITEM}
+              onMoveItem={handleMoveItem}
+              itemsLoading={loading}
+              groupItemsReducer={groupItemsReducer}
+              postGroupItemReducer={postGroupItemReducer}
+              deleteGroupItemReducer={deleteGroupItemReducer}
+              displayOverflow={true}
+              clearGroupItemsInfo={clearDeviceGroupItemsInfo}
+              itemsPopupProps={{
+                getGroupItems: id =>
+                  getDeviceGroupItemsAction(id, {
+                    order: 'asc',
+                    sort: 'name',
+                    fields: 'id,name'
+                  }),
+                onDeleteItem: handleDeleteGroupItem,
+                clearGroupItemsInfo: clearGetDeviceGroupItemsInfoAction
+              }}
+            >
+              <Grid container className={classes.devicesList}>
+                {libraryUtils.sortByName(devices).map((device, index) => (
+                  <DeviceItem key={`device-${index}`} device={device} />
+                ))}
+              </Grid>
+            </GroupModal>
+          )}
+        />
 
-      <RemoveAlertsConfirm
-        open={deleteAllAlertsDialog}
-        handleClose={() => setDeleteAllAlertsDialog(false)}
-        title={t('Are you sure you want to remove all alerts?')}
-        handleClick={disableAlertAction}
-        clearAction={clearDisableAlertInfoAction}
-        reducer={disableAlertReducer}
-      />
-    </PageContainer>
+        <RemoveAlertsConfirm
+          open={deleteAllAlertsDialog}
+          handleClose={() => setDeleteAllAlertsDialog(false)}
+          title={t('Are you sure you want to remove all alerts?')}
+          handleClick={disableAlertAction}
+          clearAction={clearDisableAlertInfoAction}
+          reducer={disableAlertReducer}
+        />
+      </PageContainer>
+    </div>
   )
 }
 
@@ -418,7 +422,14 @@ DeviceLibrary.propTypes = {
   }).isRequired
 }
 
-const mapStateToProps = ({ device, user, group, alert, config }) => ({
+const mapStateToProps = ({
+  device,
+  user,
+  group,
+  alert,
+  config,
+  appReducer
+}) => ({
   library: device.library,
   meta: device.meta,
   groupsReducer: device.groups,
@@ -429,7 +440,8 @@ const mapStateToProps = ({ device, user, group, alert, config }) => ({
   groupItemsReducer: device.groupItems,
   deleteGroupItemReducer: device.deleteGroupItem,
   disableAlertReducer: alert.disableAlert,
-  alertTypes: config.alertTypes.response
+  alertTypes: config.alertTypes.response,
+  modalHeight: appReducer.height
 })
 const mapDispatchToProps = dispatch =>
   bindActionCreators(

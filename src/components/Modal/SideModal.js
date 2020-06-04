@@ -1,13 +1,42 @@
-import React, { useState, useCallback } from 'react'
+import React, {
+  useState,
+  useCallback,
+  useRef,
+  useLayoutEffect,
+  useEffect
+} from 'react'
 import { withRouter } from 'react-router-dom'
 import classNames from 'classnames'
 import { compose } from 'redux'
-
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
 import { withStyles, Grid, Typography, Slide, Fade } from '@material-ui/core'
 import { Close } from '@material-ui/icons'
 
+import { setHeight } from 'actions/appActions'
 import { CircleIconButton } from '../Buttons'
+const useResizeObserver = () => {
+  const [entry, setEntry] = useState({})
+  const [node, setNode] = useState(null)
+  const observer = useRef(null)
 
+  const disconnect = useCallback(() => {
+    const { current } = observer
+    current && current.disconnect()
+  }, [])
+
+  const observe = useCallback(() => {
+    observer.current = new ResizeObserver(([entry]) => setEntry(entry))
+    node && observer.current.observe(node.childNodes[0])
+  }, [node])
+
+  useLayoutEffect(() => {
+    observe()
+    return () => disconnect()
+  }, [disconnect, observe])
+
+  return [setNode, entry]
+}
 const styles = ({ palette, type }) => ({
   sideModalWrap: {
     display: 'flex',
@@ -69,7 +98,8 @@ const SideModal = ({
   footerLayout,
   width,
   animated = true,
-  refModalHeight
+  setHeight,
+  displayOverflow
 }) => {
   const [mounted, setMounted] = useState(true)
   const [transitionDuration] = useState(animated ? TRANSITION_DURATION : 0)
@@ -89,6 +119,25 @@ const SideModal = ({
     setMounted(false)
     return animated ? closeAnimated() : closeInstantly()
   }, [setMounted, animated, closeAnimated, closeInstantly])
+
+  const [refModalHeight, modalEntry] = useResizeObserver()
+
+  let componentHeight = '100%'
+
+  if (modalEntry.contentRect != undefined && mounted) {
+    componentHeight = modalEntry.contentRect.height + 'px'
+  } else {
+    componentHeight = '100%'
+  }
+
+  let styleHeight = 'auto'
+  if (displayOverflow) {
+    styleHeight = 'max-content'
+  }
+
+  useEffect(() => {
+    setHeight(componentHeight)
+  }, [componentHeight])
 
   return (
     <Fade mountOnEnter unmountOnExit in={mounted} timeout={transitionDuration}>
@@ -115,6 +164,7 @@ const SideModal = ({
               alignItems="stretch"
               wrap="nowrap"
               style={{
+                height: styleHeight,
                 width
               }}
               className={classNames(
@@ -179,4 +229,17 @@ const SideModal = ({
   )
 }
 
-export default compose(withRouter, withStyles(styles))(SideModal)
+const mapStateToProps = ({}) => ({})
+
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    {
+      setHeight
+    },
+    dispatch
+  )
+export default compose(
+  withRouter,
+  withStyles(styles),
+  connect(mapStateToProps, mapDispatchToProps)
+)(SideModal)

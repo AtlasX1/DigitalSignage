@@ -80,7 +80,8 @@ const MediaLibrary = ({
   postGroupItemReducer,
   groupItemsReducer,
   deleteGroupItemReducer,
-  clearMediaGroupItemsInfo
+  clearMediaGroupItemsInfo,
+  modalHeight
 }) => {
   const searchParams = useMemo(() => {
     const paramsObj = {}
@@ -144,98 +145,105 @@ const MediaLibrary = ({
   }
 
   return (
-    <PageContainer
-      pageTitle={t('Media page title')}
-      PageTitleComponent={
-        selected > 0 ? (
-          <div
-            key="selectTitle"
-            style={{ display: 'flex', alignItems: 'center' }}
-          >
-            <Typography component="h2" className={classes.selectTitle}>
-              {`${t('Media page title')} |`}
-            </Typography>
-            {'\u00A0'}
-            <Typography
-              component="h3"
-              variant="subtitle1"
-              className={classes.selectSubTitle}
+    <div style={{ height: modalHeight }}>
+      <PageContainer
+        pageTitle={t('Media page title')}
+        PageTitleComponent={
+          selected > 0 ? (
+            <div
+              key="selectTitle"
+              style={{ display: 'flex', alignItems: 'center' }}
             >
-              {`${selected} ${t('selected')}`}
-            </Typography>
-          </div>
-        ) : null
-      }
-      ActionButtonsComponent={
-        <>
-          <WhiteButton
-            className={`hvr-radial-out ${classes.actionIcons}`}
-            component={Link}
-            to="/media-library/groups"
-          >
-            <i
-              className={`${classes.iconColor} icon-navigation-show-more-vertical`}
-            />
-            {t('Groups')}
-          </WhiteButton>
-          <WhiteButton
-            className={`hvr-radial-out ${classes.actionIcons}`}
-            component={Link}
-            to="/media-library/media/add/general"
-          >
-            <i className={`${classes.iconColor} icon-folder-video`} />
-            {t('Add Media table action')}
-          </WhiteButton>
-        </>
-      }
-      SubHeaderMenuComponent={
-        <MediaSearchForm
-          queryParams={queryParams}
-          onSubmit={onFilterSubmit}
-          onReset={onFilterReset}
+              <Typography component="h2" className={classes.selectTitle}>
+                {`${t('Media page title')} |`}
+              </Typography>
+              {'\u00A0'}
+              <Typography
+                component="h3"
+                variant="subtitle1"
+                className={classes.selectSubTitle}
+              >
+                {`${selected} ${t('selected')}`}
+              </Typography>
+            </div>
+          ) : null
+        }
+        ActionButtonsComponent={
+          <>
+            <WhiteButton
+              className={`hvr-radial-out ${classes.actionIcons}`}
+              component={Link}
+              to="/media-library/groups"
+            >
+              <i
+                className={`${classes.iconColor} icon-navigation-show-more-vertical`}
+              />
+              {t('Groups')}
+            </WhiteButton>
+            <WhiteButton
+              className={`hvr-radial-out ${classes.actionIcons}`}
+              component={Link}
+              to="/media-library/media/add/general"
+            >
+              <i className={`${classes.iconColor} icon-folder-video`} />
+              {t('Add Media table action')}
+            </WhiteButton>
+          </>
+        }
+        SubHeaderMenuComponent={
+          <MediaSearchForm
+            queryParams={queryParams}
+            onSubmit={onFilterSubmit}
+            onReset={onFilterReset}
+          />
+        }
+      >
+        <MediaTable
+          onChangeSelection={handleChangeSelectionItems}
+          queryParams={queryParamsHelper(queryParams)}
         />
-      }
-    >
-      <MediaTable
-        onChangeSelection={handleChangeSelectionItems}
-        queryParams={queryParamsHelper(queryParams)}
-      />
-      <Route
-        path="/media-library/media/:mode/:currentTab"
-        component={AddMedia}
-      />
-      <Route
-        path="/media-library/groups"
-        render={props => (
-          <GroupModal
-            {...props}
-            title={t('Media Groups')}
-            closeLink="/media-library"
-            entity={entityGroupsConstants.Media}
-            groupItemsTitle={t('Media')}
-            dropItemType={dndConstants.mediaGroupsItemTypes.MEDIA_ITEM}
-            onMoveItem={handleMoveItem}
-            itemsLoading={loading}
-            groupItemsReducer={groupItemsReducer}
-            postGroupItemReducer={postGroupItemReducer}
-            deleteGroupItemReducer={deleteGroupItemReducer}
-            clearGroupItemsInfo={clearMediaGroupItemsInfo}
-            itemsPopupProps={{
-              getGroupItems: getMediaGroupItemsAction,
-              onDeleteItem: handleDeleteGroupItem,
-              clearGroupItemsInfo: clearGetMediaGroupItemsInfoAction
-            }}
-          >
-            <Grid container>
-              {media.map((media, index) => (
-                <MediaItem key={`media-${index}`} media={media} index={index} />
-              ))}
-            </Grid>
-          </GroupModal>
-        )}
-      />
-      <ScreenPreviewModal />
-    </PageContainer>
+        <Route
+          path="/media-library/media/:mode/:currentTab"
+          component={AddMedia}
+        />
+        <Route
+          path="/media-library/groups"
+          render={props => (
+            <GroupModal
+              {...props}
+              title={t('Media Groups')}
+              closeLink="/media-library"
+              entity={entityGroupsConstants.Media}
+              groupItemsTitle={t('Media')}
+              dropItemType={dndConstants.mediaGroupsItemTypes.MEDIA_ITEM}
+              onMoveItem={handleMoveItem}
+              itemsLoading={loading}
+              groupItemsReducer={groupItemsReducer}
+              postGroupItemReducer={postGroupItemReducer}
+              deleteGroupItemReducer={deleteGroupItemReducer}
+              clearGroupItemsInfo={clearMediaGroupItemsInfo}
+              displayOverflow={true}
+              itemsPopupProps={{
+                getGroupItems: getMediaGroupItemsAction,
+                onDeleteItem: handleDeleteGroupItem,
+                clearGroupItemsInfo: clearGetMediaGroupItemsInfoAction
+              }}
+            >
+              <Grid container>
+                {media.map((media, index) => (
+                  <MediaItem
+                    key={`media-${index}`}
+                    media={media}
+                    index={index}
+                  />
+                ))}
+              </Grid>
+            </GroupModal>
+          )}
+        />
+        <ScreenPreviewModal />
+      </PageContainer>
+    </div>
   )
 }
 
@@ -243,7 +251,7 @@ MediaLibrary.propTypes = {
   classes: PropTypes.object.isRequired
 }
 
-const mapStateToProps = ({ media, group, user }) => ({
+const mapStateToProps = ({ media, group, user, appReducer }) => ({
   library: media.library,
   groupsReducer: media.groups,
   postGroupReducer: group.post,
@@ -253,7 +261,8 @@ const mapStateToProps = ({ media, group, user }) => ({
   detailsReducer: user.details,
   groupItemsReducer: media.groupItems,
   deleteGroupItemReducer: media.deleteGroupItem,
-  meta: _get(media, 'library.response.meta', { perPage: 10 })
+  meta: _get(media, 'library.response.meta', { perPage: 10 }),
+  modalHeight: appReducer.height
 })
 const mapDispatchToProps = dispatch =>
   bindActionCreators(

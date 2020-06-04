@@ -138,7 +138,6 @@ const AppWrapper = connect(
       updateTokenAction,
       ...props
     }) => {
-      console.log(modalHeight)
       useEffect(() => {
         const isLoggedOut = isExpired()
 

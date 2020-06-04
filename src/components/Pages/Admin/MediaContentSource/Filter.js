@@ -133,10 +133,5 @@ const mapStateToProps = ({
 })
 
 export default translate('translations')(
-  withStyles(styles)(
-    connect(
-      mapStateToProps,
-      null
-    )(Filter)
-  )
+  withStyles(styles)(connect(mapStateToProps, null)(Filter))
 )

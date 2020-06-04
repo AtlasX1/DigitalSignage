@@ -1,7 +1,7 @@
 import * as types from '../actions'
 
 const initialState = {
-  height: 0
+  height: ''
 }
 
 export default (state = initialState, action) => {
