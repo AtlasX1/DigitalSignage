@@ -36,7 +36,7 @@ import { camelToSnake, snakeToCamel } from 'utils/camelCaseObjectToSnakeCase'
 import { createMediaPostData } from 'utils/mediaUtils'
 import useMediaNotification from 'hooks/useMediaNotification'
 
-const styles = ({ palette, type, formControls }) => ({
+const styles = ({ palette, type, formControls, typography }) => ({
   root: {
     position: 'relative',
     height: '100%',
@@ -47,7 +47,7 @@ const styles = ({ palette, type, formControls }) => ({
     width: '128px'
   },
   previewMediaBtn: {
-    margin: '25px 0',
+    marginTop: '29px',
     padding: '10px 25px 8px',
     borderColor: palette[type].sideModal.action.button.border,
     backgroundImage: palette[type].sideModal.action.button.background,
@@ -55,11 +55,7 @@ const styles = ({ palette, type, formControls }) => ({
     boxShadow: 'none'
   },
   previewMediaText: {
-    fontWeight: 'bold',
-    color: palette[type].sideModal.action.button.color
-  },
-  label: {
-    fontSize: '17px'
+    ...typography.lightText[type]
   },
   formControlRootClass: {
     marginBottom: '0'
@@ -81,11 +77,12 @@ const styles = ({ palette, type, formControls }) => ({
     borderLeft: `1px solid ${palette[type].sideModal.content.border}`
   },
   leftContent: {
-    padding: '22px 25px 0 24px',
+    padding: '15px 30px 0 30px',
     display: 'grid',
     gridTemplateRows: 'repeat(5, fit-content(100%))',
     gridTemplateColumns: 'max(166px) max(166px) 1fr',
-    gridRowGap: '18px'
+    gridRowGap: '16px',
+    gridColumnGap: '16px'
   },
   stretch: {
     gridColumnStart: '1',
@@ -240,7 +237,6 @@ const Text = ({
           <FormControlInput
             formControlContainerClass={classes.stretch}
             formControlRootClass={classes.formControlRootClass}
-            formControlLabelClass={classes.label}
             name="title.content"
             value={form.values.title.content}
             fullWidth
@@ -255,7 +251,6 @@ const Text = ({
           <FormControlInput
             formControlContainerClass={classes.stretch}
             formControlRootClass={classes.formControlRootClass}
-            formControlLabelClass={classes.label}
             value={form.values.text.content}
             name="text.content"
             fullWidth
@@ -270,7 +265,6 @@ const Text = ({
     }
   }, [
     classes.formControlRootClass,
-    classes.label,
     classes.stretch,
     form.errors,
     form.handleChange,
@@ -403,7 +397,6 @@ const Text = ({
           value={form.values[selectedTextType].fontSize}
           handleChange={handleChangeFontSize}
           label={t('Font Size')}
-          formControlLabelClass={classes.label}
           formControlInputClass={classes.formControlInputClass}
           formControlRootClass={classNames(
             classes.formControlRootClass,
@@ -420,7 +413,6 @@ const Text = ({
           handleChange={handleChangeFontSize}
           label={t('Padding')}
           formControlInputClass={classes.formControlInputClass}
-          formControlLabelClass={classes.label}
           formControlRootClass={classNames(
             classes.formControlRootClass,
             classes.numberInput
@@ -432,7 +424,6 @@ const Text = ({
           onChange={form.handleChange}
           label={translate.fontFamily}
           labelPosition="left"
-          formControlLabelClass={classes.label}
           error={_get(form.errors, `${selectedTextType}.fontFamily`, '')}
           touched={_get(form.touched, `${selectedTextType}.fontFamily`, false)}
         />

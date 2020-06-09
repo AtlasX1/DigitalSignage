@@ -1,14 +1,19 @@
 import React, { useState } from 'react'
 import { useDrag } from 'react-dnd'
-
-import { Grid, Typography, withStyles, RootRef } from '@material-ui/core'
-
+import {
+  Grid,
+  Typography,
+  withStyles,
+  RootRef,
+  Tooltip
+} from '@material-ui/core'
 import Popup from 'components/Popup'
 import { CircleIconButton } from 'components/Buttons'
 import ScheduleDetailsModal from 'components/Pages/Schedule/ScheduleDetailsModal'
 
 import { isEven } from 'utils'
 import { dndConstants } from 'constants/index'
+import { truncateWithEllipsis } from 'utils/truncateStringUtils'
 
 const styles = theme => {
   const { palette, type } = theme
@@ -53,9 +58,11 @@ const ScheduleItem = ({ classes, schedule, index }) => {
             <i className="icon-computer-screen-1" />
           </Grid>
           <Grid item xs className={classes.detailRow}>
-            <Typography className={classes.detailLabel}>
-              {schedule.title}
-            </Typography>
+            <Tooltip title={schedule.title}>
+              <Typography className={classes.detailLabel}>
+                {truncateWithEllipsis(schedule.title, 30)}
+              </Typography>
+            </Tooltip>
           </Grid>
           <Grid item>
             <Popup

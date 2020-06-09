@@ -14,9 +14,6 @@ const styles = ({ palette, type }) => ({
     border: `1px solid ${palette[type].pages.banners.preview.border}`,
     color: palette[type].formControls.label.color,
     wordBreak: 'break-word'
-  },
-  container: {
-    padding: '0 10px'
   }
 })
 
@@ -30,9 +27,9 @@ const TextPreview = ({ classes, label, text }) => {
     }
   }, [text])
   return (
-    <div className={classes.container}>
+    <div>
       <Typography className={classes.bannerPreviewTitle}>{label}</Typography>
-      <div ref={ref} className={classes.bannerPreview}></div>
+      <div ref={ref} className={classes.bannerPreview} />
     </div>
   )
 }

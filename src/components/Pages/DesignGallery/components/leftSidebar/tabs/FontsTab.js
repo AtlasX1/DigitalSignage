@@ -40,6 +40,12 @@ const styles = theme => {
     tabToggleButton: {
       width: '50%',
       whiteSpace: 'nowrap'
+    },
+    titleText: {
+      color: '#74809A',
+      lineHeight: '30px',
+      fontSize: 18,
+      fontWeight: 700
     }
   }
 }
@@ -59,7 +65,8 @@ const FontsTab = ({ classes }) => {
   const [isLoading, setLoading] = useState(false)
   const [searchTerm, setSearchTerm] = useState('')
   const [scrollPosition, setScrollPosition] = useState(null)
-  const [tab, setTab] = useState('fonts')
+  const [subTab, setSubTab] = useState('fonts')
+  const [activeTab, setActiveTab] = useState(TABS_NAMES.systemFonts)
 
   const [combinationPage, setCombinationPage] = useState(1)
 
@@ -70,13 +77,18 @@ const FontsTab = ({ classes }) => {
   const handleChangeSearch = term => {
     setScrollPosition(0)
     setSearchTerm(term)
+    activeTab !== TABS_NAMES.systemFonts && setActiveTab(TABS_NAMES.systemFonts)
     dispatch(setFilters({ ...filters, query: term }, 20))
+  }
+
+  const handleChangeTab = tab => {
+    setActiveTab(tab)
   }
 
   const handlePreviewClick = item => {
     const activeObj = canvas.getActiveObject()
 
-    if (activeObj && activeObj.isType('textbox') && tab === 'fonts') {
+    if (activeObj && activeObj.isType('textbox') && subTab === 'fonts') {
       canvasHandlers.setTextBoxProps({
         fontFamily: item.family
       })
@@ -88,7 +100,7 @@ const FontsTab = ({ classes }) => {
   }
 
   const handleContentScrollEnd = async () => {
-    if (tab === 'fonts') {
+    if (subTab === 'fonts') {
       setLoading(true)
       const fontsLength = perPage.length
       const response = await dispatch(
@@ -126,7 +138,7 @@ const FontsTab = ({ classes }) => {
 
   useEffect(
     () => {
-      if (tab === 'fontCombinations') {
+      if (subTab === 'fontCombinations') {
         setCombinationPage(1)
 
         dispatch(
@@ -151,11 +163,11 @@ const FontsTab = ({ classes }) => {
       }
     },
     // eslint-disable-next-line
-    [tab]
+    [subTab]
   )
 
   useEffect(() => {
-    if (combinationPage && tab === 'fontCombinations') {
+    if (combinationPage && subTab === 'fontCombinations') {
       const newFontCombinations = FONT_COMBINATIONS.slice(
         fonts.length - 1,
         combinationPage * 20
@@ -182,20 +194,22 @@ const FontsTab = ({ classes }) => {
     // eslint-disable-next-line
   }, [combinationPage])
 
-  return (
-    <LeftSidebarPanel
-      title={<Title />}
-      searchTerm={searchTerm}
-      placeholder={'Search Fonts'}
-      onChangeSearch={handleChangeSearch}
-      content={
+  const fontsTabContent = () => {
+    if (activeTab === TABS_NAMES.customFonts) {
+      return (
+        <div>
+          <Typography className={classes.titleText}>Coming Soon ...</Typography>
+        </div>
+      )
+    } else {
+      return (
         <>
           <TypesText />
           <TabToggleButtonGroup
             className={classes.tabToggleButtonContainer}
-            value={tab}
+            value={subTab}
             exclusive
-            onChange={(e, v) => v && setTab(v)}
+            onChange={(e, v) => v && setSubTab(v)}
           >
             <TabToggleButton
               className={classes.tabToggleButton}
@@ -222,7 +236,24 @@ const FontsTab = ({ classes }) => {
             />
           </WebfontLoader>
         </>
-      }
+      )
+    }
+  }
+
+  return (
+    <LeftSidebarPanel
+      withTabs
+      tabButtons={[
+        { text: TABS_NAMES.systemFonts },
+        { text: TABS_NAMES.customFonts }
+      ]}
+      onChangeTabs={handleChangeTab}
+      activeTab={activeTab}
+      title={<Title />}
+      searchTerm={searchTerm}
+      placeholder={'Search Fonts'}
+      onChangeSearch={handleChangeSearch}
+      content={fontsTabContent()}
       scrollPosition={scrollPosition}
       onContentScrollEnd={handleContentScrollEnd}
     />

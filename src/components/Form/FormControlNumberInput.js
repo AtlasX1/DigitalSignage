@@ -36,7 +36,8 @@ const styles = ({ spacing, palette, transitions, typography }) => ({
     height: '87px'
   },
   bootstrapFormLabel: {
-    fontSize: 16
+    fontSize: '1.0833rem',
+    lineHeight: '24px'
   },
   numberInputContainer: {
     position: 'relative',

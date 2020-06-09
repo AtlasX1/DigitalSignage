@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef, useCallback } from 'react'
 import { translate } from 'react-i18next'
 import { useDrop } from 'react-dnd'
 import PropTypes from 'prop-types'
@@ -30,7 +30,7 @@ const styles = ({ palette, type }) => {
     },
     dropzoneText: {
       margin: '25px 0 0 20px',
-      fontSize: '14px',
+      fontSize: '0.8125rem',
       color: '#0378ba'
     },
     errorBorder: {
@@ -60,23 +60,38 @@ const UploadPlaylistFiles = ({
   touched,
   getMediaItem,
   addItem,
+  saveItem,
   accept,
   hidden,
   containerHeight
 }) => {
+  const currentDragId = useRef(null)
   const [{ canDrop, isOver }, drop] = useDrop({
     accept,
-    drop: e => moveItem(e.id),
+    drop: ({ id, uid }) => moveItem(id, uid, true),
     collect: monitor => ({
       canDrop: !!monitor.canDrop(),
       isOver: !!monitor.isOver()
-    })
+    }),
+    hover({ id: draggedId, uid }) {
+      if (uid !== currentDragId.current) {
+        moveItem(draggedId, uid)
+      }
+    }
   })
 
-  const moveItem = id => {
-    const item = getMediaItem(id)
-    addItem(item)
-  }
+  const moveItem = useCallback(
+    (id, uid, isFinal) => {
+      currentDragId.current = uid
+      const item = getMediaItem(id)
+      if (isFinal && saveItem) {
+        saveItem(item, uid)
+      } else {
+        addItem(item, undefined, uid)
+      }
+    },
+    [getMediaItem, saveItem, addItem]
+  )
 
   return (
     <div

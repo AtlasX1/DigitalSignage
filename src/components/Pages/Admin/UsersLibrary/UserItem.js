@@ -6,6 +6,7 @@ import classNames from 'classnames'
 import { useDrag } from 'react-dnd'
 
 import { withStyles, Typography } from '@material-ui/core'
+import { UserNameView } from 'components/TableLibrary'
 
 import { dndConstants } from 'constants/index'
 import EmailLink from 'components/EmailLink'
@@ -52,7 +53,7 @@ const UserItem = ({ classes, user }) => {
   return (
     <div ref={drag} className={classes.userItemWrap} style={{ opacity }}>
       <Typography className={classNames(classes.userTitle, classes.name)}>
-        {user.firstName + ' ' + user.lastName}
+        <UserNameView firstName={user.firstName} lastName={user.lastName} />
       </Typography>
       <Typography className={classNames(classes.userTitle, classes.email)}>
         <EmailLink email={user.email} />

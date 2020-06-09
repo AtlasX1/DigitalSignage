@@ -35,7 +35,7 @@ const InfoMessageStyles = ({ typography }) => ({
   infoMessageContainer: {
     display: 'flex',
     alignItems: 'flex-start',
-    padding: '0 5px 29px'
+    padding: '0 0 16px'
   },
   infoMessage: {
     marginLeft: '20px',
@@ -60,10 +60,10 @@ const InfoMessage = withStyles(InfoMessageStyles)(
 )
 
 const styles = theme => {
-  const { palette, type } = theme
+  const { palette, type, formControls, typography } = theme
   return {
     root: {
-      margin: '31px 30px 0'
+      margin: '15px 30px 0'
     },
     previewMediaBtn: {
       padding: '10px 25px 8px',
@@ -73,11 +73,10 @@ const styles = theme => {
       boxShadow: 'none'
     },
     previewMediaRow: {
-      marginTop: '152px'
+      marginTop: 45
     },
     previewMediaText: {
-      fontWeight: 'bold',
-      color: palette[type].sideModal.action.button.color
+      ...typography.lightText[type]
     },
     themeCardWrap: {
       border: `solid 1px ${palette[type].pages.media.card.border}`,
@@ -87,18 +86,8 @@ const styles = theme => {
     formControlRootClass: {
       marginBottom: 0
     },
-    marginTop1: {
-      marginTop: '12px'
-    },
-    marginTop2: {
-      marginTop: '14px'
-    },
-    inputItemContainer: {
-      padding: '0 5px',
-      margin: '0 -5px'
-    },
-    inputContainer: {
-      padding: '0 12px'
+    marginTop: {
+      marginTop: 16
     },
     expansionPanelLabelClass: {
       fontSize: '12px',
@@ -106,8 +95,7 @@ const styles = theme => {
       fontWeight: '700'
     },
     sliderInputLabel: {
-      color: '#74809A',
-      fontSize: '13px',
+      ...formControls.mediaApps.refreshEverySlider.label,
       lineHeight: '15px',
       marginRight: '15px'
     },
@@ -178,21 +166,23 @@ class BoxOffice extends Component {
                 />
               </Grid>
             </Grid>
-            <Grid
-              container
-              className={[classes.marginTop2, classes.inputContainer].join(' ')}
-            >
+            <Grid container className={classes.marginTop}>
               <Grid item xs={12}>
-                <Grid container alignItems="center" justify="space-between">
-                  <Grid item xs={6} className={classes.inputItemContainer}>
+                <Grid
+                  container
+                  alignItems="center"
+                  justify="space-between"
+                  spacing={16}
+                >
+                  <Grid item xs={6}>
                     <FormControlSelect marginBottom={false} />
                   </Grid>
-                  <Grid item xs={5} className={classes.inputItemContainer}>
+                  <Grid item xs={5}>
                     <FormControlInput
                       formControlRootClass={classes.formControlRootClass}
                     />
                   </Grid>
-                  <Grid item xs={1} className={classes.inputItemContainer}>
+                  <Grid item xs={1}>
                     <Grid container justify="center">
                       <Grid item>
                         <WhiteButton className={classes.detailsButton}>
@@ -203,17 +193,22 @@ class BoxOffice extends Component {
                   </Grid>
                 </Grid>
               </Grid>
-              <Grid item xs={12} className={classes.marginTop1}>
-                <Grid container alignItems="center" justify="space-between">
-                  <Grid item xs={6} className={classes.inputItemContainer}>
+              <Grid item xs={12} className={classes.marginTop}>
+                <Grid
+                  container
+                  alignItems="center"
+                  justify="space-between"
+                  spacing={16}
+                >
+                  <Grid item xs={6}>
                     <FormControlSelect marginBottom={false} />
                   </Grid>
-                  <Grid item xs={5} className={classes.inputItemContainer}>
+                  <Grid item xs={5}>
                     <FormControlInput
                       formControlRootClass={classes.formControlRootClass}
                     />
                   </Grid>
-                  <Grid item xs={1} className={classes.inputItemContainer}>
+                  <Grid item xs={1}>
                     <Grid container justify="center">
                       <Grid item>
                         <WhiteButton className={classes.detailsButton}>
@@ -224,17 +219,22 @@ class BoxOffice extends Component {
                   </Grid>
                 </Grid>
               </Grid>
-              <Grid item xs={12} className={classes.marginTop1}>
-                <Grid container alignItems="center" justify="space-between">
-                  <Grid item xs={6} className={classes.inputItemContainer}>
+              <Grid item xs={12} className={classes.marginTop}>
+                <Grid
+                  container
+                  alignItems="center"
+                  justify="space-between"
+                  spacing={16}
+                >
+                  <Grid item xs={6}>
                     <FormControlSelect marginBottom={false} />
                   </Grid>
-                  <Grid item xs={5} className={classes.inputItemContainer}>
+                  <Grid item xs={5}>
                     <FormControlInput
                       formControlRootClass={classes.formControlRootClass}
                     />
                   </Grid>
-                  <Grid item xs={1} className={classes.inputItemContainer}>
+                  <Grid item xs={1}>
                     <Grid container justify="center">
                       <Grid item>
                         <WhiteButton className={classes.detailsButton}>
@@ -245,17 +245,22 @@ class BoxOffice extends Component {
                   </Grid>
                 </Grid>
               </Grid>
-              <Grid item xs={12} className={classes.marginTop1}>
-                <Grid container alignItems="center" justify="space-between">
-                  <Grid item xs={6} className={classes.inputItemContainer}>
+              <Grid item xs={12} className={classes.marginTop}>
+                <Grid
+                  container
+                  alignItems="center"
+                  justify="space-between"
+                  spacing={16}
+                >
+                  <Grid item xs={6}>
                     <FormControlSelect marginBottom={false} />
                   </Grid>
-                  <Grid item xs={5} className={classes.inputItemContainer}>
+                  <Grid item xs={5}>
                     <FormControlInput
                       formControlRootClass={classes.formControlRootClass}
                     />
                   </Grid>
-                  <Grid item xs={1} className={classes.inputItemContainer}>
+                  <Grid item xs={1}>
                     <Grid container justify="center">
                       <Grid item>
                         <WhiteButton className={classes.detailsButton}>

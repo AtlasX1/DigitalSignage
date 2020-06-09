@@ -15,16 +15,18 @@ const EmailLink = ({
   className,
   classes,
   ...props
-}) => (
-  <a
-    className={classNames(className, classes.link)}
-    href={`mailto:${email}?subject=${subject}`}
-    target="_blank"
-    rel="noopener noreferrer"
-    {...props}
-  >
-    {email}
-  </a>
-)
+}) => {
+  return (
+    <a
+      className={classNames(className, classes.link)}
+      href={`mailto:${email}?subject=${subject}`}
+      target="_blank"
+      rel="noopener noreferrer"
+      {...props}
+    >
+      {email}
+    </a>
+  )
+}
 
 export default memo(withStyles(styles)(EmailLink))

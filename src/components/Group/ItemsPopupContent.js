@@ -5,6 +5,7 @@ import { translate } from 'react-i18next'
 
 import Loader from 'components/Loader'
 import { CircleIconButton } from 'components/Buttons'
+import { truncateWithEllipsis } from 'utils/truncateStringUtils'
 
 const styles = ({ palette, type }) => ({
   groupItemsWrap: {
@@ -83,33 +84,36 @@ const ItemsPopupContent = ({
     />
   ) : (
     <div>
-      {groupItems.map((groupItem, index) => (
-        <Grid
-          key={`group-item-${index}`}
-          container
-          className={
-            index !== groupItems.length - 1 ? classes.groupItemsWrap : ''
-          }
-        >
-          <Grid item xs>
-            <Typography className={classes.groupItemLabel}>
-              {render
-                ? render(groupItem)
-                : renderFieldName
-                ? groupItem[renderFieldName]
-                : groupItem.name || groupItem.title || groupItem.fileName}
-            </Typography>
+      {groupItems.map((groupItem, index) => {
+        const title = render
+          ? render(groupItem)
+          : renderFieldName
+          ? groupItem[renderFieldName]
+          : groupItem.name || groupItem.title || groupItem.fileName
+        return (
+          <Grid
+            key={`group-item-${index}`}
+            container
+            className={
+              index !== groupItems.length - 1 ? classes.groupItemsWrap : ''
+            }
+          >
+            <Grid item xs>
+              <Typography className={classes.groupItemLabel}>
+                {render ? title : truncateWithEllipsis(title, 35)}
+              </Typography>
+            </Grid>
+            <Grid item>
+              <CircleIconButton
+                className={classes.groupItemDelete}
+                onClick={() => handleDelete(groupItem.id)}
+              >
+                <i className="icon-bin" />
+              </CircleIconButton>
+            </Grid>
           </Grid>
-          <Grid item>
-            <CircleIconButton
-              className={classes.groupItemDelete}
-              onClick={() => handleDelete(groupItem.id)}
-            >
-              <i className="icon-bin" />
-            </CircleIconButton>
-          </Grid>
-        </Grid>
-      ))}
+        )
+      })}
     </div>
   )
 }

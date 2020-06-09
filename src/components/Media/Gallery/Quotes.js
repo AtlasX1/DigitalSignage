@@ -1,9 +1,4 @@
-import {
-  CircularProgress,
-  Grid,
-  Typography,
-  withStyles
-} from '@material-ui/core'
+import { Grid, Typography, withStyles } from '@material-ui/core'
 import {
   addMedia,
   clearAddedMedia,
@@ -22,17 +17,15 @@ import { Scrollbars } from 'components/Scrollbars'
 import { useFormik } from 'formik'
 import update from 'immutability-helper'
 import { get as _get } from 'lodash'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useMemo } from 'react'
 import { translate } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import {
   createMediaPostData,
-  getAllowedFeatureId,
   getMediaInfoFromBackendData
 } from 'utils/mediaUtils'
 import * as Yup from 'yup'
 import { MediaInfo, MediaTabActions } from '..'
-import { getThemeOfMediaFeatureById } from '../../../actions/configActions'
 import { durationArray, mediaConstants } from '../../../constants'
 import {
   BlueButton,
@@ -47,11 +40,12 @@ import {
   FormControlSketchColorPicker
 } from '../../Form'
 import MediaHtmlCarousel from '../MediaHtmlCarousel'
+import useMediaTheme from 'hooks/useMediaTheme'
 
 const styles = ({ palette, type, typography }) => {
   return {
     root: {
-      margin: '0 25px 20px',
+      margin: '15px 30px',
       fontFamily: typography.fontFamily
     },
     formWrapper: {
@@ -85,8 +79,7 @@ const styles = ({ palette, type, typography }) => {
     tabToggleButtonContainer: {
       justifyContent: 'center',
       background: 'transparent',
-      marginTop: '12px',
-      marginBottom: '19px'
+      marginTop: 16
     },
     filterForm: {
       padding: '25px 17px'
@@ -126,16 +119,16 @@ const styles = ({ palette, type, typography }) => {
       lineHeight: '19px',
       color: palette[type].pages.media.card.header.color,
       fontWeight: 'bold',
-      marginTop: '21px'
+      marginTop: 16
     },
 
     headerFormWrapper: {
-      padding: '10px',
+      padding: '15px 30px',
       borderBottom: `solid 1px ${palette[type].pages.media.card.border}`
     },
 
     addCustomQuoteWrap: {
-      padding: '0 12px 0 18px'
+      paddingLeft: 16
     },
     alignBottom: {
       alignSelf: 'flex-end',
@@ -152,13 +145,11 @@ const styles = ({ palette, type, typography }) => {
     },
     addCustomQuoteText: {
       fontSize: '14px',
-      fontWeight: 'bold',
       color: palette[type].sideModal.action.button.color
     },
 
     customFormContainer: {
-      margin: '20px 0',
-      padding: '0px 10px'
+      padding: 15
     },
     inputContainerCustom: {
       paddingLeft: '16px'
@@ -191,7 +182,7 @@ const styles = ({ palette, type, typography }) => {
     },
 
     previewMediaRow: {
-      marginTop: '20px'
+      marginTop: 25
     },
     previewMediaBtn: {
       padding: '10px 25px 8px',
@@ -201,8 +192,7 @@ const styles = ({ palette, type, typography }) => {
       boxShadow: 'none'
     },
     previewMediaText: {
-      fontWeight: 'bold',
-      color: palette[type].sideModal.action.button.color
+      ...typography.lightText[type]
     }
   }
 }
@@ -243,13 +233,10 @@ const Quotes = ({
 
   const [categories, setCategories] = useState([])
   const [filteredQuotes, setFilteredQuotes] = useState([])
-  const [featureId, setFeatureId] = useState(null)
 
-  const [isLoading, setLoading] = useState(false)
   const [formSubmitting, setFormSubmitting] = useState(false)
   const [autoClose, setAutoClose] = useState(false)
 
-  const { configMediaCategory } = useSelector(({ config }) => config)
   const addMediaReducer = useSelector(({ addMedia }) => addMedia.gallery)
   const mediaItemReducer = useSelector(({ media }) => media.mediaItem)
   const { storeQuotes, storeQuoteCategories } = useSelector(
@@ -264,16 +251,9 @@ const Quotes = ({
         quoteReducer.categories.response
     })
   )
-  const previewThemes = useSelector(({ config }) => {
-    if (
-      config.themeOfMedia &&
-      config.themeOfMedia.response &&
-      config.themeOfMedia.response.Legacy
-    ) {
-      return config.themeOfMedia.response.Legacy
-    }
-    return []
-  })
+
+  const { themes, featureId } = useMediaTheme('Gallery', 'Quote')
+  const previewThemes = useMemo(() => themes.Legacy || [], [themes.Legacy])
 
   const dispatch = useDispatch()
   // eslint-disable-next-line
@@ -384,29 +364,9 @@ const Quotes = ({
       ) {
         setUserQuotes(backendData.attributes.user_quotes)
       }
-      setLoading(false)
     }
     // eslint-disable-next-line
   }, [backendData])
-
-  useEffect(() => {
-    if (mode === 'edit') {
-      setLoading(true)
-    }
-  }, [mode])
-
-  useEffect(() => {
-    if (!configMediaCategory.response.length) return
-    const id = getAllowedFeatureId(configMediaCategory, 'Gallery', 'Quote')
-    setFeatureId(id)
-  }, [configMediaCategory])
-
-  useEffect(() => {
-    if (featureId) {
-      dispatch(getThemeOfMediaFeatureById(featureId))
-    }
-    // eslint-disable-next-line
-  }, [featureId])
 
   const validationSchema = Yup.object().shape({
     custom_quote: Yup.object().shape({
@@ -674,11 +634,6 @@ const Quotes = ({
       className={classes.formWrapper}
       onSubmit={form.handleSubmit}
     >
-      {isLoading && (
-        <div className={classes.loaderWrapper}>
-          <CircularProgress size={30} thickness={5} />
-        </div>
-      )}
       <Grid item xs={7} className={classes.tabContent}>
         <Grid
           container
@@ -895,7 +850,7 @@ const Quotes = ({
           </Typography>
 
           <Grid container>
-            <Grid style={{ padding: '20px 0' }} item xs={12}>
+            <Grid style={{ paddingBottom: 16 }} item xs={12}>
               <Scrollbars style={{ height: '370px' }}>
                 <ol className={classes.quotesListContainer}>
                   {filteredQuotes.length > 0

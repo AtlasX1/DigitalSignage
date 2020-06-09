@@ -7,9 +7,9 @@ import { withSnackbar } from 'notistack'
 import { withStyles, Grid, Typography } from '@material-ui/core'
 import { isEmpty } from 'lodash'
 
-import RecordInfoTooltip from './RecordInfoTooltip'
-import HurricaneTabActions from './HurricaneTabActions'
-import ItemsCard from '../ItemsCard'
+import RecordInfoTooltip from '../RecordInfoTooltip'
+import BottomActions from '../BottomActions'
+import DeviceItemsCard from '../DeviceItemsCard'
 import LoaderWrapper from 'components/LoaderWrapper'
 import { CircularLoader } from 'components/Loaders'
 
@@ -22,6 +22,7 @@ import {
 import { useActions, useCustomSnackbar } from 'hooks/index'
 import { capitalize, getUrlPrefix } from 'utils/index'
 import { routeByName } from 'constants/index'
+import { isFalsy, isTruthy } from 'utils/generalUtils'
 
 const styles = ({ palette, type }) => ({
   tabWrap: {
@@ -34,7 +35,6 @@ const styles = ({ palette, type }) => ({
     height: 'calc(100% - 166px)',
     maxHeight: 'calc(100% - 166px)'
   },
-  tabFooterWrap: {},
   tabFooter: {
     height: '100%'
   },
@@ -85,6 +85,7 @@ const HurricaneTab = ({
   const alertType = useMemo(() => match.params.id, [match.params.id])
 
   const [isLoading, setIsLoading] = useState(true)
+  const [triggerFetching, setTriggerFetching] = useState(false)
   const [currentAlertId, setCurrentAlertId] = useState(null)
   const [selectedDevices, setSelectedDevices] = useState([])
   const [data, setData] = useState({
@@ -92,6 +93,8 @@ const HurricaneTab = ({
     disabledFeature: [],
     withoutMedia: []
   })
+  const [showError, setShowError] = useState(false)
+  const isError = useMemo(() => isEmpty(selectedDevices), [selectedDevices])
 
   const handleSelectDevice = useCallback(
     (value, id) => {
@@ -140,6 +143,10 @@ const HurricaneTab = ({
 
   const handleSaveClick = useCallback(
     password => {
+      if (isError) {
+        return setShowError(true)
+      }
+      setTriggerFetching(true)
       postAlertTrigger({
         id: currentAlertId,
         data: {
@@ -148,25 +155,39 @@ const HurricaneTab = ({
         }
       })
     },
-    [postAlertTrigger, currentAlertId, selectedDevices]
+    [
+      postAlertTrigger,
+      currentAlertId,
+      selectedDevices,
+      isError,
+      setTriggerFetching
+    ]
   )
 
   useEffect(() => {
     if (postAlertTriggerReducer.response) {
       clearPostAlertTriggerInfo()
+      setTriggerFetching(false)
       showSnackbar(t('Successfully changed'))
       history.push(getUrlPrefix(routeByName.device.list))
 
       setSelectedDevices([])
     } else if (postAlertTriggerReducer.error) {
       clearPostAlertTriggerInfo()
+      setTriggerFetching(false)
       showSnackbar(t('Password incorrect'))
     }
     // eslint-disable-next-line
   }, [postAlertTriggerReducer])
 
+  const renderLoader = useMemo(() => {
+    if (isFalsy(triggerFetching)) return null
+    return <CircularLoader />
+  }, [triggerFetching])
+
   return (
     <LoaderWrapper isLoading={isLoading} loader={<CircularLoader />}>
+      {renderLoader}
       <Grid
         container
         direction="column"
@@ -184,16 +205,15 @@ const HurricaneTab = ({
               })}
             </Typography>
           </header>
-
-          <ItemsCard
+          <DeviceItemsCard
             title={t('Devices on which alert will be triggered')}
             data={data.readyToGo}
             selectedDevices={selectedDevices}
-            handleChange={handleSelectDevice}
+            onChange={handleSelectDevice}
             emptyTitle={t('List is empty')}
+            error={isTruthy(showError, isError)}
           />
-
-          <ItemsCard
+          <DeviceItemsCard
             title={t('Devices with no media associated')}
             helpText={t('(Alert will not be triggered on following device(s))')}
             data={data.withoutMedia}
@@ -201,7 +221,7 @@ const HurricaneTab = ({
             emptyTitle={t('List is empty')}
           />
         </Grid>
-        <Grid item className={classes.tabFooterWrap}>
+        <Grid item>
           <Grid
             container
             direction="column"
@@ -213,7 +233,7 @@ const HurricaneTab = ({
               <RecordInfoTooltip />
             </Grid>
             <Grid item>
-              <HurricaneTabActions handleSave={handleSaveClick} />
+              <BottomActions handleSave={handleSaveClick} />
             </Grid>
           </Grid>
         </Grid>

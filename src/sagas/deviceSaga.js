@@ -3,6 +3,10 @@ import { call, put } from 'redux-saga/effects'
 import * as types from '../actions'
 
 import { deviceService } from '../services'
+import {
+  capAlertDevicesError,
+  capAlertDevicesSuccess
+} from 'actions/deviceActions'
 
 function* getItems({ params }) {
   try {
@@ -158,6 +162,15 @@ function* postDeviceNote({ id, data }) {
   }
 }
 
+function* getCapAlertDevicesWorker() {
+  try {
+    const response = yield call(deviceService.getCapAlertDevices)
+    yield put(capAlertDevicesSuccess(response))
+  } catch (error) {
+    yield put(capAlertDevicesError(error))
+  }
+}
+
 export default {
   getItems,
   getPreference,
@@ -174,5 +187,6 @@ export default {
   getSleepMode,
   putSleepMode,
   getDeviceNotes,
-  postDeviceNote
+  postDeviceNote,
+  getCapAlertDevicesWorker
 }

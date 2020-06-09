@@ -209,7 +209,11 @@ const TemplatePreferences = ({
     const value = has(e, 'target') ? e.target.value : e
 
     if (!skipChecking) {
-      if (['orientation', 'resolution', 'video'].includes(field)) {
+      if (
+        ['orientation', 'resolution', 'video', 'width', 'height'].includes(
+          field
+        )
+      ) {
         if (itemsCount) {
           setActionField(field)
           setActionValue(value)

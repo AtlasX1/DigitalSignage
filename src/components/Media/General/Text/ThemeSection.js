@@ -25,11 +25,11 @@ const styles = ({ palette, type }) => ({
     borderRadius: '4px'
   },
   content: {
-    padding: `22px 14px 44px 13px`,
+    padding: `15px 15px`,
     display: 'grid',
     gridTemplateColumns: '1fr 1fr',
-    gridColumnGap: '27px',
-    gridRowGap: '24px'
+    gridColumnGap: '16px',
+    gridRowGap: '16px'
   },
   headerContainer: {
     padding: '16px 0 13px 12px',
@@ -41,7 +41,6 @@ const styles = ({ palette, type }) => ({
     color: palette[type].pages.media.general.card.header.color
   },
   label: {
-    fontSize: '17px',
     fontStyle: 'normal'
   },
   palette: {

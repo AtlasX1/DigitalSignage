@@ -1,26 +1,21 @@
 import React, { useState, useEffect } from 'react'
 import { translate } from 'react-i18next'
 import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
+import { bindActionCreators, compose } from 'redux'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
 import { withStyles, Typography, IconButton } from '@material-ui/core'
 import { Visibility, VisibilityOff } from '@material-ui/icons'
 import { withSnackbar } from 'notistack'
-
-import { resetAction } from '../../../actions/authenticationActions'
-
 import { FormControlInput } from '../../Form'
 import { FabBlueButton } from '../../Buttons'
+import { resetAction } from 'actions/authenticationActions'
 
-const styles = theme => {
-  const { palette, type } = theme
+function styles({ palette, type }) {
   return {
     form: {
       width: '569px',
-      padding: '0 65px 100px 65px',
-      marginBottom: '15px',
-      borderBottom: `1px solid ${palette[type].pages.singIn.border}`
+      padding: '0 65px 100px 65px'
     },
     formTitle: {
       fontSize: '30px',
@@ -77,14 +72,7 @@ const styles = theme => {
   }
 }
 
-const ExpiredForm = ({
-  t,
-  classes,
-  match,
-  resetPassword,
-  resetAction,
-  ...props
-}) => {
+function ExpiredForm({ t, classes, match, resetPassword, resetAction }) {
   const [passwordVisibility, setPasswordVisibility] = useState(false)
   const [confirmPasswordVisibility, setConfirmPasswordVisibility] = useState(
     false
@@ -232,8 +220,9 @@ const mapStateToProps = ({ resetPassword }) => ({ resetPassword })
 const mapDispatchToProps = dispatch =>
   bindActionCreators({ resetAction }, dispatch)
 
-export default translate('translations')(
-  withStyles(styles)(
-    connect(mapStateToProps, mapDispatchToProps)(withSnackbar(ExpiredForm))
-  )
-)
+export default compose(
+  translate('translations'),
+  withStyles(styles),
+  connect(mapStateToProps, mapDispatchToProps),
+  withSnackbar
+)(ExpiredForm)

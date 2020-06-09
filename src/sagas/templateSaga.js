@@ -95,7 +95,11 @@ function* getGroups() {
 
 function* getGroupItems(action) {
   try {
-    const response = yield call(templateService.getGroupItems, action.payload)
+    const response = yield call(
+      templateService.getGroupItems,
+      action.payload.id,
+      action.payload.params
+    )
     yield put({
       type: types.GET_TEMPLATE_GROUP_ITEMS_SUCCESS,
       payload: response

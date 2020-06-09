@@ -40,11 +40,8 @@ const tableHeadStyles = theme => {
       whiteSpace: 'nowrap',
 
       '&:hover': {
-        color: palette[type].tableLibrary.head.label.colorHover
+        fontWeight: 700
       }
-    },
-    tableHeaderCellLabelActive: {
-      color: palette[type].tableLibrary.head.label.colorHover
     },
     draggable: {
       display: 'flex',
@@ -65,6 +62,13 @@ const tableHeadStyles = theme => {
       paddingRight: '0px'
     }
   }
+}
+
+const columnWidths = {
+  feature: 36,
+  duration: 170,
+  size: 170,
+  noOfFiles: 170
 }
 
 class TableLibraryHead extends Component {
@@ -111,7 +115,7 @@ class TableLibraryHead extends Component {
         <TableRow>
           {onSelectAllClick ? (
             <TableLibraryCell
-              style={{ paddingBottom: '6px' }}
+              style={{ paddingBottom: '6px', width: 24 }}
               padding="checkbox"
             >
               <CheckboxSelectAll
@@ -139,16 +143,18 @@ class TableLibraryHead extends Component {
                     [classes.headerCellCentered]: column.align === 'center',
                     [classes.headerCellCustom]: column.customPadding
                   })}
-                  style={{ paddingBottom: '8px' }}
+                  style={{
+                    paddingBottom: '8px',
+                    ...(columnWidths.hasOwnProperty(column.id) && {
+                      width: columnWidths[column.id]
+                    })
+                  }}
                 >
                   <TableSortLabel
                     className={classNames(
                       'Enhanced-table-head__table-sort-label',
                       classes.tableHeaderCellLabel
                     )}
-                    classes={{
-                      active: classes.tableHeaderCellLabelActive
-                    }}
                     active={orderBy === column.id}
                     direction={order}
                     onClick={this.createSortHandler(column.id)}
@@ -211,8 +217,9 @@ class TableLibraryHead extends Component {
                                               : filter(column.id)
                                           }
                                           handleChange={value =>
-                                            handleColumnChange(index, value)
+                                            handleColumnChange(column.id, value)
                                           }
+                                          isFormLabel={false}
                                         />
                                       </div>
                                     }

@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect, useCallback, useMemo } from 'react'
 import PropTypes from 'prop-types'
 import { translate } from 'react-i18next'
 import update from 'immutability-helper'
 
 import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
+import { compose, bindActionCreators } from 'redux'
 
 import {
   withStyles,
@@ -27,21 +27,20 @@ import {
   TableLibraryRowActionButton,
   DateTimeView
 } from 'components/TableLibrary'
+import LibraryTagChips from '../../../../components/LibraryTagChips'
 import { Checkbox } from 'components/Checkboxes'
 import { ActiveStatusChip, InactiveStatusChip } from 'components/Chip'
 import { ScreenPreviewModal } from 'components/Modal'
 import { LibraryLoader } from 'components/Loaders'
-
-import { sortByOrder, roles, getUrlPrefix } from 'utils'
-import { routeByName } from 'constants/index'
-import {
-  getDeviceLibraryPrefAction,
-  putDeviceLibraryPrefAction,
-  getDeviceItemsAction
-} from 'actions/deviceActions'
+import { roles, getUrlPrefix, stableSort } from 'utils'
+import { routeByName, entityConstants } from 'constants/index'
+import { getDeviceItemsAction } from 'actions/deviceActions'
+import usePreference from 'hooks/tableLibrary/usePreference'
+import arrayMove from 'array-move'
+import axios from 'axios'
 
 const styles = theme => {
-  const { palette, type } = theme
+  const { typography, type } = theme
   return {
     root: {
       width: '100%',
@@ -52,11 +51,10 @@ const styles = theme => {
       minHeight: '60vh'
     },
     name: {
-      fontWeight: 'bold'
+      ...typography.darkAccent[type]
     },
     label: {
-      fontSize: '11px',
-      color: palette[type].tableLibrary.body.cell.color
+      ...typography.subtitle[type]
     },
     toggleApprovedIcon: {
       width: 24,
@@ -93,6 +91,22 @@ const styles = theme => {
   }
 }
 
+const initialColumns = [
+  { id: 'name', label: 'Name' },
+  { id: 'city', label: 'Location', forRoles: ['org'], align: 'center' },
+  { id: 'group', label: 'Group', forRoles: ['org'], align: 'center' },
+  { id: 'account', label: 'Account', forRoles: ['system', 'enterprise'] },
+  { id: 'updatedAt', label: 'Last Update', align: 'center' },
+  {
+    id: 'firmware',
+    label: 'Firmware Version',
+    align: 'center',
+    display: false
+  },
+  { id: 'tag', label: 'Tags', align: 'center' },
+  { id: 'status', label: 'Status', align: 'center' }
+]
+
 const DeviceNameViewCell = ({ row, role, classes }) => {
   return role.org ? (
     <>
@@ -109,14 +123,11 @@ const DeviceTable = ({
   t,
   classes,
   enqueueSnackbar,
-  getDeviceLibraryPrefAction,
-  putDeviceLibraryPrefAction,
   getDeviceItemsAction,
   onChangeSelection,
   library,
   meta,
   filterParams,
-  preference,
   detailsReducer,
   match: { path }
 }) => {
@@ -125,25 +136,58 @@ const DeviceTable = ({
   const [order, setOrder] = useState('asc')
   const [orderBy, setOrderBy] = useState('title')
   const [selected, setSelected] = useState([])
-  const [statuses, setStatuses] = useState({})
   const [data, setData] = useState([])
   const [page, setPage] = useState(1)
   const [emptyRowHeight, setEmptyRowHeight] = useState(0)
-  const [rowsPerPage, setRowsPerPage] = useState(10)
-  const [reorderCount, setReorderCount] = useState(0)
-  const [columns, setColumns] = useState([
-    { id: 'name', label: 'Name' },
-    { id: 'city', label: 'Location', forRoles: ['org'] },
-    { id: 'group', label: 'Group', forRoles: ['org'] },
-    { id: 'account', label: 'Account', forRoles: ['system', 'enterprise'] },
-    { id: 'updatedAt', label: 'Last Update', align: 'center' },
-    { id: 'firmware', label: 'Firmware Version' },
-    { id: 'status', label: 'Status', align: 'center' }
-  ])
 
-  const { currentPage, lastPage, perPage } = meta
+  const { currentPage, lastPage } = meta
+
+  const preference = usePreference({
+    initialColumns,
+    fetcher: getDeviceItemsAction,
+    entity: entityConstants.DeviceLibrary,
+    initialPerPage: 10,
+    sort: orderBy,
+    order
+  })
+  const rowsPerPage = preference.perPage
+  const isDefaultColums = preference.isDefault
+  const columns = useMemo(() => {
+    return update(
+      stableSort(
+        preference.columns.filter(
+          ({ forRoles }) => !forRoles || forRoles.some(r => role[r])
+        ),
+        (lhs, rhs) => (lhs.sortOrder || 0) - (rhs.sortOrder || 0)
+      ),
+      {
+        $apply: cols =>
+          cols.map(col =>
+            // Change Name col title for org users
+            role.org && col.id === 'deviceName'
+              ? update(col, { label: { $set: t('Name') } })
+              : col
+          ),
+        $apply: cols =>
+          cols.map(col =>
+            role.org && col.id === 'firmware' && isDefaultColums
+              ? update(col, { display: { $set: false } })
+              : col
+          ),
+        $apply: cols =>
+          cols.map(col =>
+            role.org && col.id === 'firmware'
+              ? update(col, { label: { $set: t('Application Version') } })
+              : col
+          )
+      }
+    )
+  }, [role, preference.columns, t])
 
   useEffect(() => {
+    if (!library.response) {
+      return
+    }
     const params = { ...filterParams }
 
     Object.keys(params).forEach(key => {
@@ -157,69 +201,24 @@ const DeviceTable = ({
       sort: orderBy,
       order
     })
+    // eslint-disable-next-line
   }, [getDeviceItemsAction, filterParams, page, rowsPerPage, order, orderBy])
 
   useEffect(() => {
     if (detailsReducer.response) {
       const parsedRole = roles.parse(detailsReducer.response.role)
       setRole(parsedRole)
-
-      const newColumns = update(
-        columns.filter(
-          ({ forRoles }) => !forRoles || forRoles.some(r => parsedRole[r])
-        ),
-        {
-          $apply: cols =>
-            cols.map(col =>
-              // Change Name col title for org users
-              parsedRole.org && col.id === 'deviceName'
-                ? update(col, { label: { $set: t('Name') } })
-                : col
-            )
-        }
-      )
-      setColumns(newColumns)
     }
     // eslint-disable-next-line
   }, [detailsReducer])
-
-  useEffect(() => {
-    if (!preference.response) {
-      getDeviceLibraryPrefAction()
-    }
-
-    //eslint-disable-next-line
-  }, [])
 
   useEffect(() => {
     if (library.response) {
       setData(library.response)
       setLoading(false)
     }
-
     //eslint-disable-next-line
   }, [library])
-
-  useEffect(() => {
-    if (preference.response) {
-      const entity = preference.response.find(p => p.entity === 'DeviceLibrary')
-      const newStatuses = entity && entity.gridColumn ? entity.gridColumn : {}
-      const parsedRole = roles.parse(
-        detailsReducer.response ? detailsReducer.response.role : {}
-      )
-      const newColumns = sortByOrder(
-        newStatuses,
-        columns.filter(
-          ({ forRoles }) => !forRoles || forRoles.some(r => parsedRole[r])
-        )
-      )
-
-      setStatuses(newStatuses)
-      setColumns(newColumns)
-    }
-
-    //eslint-disable-next-line
-  }, [preference])
 
   useEffect(() => {
     handleEmptyRow(meta)
@@ -275,7 +274,8 @@ const DeviceTable = ({
   }
 
   const handleChangeRowsPerPage = rowsPerPage => {
-    setRowsPerPage(rowsPerPage)
+    setPage(1)
+    preference.actions.changeRecordsPerPage(rowsPerPage)
   }
 
   const handleEmptyRow = ({ count }) => {
@@ -322,70 +322,42 @@ const DeviceTable = ({
     })
   }
 
-  const handleColumnChange = (index, value) => {
-    const id = columns[index].id
-
-    let data
-    if (id in statuses) {
-      data = update(statuses, {
-        [id]: {
-          $merge: { display: value }
-        }
-      })
-    } else {
-      data = update(statuses, {
-        $merge: { [id]: { display: value } }
-      })
+  const handleReorder = async ({ source, destination }) => {
+    if (!source || !destination) {
+      return
     }
+    const { actions, columns } = preference
 
-    putDeviceLibraryPrefAction(data)
+    const visibleColumns = columns.filter(
+      ({ forRoles }) => !forRoles || forRoles.some(r => role[r])
+    )
+    const sourceId = visibleColumns[source.index].id
+    const destinationId = visibleColumns[destination.index].id
+
+    const newColumns = stableSort(
+      columns,
+      (lhs, rhs) => (lhs.sortOrder || 0) - (rhs.sortOrder || 0)
+    )
+    let sIdx = -1
+    let dIdx = -1
+
+    newColumns.forEach(({ id }, idx) => {
+      if (id === sourceId) {
+        sIdx = idx
+      }
+      if (id === destinationId) {
+        dIdx = idx
+      }
+    })
+
+    const shiftedColumns = update(newColumns, {
+      $set: arrayMove(columns, sIdx, dIdx)
+    })
+
+    actions.changeColumns(
+      shiftedColumns.map((col, idx) => ({ ...col, sortOrder: idx }))
+    )
   }
-
-  const handleReorder = async result => {
-    if (result.source !== null && result.destination !== null) {
-      const column = columns[result.source.index]
-
-      const index = result.source.index
-      const destIndex = result.destination.index
-
-      setColumns(
-        update(columns, {
-          $splice: [
-            [index, 1],
-            [destIndex, 0, column]
-          ]
-        })
-      )
-      setReorderCount(reorderCount + 1)
-    }
-  }
-
-  useEffect(() => {
-    if (reorderCount) {
-      let newStatuses = statuses
-
-      columns.forEach((c, i) => {
-        if (newStatuses[c.id]) {
-          newStatuses = update(newStatuses, {
-            [c.id]: {
-              $merge: { sortOrder: i }
-            }
-          })
-        } else {
-          newStatuses = update(newStatuses, {
-            $merge: {
-              [c.id]: {
-                sortOrder: i
-              }
-            }
-          })
-        }
-      })
-
-      putDeviceLibraryPrefAction(newStatuses)
-    }
-    //eslint-disable-next-line
-  }, [reorderCount])
 
   useEffect(() => {
     onChangeSelection(selected.length)
@@ -393,9 +365,9 @@ const DeviceTable = ({
   }, [selected])
 
   const filter = id => {
-    return statuses[id] && statuses[id].display !== undefined
-      ? statuses[id].display
-      : true
+    const status = preference.columns.find(status => status.id === id)
+
+    return !status || status.display !== false
   }
 
   return loading ? (
@@ -416,7 +388,7 @@ const DeviceTable = ({
             rowCount={data.length}
             columns={columns}
             filter={filter}
-            handleColumnChange={handleColumnChange}
+            handleColumnChange={preference.actions.toggleDisplayColumn}
             handleReorder={handleReorder}
           />
           <TableBody>
@@ -478,18 +450,18 @@ const DeviceTable = ({
                           )
                         case 'city':
                           return (
-                            <TableLibraryCell key={column.id}>
+                            <TableLibraryCell key={column.id} align="center">
                               {row.city}, {row.state}
                             </TableLibraryCell>
                           )
                         case 'group':
                           return (
-                            <TableLibraryCell key={column.id}>
+                            <TableLibraryCell key={column.id} align="center">
                               {row.group
                                 ? row.group.map(({ id, title }) => (
                                     <p key={id}>{title}</p>
                                   ))
-                                : null}
+                                : 'N/A'}
                             </TableLibraryCell>
                           )
                         case 'account':
@@ -506,8 +478,8 @@ const DeviceTable = ({
                           )
                         case 'firmware':
                           return (
-                            <TableLibraryCell key={column.id}>
-                              {row.firmware}
+                            <TableLibraryCell key={column.id} align="center">
+                              {row.firmware ? row.firmware : 'N/A'}
                             </TableLibraryCell>
                           )
                         case 'status':
@@ -518,6 +490,12 @@ const DeviceTable = ({
                               ) : (
                                 <InactiveStatusChip label={t('Inactive')} />
                               )}
+                            </TableLibraryCell>
+                          )
+                        case 'tag':
+                          return (
+                            <TableLibraryCell key={column.id} align="center">
+                              <LibraryTagChips tags={row.tag} />
                             </TableLibraryCell>
                           )
                         default:
@@ -558,13 +536,13 @@ const DeviceTable = ({
       </div>
       <TableLibraryFooter
         page={currentPage}
-        perPage={parseInt(perPage, 10)}
+        perPage={rowsPerPage}
         pageCount={lastPage}
         data={data}
         selected={selected}
         allSelected={selected.length === data.length}
-        rowsPerPage={rowsPerPage}
         onSelectAllClick={handleSelectAllClick}
+        handleSelect={handleSelectAllClick}
         onPageChange={handlePageChange}
         onPressJumper={handlePressJumper}
         handleChangeRowsPerPage={handleChangeRowsPerPage}
@@ -576,33 +554,28 @@ const DeviceTable = ({
 DeviceTable.propTypes = {
   classes: PropTypes.object.isRequired,
   enqueueSnackbar: PropTypes.func.isRequired,
-  getDeviceLibraryPrefAction: PropTypes.func,
-  putDeviceLibraryPrefAction: PropTypes.func,
   getDeviceItemsAction: PropTypes.func,
   library: PropTypes.object,
-  preference: PropTypes.object,
   detailsReducer: PropTypes.object
 }
 
 const mapStateToProps = ({ device, user }) => ({
   library: device.library,
   meta: device.meta,
-  preference: device.preference,
   detailsReducer: user.details
 })
 
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
-      getDeviceLibraryPrefAction,
-      putDeviceLibraryPrefAction,
       getDeviceItemsAction
     },
     dispatch
   )
 
-export default translate('translations')(
-  withStyles(styles)(
-    withSnackbar(connect(mapStateToProps, mapDispatchToProps)(DeviceTable))
-  )
-)
+export default compose(
+  translate('translations'),
+  withStyles(styles),
+  withSnackbar,
+  connect(mapStateToProps, mapDispatchToProps)
+)(DeviceTable)

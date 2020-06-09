@@ -13,7 +13,7 @@ import { useDispatch } from 'react-redux'
 const useStyles = makeStyles({
   canvasWrapper: {
     position: 'relative',
-    maxWidth: '100%',
+    width: '100%',
     '& canvas': {
       position: 'relative',
       zIndex: 3,

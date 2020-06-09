@@ -10,6 +10,7 @@ import { withStyles, Grid } from '@material-ui/core'
 
 import { Card } from '../../Card'
 import { StorageBarChart, StoragePieChart } from '../../Charts'
+import { parseLocaleNumberValue } from 'utils/numbers'
 
 const styles = {
   cardWrapper: {
@@ -19,14 +20,20 @@ const styles = {
   cardBorder: {
     borderWidth: 2,
     borderStyle: 'solid'
+  },
+  storagePieChart: {
+    width: '20%'
+  },
+  storageBarChart: {
+    width: '80%'
   }
 }
 
 const storagePieChartData = [
-  { name: 'Group A', value: 400 },
-  { name: 'Group B', value: 300 },
-  { name: 'Group C', value: 300 },
-  { name: 'Group D', value: 200 }
+  { id: 'Group A', label: 'Group A', value: 400 },
+  { id: 'Group B', label: 'Group B', value: 300 },
+  { id: 'Group C', label: 'Group C', value: 300 },
+  { id: 'Group D', label: 'Group D', value: 200 }
 ]
 
 const StorageCard = ({
@@ -46,7 +53,8 @@ const StorageCard = ({
 
       const arr = storage.map(e => ({
         name: Object.keys(e)[0],
-        value: Object.values(e)[0]
+        value: parseLocaleNumberValue(Object.values(e)[0]),
+        displayValue: Object.values(e)[0]
       }))
 
       setData(arr)
@@ -64,8 +72,12 @@ const StorageCard = ({
         )}
       >
         <Grid container justify="space-between">
-          <StoragePieChart chartData={storagePieChartData} />
-          <StorageBarChart chartData={data} />
+          <div className={classes.storagePieChart}>
+            <StoragePieChart chartData={storagePieChartData} />
+          </div>
+          <div className={classes.storageBarChart}>
+            <StorageBarChart chartData={data} />
+          </div>
         </Grid>
       </Card>
     </Grid>

@@ -30,7 +30,7 @@ import useMediaNotification from 'hooks/useMediaNotification'
 import { selectUtils } from 'utils'
 import moment from 'moment'
 
-const styles = ({ palette, type }) => ({
+const styles = ({ palette, type, typography }) => ({
   root: {
     height: '100%',
     display: 'grid',
@@ -42,16 +42,13 @@ const styles = ({ palette, type }) => ({
     backgroundImage: palette[type].sideModal.action.button.background,
     borderRadius: '4px',
     boxShadow: 'none',
-    marginTop: '122px',
-    marginBottom: '20px'
+    marginTop: 45
   },
-  themeOptions1: {
-    padding: '0 15px',
-    margin: '12px 0 26px'
+  previewMediaText: {
+    ...typography.lightText[type]
   },
   addMediaBtn: {
     width: '103px',
-    marginTop: '2px',
     alignSelf: 'flex-end'
   },
   addMediaText: {
@@ -59,7 +56,7 @@ const styles = ({ palette, type }) => ({
     color: '#FFFFFF'
   },
   infoBoxInput: {
-    marginBottom: '19px'
+    marginBottom: 16
   },
   locationLabel: {
     fontSize: '13px',
@@ -70,7 +67,7 @@ const styles = ({ palette, type }) => ({
     position: 'relative',
     display: 'flex',
     flexDirection: 'column',
-    padding: '13px 16px 12px 26px'
+    padding: 15
   },
   rightContent: {
     height: 'inherit',
@@ -80,7 +77,7 @@ const styles = ({ palette, type }) => ({
     borderLeft: `1px solid ${palette[type].sideModal.content.border}`
   },
   leftContent: {
-    padding: '22px 25px 0 24px'
+    padding: '15px 30px'
   },
   draggable: {
     position: 'absolute',
@@ -369,7 +366,7 @@ const Interest = ({
           value={currentLocation.location}
           onChange={handleChangeLocations}
           error={form.errors.location}
-          marginBottom={25}
+          marginBottom={16}
           touched
         />
         <Section

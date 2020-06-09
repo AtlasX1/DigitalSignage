@@ -30,122 +30,124 @@ import DeviceCardAlerts from 'components/Pages/Admin/DeviceLibrary/DeviceCardAle
 import { getUrlPrefix } from 'utils/index'
 import { routeByName } from 'constants/index'
 import { useCustomSnackbar } from 'hooks'
+import { isEqual, isFalsy } from 'utils/generalUtils'
 
-const styles = theme => {
-  const { palette, type } = theme
-  return {
-    deviceWrap: {
-      padding: '10px'
-    },
-    cardRoot: {
-      padding: 0,
-      border: `solid 1px ${palette[type].deviceCard.border}`,
-      boxShadow: `0 2px 4px 0 ${palette[type].deviceCard.shadow}`,
-      borderRadius: '7px',
-      position: 'relative'
-    },
-    moreInfoMenuDropdownContainer: {
-      width: '360px'
-    },
-    cardHeader: {
-      padding: '50px 20px 15px',
-      marginBottom: 0,
-      backgroundColor: palette[type].deviceCard.header.background,
-      borderRadius: '7px 7px 0 0'
-    },
-    cardHeaderText: {
-      fontSize: '16px'
-    },
-    cardIconButton: {
-      fontSize: '18px'
-    },
-    content: {
-      padding: '20px 20px 45px'
-    },
-    detailRow: {
-      height: '32px',
-      borderBottom: `1px solid ${palette[type].deviceCard.row.background}`
-    },
-    detailLabel: {
-      fontSize: '12px',
-      color: '#74809a'
-    },
-    detailValue: {
-      fontSize: '12px',
-      fontWeight: 'bold',
-      color: palette[type].deviceCard.row.value
-    },
-    footer: {
-      padding: '15px 18px',
-      backgroundColor: palette[type].deviceCard.footer.background,
-      borderRadius: '0 0 7px 7px'
-    },
-    footerCheckbox: {
-      marginRight: '10px'
-    },
-    actionDropdown: {
-      overflow: 'hidden'
-    },
-    rowActionBtn: {
-      minWidth: '32px',
-      paddingLeft: '5px',
-      paddingRight: '5px',
-      boxShadow: '0 1px 0 0 rgba(216, 222, 234, 0.5)',
-      color: palette[type].deviceCard.button.color,
+const styles = ({ palette, type, typography }) => ({
+  deviceWrap: {
+    padding: '10px'
+  },
+  cardRoot: {
+    padding: 0,
+    border: `solid 1px ${palette[type].deviceCard.border}`,
+    boxShadow: `0 2px 4px 0 ${palette[type].deviceCard.shadow}`,
+    borderRadius: '7px',
+    position: 'relative'
+  },
+  moreInfoMenuDropdownContainer: {
+    width: '360px'
+  },
+  cardHeader: {
+    padding: '50px 20px 15px',
+    marginBottom: 0,
+    backgroundColor: palette[type].deviceCard.header.background,
+    borderRadius: '7px 7px 0 0'
+  },
+  cardHeaderText: {
+    fontSize: '16px'
+  },
+  cardIconButton: {
+    fontSize: '18px'
+  },
+  content: {
+    padding: '20px 20px 45px'
+  },
+  detailRow: {
+    height: '32px',
+    borderBottom: `1px solid ${palette[type].deviceCard.row.background}`
+  },
+  detailLabel: {
+    ...typography.lightText[type]
+  },
+  detailValue: {
+    ...typography.darkAccent[type]
+  },
+  footer: {
+    padding: '15px 18px',
+    backgroundColor: palette[type].deviceCard.footer.background,
+    borderRadius: '0 0 7px 7px'
+  },
+  footerCheckbox: {
+    marginRight: '10px'
+  },
+  actionDropdown: {
+    overflow: 'hidden'
+  },
+  rowActionBtn: {
+    minWidth: '32px',
+    paddingLeft: '5px',
+    paddingRight: '5px',
+    boxShadow: '0 1px 0 0 rgba(216, 222, 234, 0.5)',
+    color: palette[type].deviceCard.button.color,
 
-      '&:hover': {
-        borderColor: '#1c5dca',
-        backgroundColor: '#1c5dca',
-        color: '#f5f6fa'
-      }
-    },
-    rowActionBtnIcon: {
-      width: 18,
-      height: 18
-    },
-    cardActionList: {
-      width: '485px',
-      display: 'flex',
-      flexDirection: 'row'
-    },
-    actionBtnLink: {
-      flex: '1 1 auto',
-      flexDirection: 'column',
-      width: 100,
-      paddingTop: 0,
-      paddingLeft: 0,
-      paddingRight: 0,
-      minWidth: '60px',
-
-      '&:not(:last-child)': {
-        borderRight: `1px solid ${palette[type].deviceCard.border}`
-      }
-    },
-    actionBtnIconWrap: {
-      margin: '15px 0'
-    },
-    actionBtnIcon: {
-      fontSize: '24px',
-      color: '#74809a'
-    },
-    rebootDeviceColor: {
-      color: '#d31712'
-    },
-    actionBtnText: {
-      fontSize: '12px',
-      color: '#74809a'
-    },
-    alertsComponentWrapper: {
-      position: 'absolute',
-      top: 20,
-      left: 20
+    '&:hover': {
+      borderColor: '#1c5dca',
+      backgroundColor: '#1c5dca',
+      color: '#f5f6fa'
     }
+  },
+  rowActionBtnIcon: {
+    width: 18,
+    height: 18
+  },
+  cardActionList: {
+    width: '485px',
+    display: 'flex',
+    flexDirection: 'row'
+  },
+  actionBtnLink: {
+    flex: '1 1 auto',
+    flexDirection: 'column',
+    width: 100,
+    paddingTop: 0,
+    paddingLeft: 0,
+    paddingRight: 0,
+    minWidth: '60px',
+
+    '&:not(:last-child)': {
+      borderRight: `1px solid ${palette[type].deviceCard.border}`
+    }
+  },
+  actionBtnIconWrap: {
+    margin: '15px 0'
+  },
+  actionBtnIcon: {
+    fontSize: '24px',
+    color: '#74809a'
+  },
+  rebootDeviceColor: {
+    color: '#d31712'
+  },
+  actionBtnText: {
+    ...typography.lightText[type]
+  },
+  alertsComponentWrapper: {
+    position: 'absolute',
+    top: 20,
+    left: 20
   }
-}
+})
 
 const popupContentStyle = {
-  width: 450,
+  width: 424,
   animation: 'fade-in 200ms'
+}
+
+function isEmergencyId({ id }) {
+  return isEqual(id, 30)
+}
+
+function isCapId({ id }) {
+  return isEqual(id, 42)
 }
 
 const DeviceCard = ({
@@ -164,6 +166,13 @@ const DeviceCard = ({
   const showSnackbar = useCustomSnackbar(t, enqueueSnackbar, closeSnackbar)
   const [rebootDevice, setRebootDevice] = useState(false)
   const [mediaDialog, setMediaDialog] = useState(false)
+  const [isEmergencyEnabled, isCapEnabled] = useMemo(() => {
+    const { feature } = device
+    return [feature.some(isEmergencyId), feature.some(isCapId)]
+  }, [device])
+  const isMediaDisabled = useMemo(() => {
+    return isFalsy(isEmergencyEnabled, isCapEnabled)
+  }, [isEmergencyEnabled, isCapEnabled])
 
   // TODO refactor
   const handleClick = useCallback(
@@ -202,6 +211,7 @@ const DeviceCard = ({
       )
     )
   }, [device, handleAlertClick])
+
   return (
     <section className={classes.deviceWrap}>
       <Card
@@ -374,6 +384,7 @@ const DeviceCard = ({
                         button
                         className={classes.actionBtnLink}
                         onClick={() => setMediaDialog(true)}
+                        disabled={isMediaDisabled}
                       >
                         <ListItemIcon className={classes.actionBtnIconWrap}>
                           <i
@@ -435,6 +446,8 @@ const DeviceCard = ({
         <MediaModal
           id={id}
           open={mediaDialog}
+          isEmergencyEnabled={isEmergencyEnabled}
+          isCapEnabled={isCapEnabled}
           handleClose={() => setMediaDialog(false)}
         />
       )}

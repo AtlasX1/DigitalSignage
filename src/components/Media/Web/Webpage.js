@@ -7,12 +7,7 @@ import { get as _get } from 'lodash'
 import { useFormik } from 'formik'
 import { translate } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
-import {
-  withStyles,
-  Grid,
-  Typography,
-  CircularProgress
-} from '@material-ui/core'
+import { withStyles, Grid, Typography } from '@material-ui/core'
 
 import { WhiteButton } from '../../Buttons'
 import { CheckboxSwitcher } from '../../Checkboxes'
@@ -24,7 +19,6 @@ import { mediaConstants as constants } from 'constants/index'
 import { completeUrl } from 'utils/urlUtils'
 import {
   createMediaPostData,
-  getAllowedFeatureId,
   getMediaInfoFromBackendData
 } from 'utils/mediaUtils'
 import {
@@ -34,11 +28,12 @@ import {
   generateMediaPreview,
   getMediaItemsAction
 } from 'actions/mediaActions'
+import useDetermineMediaFeatureId from 'hooks/useDetermineMediaFeatureId'
 
 const styles = ({ palette, type, typography }) => {
   return {
     root: {
-      margin: '24px 25px',
+      margin: '15px 30px',
       fontFamily: typography.fontFamily
     },
     formWrapper: {
@@ -69,8 +64,7 @@ const styles = ({ palette, type, typography }) => {
       boxShadow: 'none'
     },
     previewMediaText: {
-      fontWeight: 'bold',
-      color: palette[type].sideModal.action.button.color
+      ...typography.lightText[type]
     },
     formControlRootClass: {
       marginBottom: 0
@@ -87,20 +81,16 @@ const styles = ({ palette, type, typography }) => {
       fontSize: 14
     },
     previewMediaRow: {
-      marginTop: '42px'
+      marginTop: 45
     },
     formGroup: {
-      marginTop: '12px'
-    },
-    sliderInputLabelClass: {
-      paddingRight: '15px',
-      fontStyle: 'normal'
+      marginTop: 5
     },
     sliderInputRootClass: {
       alignItems: 'center'
     },
     labelClass: {
-      fontSize: '17px'
+      fontSize: '1.0833rem'
     },
     formControlLabelClass: {
       fontSize: '13px'
@@ -134,14 +124,12 @@ const Webpage = props => {
     onShareStateCallback
   } = props
   const dispatchAction = useDispatch()
-  const { configMediaCategory } = useSelector(({ config }) => config)
   const addMediaReducer = useSelector(({ addMedia }) => addMedia.web)
   const mediaItemReducer = useSelector(({ media }) => media.mediaItem)
 
-  const [isLoading, setLoading] = useState(false)
   const [formSubmitting, setFormSubmitting] = useState(false)
   const [autoClose, setAutoClose] = useState(false)
-  const [featureId, setFeatureId] = useState(null)
+  const featureId = useDetermineMediaFeatureId('Web', 'WebUrl')
 
   const initialFormValues = useRef({
     url: '',
@@ -357,27 +345,14 @@ const Webpage = props => {
         mediaInfo: getMediaInfoFromBackendData(backendData)
       }
       form.setValues(initialFormValues.current)
-      setLoading(false)
     }
 
     // eslint-disable-next-line
   }, [backendData])
 
   useEffect(() => {
-    if (!configMediaCategory.response.length) return
-    const id = getAllowedFeatureId(configMediaCategory, 'Web', 'WebUrl')
-    setFeatureId(id)
-  }, [configMediaCategory])
-
-  useEffect(() => {
     onShareStateCallback(handleShareState)
   }, [handleShareState, onShareStateCallback])
-
-  useEffect(() => {
-    if (mode === 'edit') {
-      setLoading(true)
-    }
-  }, [mode])
 
   const onBlurHandler = useCallback(
     event => {
@@ -391,11 +366,6 @@ const Webpage = props => {
   const isButtonsDisable = formSubmitting || (submitCount > 0 && !isValid)
   return (
     <form className={classes.formWrapper} onSubmit={form.handleSubmit}>
-      {isLoading && (
-        <div className={classes.loaderWrapper}>
-          <CircularProgress size={30} thickness={5} />
-        </div>
-      )}
       <Grid container className={classes.tabContent}>
         <Grid item xs={7}>
           <div className={classes.root}>

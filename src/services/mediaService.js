@@ -140,11 +140,12 @@ const addMedia = async data => {
   }
 }
 
-const getGroupItems = async id => {
+const getGroupItems = async (id, params) => {
   try {
     const response = await api({
       method: 'GET',
-      url: `/media/group/${id}`
+      url: `/media/group/${id}`,
+      params
     })
 
     return response.data
@@ -245,6 +246,22 @@ const getFeatureMediaItems = async data => {
   }
 }
 
+async function getMediaCapAlert() {
+  try {
+    const response = await api({
+      method: 'GET',
+      url: '/media',
+      params: {
+        featureId: 42
+      }
+    })
+
+    return response.data
+  } catch (error) {
+    throw errorHandler(error)
+  }
+}
+
 export default {
   getMediaLibraryPref,
   getMediaLibraryItems,
@@ -262,5 +279,6 @@ export default {
   deleteGroupItem,
   getMediaItemById,
   putMediaItemById,
-  getFeatureMediaItems
+  getFeatureMediaItems,
+  getMediaCapAlert
 }

@@ -19,8 +19,8 @@ export const WhiteButton = withStyles(theme => {
       }
     },
     label: {
-      fontSize: '12px',
-      fontWeight: 'bold',
+      fontSize: '0.8125rem',
+      lineHeight: '1.6667em',
       textTransform: 'capitalize',
       color: 'inherit'
     }
@@ -48,8 +48,8 @@ export const BlueButton = withStyles({
     }
   },
   label: {
-    fontSize: '12px',
-    fontWeight: 'bold',
+    fontSize: '0.8125rem',
+    lineHeight: '1.6667em',
     textTransform: 'capitalize',
     color: 'inherit'
   }
@@ -68,31 +68,29 @@ export const TabToggleButtonGroup = withStyles(theme => {
   }
 })(ToggleButtonGroup)
 
-export const TabToggleButton = withStyles(theme => {
-  const { palette, type } = theme
-  return {
-    root: {
-      minWidth: '65px',
-      height: '25px',
-      border: `1px solid ${palette[type].tabs.toggleButton.border}`,
-      fontSize: '12px',
-      color: palette[type].tabs.toggleButton.color,
-      borderRadius: '100px',
-      textTransform: 'capitalize',
-      background: palette[type].tabs.toggleButton.background,
+export const TabToggleButton = withStyles(({ palette, type, typography }) => ({
+  root: {
+    ...typography.lightText[type],
+    minWidth: '65px',
+    height: '25px',
+    border: `1px solid ${palette[type].tabs.toggleButton.border}`,
+    fontSize: '0.75rem',
+    lineHeight: 1,
+    borderRadius: '100px',
+    textTransform: 'capitalize',
+    background: palette[type].tabs.toggleButton.background,
 
-      '&:not(:last-child)': {
-        borderRight: 'none'
-      }
-    },
-    selected: {
-      borderColor: '#0378ba !important',
-      backgroundColor: '#0378ba !important',
-      color: '#fff !important',
-      fontWeight: 'bold'
+    '&:not(:last-child)': {
+      borderRight: 'none'
     }
+  },
+  selected: {
+    borderColor: '#0378ba !important',
+    backgroundColor: '#0378ba !important',
+    color: '#fff !important',
+    fontWeight: 'bold'
   }
-})(ToggleButton)
+}))(ToggleButton)
 
 export const FabBlueButton = withStyles({
   root: {

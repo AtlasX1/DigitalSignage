@@ -38,7 +38,7 @@ const DropzoneWithoutClickStyles = () => ({
     justifyContent: 'center',
     width: '100%',
     height: '182px',
-    marginTop: '14px',
+    marginTop: '16px',
     padding: '20px',
     borderWidth: '1px',
     borderStyle: 'dashed',
@@ -48,7 +48,7 @@ const DropzoneWithoutClickStyles = () => ({
   },
   dropzoneText: {
     marginTop: '20px',
-    fontSize: '14px',
+    fontSize: '0.8125rem',
     color: '#0378ba'
   }
 })
@@ -134,14 +134,14 @@ const DownloadFileButton = withStyles(DownloadFileButtonClasses)(
   )
 )
 
-const styles = ({ palette, type, typography }) => {
+const styles = ({ palette, type, typography, formControls }) => {
   return {
     root: {
-      margin: '20px 25px',
+      margin: '15px 30px',
       fontFamily: typography.fontFamily
     },
     chartTypeContainer: {
-      padding: '0 0 28px'
+      padding: '0 0 16px'
     },
     previewMediaBtn: {
       padding: '10px 25px 8px',
@@ -149,11 +149,10 @@ const styles = ({ palette, type, typography }) => {
       backgroundImage: palette[type].sideModal.action.button.background,
       borderRadius: '4px',
       boxShadow: 'none',
-      marginTop: '45px'
+      marginTop: '37px'
     },
     previewMediaText: {
-      fontWeight: 'bold',
-      color: palette[type].sideModal.action.button.color
+      ...typography.lightText[type]
     },
     themeCardWrap: {
       border: `solid 1px ${palette[type].pages.media.general.card.border}`,
@@ -183,24 +182,19 @@ const styles = ({ palette, type, typography }) => {
         marginRight: '0'
       }
     },
-    axisInputContainer: {
-      padding: '0 7.5px',
-      margin: '0 -7.5px'
-    },
     axisContainer: {
-      marginTop: '26px'
+      marginTop: 16
     },
     formControlRootClass: {
-      marginBottom: '18px'
+      marginBottom: 0
     },
     sliderInputLabel: {
-      color: '#74809A',
-      fontSize: '13px',
+      ...formControls.mediaApps.refreshEverySlider.label,
       lineHeight: '15px',
       marginRight: '15px'
     },
-    marginTop1: {
-      marginTop: '15px'
+    webUrlContainer: {
+      margin: '16px -8px 8px -8px'
     }
   }
 }
@@ -239,9 +233,10 @@ class Chart extends Component {
             container
             justify="space-between"
             alignItems="center"
-            className={classes.marginTop1}
+            className={classes.webUrlContainer}
+            spacing={16}
           >
-            <Grid item xs={6} className={classes.axisInputContainer}>
+            <Grid item xs={6}>
               <FormControlInput
                 formControlRootClass={classes.formControlRootClass}
                 label={'Input URL:'}
@@ -249,7 +244,7 @@ class Chart extends Component {
                 fullWidth={true}
               />
             </Grid>
-            <Grid item xs={6} className={classes.axisInputContainer}>
+            <Grid item xs={6}>
               <Grid container justify="flex-start" alignItems="center">
                 <Grid item>
                   <Typography className={classes.sliderInputLabel}>
@@ -356,8 +351,9 @@ class Chart extends Component {
           container
           justify="space-between"
           className={classes.axisContainer}
+          spacing={16}
         >
-          <Grid item xs={6} className={classes.axisInputContainer}>
+          <Grid item xs={6}>
             <FormControlInput
               formControlRootClass={classes.formControlRootClass}
               label={'X-Axis Title'}
@@ -365,7 +361,7 @@ class Chart extends Component {
               fullWidth={true}
             />
           </Grid>
-          <Grid item xs={6} className={classes.axisInputContainer}>
+          <Grid item xs={6}>
             <FormControlInput
               formControlRootClass={classes.formControlRootClass}
               label={'Y-Axis Title'}
@@ -373,7 +369,7 @@ class Chart extends Component {
               fullWidth={true}
             />
           </Grid>
-          <Grid item xs={6} className={classes.axisInputContainer}>
+          <Grid item xs={6}>
             <FormControlInput
               formControlRootClass={classes.formControlRootClass}
               label={'X-Axis Sub Title'}
@@ -381,7 +377,7 @@ class Chart extends Component {
               fullWidth={true}
             />
           </Grid>
-          <Grid item xs={6} className={classes.axisInputContainer}>
+          <Grid item xs={6}>
             <FormControlInput
               formControlRootClass={classes.formControlRootClass}
               label={'Y-Axis Sub Title'}

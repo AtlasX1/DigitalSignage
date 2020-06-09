@@ -2,7 +2,7 @@ import api from './api'
 
 import { errorHandler } from '../utils'
 
-const getGroupByEntity = async (entity, params) => {
+const getGroupByEntity = async (entity, params, CancelToken) => {
   try {
     const { data } = await api({
       method: 'GET',
@@ -10,7 +10,8 @@ const getGroupByEntity = async (entity, params) => {
       params: {
         ...params,
         entity
-      }
+      },
+      CancelToken
     })
 
     return data

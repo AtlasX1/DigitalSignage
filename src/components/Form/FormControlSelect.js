@@ -28,7 +28,8 @@ const styles = theme => {
       marginBottom: theme.spacing.unit * 2
     },
     bootstrapFormLabel: {
-      fontSize: 16,
+      fontSize: '1.0833rem',
+      lineHeight: '24px',
       color: palette[type].formControls.label.color,
       ...formControls.mediaApps.selectInput.label
     },
@@ -44,7 +45,8 @@ const styles = theme => {
       borderRadius: 1,
       boxShadow: `0 2px 4px 0 ${palette[type].formControls.select.shadow}`,
       background: palette[type].formControls.select.background,
-      padding: '0 15px'
+      padding: '0 15px',
+      maxHeight: 400
     },
     menuItem: {
       width: 'calc(100% + 30px)',

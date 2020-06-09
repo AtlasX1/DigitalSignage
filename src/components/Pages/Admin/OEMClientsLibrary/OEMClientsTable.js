@@ -24,7 +24,7 @@ import { ActiveStatusChip, InactiveStatusChip } from '../../../Chip'
 import { stableSort, getSorting } from '../../../../utils'
 import { OEMClientsService } from '../../../../services'
 
-const styles = theme => ({
+const styles = ({ typography, type }) => ({
   root: {
     width: '100%',
     boxShadow: 'none'
@@ -34,7 +34,7 @@ const styles = theme => ({
     minHeight: '90vh'
   },
   name: {
-    fontWeight: 'bold'
+    ...typography.darkAccent[type]
   }
 })
 
@@ -210,6 +210,7 @@ class OEMClientsTable extends Component {
         <div className={classes.tableWrapper}>
           <Table className={classes.table}>
             <TableLibraryHead
+              noType
               editRows={true}
               numSelected={selected.length}
               order={order}

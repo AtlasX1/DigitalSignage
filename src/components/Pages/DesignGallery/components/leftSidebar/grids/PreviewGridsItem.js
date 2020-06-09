@@ -21,7 +21,22 @@ const useStyles = makeStyles({
       borderColor: '#1175BC'
     },
     '&.is-selected': {
-      borderColor: '#1175BC'
+      borderColor: '#1175BC',
+
+      '& > span': {
+        top: 2,
+        right: 2,
+        position: 'absolute',
+        background: '#1175BC',
+        height: 16,
+        lineHeight: 1,
+        borderRadius: '50%',
+        width: 16,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        color: 'white'
+      }
     },
     '&.col-1': {
       width: '100%',
@@ -163,6 +178,11 @@ const PreviewGridsItem = ({ grid, onClick, colWidth }) => {
         'is-selected': selected
       })}
     >
+      {selected && (
+        <span>
+          <i className="icon-check-circle-2" />
+        </span>
+      )}
       {getContentByType()}
     </div>
   )

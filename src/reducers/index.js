@@ -1,7 +1,6 @@
 import {
   CUSTOM_EMAIL_TEMPLATE,
   HTML_CONTENT,
-  ANNOUNCEMENT,
   EMAIL_TEMPLATE
 } from 'constants/library'
 
@@ -43,12 +42,12 @@ import categories from './categoriesReducer'
 import contents from './contentsReducer'
 import customEmailTemplate from './customEmailTemplateReducer'
 import role from './roleReducer'
-import announcements from './announcementReducer'
 import workplacePosters from './workplacePosterReducer'
 import preference from './preferenceReducer'
 import impersonateReducer from 'reducers/impersonateReducer'
 import clientUsers from './clientUsersReducer'
 import whiteLabel from './whiteLabelReducer'
+import smartPlaylist from './smartPlaylistReducer'
 import quoteReducer from './quoteReducer'
 import appReducer from './appReducer'
 
@@ -58,6 +57,7 @@ const editorReducer = combineReducers({
 })
 
 const rootReducer = combineReducers({
+  appReducer,
   user,
   users,
   tags,
@@ -93,15 +93,14 @@ const rootReducer = combineReducers({
   categories,
   contents,
   role,
-  [ANNOUNCEMENT]: announcements,
   workplacePosters,
   [CUSTOM_EMAIL_TEMPLATE]: customEmailTemplate,
   preference,
   whiteLabel,
   quoteReducer,
   clientUsers,
-  alert,
-  appReducer
+  smartPlaylist,
+  alert
 })
 
 export default rootReducer

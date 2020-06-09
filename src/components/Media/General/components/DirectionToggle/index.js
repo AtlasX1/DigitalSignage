@@ -13,7 +13,7 @@ const styles = ({ type, palette }) => ({
     alignItems: 'center'
   },
   label: {
-    fontSize: '17px',
+    fontSize: '1.0833rem',
     color: palette[type].formControls.label.color
   },
   rightLabel: {
@@ -31,8 +31,8 @@ const styles = ({ type, palette }) => ({
     flexDirection: 'row',
     alignItems: 'center'
   },
-  topLabelMargin: {
-    marginBottom: '7px'
+  bootstrapFormLabel: {
+    margin: 0
   }
 })
 
@@ -62,9 +62,7 @@ const DirectionToggle = ({
       {label && (
         <InputLabel
           shrink
-          className={classNames(classes.bootstrapFormLabel, labelClass, {
-            [classes.topLabelMargin]: labelPosition === 'top'
-          })}
+          className={classNames(classes.bootstrapFormLabel, labelClass)}
           classes={{
             focused: classes.bootstrapFormLabelFocus,
             root: classes.label

@@ -13,7 +13,7 @@ import { get as _get } from 'lodash'
 import { SideModal } from 'components/Modal'
 import {
   FormControlInput,
-  FormControlSelect,
+  FormControlReactSelect,
   FormControlTelInput
 } from 'components/Form'
 import FooterLayout from 'components/Modal/FooterLayout'
@@ -67,12 +67,21 @@ const AddEditUser = ({
     path,
     params: { id }
   },
-  history
+  history,
+  isCurrentUserRestricted
 }) => {
   const [isSubmittingForm, setSubmittingForm] = useState(false)
   const transformedRoles = useMemo(
     () => roles.map(({ displayName: label, id: value }) => ({ label, value })),
     [roles]
+  )
+
+  const userStatusOptions = useMemo(
+    () => [
+      { label: t('Active'), value: 'Active' },
+      { label: t('Inactive'), value: 'Inactive' }
+    ],
+    [t]
   )
 
   const isEdit = useMemo(() => path === getUrlPrefix(routeByName.users.edit), [
@@ -88,7 +97,8 @@ const AddEditUser = ({
       phone: t('Phone'),
       password: t('Password'),
       confirmPassword: t('Confirm Password'),
-      roleId: t('User Type')
+      roleId: t('User Type'),
+      status: t('Status')
     }),
     [isEdit, t]
   )
@@ -109,6 +119,7 @@ const AddEditUser = ({
       password: '',
       passwordConfirmation: '',
       roleId: '',
+      status: userStatusOptions[0],
       profile: null
     },
     validationSchema: isEdit
@@ -168,6 +179,7 @@ const AddEditUser = ({
         lastName,
         phone,
         role: { id: roleId },
+        status,
         email
       } = item
 
@@ -180,6 +192,7 @@ const AddEditUser = ({
         phone: checkData(phone, ''),
         email: checkData(email, ''),
         roleId: checkData(roleId, null),
+        status: checkData(status, null),
         profile: null
       }
 
@@ -294,15 +307,26 @@ const AddEditUser = ({
               onChange={form.handleChange}
               onBlur={form.handleBlur}
             />
-            <FormControlSelect
+            <FormControlReactSelect
               label={translate.roleId}
-              id="roleId"
+              name="roleId"
               options={transformedRoles}
               handleChange={form.handleChange}
               value={form.values.roleId}
               error={form.errors.roleId}
               touched={form.touched.roleId}
               formControlLabelClass={classes.inputLabel}
+            />
+            <FormControlReactSelect
+              label={translate.status}
+              name="status"
+              options={userStatusOptions}
+              handleChange={form.handleChange}
+              value={form.values.status}
+              error={form.errors.status}
+              touched={form.touched.status}
+              formControlLabelClass={classes.inputLabel}
+              disabled={isCurrentUserRestricted}
             />
             <ProfileImage
               name="profile"
@@ -330,6 +354,11 @@ const mapStateToProps = ({
   }
 }) => {
   const level = _get(userDetails, 'response.role.level', '')
+  const isCurrentUserRestricted = _get(
+    userDetails,
+    'response.role.restricted',
+    1
+  )
   const roles =
     level === userRoleLevels.org
       ? orgRoles
@@ -341,7 +370,8 @@ const mapStateToProps = ({
     postReducer: post,
     putReducer: put,
     item,
-    roles
+    roles,
+    isCurrentUserRestricted
   }
 }
 

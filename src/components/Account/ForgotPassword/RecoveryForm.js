@@ -1,7 +1,5 @@
 import React from 'react'
-import PropTypes from 'prop-types'
-import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
+import { useDispatch } from 'react-redux'
 import { Link as RouterLink } from 'react-router-dom'
 import { translate } from 'react-i18next'
 import { useFormik } from 'formik'
@@ -11,16 +9,14 @@ import { withStyles, Typography, Link } from '@material-ui/core'
 import { FormControlInput } from '../../Form'
 import { FabBlueButton } from '../../Buttons'
 
-import { recoveryAction } from '../../../actions/authenticationActions'
+import { recoveryAction } from 'actions/authenticationActions'
 
 const styles = theme => {
   const { palette, type } = theme
   return {
     form: {
       width: '569px',
-      padding: '0 65px',
-      marginBottom: '15px',
-      borderBottom: `1px solid ${palette[type].pages.singIn.border}`
+      padding: '0 65px'
     },
     formTitle: {
       fontSize: '30px',
@@ -59,7 +55,8 @@ const styles = theme => {
   }
 }
 
-const RecoveryForm = ({ t, classes, recoveryAction }) => {
+function RecoveryForm({ t, classes }) {
+  const dispatch = useDispatch()
   const form = useFormik({
     initialValues: {
       email: ''
@@ -68,10 +65,9 @@ const RecoveryForm = ({ t, classes, recoveryAction }) => {
       email: Yup.string().required('Enter field').email('Must be an email')
     }),
     onSubmit: ({ email }) => {
-      recoveryAction(email)
+      dispatch(recoveryAction(email))
     }
   })
-
   return (
     <form className={classes.form} onSubmit={form.handleSubmit}>
       <header>
@@ -118,13 +114,4 @@ const RecoveryForm = ({ t, classes, recoveryAction }) => {
   )
 }
 
-RecoveryForm.propTypes = {
-  recoveryAction: PropTypes.func
-}
-
-const mapDispatchToProps = dispatch =>
-  bindActionCreators({ recoveryAction }, dispatch)
-
-export default translate('translations')(
-  withStyles(styles)(connect(null, mapDispatchToProps)(RecoveryForm))
-)
+export default translate('translations')(withStyles(styles)(RecoveryForm))

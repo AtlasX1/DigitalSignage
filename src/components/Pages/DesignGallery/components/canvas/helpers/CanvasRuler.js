@@ -348,7 +348,6 @@ class RulerGuideLine {
   }
 
   createGuideLine = (direction, event) => {
-    console.log(direction)
     const { x, y } = this.canvas.getPointer(event)
     const options = {
       fill: 'red',

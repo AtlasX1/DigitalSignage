@@ -34,7 +34,8 @@ const styles = ({ palette, type, spacing }) => ({
     marginTop: 1
   },
   bootstrapFormLabel: {
-    fontSize: 18,
+    fontSize: '1.0833rem',
+    lineHeight: '24px',
     color: palette[type].formControls.label.color
   },
   bootstrapFormLabelFocus: {

@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react'
+import React, { useCallback, useMemo } from 'react'
 
 import { translate } from 'react-i18next'
 
@@ -14,7 +14,8 @@ const styles = ({ palette, type }) => ({
   bar: {
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    marginTop: 20
   },
   separator: {
     margin: '0 5px',
@@ -33,7 +34,10 @@ const styles = ({ palette, type }) => ({
     marginBottom: '10px'
   },
   checkboxAllDay: {
-    alignSelf: 'flex-end'
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: -10
   },
   playTimeCheckbox: {
     height: '28px'
@@ -41,6 +45,7 @@ const styles = ({ palette, type }) => ({
 })
 
 const DateRangePicker = ({
+  values,
   startTime,
   endTime,
   startDate,
@@ -49,13 +54,26 @@ const DateRangePicker = ({
   handleChangeEndTime,
   handleChangeStartDate,
   handleChangeEndDate,
+  handleAllTimeChange,
+  handleAllDatesChange,
   classes,
   t
 }) => {
-  const [isTimeAllDay, setTimeAllDay] = useState(false)
-  const handleChangeIsTimeAllDay = useCallback(value => {
-    setTimeAllDay(value)
-  }, [])
+  const handleChangeAllTime = useCallback(
+    value => {
+      handleAllTimeChange(value)
+    },
+    // eslint-disable-next-line
+    []
+  )
+
+  const handleChangeAllDAtes = useCallback(
+    value => {
+      handleAllDatesChange(value)
+    },
+    // eslint-disable-next-line
+    []
+  )
 
   const maxTime = useMemo(() => {
     const value = new Date()
@@ -68,67 +86,77 @@ const DateRangePicker = ({
     <div className={classes.wrapDataRangePicker}>
       <div className={classes.checkboxAllDay}>
         <CheckboxSwitcher
-          label={t('All day')}
+          label={t('All dates')}
           switchBaseClass={classes.playTimeCheckbox}
-          value={isTimeAllDay}
-          handleChange={handleChangeIsTimeAllDay}
+          value={values.allDate}
+          handleChange={handleChangeAllDAtes}
         />
-      </div>
-      <div className={classes.bar}>
-        <div className={classes.wrapDatePicker}>
-          <WrapperDatePicker
-            selected={startDate}
-            onChange={handleChangeStartDate}
-            selectsStart
-            startDate={startDate}
-            endDate={endDate}
-            dateFormat="dd MMM yyyy"
+        {!values.allDate && (
+          <CheckboxSwitcher
+            label={t('All day')}
+            switchBaseClass={classes.playTimeCheckbox}
+            value={values.allTime}
+            handleChange={handleChangeAllTime}
           />
-        </div>
-        {isTimeAllDay || (
-          <div className={classes.wrapTimePicker}>
+        )}
+      </div>
+      {!values.allDate && (
+        <div className={classes.bar}>
+          <div className={classes.wrapDatePicker}>
             <WrapperDatePicker
-              selected={startTime}
-              onChange={handleChangeStartTime}
-              showTimeSelect
-              showTimeSelectOnly
-              timeIntervals={30}
-              timeCaption="Time"
-              dateFormat="HH:mm"
-              timeFormat="HH:mm"
+              selected={startDate}
+              onChange={handleChangeStartDate}
+              selectsStart
+              startDate={startDate}
+              endDate={endDate}
+              dateFormat="dd MMM yyyy"
             />
           </div>
-        )}
-        <Typography className={classes.separator}>TO</Typography>
-        {isTimeAllDay || (
-          <div className={classes.wrapTimePicker}>
+          {values.allTime || (
+            <div className={classes.wrapTimePicker}>
+              <WrapperDatePicker
+                selected={startTime}
+                onChange={handleChangeStartTime}
+                showTimeSelect
+                showTimeSelectOnly
+                timeIntervals={30}
+                timeCaption="Time"
+                dateFormat="HH:mm"
+                timeFormat="HH:mm"
+              />
+            </div>
+          )}
+          <Typography className={classes.separator}>TO</Typography>
+          {values.allTime || (
+            <div className={classes.wrapTimePicker}>
+              <WrapperDatePicker
+                selected={endTime}
+                onChange={handleChangeEndTime}
+                showTimeSelect
+                showTimeSelectOnly
+                timeIntervals={30}
+                minTime={endTime}
+                maxTime={maxTime}
+                timeCaption="Time"
+                dateFormat="HH:mm"
+                timeFormat="HH:mm"
+                alert={startDate > endDate}
+              />
+            </div>
+          )}
+          <div className={classes.wrapDatePicker}>
             <WrapperDatePicker
-              selected={endTime}
-              onChange={handleChangeEndTime}
-              showTimeSelect
-              showTimeSelectOnly
-              timeIntervals={30}
-              minTime={endTime}
-              maxTime={maxTime}
-              timeCaption="Time"
-              dateFormat="HH:mm"
-              timeFormat="HH:mm"
+              selected={endDate}
+              onChange={handleChangeEndDate}
+              selectsEnd
+              startDate={startDate}
+              endDate={endDate}
+              dateFormat="dd MMM yyyy"
               alert={startDate > endDate}
             />
           </div>
-        )}
-        <div className={classes.wrapDatePicker}>
-          <WrapperDatePicker
-            selected={endDate}
-            onChange={handleChangeEndDate}
-            selectsEnd
-            startDate={startDate}
-            endDate={endDate}
-            dateFormat="dd MMM yyyy"
-            alert={startDate > endDate}
-          />
         </div>
-      </div>
+      )}
     </div>
   )
 }

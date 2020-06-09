@@ -5,12 +5,13 @@ import * as types from '../actions'
 import { groupsService } from '../services'
 import { transformMeta } from 'utils/tableUtils'
 
-function* getGroupByEntity({ entity, params }) {
+function* getGroupByEntity({ entity, params, CancelToken }) {
   try {
     const { data, meta } = yield call(
       groupsService.getGroupByEntity,
       entity,
-      params
+      params,
+      CancelToken
     )
     const modifiedMeta = transformMeta(meta)
 

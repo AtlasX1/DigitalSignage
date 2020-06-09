@@ -10,7 +10,8 @@ import { Tooltip, withStyles } from '@material-ui/core'
 import {
   TableLibraryCell,
   TableLibraryRow,
-  TableLibraryRowActionButton
+  TableLibraryRowActionButton,
+  UserNameView
 } from 'components/TableLibrary'
 import LibraryTypeIcon from 'components/LibraryTypeIcon'
 import { Checkbox } from 'components/Checkboxes'
@@ -20,12 +21,15 @@ import routeByName from 'constants/routes'
 
 import { checkData } from 'utils/tableUtils'
 import { playlistConstants } from 'constants/index'
+import LibraryTagChips from '../../../components/LibraryTagChips'
 import { secToLabel, labelToSec } from 'utils/secToLabel'
 
-const styles = () => ({
+const styles = ({ typography, type }) => ({
   previewLink: {
-    display: 'block',
     textDecoration: 'none'
+  },
+  name: {
+    ...typography.darkAccent[type]
   }
 })
 
@@ -57,8 +61,7 @@ const TableRow = ({
       clone: t('Clone Playlist action'),
       preview: t('Preview Playlist action'),
       del: t('Delete'),
-      permission: t('Permissions link'),
-      formatDate: t('Banners expirationDate format')
+      permission: t('Permissions link')
     }),
     [t]
   )
@@ -92,7 +95,10 @@ const TableRow = ({
       {
         label: translate.edit,
         to: {
-          pathname: routeByName.playlist.editWithId(id),
+          pathname:
+            row.playlistType === 'Smart'
+              ? routeByName.playlist.editSmartPlaylist(id)
+              : routeByName.playlist.editWithId(id),
           state: row
         }
       },
@@ -150,7 +156,7 @@ const TableRow = ({
               return (
                 <TableLibraryCell
                   key={`cell-playlist-${column}`}
-                  style={{ fontWeight: 'bold' }}
+                  className={classes.name}
                 >
                   {checkData(title)}
                 </TableLibraryCell>
@@ -177,9 +183,14 @@ const TableRow = ({
             case 'createdBy': {
               return (
                 <TableLibraryCell key={`cell-playlist-${column}`}>
-                  {createdBy
-                    ? createdBy.firstName + ' ' + createdBy.lastName
-                    : 'None'}
+                  {createdBy ? (
+                    <UserNameView
+                      firstName={createdBy.firstName}
+                      lastName={createdBy.lastName}
+                    />
+                  ) : (
+                    'None'
+                  )}
                 </TableLibraryCell>
               )
             }
@@ -207,6 +218,15 @@ const TableRow = ({
                 </TableLibraryCell>
               )
             }
+            case 'tag':
+              return (
+                <TableLibraryCell
+                  key={`cell-playlist-${column}`}
+                  align="center"
+                >
+                  <LibraryTagChips tags={row.tag} />
+                </TableLibraryCell>
+              )
             default:
               return null
           }

@@ -20,7 +20,7 @@ const useStyles = makeStyles({
   formControlLabel: {
     color: '#74809A',
     fontFamily: 'inherit',
-    fontSize: '17px',
+    fontSize: '1.0833rem',
     letterSpacing: '-0.01px'
   },
   formControls: {

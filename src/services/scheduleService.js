@@ -2,6 +2,49 @@ import api from './api'
 
 import { errorHandler } from '../utils'
 
+const postSchedule = async data => {
+  try {
+    const response = await api({
+      method: 'POST',
+      url: `/schedule`,
+      data
+    })
+
+    return response.data
+  } catch (error) {
+    if (error.response.data) {
+      throw error.response.data
+    } else throw errorHandler(error)
+  }
+}
+
+const getSchedule = async id => {
+  try {
+    const response = await api({
+      method: 'GET',
+      url: `/schedule/${id}`
+    })
+    return response.data
+  } catch (error) {
+    throw errorHandler(error)
+  }
+}
+
+const editSchedule = async ({ id, data }) => {
+  try {
+    const response = await api({
+      method: 'PUT',
+      url: `/schedule/${id}`,
+      data
+    })
+    return response.data
+  } catch (error) {
+    if (error.response.data) {
+      throw error.response.data
+    } else throw errorHandler(error)
+  }
+}
+
 const getItems = async params => {
   try {
     const { data } = await api({
@@ -62,11 +105,12 @@ const getGroups = async () => {
   }
 }
 
-const getGroupItems = async id => {
+const getGroupItems = async (id, params) => {
   try {
     const response = await api({
       method: 'GET',
-      url: `/schedule/group/${id}`
+      url: `/schedule/group/${id}`,
+      params
     })
 
     return response.data
@@ -142,6 +186,9 @@ const deleteScheduleById = async id => {
 }
 
 export default {
+  postSchedule,
+  getSchedule,
+  editSchedule,
   getItems,
   getPreference,
   putPreference,

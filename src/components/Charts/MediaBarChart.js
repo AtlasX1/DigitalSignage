@@ -1,74 +1,82 @@
-import React from 'react'
-
-import {
-  BarChart,
-  CartesianGrid,
-  XAxis,
-  YAxis,
-  Bar,
-  Cell,
-  Tooltip,
-  ResponsiveContainer
-} from 'recharts'
+import React, { useMemo, useCallback } from 'react'
+import { ResponsiveBar } from '@nivo/bar'
+import { withStyles } from '@material-ui/core'
+import { capitalize } from 'utils'
 
 const COLORS = ['#d0021b', '#f5a623', '#7ed321', '#4a90e2', '#9013fe']
 
-const StorageBarChart = ({ chartData, width }) => {
-  const fontFamily = [
-    '"Nunito Sans"',
-    '-apple-system',
-    'BlinkMacSystemFont',
-    '"Segoe UI"',
-    'Roboto',
-    '"Helvetica Neue"',
-    'Arial',
-    'sans-serif',
-    '"Apple Color Emoji"',
-    '"Segoe UI Emoji"',
-    '"Segoe UI Symbol"'
-  ].join(',')
+const styles = ({ typography }) => ({
+  root: {
+    height: 300
+  },
+  tooltip: {
+    fontSize: 14,
+    lineHeight: '28px',
+    fontFamily: typography.fontFamily
+  }
+})
 
+const MediaBarChart = ({ chartData, classes, theme }) => {
+  const chartTheme = useMemo(
+    () => ({
+      fontFamily: theme.typography.fontFamily,
+      fontSize: 12,
+      axis: {
+        ticks: {
+          line: { fill: '#74809A' },
+          text: { fill: '#74809A' }
+        }
+      },
+      grid: {
+        line: { stroke: '#74809A', strokeDasharray: '1 5' }
+      }
+    }),
+    [theme.typography.fontFamily]
+  )
+  const tooltip = useCallback(
+    ({ data }) => (
+      <div className={classes.tooltip}>
+        <div>{capitalize(data.name)}</div>
+        <div>Value: {data.displayValue}</div>
+      </div>
+    ),
+    [classes.tooltip]
+  )
   return (
-    <ResponsiveContainer width={width} height={300}>
-      <BarChart data={chartData}>
-        <CartesianGrid
-          vertical={false}
-          strokeDasharray="1 5"
-          stroke="#888996"
-        />
-        <XAxis
-          dataKey="name"
-          tick={{
-            fill: '#888996',
-            fontSize: '12px',
-            fontFamily
-          }}
-        />
-        <YAxis
-          width={20}
-          axisLine={false}
-          tickCount={3}
-          tick={{
-            fill: 'rgba(0, 0, 0, 0.25)',
-            fontSize: '12px',
-            fontFamily
-          }}
-        />
-        <Tooltip
-          cursor={false}
-          contentStyle={{
-            fontSize: '14px',
-            fontFamily
-          }}
-        />
-        <Bar dataKey="value" radius={[3, 3, 3, 3]} barSize={31}>
-          {chartData.map((entry, index) => (
-            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-          ))}
-        </Bar>
-      </BarChart>
-    </ResponsiveContainer>
+    <div className={classes.root}>
+      <ResponsiveBar
+        margin={{
+          left: 80,
+          bottom: 32
+        }}
+        data={chartData}
+        indexBy="name"
+        colorBy="index"
+        colors={COLORS}
+        enableLabel={false}
+        borderRadius={3}
+        padding={0.9}
+        theme={chartTheme}
+        gridYValues={3}
+        axisBottom={{
+          tickSize: 5,
+          tickPadding: 5,
+          legend: 'name',
+          legendPosition: 'middle',
+          legendOffset: 100
+        }}
+        axisLeft={{
+          tickSize: 5,
+          tickPadding: 5,
+          tickValues: 4,
+          legend: 'value',
+          legendPosition: 'middle',
+          legendOffset: -100
+        }}
+        tooltip={tooltip}
+      />
+    </div>
   )
 }
 
-export default StorageBarChart
+export default withStyles(styles, { withTheme: true })(MediaBarChart)

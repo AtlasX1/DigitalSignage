@@ -40,9 +40,9 @@ const clearGetTemplateGroupsInfoAction = () => ({
   type: types.CLEAR_GET_TEMPLATE_GROUPS_INFO
 })
 
-const getTemplateGroupItemsAction = id => ({
+const getTemplateGroupItemsAction = (id, params) => ({
   type: types.GET_TEMPLATE_GROUP_ITEMS,
-  payload: id
+  payload: { id, params }
 })
 
 const clearGetTemplateGroupItemsInfoAction = () => ({

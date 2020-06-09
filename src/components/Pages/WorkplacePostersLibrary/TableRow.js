@@ -15,7 +15,7 @@ import { deleteItem } from 'actions/workplacePosterActions'
 import { checkData } from 'utils/tableUtils'
 import { formatBytes } from 'utils'
 
-const styles = () => ({
+const styles = ({ typography, type }) => ({
   imgClass: {
     maxWidth: 100,
     maxHeight: 60,
@@ -26,6 +26,9 @@ const styles = () => ({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center'
+  },
+  name: {
+    ...typography.darkAccent[type]
   }
 })
 
@@ -102,14 +105,20 @@ const TableRow = ({
           </Grid>
         </TableLibraryCell>
 
-        <TableLibraryCell>
+        <TableLibraryCell className={classes.name}>
           <Grid item>{checkData(title)}</Grid>
         </TableLibraryCell>
         <TableLibraryCell>{checkData(tags)}</TableLibraryCell>
-        <TableLibraryCell>{formatBytes(size ? size : 0, 3)}</TableLibraryCell>
-        <TableLibraryCell>{checkData(contentType)}</TableLibraryCell>
-        <TableLibraryCell>{checkData(orientation)}</TableLibraryCell>
-        <TableLibraryCell>
+        <TableLibraryCell align="center">
+          {formatBytes(size ? size : 0, 3)}
+        </TableLibraryCell>
+        <TableLibraryCell align="center">
+          {checkData(contentType)}
+        </TableLibraryCell>
+        <TableLibraryCell align="center">
+          {checkData(orientation)}
+        </TableLibraryCell>
+        <TableLibraryCell align="center">
           <DateTimeView date={updatedAt} />
         </TableLibraryCell>
 

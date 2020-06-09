@@ -17,10 +17,9 @@ import {
 } from '../Dropdowns'
 import {
   FormControlMultipleTimePicker,
-  FormControlCustomSelect,
+  FormControlReactSelect,
   FormControlCounter
 } from '../Form'
-import { labelToSec } from '../../utils/secToLabel'
 
 const styles = theme => {
   const { palette, type } = theme
@@ -32,11 +31,8 @@ const styles = theme => {
       display: 'flex',
       alignItems: 'center'
     },
-    container11: {
-      zIndex: 11
-    },
-    container111: {
-      zIndex: 111
+    container1: {
+      zIndex: 1
     },
     settingItem: {
       padding: 0,
@@ -50,27 +46,15 @@ const styles = theme => {
     playtimeValue: {
       fontSize: 12
     },
-    transitionInputClass: {
-      border: 'none',
-      boxShadow: 'none',
-      color: '#494949',
-      fontSize: 12,
-      fontWight: 400,
-      letterSpacing: '-0.01px',
-      paddingRight: 0,
-      background: 'transparent',
-
-      '&:hover': {
-        background: 'transparent',
-        color: '#494949'
-      }
-    },
-    transitionInputIconClass: {
-      color: '#afb0b1'
-    },
     settingsControlWrap: {
+      minWidth: '154px',
       transform: 'none',
       top: 'auto'
+    },
+    borderlessSelect: {
+      '& > div': {
+        border: 'none'
+      }
     }
   }
 }
@@ -79,21 +63,23 @@ const MediaActionDropdown = ({
   t,
   classes,
   transitionId = 0,
-  playtime = 0,
-  dayparttime = ['00:00:00', '00:00:00'],
+  playtime = 1,
+  daypartStartTime: startTime = '00:00:00',
+  daypartEndTime: endTime = '00:00:00',
   onValueChange = f => f,
   onDelete = f => f,
-  transitions
+  transitions,
+  options = {
+    disableTransition: false
+  }
 }) => {
   const [playtimeValue, setPlaytimeValue] = useState(playtime)
-  const [daypartTime, setDaypartTime] = useState([
-    labelToSec(dayparttime[0]),
-    labelToSec(dayparttime[1])
-  ])
+  const [daypartStartTime, setDaypartStartTime] = useState(startTime)
+  const [daypartEndTime, setDaypartEndTime] = useState(endTime)
+
   const [transition, setTransition] = useState(
     transitions ? transitions.find(i => i.id === transitionId) : null
   )
-  const [transitionDropdown, setTransitionDropdown] = useState(false)
 
   const transitionOptions = [
     { value: 'noTransition', label: t('No Transition') },
@@ -123,10 +109,15 @@ const MediaActionDropdown = ({
     { value: 'fade', label: t('Fade') }
   ]
 
+  const setDayPartTime = val => {
+    setDaypartStartTime(val[0])
+    setDaypartEndTime(val[1])
+  }
+
   useEffect(
     () => {
       if (transition) {
-        onValueChange('transition', transition)
+        onValueChange('transitionId', transition.id)
       }
     },
     // eslint-disable-next-line
@@ -145,12 +136,22 @@ const MediaActionDropdown = ({
 
   useEffect(
     () => {
-      if (daypartTime) {
-        onValueChange('dayparttime', daypartTime)
+      if (daypartStartTime) {
+        onValueChange('daypartStartTime', daypartStartTime)
       }
     },
     // eslint-disable-next-line
-    [daypartTime]
+    [daypartStartTime]
+  )
+
+  useEffect(
+    () => {
+      if (daypartEndTime) {
+        onValueChange('daypartEndTime', daypartEndTime)
+      }
+    },
+    // eslint-disable-next-line
+    [daypartEndTime]
   )
 
   return (
@@ -163,10 +164,7 @@ const MediaActionDropdown = ({
         <ListItem
           className={classes.settingItem}
           classes={{
-            container: [
-              !transitionDropdown ? classes.container111 : '',
-              classes.settingsControlContainer
-            ].join(' ')
+            container: [classes.settingsControlContainer].join(' ')
           }}
         >
           <ListItemText
@@ -176,9 +174,9 @@ const MediaActionDropdown = ({
           <ListItemSecondaryAction className={classes.settingsControlWrap}>
             <FormControlMultipleTimePicker
               small
-              fromValue={daypartTime[0]}
-              toValue={daypartTime[1]}
-              onChange={setDaypartTime}
+              fromValue={daypartStartTime}
+              toValue={daypartEndTime}
+              onChange={setDayPartTime}
             />
           </ListItemSecondaryAction>
         </ListItem>
@@ -195,34 +193,31 @@ const MediaActionDropdown = ({
             />
           </ListItemSecondaryAction>
         </ListItem>
-        <ListItem
-          className={classes.settingItem}
-          classes={{
-            container: [
-              classes.container11,
-              classes.settingsControlContainer
-            ].join(' ')
-          }}
-        >
-          <ListItemText
-            primary={t('Transition')}
-            classes={{ primary: classes.settingItemText }}
-          />
-          <ListItemSecondaryAction className={classes.settingsControlWrap}>
-            <FormControlCustomSelect
-              placeholder={t('Select Transition')}
-              value={transition}
-              options={transitions ? transitions : transitionOptions}
-              handleChange={setTransition}
-              inputClassName={classes.transitionInputClass}
-              inputIconClassName={classes.transitionInputIconClass}
-              disableRipple
-              dropdownPosition="bottom right"
-              onOpen={() => setTransitionDropdown(true)}
-              onClose={() => setTransitionDropdown(false)}
+        {!options.disableTransition && (
+          <ListItem
+            className={classes.settingItem}
+            classes={{
+              container: [
+                classes.container1,
+                classes.settingsControlContainer
+              ].join(' ')
+            }}
+          >
+            <ListItemText
+              primary={t('Transition')}
+              classes={{ primary: classes.settingItemText }}
             />
-          </ListItemSecondaryAction>
-        </ListItem>
+            <ListItemSecondaryAction className={classes.settingsControlWrap}>
+              <FormControlReactSelect
+                placeholder={t('Select Transition')}
+                value={transition}
+                handleChange={event => setTransition(event.target)}
+                options={transitions ? transitions : transitionOptions}
+                customClass={classes.borderlessSelect}
+              />
+            </ListItemSecondaryAction>
+          </ListItem>
+        )}
       </List>
       <List component="nav" disablePadding={true}>
         <Divider />

@@ -1,40 +1,59 @@
-import React, { useEffect, useMemo } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { makeStyles } from '@material-ui/styles'
 import { useSelector } from 'react-redux'
 
 import './styles/_content.scss'
 import Canvas from './components/canvas'
 import { useCanvasState } from './components/canvas/CanvasProvider'
-import { SIDEBAR_WIDTH } from './constans'
+import { SIDEBAR_SMALL_WIDTH, SIDEBAR_WIDTH } from './constans'
 
 const useStyles = makeStyles({
   root: {
-    left: props => (props.isOpenLeftSidebar ? SIDEBAR_WIDTH : '0'),
-    width: props =>
+    left: props =>
       props.isOpenLeftSidebar
-        ? `calc(100% - ${SIDEBAR_WIDTH * 2}px)`
-        : `calc(100% - ${SIDEBAR_WIDTH}px)`
+        ? SIDEBAR_WIDTH + SIDEBAR_SMALL_WIDTH
+        : SIDEBAR_SMALL_WIDTH,
+    width: props =>
+      props.isOpenLeftSidebar || props.isOpenRightSidebar
+        ? `calc(100% - ${SIDEBAR_WIDTH}px - ${SIDEBAR_SMALL_WIDTH}px)`
+        : `calc(100% - ${SIDEBAR_SMALL_WIDTH}px)`
   }
 })
 
 const Content = () => {
   const [canvasState] = useCanvasState()
-  const [isOpenLeftSidebar] = useSelector(state => [
-    state.editor.designGallery.isOpenLeftSidebar
+  const { canvasHandlers } = canvasState
+  const [isIncreased, setIsIncreased] = useState(false)
+  const [isOpenLeftSidebar, isOpenRightSidebar] = useSelector(state => [
+    state.editor.designGallery.isOpenLeftSidebar,
+    state.editor.designGallery.isOpenRightSidebar
   ])
   const duration = isOpenLeftSidebar ? 400 : 200
-  const classes = useStyles({ isOpenLeftSidebar, duration })
+  const classes = useStyles({ isOpenLeftSidebar, isOpenRightSidebar, duration })
 
   useEffect(() => {
-    const { canvasHandlers } = canvasState
+    if (!(isOpenRightSidebar || isOpenLeftSidebar)) {
+      setIsIncreased(true)
+    } else {
+      setIsIncreased(false)
+    }
+    // eslint-disable-next-line
+  }, [isOpenLeftSidebar, isOpenRightSidebar])
+
+  useEffect(() => {
     if (canvasHandlers) {
       const { width, height } = canvasHandlers.getContentViewport()
-      const sidebarWidth = isOpenLeftSidebar ? SIDEBAR_WIDTH : -SIDEBAR_WIDTH
-      canvasHandlers.setCanvasSize(width - sidebarWidth, height)
+
+      if (isIncreased) {
+        canvasHandlers.setCanvasSize(width + SIDEBAR_WIDTH, height)
+      } else {
+        canvasHandlers.setCanvasSize(width - SIDEBAR_WIDTH, height)
+      }
+
       canvasHandlers.setCenterAll()
     }
     // eslint-disable-next-line
-  }, [isOpenLeftSidebar])
+  }, [isIncreased])
 
   return useMemo(() => {
     return (
@@ -43,7 +62,7 @@ const Content = () => {
       </div>
     )
     // eslint-disable-next-line
-  }, [isOpenLeftSidebar])
+  }, [isOpenLeftSidebar, isOpenRightSidebar])
 }
 
 export default Content

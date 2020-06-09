@@ -1,6 +1,8 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 
-import { PieChart, Pie, Cell, Tooltip } from 'recharts'
+import { withStyles } from '@material-ui/core'
+import { ResponsivePie } from '@nivo/pie'
+import AnimatedPie from './AnimatedPie'
 
 const COLORS = [
   '#0076b9',
@@ -9,45 +11,38 @@ const COLORS = [
   'rgba(99, 180, 227, 0.5)'
 ]
 
-const StoragePieChart = ({ chartData }) => {
-  const fontFamily = [
-    '"Nunito Sans"',
-    '-apple-system',
-    'BlinkMacSystemFont',
-    '"Segoe UI"',
-    'Roboto',
-    '"Helvetica Neue"',
-    'Arial',
-    'sans-serif',
-    '"Apple Color Emoji"',
-    '"Segoe UI Emoji"',
-    '"Segoe UI Symbol"'
-  ].join(',')
+const styles = () => ({
+  root: {
+    height: 115
+  }
+})
 
+const StoragePieChart = ({ chartData, classes, theme }) => {
+  const chartTheme = useMemo(
+    () => ({
+      tooltip: {
+        container: {
+          fontFamily: theme.typography.fontFamily,
+          fontSize: 12
+        }
+      }
+    }),
+    [theme.typography.fontFamily]
+  )
   return (
-    <div>
-      <PieChart width={115} height={115}>
-        <Tooltip
-          contentStyle={{
-            fontSize: '14px',
-            fontFamily
-          }}
-        />
-        <Pie
-          data={chartData}
-          innerRadius={40}
-          outerRadius={55}
-          paddingAngle={0}
-          fill="#8884d8"
-          dataKey="value"
-        >
-          {chartData.map((entry, index) => (
-            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-          ))}
-        </Pie>
-      </PieChart>
+    <div className={classes.root}>
+      <AnimatedPie
+        chartComponent={ResponsivePie}
+        data={chartData}
+        margin={{ top: 2.5, right: 2.5, bottom: 2.5, left: 2.5 }}
+        innerRadius={0.75}
+        padAngle={1}
+        colors={COLORS}
+        theme={chartTheme}
+        enableRadialLabels={false}
+        enableSlicesLabels={false}
+      />
     </div>
   )
 }
-
-export default StoragePieChart
+export default withStyles(styles, { withTheme: true })(StoragePieChart)

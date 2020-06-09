@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react'
+import React, { useEffect, useState, useCallback, useMemo } from 'react'
 import { translate } from 'react-i18next'
 import { withSnackbar } from 'notistack'
 import { useFormik } from 'formik'
@@ -6,9 +6,11 @@ import * as Yup from 'yup'
 import { withStyles, Grid, Typography } from '@material-ui/core'
 import { connect } from 'react-redux'
 import { bindActionCreators, compose } from 'redux'
+
 import { FormControlInput } from '../../../../Form'
 import { BlueButton } from 'components/Buttons'
 import CapAlertMediaLibrary from './CapAlertMediaLibrary'
+import { CircularLoader } from 'components/Loaders'
 
 import {
   getDeviceMediaCapAlertAction,
@@ -21,6 +23,7 @@ import {
   clearGetFeatureMediaItemsInfoAction
 } from 'actions/mediaActions'
 import { useCustomSnackbar } from 'hooks/index'
+import { isFalsy, takeTruth } from 'utils/generalUtils'
 
 const styles = ({ type, palette }) => ({
   inputContainer: {
@@ -35,7 +38,8 @@ const styles = ({ type, palette }) => ({
   },
   passwordLabel: {
     width: 100,
-    color: palette[type].formControls.label.color
+    color: palette[type].formControls.label.color,
+    fontWeight: 600
   },
   passwordContainer: {
     width: 'calc(100% - 110px)'
@@ -43,13 +47,16 @@ const styles = ({ type, palette }) => ({
   passwordWrapper: {
     background:
       palette[type].pages.devices.alerts.mediaModal.cap.password.background,
-    padding: '20px 10px',
+    padding: 20,
     borderRadius: 3,
     marginBottom: 30
   },
   ipText: {
+    fontSize: 12,
     color: palette[type].formControls.label.color,
-    marginBottom: 20
+    marginBottom: 20,
+    width: '100%',
+    textAlign: 'center'
   }
 })
 
@@ -67,9 +74,27 @@ const CapAlert = ({
   closeSnackbar
 }) => {
   const showSnackbar = useCustomSnackbar(t, enqueueSnackbar, closeSnackbar)
-  const [data, setData] = useState({ media: {} })
-  const [dialog, setDialog] = useState(false)
+  const [selectedMedia, setSelectedMedia] = useState({})
   const [newSelectedMedia, setNewSelectedMedia] = useState({})
+  const [dialog, setDialog] = useState(false)
+  const [isLoading, setLoading] = useState(false)
+
+  const handleSubmit = useCallback(
+    ({ password }) => {
+      const { id: mediaId } = newSelectedMedia
+      if (mediaId) {
+        setLoading(true)
+        putDeviceMediaCapAlertAction({
+          deviceId: id,
+          data: {
+            mediaId,
+            password
+          }
+        })
+      }
+    },
+    [newSelectedMedia, id, setLoading, putDeviceMediaCapAlertAction]
+  )
 
   const form = useFormik({
     initialValues: {
@@ -78,21 +103,12 @@ const CapAlert = ({
     validationSchema: Yup.object().shape({
       password: Yup.string().required()
     }),
-    onSubmit: values => {
-      if (newSelectedMedia.id) {
-        putDeviceMediaCapAlertAction({
-          deviceId: id,
-          data: {
-            mediaId: newSelectedMedia.id,
-            password: values.password
-          }
-        })
-      }
-    }
+    onSubmit: handleSubmit
   })
 
   useEffect(() => {
     if (!deviceMediaCapAlertReducer.response) {
+      setLoading(true)
       getDeviceMediaCapAlertAction(id)
     }
     // eslint-disable-next-line
@@ -100,10 +116,13 @@ const CapAlert = ({
 
   useEffect(() => {
     if (deviceMediaCapAlertReducer.response) {
-      setData(deviceMediaCapAlertReducer.response)
+      const { media } = deviceMediaCapAlertReducer.response
+      setSelectedMedia(media)
       clearGetDeviceMediaCapAlertInfoAction()
+      setLoading(false)
     } else if (deviceMediaCapAlertReducer.error) {
       clearGetDeviceMediaCapAlertInfoAction()
+      setLoading(false)
     }
     // eslint-disable-next-line
   }, [deviceMediaCapAlertReducer])
@@ -114,9 +133,11 @@ const CapAlert = ({
       showSnackbar(t('Successfully changed'))
 
       form.resetForm()
+      setLoading(false)
     } else if (putDeviceMediaCapAlertReducer.error) {
       clearPutDeviceMediaCapAlertInfoAction()
-      showSnackbar(t('Password incorrect'))
+      showSnackbar(t('Error'))
+      setLoading(false)
     }
     // eslint-disable-next-line
   }, [putDeviceMediaCapAlertReducer])
@@ -129,8 +150,42 @@ const CapAlert = ({
     [setNewSelectedMedia, setDialog]
   )
 
+  const openDialog = useCallback(() => {
+    setDialog(true)
+  }, [setDialog])
+
+  const closeDialog = useCallback(() => {
+    setDialog(false)
+  }, [setDialog])
+
+  const renderDialog = useMemo(() => {
+    if (isFalsy(dialog)) return null
+    return (
+      <CapAlertMediaLibrary
+        open={dialog}
+        handleClose={closeDialog}
+        deviceId={id}
+        selectedMediaId={takeTruth(newSelectedMedia.id, selectedMedia.id)}
+        onSuccess={handleSelectMedia}
+      />
+    )
+  }, [
+    id,
+    dialog,
+    closeDialog,
+    selectedMedia,
+    newSelectedMedia,
+    handleSelectMedia
+  ])
+
+  const renderLoader = useMemo(() => {
+    if (isFalsy(isLoading)) return null
+    return <CircularLoader />
+  }, [isLoading])
+
   return (
     <Grid container direction="column">
+      {renderLoader}
       <Grid
         container
         alignItems="flex-end"
@@ -139,15 +194,17 @@ const CapAlert = ({
       >
         <FormControlInput
           label={t('Select Media')}
-          value={
-            newSelectedMedia.title || data.media.title || t('No media selected')
-          }
+          value={takeTruth(
+            newSelectedMedia.title,
+            selectedMedia.title,
+            t('No media selected')
+          )}
           formControlContainerClass={classes.inputContainer}
           marginBottom={false}
           disabled
           customiseDisabled={false}
         />
-        <BlueButton className={classes.button} onClick={() => setDialog(true)}>
+        <BlueButton className={classes.button} onClick={openDialog}>
           <i className="icon-pencil-3" />
         </BlueButton>
       </Grid>
@@ -159,9 +216,8 @@ const CapAlert = ({
       >
         <Typography className={classes.passwordLabel}>Password:</Typography>
         <FormControlInput
-          formControlContainerClass={classes.passwordContainer}
           marginBottom={false}
-          controlName="password"
+          name="password"
           type="password"
           value={form.values.password}
           error={form.errors.password}
@@ -169,27 +225,17 @@ const CapAlert = ({
           handleChange={form.handleChange}
           handleBlur={form.handleBlur}
           showErrorText={false}
+          formControlContainerClass={classes.passwordContainer}
         />
       </Grid>
-
       <Typography className={classes.ipText}>
         Your IP Address 109.227.80.88 and Current Time 2020-01-26 05:01:52 will
         be recorded.
       </Typography>
-
       <Grid container justify="flex-end">
         <BlueButton onClick={form.submitForm}>{t('OK')}</BlueButton>
       </Grid>
-
-      {dialog && (
-        <CapAlertMediaLibrary
-          open={dialog}
-          handleClose={() => setDialog(false)}
-          deviceId={id}
-          selectedMediaId={data.media.id}
-          onSuccess={handleSelectMedia}
-        />
-      )}
+      {renderDialog}
     </Grid>
   )
 }

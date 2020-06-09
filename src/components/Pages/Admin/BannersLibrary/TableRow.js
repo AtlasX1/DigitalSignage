@@ -4,29 +4,29 @@ import ColorCircle from 'components/ColorCircle'
 import {
   TableLibraryCell,
   TableLibraryRow,
-  TableLibraryRowActionButton
+  TableLibraryRowActionButton,
+  DateTimeView
 } from 'components/TableLibrary'
 import { Checkbox } from 'components/Checkboxes'
 import { translate } from 'react-i18next'
-import moment from 'moment'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { deleteItem } from 'actions/bannerActions'
 import routeByName from 'constants/routes'
+import { checkData } from 'utils/tableUtils'
 
 const TableRow = ({
   t,
   deleteItem,
   selected,
-  row: { id, name, color, userRole, expirationDate },
+  row: { id, name, color, userRole, expirationDate, activationDate },
   onToggleSelect,
   onUnselect: unselectItem
 }) => {
   const translate = useMemo(
     () => ({
       edit: t('Edit action'),
-      del: t('Delete'),
-      formatDate: t('Banners expirationDate format')
+      del: t('Delete')
     }),
     [t]
   )
@@ -69,10 +69,13 @@ const TableRow = ({
         </Grid>
       </TableLibraryCell>
       <TableLibraryCell>
-        {userRole.map(({ displayName }) => displayName).join(', ')}
+        {checkData(userRole.map(({ displayName }) => displayName).join(', '))}
       </TableLibraryCell>
       <TableLibraryCell style={{ textAlign: 'center' }}>
-        {moment(expirationDate).format(translate.formatDate)}
+        <DateTimeView date={expirationDate} />
+      </TableLibraryCell>
+      <TableLibraryCell style={{ textAlign: 'center' }}>
+        <DateTimeView date={activationDate} />
       </TableLibraryCell>
 
       <TableLibraryCell align="right">

@@ -71,6 +71,33 @@ const clearDisableDeviceAlertInfoAction = () => ({
   type: types.CLEAR_DISABLE_DEVICE_ALERT_INFO
 })
 
+export function associateCapAlert(data) {
+  return {
+    type: types.REQUEST_ASSOCIATE_CAP_ALERT,
+    payload: data
+  }
+}
+
+export function associateCapAlertSuccess(data) {
+  return {
+    type: types.ASSOCIATE_CAP_ALERT_SUCCESS,
+    payload: data
+  }
+}
+
+export function associateCapAlertError(error) {
+  return {
+    type: types.ASSOCIATE_CAP_ALERT_ERROR,
+    payload: error
+  }
+}
+
+export function resetAssociateCapAlert() {
+  return {
+    type: types.RESET_ASSOCIATE_CAP_ALERT
+  }
+}
+
 export {
   getAlertDevicesByIdAction,
   clearGetAlertDevicesByIdInfoAction,

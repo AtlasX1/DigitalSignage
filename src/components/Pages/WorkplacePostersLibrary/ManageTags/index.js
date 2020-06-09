@@ -41,7 +41,7 @@ const styles = theme => ({
   }
 })
 
-const ManageAnnouncementCategory = ({
+const ManageTags = ({
   t,
   classes,
   clearResponseInfo,
@@ -159,8 +159,6 @@ const mapDispatchToProps = dispatch =>
 
 export default translate('translations')(
   withStyles(styles)(
-    withSnackbar(
-      connect(mapStateToProps, mapDispatchToProps)(ManageAnnouncementCategory)
-    )
+    withSnackbar(connect(mapStateToProps, mapDispatchToProps)(ManageTags))
   )
 )

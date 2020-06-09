@@ -15,7 +15,12 @@ const fonts = [
   { label: 'Montserrat', value: 'Montserrat' },
   { label: 'Pacifico', value: 'Pacifico' },
   { label: 'Poppins', value: 'Poppins' },
-  { label: 'Rasa', value: 'Rasa' }
+  { label: 'Rasa', value: 'Rasa' },
+  { label: 'Open Sans', value: 'Open Sans' },
+  { label: 'Ubuntu', value: 'Ubuntu' },
+  { label: 'Cabin', value: 'Cabin' },
+  { label: 'Roboto', value: 'Roboto' },
+  { label: 'Rubik', value: 'Rubik' }
 ]
 
 const FormControlSelectFont = ({ options = fonts, ...props }) => {

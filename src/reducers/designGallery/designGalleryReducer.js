@@ -4,6 +4,7 @@ import * as types from 'actions'
 
 const initialState = {
   isOpenLeftSidebar: false,
+  isOpenRightSidebar: true,
   designGalleryItem: {
     status: null,
     response: null,
@@ -62,6 +63,12 @@ export default (state = initialState, action) => {
       return {
         ...state,
         isOpenLeftSidebar: action.data
+      }
+
+    case types.SET_OPEN_RIGHT_SIDEBAR:
+      return {
+        ...state,
+        isOpenRightSidebar: action.data
       }
 
     default:

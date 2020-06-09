@@ -55,7 +55,7 @@ const DropzoneWithoutClickStyles = ({ palette, type }) => ({
   },
   dropzoneText: {
     marginTop: '20px',
-    fontSize: '14px',
+    fontSize: '0.8125rem',
     color: '#0378ba'
   },
   listItemText: {

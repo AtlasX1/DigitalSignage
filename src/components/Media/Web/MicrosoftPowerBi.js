@@ -7,19 +7,13 @@ import { get as _get } from 'lodash'
 import { useFormik } from 'formik'
 import { translate } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
-import {
-  withStyles,
-  Grid,
-  Typography,
-  CircularProgress
-} from '@material-ui/core'
+import { withStyles, Grid, Typography } from '@material-ui/core'
 
 import { WhiteButton } from '../../Buttons'
 import { FormControlInput } from '../../Form'
 import { mediaConstants as constants } from '../../../constants'
 import {
   createMediaPostData,
-  getAllowedFeatureId,
   getMediaInfoFromBackendData
 } from '../../../utils/mediaUtils'
 import {
@@ -35,6 +29,7 @@ import Dialog from '@material-ui/core/Dialog'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import DialogContent from '@material-ui/core/DialogContent'
 import { TabIcon } from '../Gallery/Prezi'
+import useDetermineMediaFeatureId from 'hooks/useDetermineMediaFeatureId'
 
 const images = {
   p1: require('../../../common/assets/images/Power_bi1.png'),
@@ -45,7 +40,7 @@ const images = {
 
 const styles = ({ palette, type, typography }) => ({
   root: {
-    margin: '24px 25px',
+    margin: '15px 30px',
     fontFamily: typography.fontFamily
   },
   formWrapper: {
@@ -85,24 +80,18 @@ const styles = ({ palette, type, typography }) => ({
   switchContainerClass: {
     width: '180px'
   },
-  inputContainerClass: {
-    margin: '0 10px'
-  },
   inputClass: {
     width: '60px'
   },
   previewMediaRow: {
-    marginTop: '42px'
-  },
-  formGroup: {
-    marginTop: '12px'
+    marginTop: 45
   },
   sliderInputLabelClass: {
     paddingRight: '15px',
     fontStyle: 'normal'
   },
   labelClass: {
-    fontSize: '17px'
+    fontSize: '1.0833rem'
   },
   formControlLabelClass: {
     fontSize: '13px'
@@ -147,15 +136,14 @@ const MicrosoftPowerBi = props => {
     onShareStateCallback
   } = props
   const dispatchAction = useDispatch()
-  const { configMediaCategory } = useSelector(({ config }) => config)
   const addMediaReducer = useSelector(({ addMedia }) => addMedia.web)
   const mediaItemReducer = useSelector(({ media }) => media.mediaItem)
 
-  const [isLoading, setLoading] = useState(false)
   const [formSubmitting, setFormSubmitting] = useState(false)
   const [autoClose, setAutoClose] = useState(false)
-  const [featureId, setFeatureId] = useState(null)
   const [showMicrosoftDialog, setMicrosoftDialog] = useState(false)
+
+  const featureId = useDetermineMediaFeatureId('Web', 'MicrosoftPowerBi')
 
   const initialFormValues = useRef({
     report_url: '',
@@ -343,41 +331,19 @@ const MicrosoftPowerBi = props => {
         mediaInfo: getMediaInfoFromBackendData(backendData)
       }
       form.setValues(initialFormValues.current)
-      setLoading(false)
     }
 
     // eslint-disable-next-line
   }, [backendData])
 
   useEffect(() => {
-    if (!configMediaCategory.response.length) return
-    const id = getAllowedFeatureId(
-      configMediaCategory,
-      'Web',
-      'MicrosoftPowerBi'
-    )
-    setFeatureId(id)
-  }, [configMediaCategory])
-
-  useEffect(() => {
     onShareStateCallback(handleShareState)
   }, [handleShareState, onShareStateCallback])
-
-  useEffect(() => {
-    if (mode === 'edit') {
-      setLoading(true)
-    }
-  }, [mode])
 
   const { values, errors, touched, submitCount, isValid } = form
   const isButtonsDisable = formSubmitting || (submitCount > 0 && !isValid)
   return (
     <form className={classes.formWrapper} onSubmit={form.handleSubmit}>
-      {isLoading && (
-        <div className={classes.loaderWrapper}>
-          <CircularProgress size={30} thickness={5} />
-        </div>
-      )}
       <Grid container className={classes.tabContent}>
         <Grid item xs={7}>
           <div className={classes.root}>
@@ -432,7 +398,6 @@ const MicrosoftPowerBi = props => {
                   minValue={300}
                   onChange={val => form.setFieldValue('refreshEvery', val)}
                   labelAtEnd={false}
-                  inputContainerClass={classes.inputContainerClass}
                   inputRangeContainerSASS="CreateMediaSettings__slider--Wrap"
                 />
               </Grid>

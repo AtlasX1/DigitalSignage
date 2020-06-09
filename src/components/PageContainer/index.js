@@ -5,7 +5,7 @@ import Popup from 'components/Popup'
 import { CircleIconButton } from 'components/Buttons'
 
 const styles = theme => {
-  const { palette, type } = theme
+  const { palette, type, typography } = theme
   return {
     pageContainer: {
       position: 'relative',
@@ -27,10 +27,8 @@ const styles = theme => {
     },
     pageTitle: {
       margin: 0,
-      fontSize: '22px',
-      fontWeight: 'bold',
       letterSpacing: '0px',
-      color: palette[type].pageContainer.header.titleColor
+      ...typography.pageTitle[type]
     },
     infoIconWrap: {
       paddingLeft: '7px',

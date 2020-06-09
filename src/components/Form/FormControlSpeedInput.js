@@ -1,31 +1,22 @@
 import React from 'react'
 import InputRange from 'react-input-range'
 import classNames from 'classnames'
-import { withStyles, Grid, Typography, Tooltip } from '@material-ui/core'
+import { withStyles, Grid, Typography } from '@material-ui/core'
 import 'react-input-range/lib/bundle/react-input-range.css'
 import 'styles/forms/_slider-input-range.scss'
 import { compose } from 'redux'
 import { translate } from 'react-i18next'
+import Tooltip from 'components/Tooltip'
 
 const styles = ({ palette, type, formControls }) => ({
   label: {
-    fontSize: '13px',
-    lineHeight: '28px',
     color: palette[type].formControls.label.color,
-    transform: 'translate(0, 1.5px) scale(0.75)',
     ...formControls.mediaApps.refreshEverySlider.label
   },
   mainLabel: {
     lineHeight: 1,
     marginBottom: 7,
     marginLeft: -2
-  },
-  labelLink: {
-    borderBottom: '1px dashed #0A83C8',
-    '&:hover': {
-      cursor: 'pointer',
-      borderBottomStyle: 'solid'
-    }
   },
   labelRightContainer: {
     // add 2px insted of border width
@@ -90,7 +81,7 @@ const FormControlSpeedInput = ({ t, classes, ...props }) => {
           {tooltip ? (
             <Tooltip title={tooltipLeft} placement="top">
               <Typography className={classNames(classes.label, labelLeftClass)}>
-                <span className={classes.labelLink}>{labelLeft}</span>
+                {labelLeft}
               </Typography>
             </Tooltip>
           ) : (
@@ -129,7 +120,7 @@ const FormControlSpeedInput = ({ t, classes, ...props }) => {
               <Typography
                 className={classNames(classes.label, labelRightClass)}
               >
-                <span className={classes.labelLink}>{labelRight}</span>
+                {labelRight}
               </Typography>
             </Tooltip>
           ) : (

@@ -1,13 +1,7 @@
 import React, { useCallback, useEffect, useState, useRef } from 'react'
 import { translate } from 'react-i18next'
 
-import {
-  CircularProgress,
-  Grid,
-  Tooltip,
-  Typography,
-  withStyles
-} from '@material-ui/core'
+import { Grid, Tooltip, Typography, withStyles } from '@material-ui/core'
 
 import {
   TabToggleButton,
@@ -21,7 +15,6 @@ import { useFormik } from 'formik'
 import { mediaConstants as constants } from '../../../constants'
 import {
   createMediaPostData,
-  getAllowedFeatureId,
   getMediaInfoFromBackendData
 } from '../../../utils/mediaUtils'
 import update from 'immutability-helper'
@@ -34,20 +27,18 @@ import {
 } from '../../../actions/mediaActions'
 import { useDispatch, useSelector } from 'react-redux'
 import { debounce as _debounce, get as _get } from 'lodash'
-import {
-  getLocation,
-  getThemeOfMediaFeatureById
-} from '../../../actions/configActions'
+import { getLocation } from '../../../actions/configActions'
 import { MediaInfo, MediaTabActions } from '../index'
 import SliderInputRange from '../../Form/SliderInputRange'
 import { FormControlInput } from '../../Form'
 import FormControlChips from '../../Form/FormControlChips'
+import useMediaTheme from 'hooks/useMediaTheme'
 
 const styles = theme => {
-  const { palette, type } = theme
+  const { palette, type, typography } = theme
   return {
     root: {
-      margin: '22px 30px'
+      margin: '15px 30px'
     },
     formWrapper: {
       position: 'relative',
@@ -70,7 +61,7 @@ const styles = theme => {
       backgroundColor: palette[type].pages.media.card.header.background
     },
     tabToggleButtonGroup: {
-      marginBottom: '19px',
+      marginBottom: 16,
       justifyContent: 'center'
     },
     tabToggleButton: {
@@ -106,14 +97,13 @@ const styles = theme => {
       boxShadow: 'none'
     },
     previewMediaText: {
-      fontWeight: 'bold',
-      color: palette[type].sideModal.action.button.color
+      ...typography.lightText[type]
     },
     previewMediaRow: {
-      marginTop: '58px'
+      marginTop: 45
     },
     marginTop1: {
-      marginTop: '22px'
+      marginTop: 16
     },
     formControlRootClass: {
       width: '100%',
@@ -126,7 +116,7 @@ const styles = theme => {
       }
     },
     formControlLabelClass: {
-      fontSize: '17px'
+      fontSize: '1.0833rem'
     }
   }
 }
@@ -163,20 +153,16 @@ const LiveTransit = ({
   const mediaItemReducer = useSelector(({ media }) => media.mediaItem)
   const cities = configMediaCategory.cities || []
 
-  const TransitThemes = useSelector(({ config }) => {
-    if (config.themeOfMedia && config.themeOfMedia.response) {
-      return config.themeOfMedia.response
-    }
-    return []
-  })
+  const { themes: TransitThemes, featureId } = useMediaTheme(
+    'Licensed',
+    'LiveTransit'
+  )
 
   const initialFormState = useRef({
     themeType: 'Light'
   })
-  const [isLoading, setLoading] = useState(true)
   const [formSubmitting, setFormSubmitting] = useState(false)
   const [autoClose, setAutoClose] = useState(false)
-  const [featureId, setFeatureId] = useState(null)
   const [themeType, setThemeType] = useState(initialFormState.current.themeType)
   const [citySearchPage, setSearchPage] = useState(1)
   const [selectedLocation, setSelectedLocation] = useState([])
@@ -344,9 +330,12 @@ const LiveTransit = ({
     [form.values]
   )
 
-  const handleCityChange = ({ target }) => {
-    const { latitude, longitude, name, state, country } = target.value.data
-    setSelectedLocation([{ ...target.value }])
+  const handleCityChange = ({ target: { value } }) => {
+    // console.log({ target, });
+    const city = cities.find(({ id }) => id === value)
+    console.log({ city })
+    const { latitude, longitude, name, state, country } = city
+    setSelectedLocation(value)
     form.setFieldValue('latitude', latitude)
     form.setFieldValue('longitude', longitude)
     form.setFieldValue('location', `${name}, ${state}, ${country}`)
@@ -446,7 +435,6 @@ const LiveTransit = ({
 
   useEffect(() => {
     if (backendData && backendData.id) {
-      !isLoading && setLoading(true)
       const {
         attributes: {
           description,
@@ -481,8 +469,6 @@ const LiveTransit = ({
         mediaInfo: getMediaInfoFromBackendData(backendData)
       }
       form.setValues(initialFormValues.current)
-
-      setLoading(false)
     }
 
     // eslint-disable-next-line
@@ -491,37 +477,18 @@ const LiveTransit = ({
   useEffect(() => {
     //get previously selected location
     if (mode === 'edit' && form.values.latitude && form.values.longitude) {
-      const city = cities.find(
-        i =>
-          i.longitude === form.values.longitude &&
-          i.latitude === form.values.latitude
-      )
-
-      setSelectedLocation([
-        {
-          label: form.values.location,
-          value: city ? city.id : 0,
-          data: city ? city : {}
-        }
-      ])
+      console.log('form.values', form.values.location)
+      // const city = cities.find(
+      //   i =>
+      //     i.longitude === form.values.longitude &&
+      //     i.latitude === form.values.latitude
+      // )
+      //
+      // setSelectedLocation(city.id)
       // dispatchAction(getLocation({ name: 'new' }))
     }
     // eslint-disable-next-line
   }, [form.values, cities])
-
-  useEffect(
-    () => {
-      if (!configMediaCategory.response.length) return
-      const id = getAllowedFeatureId(
-        configMediaCategory,
-        'Licensed',
-        'LiveTransit'
-      )
-      setFeatureId(id)
-    },
-    // eslint-disable-next-line
-    [configMediaCategory]
-  )
 
   useEffect(
     () => {
@@ -541,7 +508,6 @@ const LiveTransit = ({
           setThemes(TransitThemes[themeType])
         }
       }
-      mode !== 'edit' && setLoading(false)
     },
     // eslint-disable-next-line
     [TransitThemes]
@@ -561,24 +527,12 @@ const LiveTransit = ({
   )
 
   useEffect(() => {
-    if (featureId) {
-      dispatchAction(getThemeOfMediaFeatureById(featureId))
-    }
-    // eslint-disable-next-line
-  }, [featureId])
-
-  useEffect(() => {
     onShareStateCallback(handleShareState)
   }, [handleShareState, onShareStateCallback])
 
   const { values, errors, touched } = form
   return (
     <form className={classes.formWrapper} onSubmit={form.handleSubmit}>
-      {isLoading && (
-        <div className={classes.loaderWrapper}>
-          <CircularProgress size={30} thickness={5} />
-        </div>
-      )}
       <Grid container className={classes.tabContent}>
         <Grid item xs={7}>
           <div className={classes.root}>

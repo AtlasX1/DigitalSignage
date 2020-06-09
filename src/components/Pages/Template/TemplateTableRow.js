@@ -3,7 +3,6 @@ import { translate } from 'react-i18next'
 import { connect } from 'react-redux'
 import { bindActionCreators, compose } from 'redux'
 import { Link } from 'react-router-dom'
-import classNames from 'classnames'
 
 import { deleteTemplate as deleteItem } from 'actions/templateActions'
 import { Tooltip, withStyles } from '@material-ui/core'
@@ -22,18 +21,14 @@ import LibraryTypeIcon from 'components/LibraryTypeIcon'
 import capitalize from 'utils/capitalize'
 
 import { templateConstants, routeByName } from 'constants/index'
+import LibraryTagChips from '../../../components/LibraryTagChips'
 
-const styles = () => ({
+const styles = ({ typography, type }) => ({
   previewLink: {
-    display: 'block',
     textDecoration: 'none'
   },
-  customTypeIcon: {
-    width: '1.1em',
-    height: '1.1em',
-    left: '0.45em',
-    top: '0.45em',
-    position: 'relative'
+  name: {
+    ...typography.darkAccent[type]
   }
 })
 
@@ -66,8 +61,7 @@ const TableRow = ({
       clone: t('Clone Playlist action'),
       preview: t('Preview Playlist action'),
       del: t('Delete'),
-      permission: t('Permissions link'),
-      formatDate: t('Banners expirationDate format')
+      permission: t('Permissions link')
     }),
     [t]
   )
@@ -145,19 +139,14 @@ const TableRow = ({
                       className={classes.previewLink}
                       color={templateTypeInfo.color}
                       icon={templateTypeInfo.icon}
-                      iconHelperClass={classNames(
-                        templateTypeInfo.iconHelperClass,
-                        {
-                          [classes.customTypeIcon]: templateType !== 'Standard'
-                        }
-                      )}
+                      iconHelperClass={templateTypeInfo.iconHelperClass}
                     />
                   </Tooltip>
                 </TableLibraryCell>
               )
             case 'title': {
               return (
-                <TableLibraryCell key={column} style={{ fontWeight: 'bold' }}>
+                <TableLibraryCell key={column} className={classes.name}>
                   {checkData(title)}
                 </TableLibraryCell>
               )
@@ -165,7 +154,7 @@ const TableRow = ({
             case 'group': {
               return (
                 <TableLibraryCell key={column}>
-                  {group ? group.map(f => f.title).join(', ') : 'None'}
+                  {group ? group.map(f => f.title).join(', ') : 'N/A'}
                 </TableLibraryCell>
               )
             }
@@ -197,7 +186,7 @@ const TableRow = ({
             case 'displayQty': {
               return (
                 <TableLibraryCell key={column} align="center">
-                  {checkData(displayQty)}
+                  {checkData(displayQty, 'N/A')}
                 </TableLibraryCell>
               )
             }
@@ -212,6 +201,15 @@ const TableRow = ({
                   ) : (
                     <InactiveStatusChip label={t('Inactive')} />
                   )}
+                </TableLibraryCell>
+              )
+            case 'tag':
+              return (
+                <TableLibraryCell
+                  key={`cell-playlist-${column}`}
+                  align="center"
+                >
+                  <LibraryTagChips tags={row.tag} />
                 </TableLibraryCell>
               )
             default:

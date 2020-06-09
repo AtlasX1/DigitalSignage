@@ -1,37 +1,45 @@
 import React, { useCallback, useEffect, useState, useRef } from 'react'
-import { translate } from 'react-i18next'
-import { get as _get } from 'lodash'
 import PropTypes from 'prop-types'
+
+import { translate } from 'react-i18next'
+
 import { compose } from 'redux'
-import * as Yup from 'yup'
 import { useDispatch, useSelector } from 'react-redux'
+
+import * as Yup from 'yup'
+import { cloneDeep as _cloneDeep, get as _get, isNull as _isNull } from 'lodash'
 import { useFormik } from 'formik'
+
 import update from 'immutability-helper'
 import {
   withStyles,
   Grid,
   Typography,
-  CircularProgress
+  Tooltip as TooltipBase
 } from '@material-ui/core'
+import Tooltip from 'components/Tooltip'
 
 import {
   TabToggleButton,
   TabToggleButtonGroup,
   WhiteButton
-} from '../../Buttons'
-import MediaThemeSelector from '../MediaThemeSelector'
+} from 'components/Buttons'
+import TwitterSettings from './TwitterSettings'
 import {
   FormControlInput,
   FormControlPalettePicker,
-  FormControlSelect,
+  FormControlReactSelect,
   SliderInputRange
-} from '../../Form'
-import { mediaConstants as constants } from '../../../constants'
+} from 'components/Form'
+import MediaThemeSelector from '../MediaThemeSelector'
+import { MediaInfo, MediaTabActions } from '../index'
+
 import {
   createMediaPostData,
-  getAllowedFeatureId,
-  getMediaInfoFromBackendData
+  getMediaInfoFromBackendData,
+  getMediaThemesSettings
 } from 'utils/mediaUtils'
+
 import {
   addMedia,
   clearAddedMedia,
@@ -39,18 +47,17 @@ import {
   generateMediaPreview,
   getMediaItemsAction
 } from 'actions/mediaActions'
-import { MediaInfo, MediaTabActions } from '../index'
-import TwitterSettings from './TwitterSettings'
-import Tooltip from '@material-ui/core/Tooltip'
-import { twitterPalettePresets } from 'utils/palettePresets'
-import {
-  clearMediaThemes,
-  getThemeOfMediaFeatureById
-} from 'actions/configActions'
 
-const styles = ({ palette, type }) => ({
+import { twitterPalettePresets } from 'utils/palettePresets'
+
+import { clearMediaThemes } from 'actions/configActions'
+
+import { mediaConstants as constants } from '../../../constants'
+import useMediaTheme from 'hooks/useMediaTheme'
+
+const styles = ({ palette, type, typography }) => ({
   root: {
-    margin: '22px 30px'
+    margin: '15px 30px'
   },
   formWrapper: {
     position: 'relative',
@@ -73,7 +80,7 @@ const styles = ({ palette, type }) => ({
     zIndex: 1
   },
   tabToggleButtonGroup: {
-    marginBottom: '15px'
+    marginBottom: 16
   },
   tabToggleButton: {
     width: 'auto'
@@ -90,7 +97,7 @@ const styles = ({ palette, type }) => ({
     boxShadow: 'none'
   },
   previewMediaRow: {
-    marginTop: '34px'
+    marginTop: 45
   },
   previewMediaText: {
     fontWeight: 'bold',
@@ -100,6 +107,9 @@ const styles = ({ palette, type }) => ({
     border: `solid 1px ${palette[type].pages.media.card.border}`,
     backgroundColor: palette[type].pages.media.card.background,
     borderRadius: '4px'
+  },
+  themeCardBottom: {
+    padding: '0 15px 15px'
   },
   themeHeader: {
     padding: '0 15px',
@@ -116,32 +126,30 @@ const styles = ({ palette, type }) => ({
     marginBottom: 0
   },
   themeContainer: {
-    marginTop: '15px'
+    marginTop: 16
   },
   tweetSettingsContainer: {
-    marginTop: '18px'
+    marginTop: 16
   },
   transitionContainer: {
-    marginTop: '20px'
+    marginTop: 16
   },
   themeCardBodyContainer: {
     padding: '15px'
   },
   formControlLabelClass: {
-    fontSize: '17px'
+    fontSize: '1.0833rem'
   },
   formControlInputClass: {
     fontSize: '14px !important',
     padding: '9px 15px !important'
   },
   marginTop1: {
-    marginTop: '10px'
+    marginTop: 16
   },
   formInputLabel: {
-    color: '#74809a',
-    fontSize: '13px',
-    lineHeight: '15px',
-    paddingRight: '15px'
+    paddingRight: '15px',
+    ...typography.lightText[type]
   },
   numberInput: {
     '& span': {
@@ -160,7 +168,7 @@ const styles = ({ palette, type }) => ({
     margin: '0 -7px'
   },
   sliderRoot: {
-    marginBottom: '15px',
+    marginBottom: 16,
     '& .slick-prev': {
       left: '-25px'
     },
@@ -188,7 +196,6 @@ const styles = ({ palette, type }) => ({
     paddingRight: '15px'
   },
   colorPickerRootClass: {
-    maxWidth: '125px',
     marginBottom: '0px'
   },
   colorPaletteContainer: {
@@ -200,13 +207,6 @@ const styles = ({ palette, type }) => ({
     '&:nth-child(2n)': {
       paddingLeft: '15px',
       justifyContent: 'flex-start'
-    }
-  },
-  formLabelTooltip: {
-    borderBottom: '1px dashed #0A83C8',
-    '&:hover': {
-      cursor: 'pointer',
-      borderBottomStyle: 'solid'
     }
   }
 })
@@ -248,78 +248,54 @@ const fonts = [
 
 const validationSchema = Yup.object().shape({
   twitter_handle: Yup.string().required('Enter field'),
-  transitionSpeed: Yup.number().min(1).max(100),
-  refreshEvery: Yup.number().min(5).max(360),
-  tweetsCount: Yup.number().min(2).max(200),
+  speed: Yup.number().min(1).max(100),
+  refresh_every: Yup.number().min(5).max(360),
+  number_of_tweets: Yup.number().min(2).max(200),
   mediaInfo: Yup.object().shape({
     title: Yup.string().required('Enter field')
   })
 })
 
-const getFirstThemeSettings = values => {
-  return {
-    title: {
-      font_size: values.title.fontSize,
-      font_color: values.title.fontColor
-    },
-    handle: {
-      font_size: values.handle.fontSize,
-      font_color: values.handle.fontColor
-    },
-    time: {
-      font_size: values.time.fontSize,
-      font_color: values.time.fontColor
-    },
-    text: {
-      font_size: values.text.fontSize,
-      font_color: values.text.fontColor
-    },
-    text_link: {
-      font_size: values.textlink.fontSize,
-      font_color: values.textlink.fontColor
-    },
-    background: {
-      odd_row: values.background.oddRow,
-      even_row: values.background.evenRow,
-      title: values.background.title
-    }
+const getTooltip = key => {
+  switch (key) {
+    case 'title':
+      return 'Twitter Title/Profile Label'
+    case 'handle':
+      return 'Twitter Name/Time'
+    case 'text':
+      return 'Tweet Text'
+    case 'text_link':
+      return 'Tweet Text Link/Profile Label Value'
+    case 'profile':
+      return 'Profile border'
+    case 'time':
+      return 'Time color'
+    case 'background':
+      return 'Background'
+    default:
+      return key
   }
 }
 
-const parseThemeSettings = ({
-  title = {},
-  handle = {},
-  time = {},
-  text = {},
-  text_link = {},
-  background = {}
-}) => ({
-  title: {
-    fontSize: title.font_size,
-    fontColor: title.font_color
-  },
-  handle: {
-    fontSize: handle.font_size,
-    fontColor: handle.font_color
-  },
-  time: {
-    fontSize: time.font_size,
-    fontColor: time.font_color
-  },
-  text: {
-    fontSize: text.font_size,
-    fontColor: text.font_color
-  },
-  textlink: {
-    fontSize: text_link.font_size,
-    fontColor: text_link.font_color
-  },
-  background: {
-    oddRow: background.odd_row,
-    evenRow: background.even_row,
-    title: background.title
-  }
-})
+const parsePalettes = skins => {
+  const newPalettes = []
+
+  skins.forEach((skin, index) => {
+    newPalettes[index] = {}
+    newPalettes[index].id = index + 1
+    newPalettes[index].palette = {}
+
+    Object.keys(skin).forEach(key => {
+      newPalettes[index].palette[key] = {}
+
+      newPalettes[index].palette[key].tooltip = getTooltip(key)
+      newPalettes[index].palette[key].value =
+        skin[key].color || skin[key].font_color || skin[key].border_color
+    })
+  })
+
+  return newPalettes
+}
 
 const Twitter = props => {
   const {
@@ -333,53 +309,56 @@ const Twitter = props => {
     onModalClose,
     onShareStateCallback
   } = props
+
   const dispatchAction = useDispatch()
-  const { configMediaCategory } = useSelector(({ config }) => config)
-  const addMediaReducer = useSelector(({ addMedia }) => addMedia.social)
-  const mediaItemReducer = useSelector(({ media }) => media.mediaItem)
+  const [addMediaReducer, mediaItemReducer] = useSelector(state => [
+    state.addMedia.social,
+    state.media.mediaItem
+  ])
 
-  const TwitterThemes = useSelector(({ config }) => {
-    if (config.themeOfMedia && config.themeOfMedia.response) {
-      return config.themeOfMedia.response
-    }
-    return []
-  })
-
-  const [isLoading, setLoading] = useState(false)
   const [formSubmitting, setFormSubmitting] = useState(false)
   const [autoClose, setAutoClose] = useState(false)
-  const [featureId, setFeatureId] = useState(null)
   const [twitterThemes, setTwitterThemes] = useState([])
+  const [selectedPreset, setSelectedPreset] = useState({})
+  const [paletteType, setPaletteType] = useState('Presets')
+  const [palettePresets, setPalettePresets] = useState([])
+  const [customPalette, setCustomPalette] = useState({})
+  const [settingsType, setSettingsType] = useState('title')
+  const [themeType, setThemeType] = useState('Legacy')
+
+  const { themes: themesReducer, featureId } = useMediaTheme(
+    'Social',
+    'Twitter'
+  )
 
   const initialFormValues = useRef({
     twitter_handle: '',
-    tweetsCount: 25,
-    themeType: 'Legacy',
-    theme: 0,
-    transition: transitionOptions[0].toLowerCase(),
-    transitionSpeed: 1,
-    refreshEvery: 5,
-    fontFamily: fonts[0].toLowerCase(),
-    settingsType: 'title',
-    settings: {
+    number_of_tweets: 25,
+    themeId: 0,
+    refresh_every: 5,
+    theme_settings: {
+      transition: transitionOptions[0],
+      speed: 1,
+      font_family: fonts[0],
+      skin: undefined,
       title: {
-        fontColor: 'rgba(246, 210, 210, 1)',
-        fontSize: 12
+        font_color: 'rgba(246, 210, 210, 1)',
+        font_size: 12
       },
-      handle: { fontColor: 'rgba(246, 210, 210, 1)', fontSize: 12 },
-      time: { fontColor: 'rgba(0, 255, 205, 1)', fontSize: 12 },
-      text: { fontColor: 'rgba(255, 0, 82, 1)', fontSize: 12 },
-      textlink: { fontColor: 'rgba(255, 59, 0, 1)', fontSize: 12 },
+      handle: { font_color: 'rgba(246, 210, 210, 1)', font_size: 12 },
+      time: { font_color: 'rgba(0, 255, 205, 1)', font_size: 12 },
+      text: { font_color: 'rgba(255, 0, 82, 1)', font_size: 12 },
+      text_link: { font_color: 'rgba(255, 59, 0, 1)', font_size: 12 },
+      profile: {
+        border_color: 'rgba(0, 0, 0, 1)'
+      },
       background: {
-        oddRow: 'rgba(0, 255, 205, 1)',
-        evenRow: 'rgba(255, 0, 82, 1)',
-        title: 'rgba(255, 59, 0, 1)'
+        odd_row: 'rgba(0, 255, 205, 1)',
+        even_row: 'rgba(255, 0, 82, 1)',
+        title: 'rgba(255, 59, 0, 1)',
+        color: 'rgba(0, 255, 205, 1)'
       }
     },
-    selectedPreset: {},
-    paletteType: 'Presets',
-    palettePresets: twitterPalettePresets,
-    customPalette: twitterPalettePresets[0],
     mediaInfo: { ...constants.mediaInfoInitvalue }
   })
   const form = useFormik({
@@ -392,29 +371,29 @@ const Twitter = props => {
       initialFormValues.current = values
       const {
         twitter_handle,
-        tweetsCount,
-        refreshEvery,
-        fontFamily,
+        number_of_tweets,
+        refresh_every,
+        font_family,
         transition,
-        transitionSpeed,
-        settings,
-        theme
+        speed,
+        theme_settings,
+        themeId
       } = values
 
       const postData = createMediaPostData(values.mediaInfo, mode)
       const firstThemeOptions = {
-        number_of_tweets: tweetsCount,
-        refresh_every: refreshEvery,
-        font_family: fontFamily,
+        number_of_tweets: number_of_tweets,
+        refresh_every: refresh_every,
+        font_family: font_family,
         twitter_handle,
         transition: transition,
-        speed: transitionSpeed,
-        theme_settings: getFirstThemeSettings(settings)
+        speed: speed,
+        theme_settings
       }
 
       const requestData = update(postData, {
         featureId: { $set: featureId },
-        themeId: { $set: theme },
+        themeId: { $set: themeId },
         attributes: {
           $set: firstThemeOptions
         }
@@ -466,27 +445,49 @@ const Twitter = props => {
     })
   }
 
-  const handlePresetChange = preset => {
+  const handlePresetChange = (preset, index = 0) => {
     const { palette } = preset
-    form.setFieldValue('selectedPreset', preset)
+    form.setFieldValue('theme_settings.skin', index)
+    setSelectedPreset(preset)
+    setCustomPalette({ ..._cloneDeep(preset), id: 123 })
     Object.keys(palette).forEach(key => {
-      if (key === 'background') {
-        form.setFieldValue(`settings.${key}.oddRow`, palette[key].value)
-        form.setFieldValue(`settings.${key}.evenRow`, palette[key].value)
-      } else form.setFieldValue(`settings.${key}.fontColor`, palette[key].value)
+      if (themeType === 'Modern') {
+        form.setFieldValue(`theme_settings.${key}`, palette[key].value)
+      } else {
+        if (key === 'background') {
+          form.setFieldValue(
+            `theme_settings.${key}.odd_row`,
+            palette[key].value
+          )
+          form.setFieldValue(
+            `theme_settings.${key}.even_row`,
+            palette[key].value
+          )
+          form.setFieldValue(`theme_settings.${key}.color`, palette[key].value)
+        } else if (key === 'profile') {
+          form.setFieldValue(
+            `theme_settings.${key}.border_color`,
+            palette[key].value
+          )
+        } else
+          form.setFieldValue(
+            `theme_settings.${key}.font_color`,
+            palette[key].value
+          )
+      }
     })
   }
 
   const handleShowPreview = async () => {
     const {
       twitter_handle,
-      tweetsCount,
-      refreshEvery,
-      fontFamily,
+      number_of_tweets,
+      refresh_every,
+      font_family,
       transition,
-      transitionSpeed,
-      settings,
-      theme
+      speed,
+      theme_settings,
+      themeId
     } = values
     form.setTouched({
       twitter_handle: true
@@ -500,15 +501,15 @@ const Twitter = props => {
       dispatchAction(
         generateMediaPreview({
           featureId,
-          themeId: theme,
+          themeId,
           attributes: {
-            number_of_tweets: tweetsCount,
-            refresh_every: refreshEvery,
-            font_family: fontFamily,
-            twitter_handle: 'msn',
-            transition: transition,
-            speed: transitionSpeed,
-            theme_settings: getFirstThemeSettings(settings)
+            number_of_tweets,
+            refresh_every,
+            font_family,
+            twitter_handle,
+            transition,
+            speed,
+            theme_settings
           }
         })
       )
@@ -521,6 +522,40 @@ const Twitter = props => {
     }),
     [form.values]
   )
+
+  const handlePalettesChange = theme => {
+    if (themeType === 'Legacy') {
+      if (_get(theme, 'customProperties.other.conditions.skin')) {
+        const palettes = parsePalettes(
+          _get(theme, 'customProperties.other.conditions.skin')
+        )
+        setPalettePresets(_cloneDeep(palettes))
+      }
+    } else {
+      setPalettePresets(_cloneDeep(twitterPalettePresets))
+    }
+  }
+
+  const handleSlideClick = themeId => {
+    if (
+      _get(themesReducer, themeType) &&
+      _get(themesReducer, themeType).length
+    ) {
+      const theme = themesReducer[themeType].find(i => i.id === themeId)
+      let defaultTheme
+
+      if (theme)
+        defaultTheme = getMediaThemesSettings(theme.customProperties, true)
+
+      handlePalettesChange(theme)
+
+      form.setValues({
+        ...form.values,
+        themeId: themeId,
+        ...(defaultTheme && { theme_settings: defaultTheme })
+      })
+    }
+  }
 
   useEffect(() => {
     if (!formSubmitting) return
@@ -594,92 +629,68 @@ const Twitter = props => {
   }, [])
 
   useEffect(() => {
-    if (backendData && backendData.id) {
+    if (
+      backendData &&
+      backendData.id &&
+      _get(themesReducer, themeType) &&
+      _get(themesReducer, themeType).length
+    ) {
       const {
-        background_color,
-        content,
-        fill_color,
-        size,
-        twitter_handle,
-        number_of_tweets,
-        speed,
-        transition,
-        theme_settings,
-        font_family
-      } = backendData.attributes
+        themeId,
+        attributes: {
+          number_of_tweets,
+          refresh_every,
+          theme_settings,
+          twitter_handle
+        }
+      } = backendData
+
+      const theme = themesReducer.Legacy.find(i => i.id === themeId)
+      !theme && setThemeType('Modern')
 
       initialFormValues.current = {
         ...form.values,
-        content,
-        size,
-        bgColor: background_color,
-        fillColor: fill_color,
-        twitter_handle: twitter_handle,
-        tweetsCount: number_of_tweets,
-        transition: transition,
-        transitionSpeed: speed,
-        fontFamily: font_family,
-        settings: parseThemeSettings(theme_settings),
+        themeId,
+        number_of_tweets,
+        refresh_every,
+        theme_settings,
+        twitter_handle,
         mediaInfo: getMediaInfoFromBackendData(backendData)
       }
+
+      handleSlideClick(themeId)
+
       form.setValues(initialFormValues.current)
-      setLoading(false)
     }
 
     // eslint-disable-next-line
-  }, [backendData])
-
-  useEffect(() => {
-    if (!configMediaCategory.response.length) return
-    // Twitter, Pinterest, Facebook, Instagram, Socialwall
-    const id = getAllowedFeatureId(configMediaCategory, 'Social', 'Twitter')
-    setFeatureId(id)
-  }, [configMediaCategory])
-
-  useEffect(() => {
-    if (featureId) {
-      dispatchAction(getThemeOfMediaFeatureById(featureId))
-    }
-  }, [featureId, dispatchAction])
+  }, [backendData, themesReducer])
 
   useEffect(
     () => {
       if (
-        _get(TwitterThemes, form.values.themeType) &&
-        _get(TwitterThemes, form.values.themeType).length
+        _get(themesReducer, themeType) &&
+        _get(themesReducer, themeType).length
       ) {
-        form.setFieldValue('theme', TwitterThemes[form.values.themeType][0].id)
-        setTwitterThemes(TwitterThemes[form.values.themeType])
-      }
-      mode !== 'edit' && setLoading(false)
-    },
-    // eslint-disable-next-line
-    [TwitterThemes]
-  )
+        _isNull(backendData) &&
+          form.setFieldValue('themeId', themesReducer[themeType][0].id)
 
-  useEffect(
-    () => {
-      if (
-        _get(TwitterThemes, form.values.themeType) &&
-        _get(TwitterThemes, form.values.themeType).length
-      ) {
-        form.setFieldValue('theme', TwitterThemes[form.values.themeType][0].id)
-        setTwitterThemes(TwitterThemes[form.values.themeType])
+        const theme = themesReducer[themeType].find(
+          i => i.id === form.values.themeId
+        )
+
+        handlePalettesChange(theme)
+
+        setTwitterThemes(themesReducer[themeType])
       }
     },
     // eslint-disable-next-line
-    [form.values.themeType]
+    [themesReducer, themeType]
   )
 
   useEffect(() => {
     onShareStateCallback(handleShareState)
   }, [handleShareState, onShareStateCallback])
-
-  useEffect(() => {
-    if (mode === 'edit') {
-      setLoading(true)
-    }
-  }, [mode])
 
   useEffect(
     () => () => {
@@ -689,42 +700,71 @@ const Twitter = props => {
     []
   )
 
+  useEffect(
+    () => {
+      const { theme_settings } = form.values
+      if (theme_settings && palettePresets.length) {
+        const skin = _get(theme_settings, 'skin')
+
+        if (skin >= 0 && skin !== 6) {
+          setPaletteType('Presets')
+          setSelectedPreset(palettePresets[skin])
+          setCustomPalette(palettePresets[skin])
+        } else {
+          const preset = { ..._cloneDeep(palettePresets[0]), id: 123 }
+
+          Object.keys(preset.palette).forEach(key => {
+            if (_get(theme_settings, key)) {
+              preset.palette[key].value =
+                themeType === 'Legacy'
+                  ? theme_settings[key.replace('_color', '')][
+                      key === 'profile'
+                        ? 'border_color'
+                        : key === 'background'
+                        ? 'color'
+                        : 'font_color'
+                    ]
+                  : theme_settings[key]
+            }
+          })
+
+          setPaletteType('Custom')
+          setCustomPalette(preset)
+          setSelectedPreset(preset)
+        }
+      }
+    },
+    // eslint-disable-next-line
+    [palettePresets]
+  )
+
   const { values, errors, touched, submitCount, isValid } = form
   const isButtonsDisable = formSubmitting || (submitCount > 0 && !isValid)
 
   return (
     <form className={classes.formWrapper} onSubmit={form.handleSubmit}>
-      {isLoading && (
-        <div className={classes.loaderWrapper}>
-          <CircularProgress size={30} thickness={5} />
-        </div>
-      )}
       <Grid container className={classes.tabContent}>
         <Grid item xs={7}>
           <div className={classes.root}>
             <Grid container spacing={16}>
               <Grid item xs={6}>
-                <Tooltip
-                  title={
+                <FormControlInput
+                  label="Twitter id:"
+                  tooltip={
                     <span>
                       e.g. If user id is <b>@userid</b>, enter userid without{' '}
                       <b>@</b> sign
                     </span>
                   }
-                  placement="top"
-                >
-                  <FormControlInput
-                    label="Twitter id:"
-                    formControlRootClass={classes.formControlRootClass}
-                    formControlLabelClass={classes.formControlLabelClass}
-                    value={values.twitter_handle}
-                    error={errors.twitter_handle}
-                    touched={touched.twitter_handle}
-                    handleChange={e =>
-                      form.setFieldValue('twitter_handle', e.target.value)
-                    }
-                  />
-                </Tooltip>
+                  formControlRootClass={classes.formControlRootClass}
+                  formControlLabelClass={classes.formControlLabelClass}
+                  value={values.twitter_handle}
+                  error={errors.twitter_handle}
+                  touched={touched.twitter_handle}
+                  handleChange={e =>
+                    form.setFieldValue('twitter_handle', e.target.value)
+                  }
+                />
               </Grid>
               <Grid item xs={6}>
                 <FormControlInput
@@ -734,19 +774,19 @@ const Twitter = props => {
                   formControlContainerClass={classes.formControlInputNumber}
                   formControlLabelClass={classes.formControlLabelClass}
                   formControlInputClass={classes.formControlInputClass}
-                  value={values.tweetsCount}
-                  error={errors.tweetsCount}
-                  touched={touched.tweetsCount}
+                  value={values.number_of_tweets}
+                  error={errors.number_of_tweets}
+                  touched={touched.number_of_tweets}
                   handleChange={value =>
-                    form.setFieldValue('tweetsCount', value)
+                    form.setFieldValue('number_of_tweets', value)
                   }
                 />
               </Grid>
             </Grid>
             <Grid container justify="center" className={classes.themeContainer}>
               <MediaThemeSelector
-                value={values.themeType}
-                onChange={(e, val) => form.setFieldValue('themeType', val)}
+                value={themeType}
+                onChange={(e, val) => val && setThemeType(val)}
                 carousel={{
                   customClasses: {
                     root: classes.sliderRoot,
@@ -758,31 +798,32 @@ const Twitter = props => {
                   slides: twitterThemes.map(theme => ({
                     name: theme.id,
                     content: (
-                      <Tooltip title={theme.tooltip}>
+                      <TooltipBase title={theme.tooltip}>
                         <img src={theme.thumb} alt={theme.id} />
-                      </Tooltip>
+                      </TooltipBase>
                     )
                   })),
-                  activeSlide: values.theme,
-                  onSlideClick: t => form.setFieldValue('theme', t.name)
+                  activeSlide: values.themeId,
+                  onSlideClick: t => handleSlideClick(t.name)
                 }}
               />
             </Grid>
 
-            {values.theme === 18 && (
+            {values.themeId === 18 && (
               <TwitterSettings
                 classes={classes}
-                activeTab={values.settingsType}
+                activeTab={settingsType}
                 data={{
-                  values: values.settings,
-                  touches: touched.settings,
-                  errors: errors.settings
+                  values: values.theme_settings,
+                  touches: touched.theme_settings,
+                  errors: errors.theme_settings
                 }}
                 onChange={form.setFieldValue}
+                changeTab={setSettingsType}
               />
             )}
 
-            {values.theme !== 18 && (
+            {values.themeId !== 18 && (
               <Grid
                 container
                 justify="center"
@@ -798,9 +839,9 @@ const Twitter = props => {
                       <TabToggleButtonGroup
                         className={classes.tabToggleButtonGroup}
                         exclusive
-                        value={values.paletteType}
+                        value={paletteType}
                         onChange={(e, val) => {
-                          val && form.setFieldValue('paletteType', val)
+                          val && setPaletteType(val)
                         }}
                       >
                         <TabToggleButton
@@ -824,19 +865,19 @@ const Twitter = props => {
                     justify="center"
                     className={classes.themeCardBodyContainer}
                   >
-                    {values.paletteType === 'Custom' ? (
-                      <Grid item key={values.customPalette}>
+                    {paletteType === 'Custom' ? (
+                      <Grid item key={customPalette.id}>
                         <FormControlPalettePicker
-                          id={values.customPalette.id}
-                          preset={values.customPalette}
+                          id={customPalette.id}
+                          preset={customPalette}
                           allowChangeColor={true}
-                          selected={values.selectedPreset}
-                          onSelectPalette={handlePresetChange}
+                          selected={selectedPreset}
+                          onSelectPalette={p => handlePresetChange(p, 6)}
                         />
                       </Grid>
                     ) : (
                       <>
-                        {values.palettePresets.map(item => (
+                        {palettePresets.map((item, index) => (
                           <Grid
                             item
                             xs={6}
@@ -847,8 +888,10 @@ const Twitter = props => {
                               id={item.id}
                               preset={item}
                               allowChangeColor={false}
-                              selected={values.selectedPreset}
-                              onSelectPalette={handlePresetChange}
+                              selected={selectedPreset}
+                              onSelectPalette={p =>
+                                handlePresetChange(p, index)
+                              }
                             />
                           </Grid>
                         ))}
@@ -876,23 +919,25 @@ const Twitter = props => {
                     </Typography>
                   </Grid>
                   <Grid item xs>
-                    <FormControlSelect
-                      custom
-                      marginBottom={false}
-                      value={values.fontFamily}
-                      error={errors.fontFamily}
-                      touched={touched.fontFamily}
+                    <FormControlReactSelect
+                      marginBottom={0}
+                      value={values.theme_settings.font_family}
+                      error={_get(errors, 'theme_settings.font_family')}
+                      touched={_get(touched, 'theme_settings.font_family')}
                       inputClasses={{
                         input: classes.formControlInputClass
                       }}
                       handleChange={e =>
-                        form.setFieldValue('fontFamily', e.target.value)
+                        form.setFieldValue(
+                          'theme_settings.font_family',
+                          e.target.value
+                        )
                       }
                       options={fonts.map(name => ({
-                        component: (
-                          <span style={{ fontFamily: name }}>{name}</span>
+                        label: (
+                          <span style={{ font_family: name }}>{name}</span>
                         ),
-                        value: name.toLowerCase()
+                        value: name
                       }))}
                     />
                   </Grid>
@@ -920,22 +965,24 @@ const Twitter = props => {
                         </Typography>
                       </Grid>
                       <Grid item xs>
-                        <FormControlSelect
-                          custom
-                          value={values.transition}
-                          error={errors.transition}
-                          touched={touched.transition}
+                        <FormControlReactSelect
+                          value={values.theme_settings.transition}
+                          error={_get(errors, 'theme_settings.transition')}
+                          touched={_get(touched, 'theme_settings.transition')}
                           inputClasses={{
                             input: classes.formControlInputClass
                           }}
                           handleChange={e =>
-                            form.setFieldValue('transition', e.target.value)
+                            form.setFieldValue(
+                              'theme_settings.transition',
+                              e.target.value
+                            )
                           }
                           options={transitionOptions.map(name => ({
                             label: name,
-                            value: name.toLowerCase()
+                            value: name
                           }))}
-                          marginBottom={false}
+                          marginBottom={0}
                         />
                       </Grid>
                     </Grid>
@@ -952,11 +999,11 @@ const Twitter = props => {
                           custom={true}
                           min={1}
                           max={100}
-                          value={values.transitionSpeed}
-                          error={errors.transitionSpeed}
-                          touched={touched.transitionSpeed}
+                          value={values.theme_settings.speed}
+                          error={_get(errors, 'theme_settings.speed')}
+                          touched={_get(touched, 'theme_settings.speed')}
                           handleChange={val =>
-                            form.setFieldValue('transitionSpeed', val)
+                            form.setFieldValue('theme_settings.speed', val)
                           }
                           formControlRootClass={[
                             classes.formControlRootClass,
@@ -997,22 +1044,20 @@ const Twitter = props => {
                       placement="top"
                     >
                       <Typography className={classes.formInputLabel}>
-                        <span className={classes.formLabelTooltip}>
-                          Refresh Every
-                        </span>
+                        Refresh Every
                       </Typography>
                     </Tooltip>
                   </Grid>
                   <Grid item>
                     <SliderInputRange
                       step={1}
-                      value={values.refreshEvery}
-                      error={errors.refreshEvery}
-                      touched={touched.refreshEvery}
-                      onChange={val => form.setFieldValue('refreshEvery', val)}
+                      value={values.refresh_every}
+                      error={errors.refresh_every}
+                      touched={touched.refresh_every}
+                      onChange={val => form.setFieldValue('refresh_every', val)}
                       label={''}
-                      maxValue={150}
-                      minValue={0}
+                      maxValue={360}
+                      minValue={5}
                       inputRangeContainerSASS="CreateMediaSettings__slider--Wrap"
                     />
                   </Grid>

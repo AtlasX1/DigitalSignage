@@ -6,6 +6,7 @@ import {
   Switch
 } from '@material-ui/core'
 import classNames from 'classnames'
+import { getKeyByValue } from 'utils/getKeyByValue'
 const styles = theme => ({
   iOSSwitchBase: {
     transform: 'translateX(-2px)',
@@ -50,9 +51,11 @@ const styles = theme => ({
     marginRight: 0
   },
   label: {
-    fontSize: '12px',
-    color: '#74809a',
-    textTransform: 'capitalize'
+    ...theme.typography.subtitle[theme.type],
+    textTransform: 'capitalize',
+    '&.form-label': {
+      fontSize: '0.8125rem'
+    }
   },
   labelError: {
     color: 'red'
@@ -72,18 +75,30 @@ const CheckboxSwitcher = ({
   formControlLabelClass = '',
   disabled = false,
   labelPlacement = 'start',
+  returnValues = {
+    true: true,
+    false: false
+  },
   handleChange = f => f,
+  selectedListMode = false,
+  isFormLabel = true,
   error
 }) => {
   const handleToggle = useCallback(
     (event, value) => {
       if (name) {
-        handleChange({ target: { value, name } })
+        if (selectedListMode) {
+          handleChange(name)
+        } else {
+          handleChange({
+            target: { value: getKeyByValue(returnValues, value), name }
+          })
+        }
       } else {
         handleChange(value, id)
       }
     },
-    [id, name, handleChange]
+    [name, selectedListMode, returnValues, handleChange, id]
   )
 
   return (
@@ -92,7 +107,8 @@ const CheckboxSwitcher = ({
         classes={{
           root: classNames(classes.labelWrap, formControlRootClass),
           label: classNames(classes.label, formControlLabelClass, {
-            [classes.labelError]: error
+            [classes.labelError]: error,
+            'form-label': isFormLabel
           })
         }}
         label={label}
@@ -102,7 +118,7 @@ const CheckboxSwitcher = ({
             disabled={disabled}
             disableRipple
             value="checked"
-            checked={value}
+            checked={returnValues[value]}
             onChange={handleToggle}
             classes={{
               root: switchRootClass,

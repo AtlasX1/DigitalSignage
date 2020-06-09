@@ -123,7 +123,7 @@ const Item = ({
       <CheckboxSwitcher
         value={isSelected}
         switchContainerClass={classes.switchBase}
-        handleChange={e => handleChange(id, e)}
+        handleChange={e => handleChange(e)}
       />
     </TableCell>
   </TableRow>

@@ -115,11 +115,13 @@ const AdminDevicesCard = ({
 
   const transformTypesToPieChartOptions = useCallback(items => {
     const active = items.map(({ name, total }) => ({
-      name: `${name} active`,
+      id: `${name} active`,
+      label: `${name} active`,
       value: total.active
     }))
     const inactive = items.map(({ name, total }) => ({
-      name: `${name} inactive`,
+      id: `${name} inactive`,
+      label: `${name} inactive`,
       value: total.inactive
     }))
     return { active, inactive }
@@ -191,12 +193,28 @@ const AdminDevicesCard = ({
                 <TwoPieChart
                   chartData={[
                     [
-                      { name: 'Older Fw', value: data.byFirmware.older_fw },
-                      { name: 'Last Fw', value: data.byFirmware.last_fw }
+                      {
+                        id: 'Older Fw',
+                        label: 'Older Fw',
+                        value: data.byFirmware.older_fw
+                      },
+                      {
+                        id: 'Last Fw',
+                        label: 'Last Fw',
+                        value: data.byFirmware.last_fw
+                      }
                     ],
                     [
-                      { name: 'Older Fw', value: data.byFirmware.older_fw },
-                      { name: 'Last Fw', value: data.byFirmware.last_fw }
+                      {
+                        id: 'Older Fw',
+                        label: 'Older Fw',
+                        value: data.byFirmware.older_fw
+                      },
+                      {
+                        id: 'Last Fw',
+                        label: 'Last Fw',
+                        value: data.byFirmware.last_fw
+                      }
                     ]
                   ]}
                   fillColors={['#f29813', '#0076b9', '#3ca1db', '#ffb546']}

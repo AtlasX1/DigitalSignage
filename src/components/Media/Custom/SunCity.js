@@ -55,10 +55,10 @@ const DownloadFileButton = withStyles(DownloadFileButtonClasses)(
 )
 
 const styles = theme => {
-  const { palette, type } = theme
+  const { palette, type, formControls, typography } = theme
   return {
     root: {
-      margin: '21px 30px'
+      margin: '15px 30px'
     },
     previewMediaBtn: {
       padding: '10px 25px 8px',
@@ -68,11 +68,10 @@ const styles = theme => {
       boxShadow: 'none'
     },
     previewMediaRow: {
-      marginTop: '19px'
+      marginTop: 45
     },
     previewMediaText: {
-      fontWeight: 'bold',
-      color: palette[type].sideModal.action.button.color
+      ...typography.lightText[type]
     },
     themeCardWrap: {
       border: `solid 1px ${palette[type].pages.media.card.border}`,
@@ -83,7 +82,7 @@ const styles = theme => {
       marginBottom: 0
     },
     tabToggleButtonGroup: {
-      marginBottom: '19px',
+      marginBottom: 16,
       justifyContent: 'center'
     },
     tabToggleButton: {
@@ -94,16 +93,14 @@ const styles = theme => {
       background: 'transparent'
     },
     dateInputsStyles1: {
-      marginTop: '14px'
+      marginTop: 16
     },
     dateInputsStyles2: {
-      marginTop: '20px',
-      padding: '0 20px 35px',
+      padding: '16px 0',
       borderBottom: `1px solid ${palette[type].sideModal.content.border}`
     },
     dateInputsStyles3: {
-      marginTop: '18px',
-      padding: '0 20px'
+      padding: '16px 0 0'
     },
     durationContainerClass: {
       width: '142px'
@@ -114,16 +111,15 @@ const styles = theme => {
       fontWeight: '700'
     },
     sliderInputLabel: {
-      color: '#74809A',
-      fontSize: '13px',
+      ...formControls.mediaApps.refreshEverySlider.label,
       lineHeight: '15px',
       marginRight: '15px'
     },
     formControlLabelClass: {
-      fontSize: '17px'
+      fontSize: '1.0833rem'
     },
     inputContainer: {
-      padding: '20px 15px'
+      padding: '15px 0'
     },
     fileTypeLabel: {
       fontSize: '11px',
@@ -142,7 +138,7 @@ const styles = theme => {
       color: palette[type].pages.media.general.card.header.color
     },
     marginBottom1: {
-      marginBottom: '15px'
+      marginBottom: 16
     }
   }
 }
@@ -176,13 +172,7 @@ class SunCity extends Component {
                 formControlLabelClass={classes.formControlLabelClass}
               />
             </Grid>
-            <Grid
-              item
-              xs={12}
-              className={[classes.themeCardWrap, classes.marginBottom1].join(
-                ' '
-              )}
-            >
+            <Grid item xs={12} className={classes.themeCardWrap}>
               <header className={classes.themeHeader}>
                 <Grid container justify="space-between" alignItems="center">
                   <Grid item>
@@ -210,13 +200,7 @@ class SunCity extends Component {
                 formControlLabelClass={classes.formControlLabelClass}
               />
             </Grid>
-            <Grid
-              item
-              xs={12}
-              className={[classes.themeCardWrap, classes.marginBottom1].join(
-                ' '
-              )}
-            >
+            <Grid item xs={12} className={classes.themeCardWrap}>
               <header className={classes.themeHeader}>
                 <Grid container justify="space-between" alignItems="center">
                   <Grid item>

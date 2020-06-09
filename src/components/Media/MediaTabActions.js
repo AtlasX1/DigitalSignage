@@ -28,9 +28,9 @@ const styles = theme => {
       color: palette[type].sideModal.action.button.color,
 
       '&:hover': {
-        color: '#fff',
-        background: '#006198',
-        borderColor: '#006198'
+        color: '#fff'
+        // background: '#006198',
+        // borderColor: '#006198'
       }
     }
   }

@@ -3,11 +3,10 @@ import PropTypes from 'prop-types'
 import { translate } from 'react-i18next'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
-import { get as _get } from 'lodash'
-import { withStyles, Typography } from '@material-ui/core'
+import _get from 'lodash/get'
+import { withStyles } from '@material-ui/core'
 
 import { FormControlInput, FormControlChips } from '../Form'
-import { WhiteButton } from '../Buttons'
 import { Card } from '../Card'
 import ValidityCard from './ValidityCard'
 import PriorityCard from './PriorityCard'
@@ -18,29 +17,24 @@ const styles = theme => {
   const { palette, type } = theme
   return {
     root: {
-      margin: '20px 20px 0'
+      margin: 20
     },
     header: {
       paddingLeft: 0,
       border: `solid 1px ${palette[type].sideModal.content.border}`,
       backgroundColor: palette[type].card.greyHeader.background,
-      marginBottom: '35px'
+      marginBottom: '35px',
+      borderRadius: '4px'
     },
     headerText: {
+      paddingLeft: 13,
       fontWeight: 'bold',
       lineHeight: '42px',
-      color: palette[type].sideModal.header.titleColor
+      color: palette[type].sideModal.header.titleColor,
+      fontSize: '0.875rem'
     },
     mediaInformationInputsWrap: {
       marginBottom: '20px'
-    },
-    advancedSettingsBtn: {
-      width: '100%',
-      padding: '10px 0 8px',
-      border: `solid 1px ${palette[type].sideModal.action.button.border}`,
-      backgroundImage: palette[type].sideModal.action.button.background,
-      boxShadow: 'none',
-      borderRadius: '4px'
     },
     advancedSettingsText: {
       fontSize: '14px',
@@ -83,7 +77,6 @@ const MediaInfo = ({
     validity: false,
     priority: false
   })
-  const shouldExpand = !(expandState.validity || expandState.priority)
   const toggleExpand = card => {
     switch (card) {
       case 'validity':
@@ -99,10 +92,7 @@ const MediaInfo = ({
         })
         break
       default:
-        toggleExpandState({
-          validity: shouldExpand,
-          priority: shouldExpand
-        })
+        break
     }
   }
 
@@ -158,14 +148,6 @@ const MediaInfo = ({
             handleChange={onFormHandleChange}
           />
         </div>
-        <WhiteButton
-          onClick={toggleExpand}
-          className={classes.advancedSettingsBtn}
-        >
-          <Typography className={classes.advancedSettingsText}>
-            {t(`${shouldExpand ? 'Show' : 'Hide'} Advanced Settings`)}
-          </Typography>
-        </WhiteButton>
       </Card>
       <ValidityCard
         expanded={expandState.validity}

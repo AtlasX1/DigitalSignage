@@ -7,8 +7,6 @@ import { bindActionCreators } from 'redux'
 import { withSnackbar } from 'notistack'
 import update from 'immutability-helper'
 
-import { setHeight } from 'actions/appActions'
-
 import { WhiteButton } from 'components/Buttons'
 import { CheckboxSwitcher } from 'components/Checkboxes'
 import PageContainer from 'components/PageContainer'
@@ -65,6 +63,7 @@ import {
 import { impersonateUserAction } from 'actions/authenticationActions'
 import UserItem from 'components/Pages/Admin/UsersLibrary/UserItem'
 import EmailLink from 'components/EmailLink'
+import { sortByFullName } from 'utils/libraryUtils'
 
 const styles = ({ palette, type }) => ({
   actionIcons: {
@@ -94,6 +93,7 @@ const clientColumn = [
 const initialOrgColumns = [
   { id: 'firstName', label: 'Name', display: true },
   { id: 'email', label: 'Email', display: true },
+  { id: 'role', label: 'Role', display: true },
   { id: 'phone', label: 'Phone', align: 'center', display: true },
   { id: 'lastLogin', label: 'Last Login', align: 'center', display: true },
   { id: 'status', label: 'Status', align: 'center', display: true }
@@ -139,8 +139,7 @@ const UsersLibrary = ({
   groupItemsReducer,
   deleteGroupItemReducer,
   ungroupedUsers,
-  getUngroupedUsers,
-  modalHeight
+  getUngroupedUsers
 }) => {
   const [showInactive, toggleShowInactive] = useState(false)
   const searchParams = useMemo(() => {
@@ -171,7 +170,7 @@ const UsersLibrary = ({
       initialColumns: cols,
       fetcher: getItems,
       entity: entityConstants.UserLibrary,
-      perPage: meta.perPage
+      initialPerPage: meta.perPage
     },
     cols
   )
@@ -189,13 +188,6 @@ const UsersLibrary = ({
   const rowsIds = useMemo(() => items.map(({ id }) => id), [items])
 
   const selectedList = useSelectedList(rowsIds)
-
-  useEffect(() => {
-    getItems({
-      page: 1
-    })
-    // eslint-disable-next-line
-  }, [])
 
   useEffect(() => {
     switch (role.role) {
@@ -234,7 +226,7 @@ const UsersLibrary = ({
       clearResponseInfo()
       getItems({
         page: 1,
-        limit: meta.perPage
+        limit: preference.perPage
       })
     }
     // eslint-disable-next-line
@@ -281,7 +273,7 @@ const UsersLibrary = ({
     getItems(
       queryParamsHelper({
         ...params,
-        limit: meta.perPage
+        limit: preference.perPage
       })
     )
   }
@@ -289,7 +281,7 @@ const UsersLibrary = ({
   const onFilterReset = () => {
     setQueryParams(intialFilter)
     getItems({
-      limit: meta.perPage
+      limit: preference.perPage
     })
   }
 
@@ -324,69 +316,85 @@ const UsersLibrary = ({
     }
   }, [postGroupItemReducer, deleteGroupItemReducer, getUngroupedUsers])
 
+  const ungroupedUsersList = useMemo(
+    () =>
+      sortByFullName(ungroupedUsers).map(user => (
+        <UserItem key={user.id} user={user} />
+      )),
+    [ungroupedUsers]
+  )
+
   return (
-    <div style={{ height: modalHeight }}>
-      <PageContainer
-        pageTitle={translate.title}
-        PageTitleComponent={
-          <PageTitle
-            selectedCount={selectedList.count}
-            title={translate.title}
-          />
-        }
-        ActionButtonsComponent={
-          <>
-            {role.org ? (
-              <WhiteButton
-                className={`hvr-radial-out ${classes.actionIcons}`}
-                component={Link}
-                to={getUrlPrefix(routeByName.users.groups)}
-              >
-                <i
-                  className={`${classes.iconColor} icon-navigation-show-more-vertical`}
-                />
-
-                {translate.groups}
-              </WhiteButton>
-            ) : null}
-
+    <PageContainer
+      pageTitle={translate.title}
+      PageTitleComponent={
+        <PageTitle selectedCount={selectedList.count} title={translate.title} />
+      }
+      ActionButtonsComponent={
+        <>
+          {role.org ? (
             <WhiteButton
               className={`hvr-radial-out ${classes.actionIcons}`}
               component={Link}
-              to={getUrlPrefix(routeByName.users.add)}
+              to={getUrlPrefix(routeByName.users.groups)}
             >
-              <i className={`${classes.iconColor} icon-folder-video`} />
-              {translate.add}
+              <i
+                className={`${classes.iconColor} icon-navigation-show-more-vertical`}
+              />
+              {translate.groups}
             </WhiteButton>
-          </>
-        }
-        SubHeaderLeftActionComponent={
-          <CheckboxSwitcher
-            value={showInactive}
-            handleChange={() => toggleShowInactive(!showInactive)}
-            label={translate.showInactive}
-          />
-        }
-        SubHeaderMenuComponent={
-          <Filter
-            queryParams={queryParams}
-            onSubmit={onFilterSubmit}
-            onReset={onFilterReset}
-          />
-        }
+          ) : null}
+
+          <WhiteButton
+            className={`hvr-radial-out ${classes.actionIcons}`}
+            component={Link}
+            to={getUrlPrefix(routeByName.users.add)}
+          >
+            <i className={`${classes.iconColor} icon-folder-video`} />
+            {translate.add}
+          </WhiteButton>
+        </>
+      }
+      SubHeaderLeftActionComponent={
+        <CheckboxSwitcher
+          value={showInactive}
+          handleChange={() => toggleShowInactive(!showInactive)}
+          label={translate.showInactive}
+        />
+      }
+      SubHeaderMenuComponent={
+        <Filter
+          queryParams={queryParams}
+          onSubmit={onFilterSubmit}
+          onReset={onFilterReset}
+        />
+      }
+    >
+      <BaseTable
+        meta={meta}
+        fetcher={getTableItems}
+        columns={preference.columns}
+        preferenceActions={preference.actions}
+        noType={false}
+        deleteSelectedItems={deleteSelectedItems}
+        selectedList={selectedList}
+        placeholderMessage="No saved users"
       >
-        <BaseTable
-          meta={meta}
-          fetcher={getTableItems}
-          columns={preference.columns}
-          preferenceActions={preference.actions}
-          noType={false}
-          deleteSelectedItems={deleteSelectedItems}
-          selectedList={selectedList}
-          placeholderMessage="No saved users"
-        >
-          {items.map(row =>
-            row.status === 'Active' ? (
+        {items.map(row =>
+          row.status === 'Active' ? (
+            <TableRow
+              row={row}
+              variant={role.role}
+              columns={preference.columns}
+              selected={selectedList.isSelect(row.id)}
+              onToggleSelect={selectedList.toggle}
+              onUnselect={selectedList.unselect}
+              key={`user-row-${row.id}`}
+              onImpersonate={handleImpersonateUser}
+            />
+          ) : (
+            row.status === 'Inactive' &&
+            showInactive && (
               <TableRow
                 row={row}
                 variant={role.role}
@@ -397,103 +405,86 @@ const UsersLibrary = ({
                 key={`user-row-${row.id}`}
                 onImpersonate={handleImpersonateUser}
               />
-            ) : (
-              row.status === 'Inactive' &&
-              showInactive && (
-                <TableRow
-                  row={row}
-                  variant={role.role}
-                  columns={preference.columns}
-                  selected={selectedList.isSelect(row.id)}
-                  onToggleSelect={selectedList.toggle}
-                  onUnselect={selectedList.unselect}
-                  key={`user-row-${row.id}`}
-                  onImpersonate={handleImpersonateUser}
-                />
-              )
             )
-          )}
-        </BaseTable>
+          )
+        )}
+      </BaseTable>
 
-        <Route
-          path={getUrlPrefix(routeByName.users.groups)}
-          render={props => (
-            <GroupModal
-              {...props}
-              title={t('Users Groups')}
-              closeLink={getUrlPrefix(routeByName.users.root)}
-              entity={entityGroupsConstants.User}
-              groupItemsTitle={t('Ungrouped users')}
-              groupCardItemsTitle={t('Users')}
-              dropItemType={dndConstants.usersItemTypes.USER_ITEM}
-              onMoveItem={handleMoveItem}
-              itemsLoading={meta.isLoading}
-              groupItemsReducer={groupItemsReducer}
-              postGroupItemReducer={postGroupItemReducer}
-              deleteGroupItemReducer={deleteGroupItemReducer}
-              clearGroupItemsInfo={clearUsersGroupItemsInfo}
-              displayOverflow={true}
-              itemsPopupProps={{
-                getGroupItems: getUsersGroupItems,
-                onDeleteItem: handleDeleteGroupItem,
-                clearGroupItemsInfo: clearGetUsersGroupItemsInfo,
-                render: ({ email }) => <EmailLink email={email} />
-              }}
-            >
-              <div className={classes.ungroupedUsersContainer}>
-                {ungroupedUsers.map((user, index) => (
-                  <UserItem key={`user-${index}`} user={user} />
-                ))}
-              </div>
-            </GroupModal>
-          )}
-        />
-        <Route
-          path={getUrlPrefix(routeByName.users.add)}
-          component={AddEditUser}
-        />
-        <Route
-          path={getUrlPrefix(routeByName.users.edit)}
-          component={AddEditUser}
-        />
-        <Route
-          path={getUrlPrefix(routeByName.users.permissions)}
-          render={props => (
-            <UserPermissions
-              {...props}
-              getPermissionsFn={getUsersPermission}
-              putPermissionsFn={putUsersPermission}
-              getReducerName="permission"
-              putReducerName="putPermission"
-              clearGetPermissionFn={clearGetUsersPermissionInfo}
-            />
-          )}
-        />
-        <Route
-          path={getUrlPrefix(routeByName.users.groupsPermission)}
-          render={props => (
-            <UserPermissions
-              {...props}
-              isGroups
-              getPermissionsFn={getUsersGroupPermission}
-              putPermissionsFn={putUsersGroupPermission}
-              getReducerName="groupsPermission"
-              putReducerName="putGroupsPermission"
-              clearGetPermissionFn={clearGetUsersGroupsPermissionInfo}
-            />
-          )}
-        />
-      </PageContainer>
-    </div>
+      <Route
+        path={getUrlPrefix(routeByName.users.groups)}
+        render={props => (
+          <GroupModal
+            {...props}
+            title={t('Users Groups')}
+            closeLink={getUrlPrefix(routeByName.users.root)}
+            entity={entityGroupsConstants.User}
+            groupItemsTitle={t('Users')}
+            groupCardItemsTitle={t('Users')}
+            dropItemType={dndConstants.usersItemTypes.USER_ITEM}
+            onMoveItem={handleMoveItem}
+            itemsLoading={meta.isLoading}
+            groupItemsReducer={groupItemsReducer}
+            postGroupItemReducer={postGroupItemReducer}
+            deleteGroupItemReducer={deleteGroupItemReducer}
+            clearGroupItemsInfo={clearUsersGroupItemsInfo}
+            itemsPopupProps={{
+              getGroupItems: id =>
+                getUsersGroupItems(id, {
+                  order: 'asc',
+                  sort: 'email',
+                  fields: 'id,email'
+                }),
+              onDeleteItem: handleDeleteGroupItem,
+              clearGroupItemsInfo: clearGetUsersGroupItemsInfo,
+              render: ({ email }) => <EmailLink email={email} />
+            }}
+          >
+            <div className={classes.ungroupedUsersContainer}>
+              {ungroupedUsersList}
+            </div>
+          </GroupModal>
+        )}
+      />
+      <Route
+        path={getUrlPrefix(routeByName.users.add)}
+        component={AddEditUser}
+      />
+      <Route
+        path={getUrlPrefix(routeByName.users.edit)}
+        component={AddEditUser}
+      />
+      <Route
+        path={getUrlPrefix(routeByName.users.permissions)}
+        render={props => (
+          <UserPermissions
+            {...props}
+            getPermissionsFn={getUsersPermission}
+            putPermissionsFn={putUsersPermission}
+            getReducerName="permission"
+            putReducerName="putPermission"
+            clearGetPermissionFn={clearGetUsersPermissionInfo}
+          />
+        )}
+      />
+      <Route
+        path={getUrlPrefix(routeByName.users.groupsPermission)}
+        render={props => (
+          <UserPermissions
+            {...props}
+            isGroups
+            getPermissionsFn={getUsersGroupPermission}
+            putPermissionsFn={putUsersGroupPermission}
+            getReducerName="groupsPermission"
+            putReducerName="putGroupsPermission"
+            clearGetPermissionFn={clearGetUsersGroupsPermissionInfo}
+          />
+        )}
+      />
+    </PageContainer>
   )
 }
 
-const mapStateToProps = ({
-  impersonateReducer,
-  users,
-  preference,
-  appReducer
-}) => ({
+const mapStateToProps = ({ impersonateReducer, users, preference }) => ({
   items: users.items.response,
   meta: users.items.meta,
   put: users.put,
@@ -504,8 +495,7 @@ const mapStateToProps = ({
   postGroupItemReducer: users.postGroupItem,
   groupItemsReducer: users.groupItems,
   deleteGroupItemReducer: users.deleteGroupItem,
-  ungroupedUsers: users.ungroupedUsers.response,
-  modalHeight: appReducer.height
+  ungroupedUsers: users.ungroupedUsers.response
 })
 
 const mapDispatchToProps = dispatch =>
@@ -523,8 +513,7 @@ const mapDispatchToProps = dispatch =>
       clearUsersGroupItemsInfo,
       postUsersGroupItem,
       deleteUsersGroupItem,
-      getUngroupedUsers,
-      setHeight
+      getUngroupedUsers
     },
     dispatch
   )

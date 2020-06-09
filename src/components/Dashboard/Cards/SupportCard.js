@@ -18,13 +18,12 @@ import { Card } from '../../Card'
 import { Scrollbars } from 'components/Scrollbars'
 
 const styles = theme => {
-  const { palette, type } = theme
+  const { palette, type, typography } = theme
   return {
     cardWrapper: {
       width: 330,
       marginBottom: '20px',
-      maxHeight: 414,
-      overflowY: 'auto',
+      height: 414,
       zIndex: 1,
       borderRadius: 6
     },
@@ -74,15 +73,14 @@ const styles = theme => {
       transform: 'translateY(-50%)',
 
       '&:hover': {
-        color: '#0076b9'
+        color: '#0378ba'
       }
     },
     linkText: {
-      fontSize: '13px',
-      color: '#888996',
+      ...typography.lightText[type],
 
       '&:hover': {
-        color: 'inherit !important'
+        color: 'inherit'
       }
     },
     cardRoot: {
@@ -94,12 +92,12 @@ const styles = theme => {
       padding: '10px 0 10px 10px'
     },
     cardMenuText: {
-      color: palette[type].list.item.color,
+      ...typography.lightText[type],
+      fontSize: '0.9375rem',
       transition: 'all .4s',
 
       '&:hover': {
-        fontWeight: 'bold',
-        color: palette[type].list.item.colorActive
+        fontWeight: 'bold'
       }
     }
   }
@@ -126,45 +124,45 @@ const SupportCard = ({
       item
       className={[classes.cardWrapper, classes.responsiveCardWrapper].join(' ')}
     >
-      <Scrollbars style={{ width: 330, height: 414 }}>
-        <Card
-          showMenuOnHover
-          title={t('Dashboard Card Title Support')}
-          menuDropdownComponent={
-            <List className={classes.cardMenuList}>
-              {[
-                {
-                  label: t('Contact Us dashboard action'),
-                  url: 'https://support.mvixusa.com/s/contactsupport'
-                },
-                {
-                  label: t('Knowledgebase dashboard action'),
-                  url: 'https://support.mvixusa.com/s'
-                }
-              ].map((item, index) => (
-                <ListItem
-                  key={`menu-link-${index}`}
-                  component="a"
-                  href={item.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <ListItemText
-                    primary={item.label}
-                    primaryTypographyProps={{
-                      className: classes.cardMenuText
-                    }}
-                  />
-                </ListItem>
-              ))}
-            </List>
-          }
-          rootClassName={[
-            classes.cardRoot,
-            hoverClassName,
-            dragging ? draggingClassName : ''
-          ].join(' ')}
-        >
+      <Card
+        showMenuOnHover
+        title={t('Dashboard Card Title Support')}
+        menuDropdownComponent={
+          <List className={classes.cardMenuList}>
+            {[
+              {
+                label: t('Contact Us dashboard action'),
+                url: 'https://support.mvixusa.com/s/contactsupport'
+              },
+              {
+                label: t('Knowledgebase dashboard action'),
+                url: 'https://support.mvixusa.com/s'
+              }
+            ].map((item, index) => (
+              <ListItem
+                key={`menu-link-${index}`}
+                component="a"
+                href={item.url}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <ListItemText
+                  primary={item.label}
+                  primaryTypographyProps={{
+                    className: classes.cardMenuText
+                  }}
+                />
+              </ListItem>
+            ))}
+          </List>
+        }
+        rootClassName={[
+          classes.cardRoot,
+          hoverClassName,
+          dragging ? draggingClassName : ''
+        ].join(' ')}
+      >
+        <Scrollbars style={{ height: 330 }}>
           <Grid container justify="space-between">
             {Array.isArray(data) ? (
               <ul className={classes.cardList}>
@@ -209,8 +207,8 @@ const SupportCard = ({
               </div>
             )}
           </Grid>
-        </Card>
-      </Scrollbars>
+        </Scrollbars>
+      </Card>
     </Grid>
   )
 }

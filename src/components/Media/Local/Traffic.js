@@ -6,12 +6,7 @@ import { compose } from 'redux'
 import { debounce as _debounce, get as _get } from 'lodash'
 import { translate } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
-import {
-  CircularProgress,
-  Grid,
-  Typography,
-  withStyles
-} from '@material-ui/core'
+import { Grid, Typography, withStyles } from '@material-ui/core'
 import Tooltip from '@material-ui/core/Tooltip'
 import update from 'immutability-helper'
 
@@ -20,7 +15,6 @@ import { CheckboxSwitcher } from '../../Checkboxes'
 import { mediaConstants as constants } from '../../../constants'
 import {
   createMediaPostData,
-  getAllowedFeatureId,
   getMediaInfoFromBackendData
 } from '../../../utils/mediaUtils'
 import {
@@ -36,10 +30,11 @@ import { getLocation } from '../../../actions/configActions'
 import MediaHtmlCarousel from '../MediaHtmlCarousel'
 import FormControlChips from '../../Form/FormControlChips'
 import FormControlSelect from '../../Form/FormControlSelect'
+import useDetermineMediaFeatureId from 'hooks/useDetermineMediaFeatureId'
 
-const styles = ({ palette, type, typography }) => ({
+const styles = ({ palette, type, typography, formControls }) => ({
   root: {
-    margin: '32px 25px',
+    margin: '15px 30px',
     fontFamily: typography.fontFamily
   },
   formWrapper: {
@@ -68,11 +63,10 @@ const styles = ({ palette, type, typography }) => ({
     backgroundImage: palette[type].sideModal.action.button.background,
     borderRadius: '4px',
     boxShadow: 'none',
-    marginTop: '81px'
+    marginTop: 45
   },
   previewMediaText: {
-    fontWeight: 'bold',
-    color: palette[type].sideModal.action.button.color
+    ...typography.lightText[type]
   },
   themeCardWrap: {
     border: `solid 1px ${palette[type].pages.media.general.card.border}`,
@@ -91,12 +85,11 @@ const styles = ({ palette, type, typography }) => ({
     fontSize: '12px'
   },
   themeOptions1: {
-    padding: '0 15px',
-    margin: '12px 0'
+    padding: 15
   },
   mapViewClasses: {
     width: '230px',
-    marginTop: '35px'
+    marginTop: '16px'
   },
   detailLabel: {
     color: '#74809a',
@@ -123,26 +116,20 @@ const styles = ({ palette, type, typography }) => ({
     marginRight: 0
   },
   sliderInputLabel: {
-    color: '#74809A',
-    fontSize: '13px',
+    ...formControls.mediaApps.refreshEverySlider.label,
     lineHeight: '15px',
     marginRight: '15px'
   },
   marginBottom1: {
-    marginBottom: '22px'
+    margin: '6px 0 16px 0'
   },
   marginBottom2: {
-    marginBottom: '25px'
+    marginBottom: '16px'
   },
   reactSelectContainer: {
     '& .react-select__control': {
       paddingTop: 0,
-      paddingBottom: 0,
-      fontSize: 12,
-
-      '& .react-select__single-value': {
-        color: '#9394A0'
-      }
+      paddingBottom: 0
     }
   }
 })
@@ -173,8 +160,7 @@ const TabIcon = withStyles(TabIconStyles)(({ iconClassName = '', classes }) => {
 const InfoMessageStyles = ({ typography }) => ({
   infoMessageContainer: {
     display: 'flex',
-    alignItems: 'flex-start',
-    padding: '0 5px 25px'
+    alignItems: 'flex-start'
   },
   infoMessage: {
     marginLeft: '20px',
@@ -230,10 +216,10 @@ const Traffic = props => {
   const mediaItemReducer = useSelector(({ media }) => media.mediaItem)
   const cities = configMediaCategory.cities || []
 
-  const [isLoading, setLoading] = useState(false)
+  const featureId = useDetermineMediaFeatureId('Local', 'Traffic')
+
   const [formSubmitting, setFormSubmitting] = useState(false)
   const [autoClose, setAutoClose] = useState(false)
-  const [featureId, setFeatureId] = useState(null)
   const [citySearchPage, setSearchPage] = useState(1)
   const [selectedLocation, setSelectedLocation] = useState(null)
   const [cityValue, setCityValue] = useState({})
@@ -499,8 +485,6 @@ const Traffic = props => {
         mediaInfo: getMediaInfoFromBackendData(backendData)
       }
       form.setValues(initialFormValues.current)
-
-      setLoading(false)
     }
     // eslint-disable-next-line
   }, [backendData])
@@ -515,20 +499,8 @@ const Traffic = props => {
   }, [form.values, cities])
 
   useEffect(() => {
-    if (!configMediaCategory.response.length) return
-    const id = getAllowedFeatureId(configMediaCategory, 'Local', 'Traffic')
-    setFeatureId(id)
-  }, [configMediaCategory])
-
-  useEffect(() => {
     onShareStateCallback(handleShareState)
   }, [handleShareState, onShareStateCallback])
-
-  useEffect(() => {
-    if (mode === 'edit') {
-      setLoading(true)
-    }
-  }, [mode])
 
   useEffect(() => {
     citySearchPage !== 1 &&
@@ -539,11 +511,6 @@ const Traffic = props => {
   const { values, errors, touched } = form
   return (
     <form className={classes.formWrapper}>
-      {isLoading && (
-        <div className={classes.loaderWrapper}>
-          <CircularProgress size={30} thickness={5} />
-        </div>
-      )}
       <Grid container className={classes.tabContent}>
         <Grid item xs={7}>
           <div className={classes.root}>

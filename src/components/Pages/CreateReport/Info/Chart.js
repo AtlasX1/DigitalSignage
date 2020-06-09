@@ -7,7 +7,6 @@ import ChartSettingsButton from './ChartSettingsButton'
 import {
   CustomReportPieChart,
   CustomReportBarChart,
-  CustomReportVerticalBarChart,
   CustomReportLineChart
 } from '../../../Charts'
 
@@ -48,9 +47,30 @@ const Chart = ({ classes }) => {
     >
       <ChartSettingsButton chart={chart} setChart={setChart} />
 
-      {pie && <CustomReportPieChart chartData={chartData} />}
-      {bar && <CustomReportVerticalBarChart chartData={chartData} />}
-      {line && <CustomReportLineChart chartData={chartData} />}
+      {pie && (
+        <CustomReportPieChart
+          chartData={chartData.map(({ name, value }) => ({
+            id: name,
+            label: name,
+            value
+          }))}
+        />
+      )}
+      {bar && (
+        <CustomReportBarChart
+          chartData={[...chartData].reverse()}
+          layout="horizontal"
+          barPadding={0.175}
+        />
+      )}
+      {line && (
+        <CustomReportLineChart
+          chartData={chartData.map(({ name, value }) => ({
+            x: name,
+            y: value
+          }))}
+        />
+      )}
       {horBar && <CustomReportBarChart chartData={chartData} />}
     </Grid>
   )

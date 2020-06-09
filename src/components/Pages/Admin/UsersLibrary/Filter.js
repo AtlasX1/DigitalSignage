@@ -32,6 +32,9 @@ const styles = () => ({
     fontSize: '13px',
     fontWeight: '300',
     transform: 'translate(0, 1.5px)'
+  },
+  spacing: {
+    marginBottom: 16
   }
 })
 
@@ -128,6 +131,7 @@ const Filter = ({
         handleChange={form.handleChange}
         formControlLabelClass={classes.label}
         isClearable
+        formControlContainerClass={classes.spacing}
       />
       {!role.org && (
         <FormControlInput
@@ -148,6 +152,7 @@ const Filter = ({
         handleChange={form.handleChange}
         formControlLabelClass={classes.label}
         isClearable
+        formControlContainerClass={classes.spacing}
       />
       {role.org && (
         <FormControlAutocomplete
@@ -159,6 +164,7 @@ const Filter = ({
           handleChange={form.handleChange}
           formControlLabelClass={classes.label}
           isClearable
+          formControlContainerClass={classes.spacing}
         />
       )}
       {role.org && (
@@ -172,6 +178,7 @@ const Filter = ({
           getOptions={getTagOptions}
           formControlLabelClass={classes.label}
           isClearable
+          formControlContainerClass={classes.spacing}
         />
       )}
       <Footer onSubmit={form.handleSubmit} onReset={form.handleReset} />

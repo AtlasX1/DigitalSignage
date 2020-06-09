@@ -11,6 +11,7 @@ import PageContainer from 'components/PageContainer'
 import PlaylistSearchForm from './PlaylistSearch'
 import PlaylistPreview from './PlaylistPreview'
 import CreatePlaylist from './CreatePlaylist'
+import InteractivePlaylist from './InteractivePlaylist'
 import SmartPlaylist from './SmartPlaylist'
 import BaseTable from 'components/TableLibrary/BaseTable'
 import PageTitle from 'components/PageContainer/PageTitle'
@@ -54,6 +55,7 @@ import {
   clearPlaylistGroupItemsInfo
 } from 'actions/playlistActions'
 import PlaylistItem from './PlaylisItem'
+import { sortByTitle } from 'utils/libraryUtils'
 
 const styles = theme => {
   const { palette, type } = theme
@@ -76,6 +78,7 @@ const initialColumns = [
   { id: 'duration', label: 'Duration', align: 'center', display: true },
   { id: 'createdBy', label: 'Created By', display: true },
   { id: 'noOfFiles', label: 'Media Count', align: 'center', display: true },
+  { id: 'tag', label: 'Tags', align: 'center', display: true },
   { id: 'status', label: 'Status', align: 'center', display: true }
 ]
 
@@ -105,8 +108,7 @@ const PlaylistLibrary = ({
   deleteGroupItemReducer,
   clearPlaylistGroupItemsInfo,
   postPlaylistGroupItemAction,
-  deletePlaylistGroupItemAction,
-  modalHeight
+  deletePlaylistGroupItemAction
 }) => {
   const translate = useMemo(
     () => ({
@@ -126,7 +128,7 @@ const PlaylistLibrary = ({
     initialColumns,
     fetcher: getItems,
     entity: entityConstants.PlaylistLibrary,
-    perPage: meta.perPage
+    initialPerPage: meta.perPage
   })
 
   const fetchItems = useCallback(
@@ -178,115 +180,134 @@ const PlaylistLibrary = ({
     [del, clone]
   )
 
+  const groupPlaylists = useMemo(
+    () =>
+      sortByTitle(items).map(playlist => (
+        <PlaylistItem key={playlist.id} playlist={playlist} />
+      )),
+    [items]
+  )
+
   return (
-    <div style={{ height: modalHeight }}>
-      <PageContainer
-        pageTitle={translate.title}
-        PageTitleComponent={
-          <PageTitle
-            selectedCount={selectedList.count}
-            title={translate.title}
-          />
-        }
-        ActionButtonsComponent={
-          <Fragment>
-            <WhiteButton
-              className={`hvr-radial-out ${classes.actionIcons}`}
-              component={Link}
-              to={routeByName.playlist.groups}
-            >
-              <i
-                className={`${classes.iconColor} icon-navigation-show-more-vertical`}
-              />
-              {translate.groups}
-            </WhiteButton>
-            <WhiteButton
-              className={`hvr-radial-out ${classes.actionIcons}`}
-              component={Link}
-              to={routeByName.playlist.create}
-            >
-              <i className={`${classes.iconColor} icon-folder-video`} />
-              {translate.add}
-            </WhiteButton>
-          </Fragment>
-        }
-        SubHeaderMenuComponent={<PlaylistSearchForm />}
-      >
-        <BaseTable
-          noType
-          meta={meta}
-          fetcher={getItems}
-          columns={preference.columns}
-          preferenceActions={preference.actions}
-          deleteSelectedItems={deleteSelectedItems}
-          selectedList={selectedList}
-          placeholderMessage="No saved playlist"
-        >
-          {items.map(row => (
-            <PlaylistTableRow
-              row={row}
-              columns={preference.columns}
-              selected={selectedList.isSelect(row.id)}
-              onToggleSelect={selectedList.toggle}
-              onUnselect={selectedList.unselect}
-              key={`playlist-row-${row.id}`}
-              onClone={handleCloneRow}
+    <PageContainer
+      pageTitle={translate.title}
+      PageTitleComponent={
+        <PageTitle selectedCount={selectedList.count} title={translate.title} />
+      }
+      ActionButtonsComponent={
+        <Fragment>
+          <WhiteButton
+            className={`hvr-radial-out ${classes.actionIcons}`}
+            component={Link}
+            to={routeByName.playlist.groups}
+          >
+            <i
+              className={`${classes.iconColor} icon-navigation-show-more-vertical`}
             />
-          ))}
-        </BaseTable>
-        <CopyItemModal
-          data={dataOfCopyModal}
-          onCloseModal={handleCloseModal}
-          modalTitle="Copy playlist"
-          inputPlaceholder="Playlist name"
-          onClickSave={handleCopyPlaylist}
-        />
-        <Route
-          path={routeByName.playlist.preview}
-          component={PlaylistPreview}
-        />
-        <Route path={routeByName.playlist.create} component={CreatePlaylist} />
-        <Route
-          path={routeByName.playlist.edit}
-          render={props => <CreatePlaylist {...props} edit />}
-        />
-        <Route path={routeByName.playlist.smart} component={SmartPlaylist} />
-        <Route
-          path={routeByName.playlist.groups}
-          render={props => (
-            <GroupModal
-              {...props}
-              title={t('Playlist Groups')}
-              closeLink={routeByName.playlist.root}
-              entity={entityGroupsConstants.Playlist}
-              groupItemsTitle={t('Playlists')}
-              dropItemType={dndConstants.playlistGroupsItemTypes.PLAYLIST_ITEM}
-              onMoveItem={handleMoveItem}
-              itemsLoading={meta.isLoading}
-              groupItemsReducer={groupItemsReducer}
-              postGroupItemReducer={postGroupItemReducer}
-              deleteGroupItemReducer={deleteGroupItemReducer}
-              clearGroupItemsInfo={clearPlaylistGroupItemsInfo}
-              displayOverflow={true}
-              itemsPopupProps={{
-                getGroupItems: getPlaylistGroupItemsAction,
-                onDeleteItem: handleDeleteGroupItem,
-                clearGroupItemsInfo: clearGetPlaylistGroupItemsInfoAction
-              }}
-            >
-              <Grid container>
-                {items.map((playlist, index) => (
-                  <PlaylistItem key={`playlist-${index}`} playlist={playlist} />
-                ))}
-              </Grid>
-            </GroupModal>
-          )}
-        />
-      </PageContainer>
-    </div>
+            {translate.groups}
+          </WhiteButton>
+          <WhiteButton
+            className={`hvr-radial-out ${classes.actionIcons}`}
+            component={Link}
+            to={routeByName.playlist.create}
+          >
+            <i className={`${classes.iconColor} icon-folder-video`} />
+            {translate.add}
+          </WhiteButton>
+        </Fragment>
+      }
+      SubHeaderMenuComponent={<PlaylistSearchForm />}
+    >
+      <BaseTable
+        noType
+        meta={meta}
+        fetcher={getItems}
+        columns={preference.columns}
+        preferenceActions={preference.actions}
+        deleteSelectedItems={deleteSelectedItems}
+        selectedList={selectedList}
+        placeholderMessage="No saved playlist"
+      >
+        {items.map(row => (
+          <PlaylistTableRow
+            row={row}
+            columns={preference.columns}
+            selected={selectedList.isSelect(row.id)}
+            onToggleSelect={selectedList.toggle}
+            onUnselect={selectedList.unselect}
+            key={`playlist-row-${row.id}`}
+            onClone={handleCloneRow}
+          />
+        ))}
+      </BaseTable>
+      <CopyItemModal
+        data={dataOfCopyModal}
+        onCloseModal={handleCloseModal}
+        modalTitle="Copy playlist"
+        inputPlaceholder="Playlist name"
+        onClickSave={handleCopyPlaylist}
+      />
+      <Route path={routeByName.playlist.preview} component={PlaylistPreview} />
+      <Route path={routeByName.playlist.create} component={CreatePlaylist} />
+      <Route
+        path={routeByName.playlist.edit}
+        render={props => <CreatePlaylist {...props} edit />}
+      />
+      <Route
+        path={routeByName.playlist.interactive}
+        exact={true}
+        component={InteractivePlaylist}
+      />
+      <Route
+        path={routeByName.playlist.editInteractive}
+        exact={true}
+        component={InteractivePlaylist}
+      />
+      <Route
+        path={routeByName.playlist.smart}
+        exact={true}
+        render={props => <SmartPlaylist {...props} />}
+      />
+      <Route
+        path={routeByName.playlist.editSmart}
+        exact={true}
+        render={props => <SmartPlaylist {...props} />}
+      />
+      <Route
+        path={routeByName.playlist.groups}
+        render={props => (
+          <GroupModal
+            {...props}
+            title={t('Playlist Groups')}
+            closeLink={routeByName.playlist.root}
+            entity={entityGroupsConstants.Playlist}
+            groupItemsTitle={t('Playlists')}
+            dropItemType={dndConstants.playlistGroupsItemTypes.PLAYLIST_ITEM}
+            onMoveItem={handleMoveItem}
+            itemsLoading={meta.isLoading}
+            groupItemsReducer={groupItemsReducer}
+            postGroupItemReducer={postGroupItemReducer}
+            deleteGroupItemReducer={deleteGroupItemReducer}
+            clearGroupItemsInfo={clearPlaylistGroupItemsInfo}
+            itemsPopupProps={{
+              getGroupItems: id =>
+                getPlaylistGroupItemsAction(id, {
+                  order: 'asc',
+                  sort: 'title',
+                  fields: 'id,title'
+                }),
+              onDeleteItem: handleDeleteGroupItem,
+              clearGroupItemsInfo: clearGetPlaylistGroupItemsInfoAction
+            }}
+          >
+            <Grid container>{groupPlaylists}</Grid>
+          </GroupModal>
+        )}
+      />
+    </PageContainer>
   )
 }
-const mapStateToProps = ({ playlist, group, appReducer }) => ({
+const mapStateToProps = ({ playlist, group }) => ({
   items: playlist.library.response,
   meta: playlist.library.meta,
   clone: playlist.clone,
@@ -297,8 +318,7 @@ const mapStateToProps = ({ playlist, group, appReducer }) => ({
   putGroupReducer: group.put,
   postGroupItemReducer: playlist.postGroupItem,
   groupItemsReducer: playlist.groupItems,
-  deleteGroupItemReducer: playlist.deleteGroupItem,
-  modalHeight: appReducer.height
+  deleteGroupItemReducer: playlist.deleteGroupItem
 })
 
 const mapDispatchToProps = dispatch =>

@@ -94,7 +94,7 @@ const MediaItem = ({ t, classes, item, noBorder, selected, onClick }) => {
                 <Typography className={classes.mediaResolution}>
                   {t('Last Updated', {
                     lastUpdated: moment(item.updatedAt).format(
-                      'DD MMM YYYY hh:mmA'
+                      'DD MMM, YYYY, hh:mm'
                     )
                   })}
                 </Typography>

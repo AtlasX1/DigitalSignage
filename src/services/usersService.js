@@ -125,11 +125,12 @@ const getUngroupedUsers = async () => {
   }
 }
 
-const getGroupItems = async id => {
+const getGroupItems = async (id, params) => {
   try {
     const response = await api({
       method: 'GET',
-      url: `/user/group/${id}`
+      url: `/user/group/${id}`,
+      params
     })
 
     return response.data

@@ -114,8 +114,7 @@ const styles = theme => ({
     marginTop: '23px'
   },
   previewMediaText: {
-    fontWeight: 'bold',
-    color: '#818ca4'
+    ...theme.typography.lightText[theme.type]
   },
   featureIconTabContainer: {
     justifyContent: 'center'
@@ -141,8 +140,7 @@ const styles = theme => ({
     height: '29px'
   },
   sliderInputLabel: {
-    color: '#74809A',
-    fontSize: '13px',
+    ...theme.formControls.mediaApps.refreshEverySlider.label,
     lineHeight: '15px',
     marginRight: '15px'
   },

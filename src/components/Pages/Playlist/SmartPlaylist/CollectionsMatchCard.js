@@ -1,24 +1,35 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { translate } from 'react-i18next'
 import update from 'immutability-helper'
 
-import { withStyles, Paper } from '@material-ui/core'
+import { get as _get } from 'lodash'
+
+import { useDispatch, useSelector } from 'react-redux'
+
+import { withStyles, Grid, Typography } from '@material-ui/core'
 import { Settings } from '@material-ui/icons'
 
-import Popup from '../../../Popup'
-import List from '../../../List'
-import { Card } from '../../../Card'
-import { CheckboxSwitcher } from '../../../Checkboxes'
-import { ColoredTagChip } from '../../../Chip'
-import { WhiteButton } from '../../../Buttons'
+import List from 'components/List'
+import { Card } from 'components/Card'
+import { CheckboxSwitcher } from 'components/Checkboxes'
+import { WhiteButton } from 'components/Buttons'
+import { Scrollbars } from 'components/Scrollbars'
+import { FormControlChips } from 'components/Form'
 import {
   DropdownHoverListItem,
   DropdownHoverListItemText
-} from '../../../Dropdowns'
+} from 'components/Dropdowns'
+
+import { selectUtils } from 'utils'
+
+import { getItems as getTags } from 'actions/tagsActions'
 
 const styles = theme => {
   const { palette, type } = theme
   return {
+    cardRootClass: {
+      height: '100%'
+    },
     header: {
       padding: 0,
       border: `solid 1px ${palette[type].sideModal.content.border}`,
@@ -45,7 +56,12 @@ const styles = theme => {
       fontSize: '14px',
       color: palette[type].pages.smartPlaylist.card.titleColor
     },
-
+    reactSelectContainer: {
+      '& .react-select__control': {
+        paddingTop: 0,
+        paddingBottom: 0
+      }
+    },
     iconButton: {
       padding: 0,
       height: '32px',
@@ -100,6 +116,29 @@ const styles = theme => {
     },
     filterSwitchLabelSelected: {
       color: '#047abc'
+    },
+    action: {
+      paddingTop: 9,
+      paddingBottom: 9,
+      marginBottom: 20
+    },
+    actionDefault: {
+      borderColor: palette[type].sideModal.action.button.border,
+      boxShadow: 'none',
+      backgroundImage: palette[type].sideModal.action.button.background,
+      color: palette[type].sideModal.action.button.color
+    },
+    noCollections: {
+      borderRadius: '4px',
+      backgroundColor: '#fff9f0',
+      fontSize: '14px',
+      lineHeight: '65px',
+      color: '#f5a623',
+      textAlign: 'center'
+    },
+    noCollectionsIcon: {
+      fontSize: '20px',
+      color: '#f5a623'
     }
   }
 }
@@ -107,79 +146,102 @@ const styles = theme => {
 const CollectionsMatchCard = ({
   t,
   classes,
-  isExactMatch,
-  collectionsTags
+  values,
+  errors,
+  touched,
+  onChange = f => f,
+  onBuild = f => f,
+  mode
 }) => {
-  const [maxId, setMaxId] = useState(1)
-  const [collections, setCollections] = useState([
-    {
-      id: 0,
-      title: t('Match all'),
-      tags: [],
-      focused: false
+  const dispatchAction = useDispatch()
+
+  const [tags] = useSelector(state => [state.tags.items.response])
+
+  const [isInit, setInit] = useState(mode === 'edit' ? true : false)
+
+  const [collections, setCollections] = useState([])
+
+  useEffect(
+    () => {
+      if (!tags.length) {
+        dispatchAction(getTags({ limit: 9999 }))
+      }
     },
-    {
-      id: 1,
-      title: t('Match all'),
-      tags: [],
-      focused: false
-    }
-  ])
+    //eslint-disable-next-line
+    []
+  )
 
-  const onChangeHandler = (value, tag, collectionId) => {
-    const collection = collections.find(
-      collection => collection.id === collectionId
-    )
-    const index = collections.indexOf(collection)
-
-    const tags = collection.tags
-
-    let updatedTags
-
-    if (value) {
-      if (!tags.includes(tag)) {
-        updatedTags = update(tags, { $push: [tag] })
-      } else {
-        return
+  useEffect(
+    () => {
+      if (values.tagList.length && isInit && tags.length) {
+        setInit(false)
+        initCollections()
       }
-    } else {
-      if (tags.includes(tag)) {
-        updatedTags = update(tags, { $splice: [[tags.indexOf(tag), 1]] })
-      } else {
-        return
+      if (!values.tagList.length && !isInit && tags.length) {
+        setCollections([])
       }
-    }
+    },
+    //eslint-disable-next-line
+    [values.tagList, tags]
+  )
 
+  useEffect(
+    () => {
+      if (collections.length && !isInit) {
+        const builtCollection = collections.map(item => ({
+          block: item.id,
+          tagId: item.tags.map(i => i.value)
+        }))
+        onChange('tagList', builtCollection)
+      }
+    },
+    //eslint-disable-next-line
+    [collections]
+  )
+
+  const initCollections = () => {
+    const arr = []
+    values.tagList.forEach(item => {
+      const { block, tagId } = item
+
+      const collectionItem = {
+        id: block,
+        title: t('Match all'),
+        tags: []
+      }
+
+      const findTag = id =>
+        selectUtils
+          .convertArr(tags, selectUtils.tagToChipObj)
+          .find(i => i.value === id)
+
+      if (Array.isArray(tagId)) {
+        tagId.forEach(n => {
+          const tagItem = findTag(n)
+          collectionItem.tags.push(tagItem)
+        })
+      } else {
+        const tagItem = findTag(tagId)
+        collectionItem.tags.push(tagItem)
+      }
+
+      arr.push(collectionItem)
+    })
+
+    setCollections(arr)
+  }
+
+  const onChangeHandler = (value, index) => {
     setCollections(
       update(collections, {
         [index]: {
-          tags: { $set: updatedTags }
+          tags: { $set: value }
         }
       })
     )
   }
 
-  const changeFocus = (value, collectionId) => {
-    const collection = collections.find(
-      collection => collection.id === collectionId
-    )
-    const index = collections.indexOf(collection)
-
-    setCollections(
-      update(collections, {
-        [index]: {
-          focused: { $set: value }
-        }
-      })
-    )
-  }
-
-  const deleteCollectionTags = collectionId => {
-    const collection = collections.find(
-      collection => collection.id === collectionId
-    )
-    const index = collections.indexOf(collection)
-
+  const deleteCollectionTags = index => {
     setCollections(
       update(collections, {
         [index]: {
@@ -189,20 +251,35 @@ const CollectionsMatchCard = ({
     )
   }
 
-  const cloneCollection = collectionId => {
-    const collection = collections.find(
-      collection => collection.id === collectionId
-    )
-    const index = collections.indexOf(collection)
+  const deleteCollection = index => {
+    setCollections(update(collections, { $splice: [[index, 1]] }))
+  }
+
+  const cloneCollection = index => {
+    const collection = collections[index]
 
     const collectionCopy = update(collection, {
-      id: { $set: maxId + 1 }
+      id: { $set: collections.length + 1 }
     })
 
     setCollections(
       update(collections, { $splice: [[index, 0, collectionCopy]] })
     )
-    setMaxId(maxId + 1)
+  }
+
+  const addCollection = () => {
+    setCollections(
+      update(collections, {
+        $push: [
+          {
+            id: collections.length + 1,
+            title: t('Match all'),
+            tags: [],
+            focused: false
+          }
+        ]
+      })
+    )
   }
 
   return (
@@ -218,88 +295,92 @@ const CollectionsMatchCard = ({
       headerTextClasses={[classes.headerText]}
       title={t('Select Tags').toUpperCase()}
       titleComponent={
-        <CheckboxSwitcher label={t('Exact match')} value={isExactMatch} />
+        <CheckboxSwitcher
+          label={t('Exact match')}
+          value={values.exactMatch}
+          handleChange={val => onChange('exactMatch', val)}
+        />
       }
+      classes={{
+        root: classes.cardRootClass
+      }}
     >
-      {collections.map(collection => (
-        <Card
-          key={`tags-collection-${collection.id}`}
-          rootClassName={classes.matchCardRoot}
-          title={collection.title}
-          headerClasses={[classes.matchCardHeader]}
-          headerTextClasses={[classes.matchCardHeaderText]}
-          iconButtonComponent={
-            <WhiteButton className={classes.iconButton}>
-              <Settings className={classes.icon} />
-            </WhiteButton>
-          }
-          menuDropdownComponent={
-            <List component="nav" disablePadding={true}>
-              <DropdownHoverListItem
-                onClick={() => cloneCollection(collection.id)}
-              >
-                <DropdownHoverListItemText primary={'Clone'} />
-              </DropdownHoverListItem>
-              <DropdownHoverListItem
-                onClick={() => deleteCollectionTags(collection.id)}
-              >
-                <DropdownHoverListItemText primary={'Delete All'} />
-              </DropdownHoverListItem>
-            </List>
-          }
-        >
-          <Popup
-            trigger={
-              <Paper
-                className={[
-                  classes.selectRoot,
-                  collection.focused ? classes.selectFocused : ''
-                ].join(' ')}
-              >
-                {collection.tags.map((value, index) => (
-                  <ColoredTagChip
-                    rootClassName={classes.tagChipRoot}
-                    key={`collection-${collection.id}-${index}`}
-                    color={value.color}
-                    label={value.label}
-                  />
-                ))}
-              </Paper>
+      <Scrollbars style={{ height: 'calc(100% - 50px)' }}>
+        {collections.map((collection, index) => (
+          <Card
+            key={`tags-collection-${collection.id}`}
+            rootClassName={classes.matchCardRoot}
+            title={collection.title}
+            headerClasses={[classes.matchCardHeader]}
+            headerTextClasses={[classes.matchCardHeaderText]}
+            iconButtonComponent={
+              <WhiteButton className={classes.iconButton}>
+                <Settings className={classes.icon} />
+              </WhiteButton>
             }
-            contentStyle={{
-              width: '560px',
-              boxShadow: 'none',
-              borderRadius: '8px'
-            }}
-            arrow={false}
-            onClose={() => changeFocus(false, collection.id)}
-            onOpen={() => changeFocus(true, collection.id)}
-          >
-            <Paper className={classes.dropdownContainer}>
-              {collectionsTags.map((item, index) => (
-                <DropdownHoverListItem key={`collection-tag-${index}`}>
-                  <CheckboxSwitcher
-                    label={item.label}
-                    switchContainerClass={classes.filterSwitchContainer}
-                    formControlRootClass={classes.filterSwitchRoot}
-                    formControlLabelClass={
-                      collection.tags.includes(item)
-                        ? classes.filterSwitchLabelSelected
-                        : classes.filterSwitchLabel
-                    }
-                    switchBaseClass={classes.dropdownItemSwitchBase}
-                    switchRootClass={classes.dropdownItemSwitchRoot}
-                    handleChange={value =>
-                      onChangeHandler(value, item, collection.id)
-                    }
-                    value={collection.tags.includes(item)}
-                  />
+            menuDropdownComponent={
+              <List component="nav" disablePadding={true}>
+                <DropdownHoverListItem onClick={() => cloneCollection(index)}>
+                  <DropdownHoverListItemText primary={'Clone'} />
                 </DropdownHoverListItem>
-              ))}
-            </Paper>
-          </Popup>
-        </Card>
-      ))}
+                <DropdownHoverListItem
+                  onClick={() => deleteCollectionTags(index)}
+                >
+                  <DropdownHoverListItemText primary={'Delete All Tags'} />
+                </DropdownHoverListItem>
+                <DropdownHoverListItem onClick={() => deleteCollection(index)}>
+                  <DropdownHoverListItemText primary={'Delete Collection'} />
+                </DropdownHoverListItem>
+              </List>
+            }
+          >
+            <FormControlChips
+              customClass={classes.reactSelectContainer}
+              name="tags"
+              label={''}
+              options={selectUtils.convertArr(tags, selectUtils.tagToChipObj)}
+              values={collection.tags}
+              handleChange={e => onChangeHandler(e.target.value, index)}
+              error={_get(errors, ['tagList', index, 'tagId'])}
+              touched={touched.tagList}
+            />
+          </Card>
+        ))}
+
+        {!collections.length && (
+          <Grid container style={{ marginBottom: 20 }}>
+            <Grid item xs={12}>
+              <Typography className={classes.noCollections}>
+                <i
+                  className={`icon-interface-alert-triangle ${classes.noCollectionsIcon}`}
+                />
+                Please add at least one collection to build playlist
+              </Typography>
+            </Grid>
+          </Grid>
+        )}
+
+        <Grid container justify={'space-between'} style={{ paddingRight: 15 }}>
+          <Grid item>
+            <WhiteButton
+              fullWidth={false}
+              className={[classes.action, classes.actionDefault].join(' ')}
+              onClick={addCollection}
+            >
+              {t('Add Collection')}
+            </WhiteButton>
+          </Grid>
+          <Grid item>
+            <WhiteButton
+              fullWidth={false}
+              className={[classes.action, classes.actionDefault].join(' ')}
+              onClick={onBuild}
+            >
+              {t('Build Playlist')}
+            </WhiteButton>
+          </Grid>
+        </Grid>
+      </Scrollbars>
     </Card>
   )
 }

@@ -1,9 +1,4 @@
-import {
-  CircularProgress,
-  Grid,
-  Typography,
-  withStyles
-} from '@material-ui/core'
+import { Grid, Typography, withStyles } from '@material-ui/core'
 import {
   addMedia,
   clearAddedMedia,
@@ -20,9 +15,9 @@ import React, { useCallback, useEffect, useState, useRef } from 'react'
 import { translate } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import Spreadsheet from 'react-spreadsheet'
+import classNames from 'classnames'
 import {
   createMediaPostData,
-  getAllowedFeatureId,
   getMediaInfoFromBackendData
 } from 'utils/mediaUtils'
 import * as Yup from 'yup'
@@ -36,6 +31,7 @@ import {
 } from '../../Buttons'
 import { FormControlInput, SliderInputRange } from '../../Form'
 import { FileUpload } from './components/Upload'
+import useDetermineMediaFeatureId from 'hooks/useDetermineMediaFeatureId'
 
 const TabIconStyles = () => ({
   tabIconWrap: {
@@ -75,10 +71,10 @@ const DownloadFileButton = withStyles(DownloadFileButtonClasses)(
 )
 
 const styles = theme => {
-  const { palette, type } = theme
+  const { palette, type, typography } = theme
   return {
     root: {
-      padding: '22px 25px',
+      padding: '15px 30px',
       fontFamily: [
         '"Segoe UI"',
         '"Product Sans"',
@@ -131,13 +127,10 @@ const styles = theme => {
     },
 
     tabToggleButtonGroup: {
-      marginBottom: '21px'
+      marginBottom: '16px'
     },
     sheetWrap: {
       padding: '0 1px 1px'
-    },
-    fileInputWrap: {
-      marginTop: '-30px'
     },
     fileTypeLabel: {
       fontSize: '11px',
@@ -168,7 +161,7 @@ const styles = theme => {
     },
 
     previewMediaRow: {
-      marginTop: '27px'
+      marginTop: '45px'
     },
     previewMediaBtn: {
       padding: '10px 25px 8px',
@@ -178,8 +171,7 @@ const styles = theme => {
       boxShadow: 'none'
     },
     previewMediaText: {
-      fontWeight: 'bold',
-      color: palette[type].sideModal.action.button.color
+      ...typography.lightText[type]
     }
   }
 }
@@ -196,15 +188,13 @@ const Table = ({
   onShareStateCallback,
   ...props
 }) => {
-  const [featureId, setFeatureId] = useState(null)
-
-  const [isLoading, setLoading] = useState(false)
   const [formSubmitting, setFormSubmitting] = useState(false)
   const [autoClose, setAutoClose] = useState(false)
 
   const addMediaReducer = useSelector(({ addMedia }) => addMedia.general)
   const mediaItemReducer = useSelector(({ media }) => media.mediaItem)
-  const { configMediaCategory } = useSelector(({ config }) => config)
+
+  const featureId = useDetermineMediaFeatureId('General', 'Tables')
 
   const initialFormValues = useRef({
     type: 'inline',
@@ -359,22 +349,9 @@ const Table = ({
         }
       }
       form.setValues(initialFormValues.current)
-      setLoading(false)
     }
     // eslint-disable-next-line
   }, [backendData])
-
-  useEffect(() => {
-    if (mode === 'edit') {
-      setLoading(true)
-    }
-  }, [mode])
-
-  useEffect(() => {
-    if (!configMediaCategory.response.length) return
-    const id = getAllowedFeatureId(configMediaCategory, 'General', 'Tables')
-    setFeatureId(id)
-  }, [configMediaCategory])
 
   const validationSchema = Yup.object().shape({
     upload_source: Yup.mixed().when('type', {
@@ -582,16 +559,13 @@ const Table = ({
       className={classes.formWrapper}
       onSubmit={form.handleSubmit}
     >
-      {isLoading && (
-        <div className={classes.loaderWrapper}>
-          <CircularProgress size={30} thickness={5} />
-        </div>
-      )}
       <Grid item xs={7} className={classes.root}>
         <Grid container justify="center">
           <Grid item>
             <TabToggleButtonGroup
-              className={classes.tabToggleButtonGroup}
+              className={classNames({
+                [classes.tabToggleButtonGroup]: form.values.type !== 'upload'
+              })}
               value={form.values.type}
               exclusive
               onChange={(_, tab) => form.setFieldValue('type', tab)}
@@ -642,7 +616,7 @@ const Table = ({
           {form.values.type === 'upload' && (
             <>
               <Grid container>
-                <Grid item xs={12} className={classes.fileInputWrap}>
+                <Grid item xs={12}>
                   <FileUpload
                     name="file"
                     files={form.values.upload_source}

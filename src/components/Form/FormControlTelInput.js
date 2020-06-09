@@ -52,7 +52,8 @@ const styles = ({ palette, type, typography, spacing, transitions }) => {
       borderColor: 'red'
     },
     bootstrapFormLabel: {
-      fontSize: 16,
+      fontSize: '1.0833rem',
+      lineHeight: '24px',
       color: palette[type].formControls.label.color
     },
     bootstrapFormLabelError: {

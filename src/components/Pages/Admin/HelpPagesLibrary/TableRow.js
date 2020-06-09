@@ -13,9 +13,9 @@ import BootstrapInputBase from 'components/Form/InputBase'
 import { Checkbox, CheckboxSwitcher } from 'components/Checkboxes'
 import { unselectItems } from 'utils/tableUtils'
 
-const styles = theme => ({
+const styles = ({ typography, type }) => ({
   name: {
-    fontWeight: 'bold'
+    ...typography.darkAccent[type]
   },
   urlTooltipWrapper: {
     width: '600px'

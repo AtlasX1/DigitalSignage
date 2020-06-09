@@ -20,10 +20,6 @@ import TableRowMediaRSS from './Rows/MediaRSS'
 import AddEditMediaRSS from './AddEdit/MediaRSS'
 import FilterMediaRSS from './Filter/MediaRSS'
 
-import TableRowLicensedChannels from './Rows/LicensedChannels'
-import AddEditLicensedChannels from './AddEdit/LicensedChannels'
-import FilterLicensedChannels from './Filter/LicensedChannels'
-
 import TableRowYouTube from './Rows/YouTube'
 import AddEditYouTube from './AddEdit/YouTube'
 import FilterYouTube from './Filter/YouTube'
@@ -43,7 +39,6 @@ const {
   RSSFeed,
   DemoFeeds,
   MediaRSS,
-  LicensedChannels,
   YouTube,
   Radio,
   CustomWidget
@@ -116,25 +111,6 @@ const components = {
       </>
     ),
     Filter: props => <FilterMediaRSS {...props} />
-  },
-
-  [LicensedChannels]: {
-    Row: props => <TableRowLicensedChannels {...props} />,
-    AddEdit: () => (
-      <>
-        <Route
-          exact
-          path={routeByName[LicensedChannels].edit}
-          component={AddEditLicensedChannels}
-        />
-        <Route
-          exact
-          path={routeByName[LicensedChannels].add}
-          component={AddEditLicensedChannels}
-        />
-      </>
-    ),
-    Filter: props => <FilterLicensedChannels {...props} />
   },
 
   [YouTube]: {

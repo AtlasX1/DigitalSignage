@@ -1,13 +1,4 @@
-import {
-  CircularProgress,
-  Grid,
-  Typography,
-  withStyles
-} from '@material-ui/core'
-import {
-  getContentSourceOfMediaFeatureById,
-  getThemeOfMediaFeatureById
-} from 'actions/configActions'
+import { Grid, Typography, withStyles } from '@material-ui/core'
 import {
   addMedia,
   clearAddedMedia,
@@ -19,12 +10,11 @@ import { useFormik } from 'formik'
 import update from 'immutability-helper'
 import { get as _get } from 'lodash'
 import PropTypes from 'prop-types'
-import React, { useCallback, useEffect, useState, useRef } from 'react'
+import React, { useCallback, useEffect, useState, useRef, useMemo } from 'react'
 import { translate } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import {
   createMediaPostData,
-  getAllowedFeatureId,
   getMediaInfoFromBackendData
 } from 'utils/mediaUtils'
 import * as Yup from 'yup'
@@ -43,6 +33,8 @@ import {
 } from '../../Form'
 import { SingleIconTab, SingleIconTabs } from '../../Tabs'
 import MediaHtmlCarousel from '../MediaHtmlCarousel'
+import useMediaTheme from 'hooks/useMediaTheme'
+import useMediaContentSource from 'hooks/useMediaContentSource'
 
 const TabIconStyles = theme => ({
   tabIconWrap: {
@@ -72,10 +64,10 @@ const CenteredIconTabsStyles = () => ({
 const CenteredIconTabs = withStyles(CenteredIconTabsStyles)(SingleIconTabs)
 
 const styles = theme => {
-  const { palette, type } = theme
+  const { palette, type, typography } = theme
   return {
     root: {
-      margin: '20px 24px'
+      margin: '15px 30px'
     },
     formWrapper: {
       position: 'relative',
@@ -95,7 +87,7 @@ const styles = theme => {
       zIndex: 1
     },
     tabToggleButtonGroup: {
-      marginBottom: '19px'
+      marginBottom: 16
     },
     tabToggleButton: {
       width: '128px'
@@ -113,7 +105,7 @@ const styles = theme => {
       border: `solid 1px ${palette[type].pages.media.card.border}`,
       backgroundColor: palette[type].pages.media.card.background,
       borderRadius: '4px',
-      marginBottom: '20px'
+      marginBottom: 16
     },
     themeHeader: {
       padding: '0 15px',
@@ -127,7 +119,7 @@ const styles = theme => {
     themeHeader1: {
       padding: '0 15px',
       borderBottom: `1px solid ${palette[type].pages.media.card.border}`,
-      marginBottom: '15px'
+      marginBottom: 16
     },
     themeHeaderText: {
       fontWeight: 'bold',
@@ -137,7 +129,7 @@ const styles = theme => {
     },
     themeOptions1: {
       padding: '0 15px',
-      marginBottom: '37px'
+      marginBottom: 16
     },
     colorPaletteContainer: {
       display: 'flex',
@@ -159,13 +151,13 @@ const styles = theme => {
       marginRight: '19px'
     },
     labelClass: {
-      fontSize: '17px'
+      fontSize: '1.0833rem'
     },
     palettePickerContainer: {
-      marginBottom: '9px'
+      marginBottom: 16
     },
     marginTop1: {
-      marginTop: '14px'
+      marginTop: 16
     },
     urlInputContainer: {
       padding: '0 15px'
@@ -189,11 +181,10 @@ const styles = theme => {
       boxShadow: 'none'
     },
     previewMediaRow: {
-      marginTop: '25px'
+      marginTop: 29
     },
     previewMediaText: {
-      fontWeight: 'bold',
-      color: palette[type].sideModal.action.button.color
+      ...typography.lightText[type]
     }
   }
 }
@@ -243,11 +234,9 @@ const Radio = ({
     initialFormState.current.customPalette
   )
 
-  const [isLoading, setLoading] = useState(false)
   const [formSubmitting, setFormSubmitting] = useState(false)
   const [autoClose, setAutoClose] = useState(false)
 
-  const [featureId, setFeatureId] = useState(null)
   const [station, setStation] = useState(initialFormState.current.station)
   const [tabs, setTabs] = useState({})
 
@@ -255,6 +244,10 @@ const Radio = ({
 
   const addMediaReducer = useSelector(({ addMedia }) => addMedia.web)
   const mediaItemReducer = useSelector(({ media }) => media.mediaItem)
+
+  const { contentSources } = useMediaContentSource('Web', 'Radio')
+  const { themes, featureId } = useMediaTheme('Web', 'Radio')
+  const previewThemes = useMemo(() => themes.Legacy || [], [themes.Legacy])
 
   const initialFormValues = useRef({
     tab: 'Pop',
@@ -283,43 +276,9 @@ const Radio = ({
     [dispatch]
   )
 
-  const { configMediaCategory, contentSourceOfMediaFeature } = useSelector(
-    ({ config }) => config
-  )
-
-  const previewThemes = useSelector(({ config }) => {
-    if (
-      config.themeOfMedia &&
-      config.themeOfMedia.response &&
-      config.themeOfMedia.response.Legacy
-    ) {
-      return config.themeOfMedia.response.Legacy
-    }
-    return []
-  })
-
   useEffect(() => {
-    if (configMediaCategory.response.length) {
-      setFeatureId(getAllowedFeatureId(configMediaCategory, 'Web', 'Radio'))
-    }
-  }, [configMediaCategory])
-
-  useEffect(() => {
-    if (featureId) {
-      dispatch(getContentSourceOfMediaFeatureById(featureId))
-      dispatch(getThemeOfMediaFeatureById(featureId))
-    }
-    // eslint-disable-next-line
-  }, [featureId])
-
-  useEffect(() => {
-    if (
-      contentSourceOfMediaFeature.response &&
-      contentSourceOfMediaFeature.response[0] &&
-      contentSourceOfMediaFeature.response[0].source &&
-      contentSourceOfMediaFeature.response[0].source.length
-    ) {
-      const reducedTabs = contentSourceOfMediaFeature.response.reduce(
+    if (_get(contentSources, '[0].source') && contentSources[0].source.length) {
+      const reducedTabs = contentSources.reduce(
         (accumulator, { name, description, source }) => {
           let tabIcon = ''
           switch (name) {
@@ -377,7 +336,7 @@ const Radio = ({
       )
       setTabs(reducedTabs)
     }
-  }, [contentSourceOfMediaFeature])
+  }, [contentSources])
 
   useEffect(() => {
     if (!formSubmitting) return
@@ -495,17 +454,9 @@ const Radio = ({
           backendData.attributes.paletteData.data
         setCustomPalette(initialFormState.current.customPalette)
       }
-
-      setLoading(false)
     }
     // eslint-disable-next-line
   }, [backendData])
-
-  useEffect(() => {
-    if (mode === 'edit') {
-      setLoading(true)
-    }
-  }, [mode])
 
   const validationSchema = Yup.object().shape({
     radio_station_url: Yup.string().when('tab', {
@@ -659,11 +610,6 @@ const Radio = ({
       className={classes.formWrapper}
       onSubmit={form.handleSubmit}
     >
-      {isLoading && (
-        <div className={classes.loaderWrapper}>
-          <CircularProgress size={30} thickness={5} />
-        </div>
-      )}
       <Grid item xs={7} className={classes.tabContent}>
         <div className={classes.root}>
           <Grid container justify="center">

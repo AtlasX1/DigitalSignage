@@ -5,13 +5,7 @@ import { get as _get } from 'lodash'
 import * as Yup from 'yup'
 import { useFormik } from 'formik'
 import update from 'immutability-helper'
-import {
-  CircularProgress,
-  Grid,
-  Tabs,
-  Typography,
-  withStyles
-} from '@material-ui/core'
+import { Grid, Tabs, Typography, withStyles } from '@material-ui/core'
 
 import { WhiteButton } from 'components/Buttons'
 import { SingleIconTab } from 'components/Tabs'
@@ -22,7 +16,6 @@ import { MediaInfo, MediaTabActions } from '../index'
 import { mediaConstants as constants } from 'constants/index'
 import {
   createMediaPostData,
-  getAllowedFeatureId,
   getMediaInfoFromBackendData
 } from 'utils/mediaUtils'
 import {
@@ -32,8 +25,8 @@ import {
   generateMediaPreview,
   getMediaItemsAction
 } from 'actions/mediaActions'
-import { getContentSourceOfMediaFeatureById } from 'actions/configActions'
 import classNames from 'classnames'
+import useMediaContentSource from 'hooks/useMediaContentSource'
 
 const TabIconStyles = () => ({
   tabIconWrap: {
@@ -62,7 +55,7 @@ export const SingleIconTabs = withStyles({
 
 const styles = ({ palette, type }) => ({
   root: {
-    margin: '22px 30px'
+    margin: '15px 30px'
   },
   formWrapper: {
     position: 'relative',
@@ -122,7 +115,7 @@ const styles = ({ palette, type }) => ({
     color: palette[type].sideModal.action.button.color
   },
   previewMediaRow: {
-    marginTop: '58px'
+    marginTop: 45
   },
   inputClass: {
     width: 60,
@@ -155,20 +148,19 @@ const Feeds = ({
   onShareStateCallback
 }) => {
   const dispatchAction = useDispatch()
-  const { configMediaCategory, contentSourceOfMediaFeature } = useSelector(
-    ({ config }) => config
-  )
   const addMediaReducer = useSelector(({ addMedia }) => addMedia.licensed)
   const mediaItemReducer = useSelector(({ media }) => media.mediaItem)
 
-  const [isLoading, setLoading] = useState(true)
   const [formSubmitting, setFormSubmitting] = useState(false)
   const [autoClose, setAutoClose] = useState(false)
-  const [featureId, setFeatureId] = useState(null)
-  const [contentTabs, setContentTabs] = useState([])
 
   const [selectedFeedId, setSelectedFeedId] = useState(null)
   const [selectedFeedContent, setSelectedFeedContent] = useState([])
+
+  const { contentSources: contentTabs, featureId } = useMediaContentSource(
+    'Licensed',
+    'Feeds'
+  )
 
   const initialFormValues = useRef({
     contentSourceId: null,
@@ -273,6 +265,7 @@ const Feeds = ({
 
   const handleFeedIdChange = (event, contentId) => {
     setSelectedFeedId(contentId)
+    console.log({ contentTabs, contentId })
     const content = contentTabs.find(i => i.id === contentId)
     setSelectedFeedContent(content.source)
   }
@@ -282,27 +275,17 @@ const Feeds = ({
   }
 
   useEffect(() => {
-    if (contentSourceOfMediaFeature.response) {
-      const { response = [] } = contentSourceOfMediaFeature
-      setContentTabs(response)
-
-      if (response[0]) {
-        setSelectedFeedId(response[0].id)
-
-        if (mode === 'add') {
-          form.setFieldValue('contentSourceId', response[0].source[0].id)
-        }
+    if (contentTabs && contentTabs.length) {
+      setSelectedFeedId(contentTabs[0].id)
+      handleFeedIdChange({}, contentTabs[0].id)
+      console.log({ contentTabs })
+      console.log(_get(contentTabs[0], 'source[0].id', null))
+      if (mode === 'add') {
+        form.setFieldValue(
+          'contentSourceId',
+          _get(contentTabs[0], 'source[0].id', null)
+        )
       }
-
-      setLoading(false)
-    }
-    // eslint-disable-next-line
-  }, [contentSourceOfMediaFeature])
-
-  useEffect(() => {
-    if (contentTabs.length) {
-      handleFeedIdChange({}, selectedFeedId)
-      setLoading(false)
     }
     // eslint-disable-next-line
   }, [contentTabs])
@@ -380,7 +363,6 @@ const Feeds = ({
 
   useEffect(() => {
     if (backendData && backendData.id) {
-      !isLoading && setLoading(true)
       const {
         attributes: { refresh_every },
         contentSourceId
@@ -392,23 +374,10 @@ const Feeds = ({
         mediaInfo: getMediaInfoFromBackendData(backendData)
       }
       form.setValues(initialFormValues.current)
-
-      setLoading(false)
     }
 
     // eslint-disable-next-line
   }, [backendData])
-
-  useEffect(
-    () => {
-      if (!configMediaCategory.response.length) return
-      const id = getAllowedFeatureId(configMediaCategory, 'Licensed', 'Feeds')
-      dispatchAction(getContentSourceOfMediaFeatureById(id))
-      setFeatureId(id)
-    },
-    // eslint-disable-next-line
-    [configMediaCategory]
-  )
 
   useEffect(() => {
     onShareStateCallback(handleShareState)
@@ -417,16 +386,11 @@ const Feeds = ({
   const { values, errors, touched } = form
   return (
     <form className={classes.formWrapper} onSubmit={form.handleSubmit}>
-      {isLoading && (
-        <div className={classes.loaderWrapper}>
-          <CircularProgress size={30} thickness={5} />
-        </div>
-      )}
       <Grid container className={classes.tabContent}>
         <Grid item xs={7}>
           <div className={classes.root}>
             <Grid container justify="center">
-              {!!contentTabs.length && (
+              {!!contentTabs.length && selectedFeedId && (
                 <Grid item xs={12} className={classes.themeCardWrap}>
                   <header className={classes.themeHeader}>
                     <SingleIconTabs

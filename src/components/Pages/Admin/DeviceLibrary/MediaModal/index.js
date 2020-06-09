@@ -1,11 +1,7 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useCallback, useMemo } from 'react'
 import PropTypes from 'prop-types'
-
-import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
-
+import { compose } from 'redux'
 import { translate } from 'react-i18next'
-
 import {
   withStyles,
   Dialog,
@@ -13,21 +9,14 @@ import {
   IconButton,
   Grid
 } from '@material-ui/core'
-
 import { Close as CloseIcon } from '@material-ui/icons'
 
-import { ModalPaper } from '../../../../Paper'
-
-import { TabToggleButtonGroup, TabToggleButton } from '../../../../Buttons'
-
-import MediaStatus from './MediaStatus'
+import { ModalPaper } from 'components/Paper'
+import { TabToggleButtonGroup, TabToggleButton } from 'components/Buttons'
 import EmergencyAlert from './EmergencyAlert'
 import CapAlert from './CapAlert'
 
-import {
-  getAlertTypesAction,
-  clearGetAlertTypesInfoAction
-} from '../../../../../actions/configActions'
+import { isEmpty, isEqual, isNumber } from 'utils/generalUtils'
 
 const styles = ({ palette, type }) => ({
   dialogPaper: {
@@ -60,27 +49,63 @@ const styles = ({ palette, type }) => ({
   }
 })
 
-const MediaModal = ({
+function MediaModal({
   t,
   id,
-  open = false,
-  handleClose = f => f,
+  open,
+  handleClose,
   classes,
-  alertTypesReducer,
-  getAlertTypesAction
-}) => {
-  const [tab, setTab] = useState('media')
+  isEmergencyEnabled,
+  isCapEnabled
+}) {
+  const [currentTab, setCurrentTab] = useState(0)
+  const tabs = useMemo(() => {
+    return [
+      {
+        title: t('Emergency Alert'),
+        enabled: isEmergencyEnabled,
+        component: EmergencyAlert
+      },
+      {
+        title: t('CAP Alert'),
+        enabled: isCapEnabled,
+        component: CapAlert
+      }
+    ]
+  }, [t, isCapEnabled, isEmergencyEnabled])
 
-  const handleTabChange = (e, type) => {
-    if (type) setTab(type)
-  }
+  const enabledTabs = useMemo(() => {
+    return tabs
+      .filter(({ enabled }) => enabled)
+      .map((tab, index) => ({ id: index, ...tab }))
+  }, [tabs])
 
-  useEffect(() => {
-    if (!alertTypesReducer.response) {
-      getAlertTypesAction()
-    }
-    // eslint-disable-next-line
-  }, [])
+  const handleTabChange = useCallback(
+    (_, newTab) => {
+      if (isNumber(newTab)) {
+        setCurrentTab(newTab)
+      }
+    },
+    [setCurrentTab]
+  )
+
+  const renderTabButtons = useMemo(() => {
+    return enabledTabs.map(({ title, id }) => {
+      return (
+        <TabToggleButton value={id} key={id}>
+          {title}
+        </TabToggleButton>
+      )
+    })
+  }, [enabledTabs])
+
+  const renderTab = useMemo(() => {
+    if (isEmpty(enabledTabs)) return null
+    const { component: Component } = enabledTabs.find(({ id }) => {
+      return isEqual(id, currentTab)
+    })
+    return <Component id={id} />
+  }, [currentTab, enabledTabs, id])
 
   return (
     <Dialog
@@ -106,24 +131,16 @@ const MediaModal = ({
             className={classes.toggleButtonsContainer}
           >
             <TabToggleButtonGroup
-              value={tab}
+              value={currentTab}
               exclusive
               onChange={handleTabChange}
             >
-              <TabToggleButton value="media">
-                {t('Media Status')}
-              </TabToggleButton>
-              <TabToggleButton value="emergency">
-                {t('Emergency Alert')}
-              </TabToggleButton>
-              <TabToggleButton value="cap">{t('CAP Alert')}</TabToggleButton>
+              {renderTabButtons}
             </TabToggleButtonGroup>
           </Grid>
 
           <Grid container direction="column">
-            {tab === 'media' && <MediaStatus />}
-            {tab === 'emergency' && <EmergencyAlert id={id} />}
-            {tab === 'cap' && <CapAlert id={id} />}
+            {renderTab}
           </Grid>
         </Grid>
       </ModalPaper>
@@ -134,22 +151,19 @@ const MediaModal = ({
 MediaModal.propTypes = {
   id: PropTypes.number,
   open: PropTypes.bool,
-  handleClose: PropTypes.func
+  handleClose: PropTypes.func,
+  isEmergencyEnabled: PropTypes.bool,
+  isCapEnabled: PropTypes.bool
 }
 
-const mapStateToProps = ({ config }) => ({
-  alertTypesReducer: config.alertTypes
-})
+MediaModal.defaultProps = {
+  open: false,
+  handleClose: f => f,
+  isEmergencyEnabled: true,
+  isCapEnabled: true
+}
 
-const mapDispatchToProps = dispatch =>
-  bindActionCreators(
-    {
-      getAlertTypesAction,
-      clearGetAlertTypesInfoAction
-    },
-    dispatch
-  )
-
-export default translate('translations')(
-  withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(MediaModal))
-)
+export default compose(
+  translate('translations'),
+  withStyles(styles)
+)(MediaModal)

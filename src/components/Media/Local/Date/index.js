@@ -12,13 +12,7 @@ import { useDispatch, useSelector } from 'react-redux'
 
 import * as Yup from 'yup'
 
-import {
-  withStyles,
-  Grid,
-  Typography,
-  CircularProgress,
-  Tooltip
-} from '@material-ui/core'
+import { withStyles, Grid, Typography, Tooltip } from '@material-ui/core'
 
 import {
   TabToggleButton,
@@ -41,7 +35,6 @@ import {
 
 import {
   createMediaPostData,
-  getAllowedFeatureId,
   getMediaInfoFromBackendData,
   getMediaThemesSettings
 } from '../../../../utils/mediaUtils'
@@ -55,12 +48,13 @@ import {
 } from '../../../../actions/mediaActions'
 import LegacyThemeContent from './LegacyThemeContent'
 import ModernThemeContent from './ModerThemeContent'
+import useMediaTheme from 'hooks/useMediaTheme'
 
 const styles = theme => {
   const { palette, type, typography } = theme
   return {
     root: {
-      margin: '22px 25px',
+      margin: '15px 30px',
       fontFamily: typography.fontFamily
     },
     formWrapper: {
@@ -86,11 +80,10 @@ const styles = theme => {
       backgroundImage: palette[type].sideModal.action.button.background,
       borderRadius: '4px',
       boxShadow: 'none',
-      marginTop: '59px'
+      marginTop: 45
     },
     previewMediaText: {
-      fontWeight: 'bold',
-      color: palette[type].sideModal.action.button.color
+      ...typography.lightText[type]
     },
     themeCardWrap: {
       border: `solid 1px ${palette[type].pages.media.general.card.border}`,
@@ -131,10 +124,6 @@ const styles = theme => {
     lastUpdatedSwitch: {
       margin: '0 auto'
     },
-    mapViewClasses: {
-      width: '230px',
-      marginTop: '35px'
-    },
     detailLabel: {
       color: '#74809a',
       fontSize: '13px',
@@ -150,8 +139,7 @@ const styles = theme => {
       }
     },
     showContentContainer: {
-      padding: '0 15px',
-      margin: '16px 0 20px'
+      padding: 15
     },
     templateLabel: {
       fontSize: '12px',
@@ -171,11 +159,6 @@ const styles = theme => {
       borderLeft: `1px solid ${palette[type].pages.media.local.card.border}`,
       borderRight: `1px solid ${palette[type].pages.media.local.card.border}`
     },
-    inputLabel: {
-      fontSize: '12px',
-      display: 'block',
-      color: palette[type].pages.media.local.card.input.label.color
-    },
     numberInput: {
       '& span': {
         width: 75,
@@ -193,16 +176,10 @@ const styles = theme => {
       height: '28px'
     },
     periodTypeContainer: {
-      margin: '14px 0 33px'
+      margin: '16px 0'
     },
-    marginTop1: {
-      marginTop: '24px'
-    },
-    marginTop2: {
-      marginTop: '23px'
-    },
-    marginTop3: {
-      marginTop: '12px'
+    marginTop: {
+      marginTop: 16
     },
     marginRight1: {
       marginRight: '10px'
@@ -223,7 +200,7 @@ const styles = theme => {
       }
     },
     templateContainer: {
-      padding: '0 18px 28px'
+      padding: '0 0 16px'
     },
     borderBottom: {
       borderBottom: `1px solid ${palette[type].pages.media.local.card.border}`
@@ -274,16 +251,8 @@ const Date = props => {
   } = props
 
   const dispatchAction = useDispatch()
-  const { configMediaCategory } = useSelector(({ config }) => config)
   const addMediaReducer = useSelector(({ addMedia }) => addMedia.local)
   const mediaItemReducer = useSelector(({ media }) => media.mediaItem)
-
-  const DateThemes = useSelector(({ config }) => {
-    if (config.themeOfMedia && config.themeOfMedia.response) {
-      return config.themeOfMedia.response
-    }
-    return []
-  })
 
   const initialFormState = useRef({
     themeType: 'Modern',
@@ -291,8 +260,9 @@ const Date = props => {
     selectedPeriodType: 'date'
   })
 
+  const { themes: DateThemes, featureId } = useMediaTheme('Local', 'Date')
+
   const [isLoading, setLoading] = useState(true)
-  const [featureId, setFeatureId] = useState(null)
   const [themeType, setThemeType] = useState(initialFormState.current.themeType)
   const [selectedShowType, setSelectedShowType] = useState(
     initialFormState.current.selectedShowType
@@ -520,12 +490,6 @@ const Date = props => {
   }, [backendData, DateThemes])
 
   useEffect(() => {
-    if (!configMediaCategory.response.length) return
-    const id = getAllowedFeatureId(configMediaCategory, 'Local', 'Date')
-    setFeatureId(id)
-  }, [configMediaCategory])
-
-  useEffect(() => {
     const values = _get(formData, 'values')
     if (values) {
       initialFormValues.current = {
@@ -673,11 +637,6 @@ const Date = props => {
 
   return (
     <form className={classes.formWrapper}>
-      {isLoading && (
-        <div className={classes.loaderWrapper}>
-          <CircularProgress size={30} thickness={5} />
-        </div>
-      )}
       <Grid container className={classes.tabContent}>
         <Grid item xs={7}>
           <div className={classes.root}>
@@ -738,7 +697,7 @@ const Date = props => {
                 </Grid>
               </Grid>
             </Grid>
-            <Grid container justify="center" className={classes.marginTop1}>
+            <Grid container justify="center" className={classes.marginTop}>
               <Grid item xs={12} className={classes.themeCardWrap}>
                 <header className={classes.themeHeader}>
                   <Grid container justify="space-between" alignItems="center">

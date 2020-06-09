@@ -11,14 +11,7 @@ import { useFormik } from 'formik'
 
 import { mediaConstants as constants } from '../../../constants'
 
-import {
-  withStyles,
-  Grid,
-  Tabs,
-  Typography,
-  CircularProgress,
-  Tooltip
-} from '@material-ui/core'
+import { withStyles, Grid, Tabs, Typography, Tooltip } from '@material-ui/core'
 import { CheckboxSwitcher } from '../../Checkboxes'
 
 import { WhiteButton } from '../../Buttons'
@@ -30,7 +23,6 @@ import MediaHtmlCarousel from '../MediaHtmlCarousel'
 
 import {
   createMediaPostData,
-  getAllowedFeatureId,
   getMediaInfoFromBackendData
 } from 'utils/mediaUtils'
 
@@ -41,7 +33,7 @@ import {
   generateMediaPreview,
   getMediaItemsAction
 } from 'actions/mediaActions'
-import { getContentSourceOfMediaFeatureById } from 'actions/configActions'
+import useMediaContentSource from 'hooks/useMediaContentSource'
 
 const TabIconStyles = () => ({
   tabIconWrap: {
@@ -61,9 +53,9 @@ const TabIcon = withStyles(TabIconStyles)(
   )
 )
 
-const styles = ({ palette, type, formControls }) => ({
+const styles = ({ palette, type, formControls, typography }) => ({
   root: {
-    margin: '21px 30px'
+    margin: '15px 30px'
   },
   previewMediaBtn: {
     padding: '10px 25px 8px',
@@ -73,18 +65,16 @@ const styles = ({ palette, type, formControls }) => ({
     boxShadow: 'none'
   },
   previewMediaRow: {
-    marginTop: '19px'
+    marginTop: 45
   },
   previewMediaText: {
-    fontWeight: 'bold',
-    color: palette[type].sideModal.action.button.color
+    ...typography.lightText[type]
   },
   sliderRootClass: {
     ...formControls.mediaApps.refreshEverySlider.root
   },
   sliderInputLabel: {
     ...formControls.mediaApps.refreshEverySlider.label,
-    lineHeight: '15px',
     marginRight: 13
   },
 
@@ -131,18 +121,17 @@ const CustomWidget = ({
   onShowSnackbar
 }) => {
   const dispatchAction = useDispatch()
-  const { configMediaCategory, contentSourceOfMediaFeature } = useSelector(
-    ({ config }) => config
-  )
   const addMediaReducer = useSelector(({ addMedia }) => addMedia.custom)
   const mediaItemReducer = useSelector(({ media }) => media.mediaItem)
 
-  const [isLoading, setLoading] = useState(false)
   const [formSubmitting, setFormSubmitting] = useState(false)
   const [autoClose, setAutoClose] = useState(false)
-  const [featureId, setFeatureId] = useState(null)
-  const [contentSources, setContentSources] = useState([])
   const [selectedAppId, setSelectedAppId] = useState(null)
+
+  const { contentSources, featureId } = useMediaContentSource(
+    'Custom',
+    'CustomWidget'
+  )
 
   const initialFormValues = useRef({
     allow_scrolling: false,
@@ -315,71 +304,52 @@ const CustomWidget = ({
         mediaInfo: getMediaInfoFromBackendData(backendData)
       }
       form.setValues(initialFormValues.current)
-      setLoading(false)
     }
     // eslint-disable-next-line
   }, [backendData])
 
   useEffect(() => {
-    if (!configMediaCategory.response.length) return
-    const id = getAllowedFeatureId(
-      configMediaCategory,
-      'Custom',
-      'CustomWidget'
-    )
-    setFeatureId(id)
-    dispatchAction(getContentSourceOfMediaFeatureById(id))
-    // eslint-disable-next-line
-  }, [configMediaCategory])
-
-  useEffect(() => {
-    const { response } = contentSourceOfMediaFeature
-
-    if (backendData && backendData.id) {
-      // Update selectedAppId
-      if (response.length) {
-        const selectedApp = response.find(
-          ({ source }) =>
-            source &&
-            source.some(({ id }) => id === backendData.contentSourceId)
-        )
-        setSelectedAppId(selectedApp?.id || null)
-      }
-      setContentSources(response || [])
+    if (backendData && backendData.id && contentSources.length) {
+      const selectedApp = contentSources.find(
+        ({ source }) =>
+          source && source.some(({ id }) => id === backendData.contentSourceId)
+      )
+      setSelectedAppId(_get(selectedApp, 'id', null))
       return
     }
 
-    if (!response.length) {
+    if (!contentSources.length) {
       setSelectedAppId(null)
       form.setFieldValue('contentSourceId', null)
-      setContentSources([])
       return
     }
-    const { id } = response[0]?.source[0] || {}
-    setSelectedAppId(response[0].id)
+    const { id } = _get(contentSources[0], 'source[0]', {})
+    setSelectedAppId(contentSources[0].id)
     form.setFieldValue('contentSourceId', id)
-    setContentSources(response)
+
     // eslint-disable-next-line
-  }, [contentSourceOfMediaFeature, backendData])
+  }, [contentSources, backendData])
 
   useEffect(() => {
     onShareStateCallback(handleShareState)
   }, [handleShareState, onShareStateCallback])
 
-  useEffect(() => {
-    if (mode === 'edit' && !backendData?.id) {
-      setLoading(true)
-    }
-  }, [mode, backendData])
-
   const handleAppIdChange = (event, contentId) => {
     const selectedApp = contentSources.find(({ id }) => id === contentId)
     setSelectedAppId(contentId)
-    form.setFieldValue('contentSourceId', selectedApp.source[0]?.id || null)
+    form.setFieldValue(
+      'contentSourceId',
+      _get(selectedApp, 'source[0].id', null)
+    )
   }
 
   const selectedSourceContent = useMemo(
-    () => contentSources.find(({ id }) => id === selectedAppId)?.source || [],
+    () =>
+      _get(
+        contentSources.find(({ id }) => id === selectedAppId),
+        'source',
+        []
+      ),
     [contentSources, selectedAppId]
   )
 
@@ -390,16 +360,11 @@ const CustomWidget = ({
 
   return (
     <form className={classes.formWrapper} onSubmit={form.handleSubmit}>
-      {isLoading && (
-        <div className={classes.loaderWrapper}>
-          <CircularProgress size={30} thickness={5} />
-        </div>
-      )}
       <Grid container className={classes.tabContent}>
         <Grid item xs={7}>
           <div className={classes.root}>
             <Grid container justify="space-between" alignItems="center">
-              {contentSources.length > 0 && (
+              {contentSources.length > 0 && selectedAppId != null && (
                 <Grid item xs={12}>
                   <header>
                     <Tabs value={selectedAppId} onChange={handleAppIdChange}>
@@ -442,7 +407,7 @@ const CustomWidget = ({
                   />
                 </Grid>
               )}
-              <Grid item xs={6}>
+              <Grid item xs={5}>
                 <CheckboxSwitcher
                   label="Allow Scrolling"
                   switchContainerClass={classes.switchContainerClass}
@@ -454,7 +419,7 @@ const CustomWidget = ({
                   }
                 />
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={7}>
                 <Grid container justify="flex-start" alignItems="center">
                   <Grid item>
                     <Typography className={classes.sliderInputLabel}>

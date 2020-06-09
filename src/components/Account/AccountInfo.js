@@ -1,5 +1,5 @@
 import React, { Fragment, useState, useEffect, useMemo } from 'react'
-import { Link as RouterLink, Redirect } from 'react-router-dom'
+import { Link as RouterLink, withRouter } from 'react-router-dom'
 import { translate } from 'react-i18next'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
@@ -28,9 +28,10 @@ import { clearStorage, roles, languageHelper } from 'utils'
 import { userRoleLevels } from 'constants/api'
 import restoreLastOriginalUser from 'utils/restoreLastOriginalUser'
 import languages from 'constants/languages'
+import { getLogoutUrl } from 'utils/permissionUrls'
 
 const styles = theme => {
-  const { palette, type } = theme
+  const { palette, type, typography } = theme
   return {
     accountInfoWrap: {
       display: 'flex',
@@ -62,12 +63,11 @@ const styles = theme => {
       margin: 10
     },
     userName: {
-      fontSize: 14,
-      fontWeight: 'bold',
-      color: palette[type].header.account.color
+      ...typography.lightText[type],
+      fontSize: '0.9375rem'
     },
     text: {
-      color: palette[type].header.account.color
+      ...typography.lightText[type]
     },
     textRoot: {
       padding: '5px 0 0 0',
@@ -118,12 +118,13 @@ const AccountInfo = ({
   userReducer,
   logout,
   openLanguageSelector,
+  location,
+  history,
   ...props
 }) => {
   const [profile, setProfile] = useState(
     userProfile ? userProfile.userPic || '' : ''
   )
-  const [success, setSuccess] = useState(false)
   const [userDetails, setUserDetails] = useState({
     role: {},
     permissions: {}
@@ -178,12 +179,12 @@ const AccountInfo = ({
 
       props.clearLogoutInfo()
       props.clearUserDetailsAction()
-      setSuccess(true)
 
       if (!!localStorage.getItem('originalUsers')) {
         restoreLastOriginalUser()
         window.location.reload()
       }
+      history.push(getLogoutUrl(location.pathname))
     }
     // eslint-disable-next-line
   }, [logout])
@@ -219,7 +220,6 @@ const AccountInfo = ({
         }
         MenuComponent={
           <Fragment>
-            {success && <Redirect to="/sign-in" />}
             <List component="nav" className={classes.listContiner}>
               <ListItem
                 className={classNames(classes.switchListItem, classes.listItem)}
@@ -320,5 +320,7 @@ const mapDispatchToProps = dispatch =>
   )
 
 export default translate('translations')(
-  withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(AccountInfo))
+  withStyles(styles)(
+    withRouter(connect(mapStateToProps, mapDispatchToProps)(AccountInfo))
+  )
 )

@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useState } from 'react'
-import Select from 'react-select'
+import WindowedSelect from 'react-windowed-select'
 import PropTypes from 'prop-types'
 
 import { translate } from 'react-i18next'
@@ -12,9 +12,9 @@ const styles = ({ palette, type }) => ({
     position: 'relative'
   },
   bootstrapFormLabel: {
-    fontSize: 16,
-    color: palette[type].formControls.label.color,
-    marginBottom: 10
+    fontSize: '1.0833rem',
+    lineHeight: '24px',
+    color: palette[type].formControls.label.color
   },
   error: {
     '& > div': {
@@ -33,11 +33,28 @@ const styles = ({ palette, type }) => ({
   }
 })
 
-const getStyles = ({ palette, type, typography }, isMulti) => {
+const getStyles = ({ palette, type, typography }, isMulti, styles) => {
+  const {
+    container,
+    control = {},
+    input,
+    placeholder,
+    menu,
+    menuPortal,
+    noOptionsMessage,
+    option = {},
+    multiValue,
+    indicatorsContainer = {},
+    loadingMessage,
+    multiValueLabel,
+    multiValueRemove = {},
+    singleValue
+  } = styles
   return {
     container: () => ({
       width: '100%',
-      position: 'relative'
+      position: 'relative',
+      ...container
     }),
     control: (provided, state) => {
       const style = {
@@ -48,14 +65,17 @@ const getStyles = ({ palette, type, typography }, isMulti) => {
         boxSizing: 'border-box',
         padding: isMulti ? '6px 8px' : '1px 8px 1px 15px',
         maxHeight: isMulti ? 'inherit' : 38,
+        ...control,
 
         '&:hover': {
-          backgroundColor: palette[type].formControls.input.background
+          backgroundColor: palette[type].formControls.input.background,
+          ...control['&:hover']
         },
 
         '& > div': {
           padding: 0,
-          height: 30
+          height: 30,
+          ...control['& > div']
         }
       }
 
@@ -71,27 +91,32 @@ const getStyles = ({ palette, type, typography }, isMulti) => {
       fontSize: 14,
       backgroundColor: palette[type].formControls.input.background,
       color: palette[type].formControls.input.color,
-      fontFamily: typography.fontFamily
+      fontFamily: typography.fontFamily,
+      ...input
     }),
     placeholder: provided => ({
       ...provided,
       fontSize: 14,
       color: palette[type].formControls.input.color,
-      fontFamily: typography.fontFamily
+      fontFamily: typography.fontFamily,
+      ...placeholder
     }),
     menu: provided => ({
       ...provided,
       zIndex: 9999,
-      background: palette[type].formControls.select.background
+      background: palette[type].formControls.select.background,
+      ...menu
     }),
     menuPortal: provided => ({
       ...provided,
-      zIndex: 9999
+      zIndex: 9999,
+      ...menuPortal
     }),
     noOptionsMessage: provided => ({
       ...provided,
       fontFamily: typography.fontFamily,
-      color: palette[type].formControls.input.color
+      color: palette[type].formControls.input.color,
+      ...noOptionsMessage
     }),
     option: provided => ({
       ...provided,
@@ -100,9 +125,11 @@ const getStyles = ({ palette, type, typography }, isMulti) => {
       fontFamily: typography.fontFamily,
       background: palette[type].formControls.select.background,
       cursor: 'pointer',
+      ...option,
 
       '&:hover': {
-        background: palette[type].formControls.select.border
+        background: palette[type].formControls.select.border,
+        ...option['&:hover']
       }
     }),
     multiValue: provided => ({
@@ -115,19 +142,23 @@ const getStyles = ({ palette, type, typography }, isMulti) => {
       border: '1px solid #3cd480',
       background: 'rgba(60, 212, 128, 0.25)',
       marginRight: 5,
-      marginBottom: 5
+      marginBottom: 5,
+      ...multiValue
     }),
     indicatorsContainer: provided => ({
       ...provided,
       padding: 0,
+      ...indicatorsContainer,
 
       '& > div': {
-        padding: 0
+        padding: 0,
+        ...indicatorsContainer['& > div']
       }
     }),
     loadingMessage: provided => ({
       ...provided,
-      fontFamily: typography.fontFamily
+      fontFamily: typography.fontFamily,
+      ...loadingMessage
     }),
     multiValueLabel: () => ({
       fontSize: 12,
@@ -135,26 +166,32 @@ const getStyles = ({ palette, type, typography }, isMulti) => {
       fontFamily: typography.fontFamily,
       marginRight: 5,
       color: '#3cd480',
-      userSelect: 'none'
+      userSelect: 'none',
+      ...multiValueLabel
     }),
     multiValueRemove: () => ({
       padding: 0,
       display: 'flex',
       alignItems: 'center',
+      ...multiValueRemove,
 
       svg: {
-        cursor: 'pointer'
+        cursor: 'pointer',
+        ...multiValueRemove.svg
       },
 
       'svg path': {
-        fill: '#3cd480'
+        fill: '#3cd480',
+        ...multiValueRemove['svg path']
       }
     }),
-    singleValue: provided => ({
+    singleValue: (provided, state) => ({
       ...provided,
       fontFamily: typography.fontFamily,
       color: palette[type].formControls.input.color,
-      fontSize: 14
+      fontSize: 14,
+      opacity: state.isDisabled ? 0.5 : 1,
+      ...singleValue
     })
   }
 }
@@ -185,13 +222,15 @@ const FormControlChips = ({
   handleBlur = f => f,
   isClearable = false,
   components = {},
-  formatOptionLabel
+  formatOptionLabel,
+  styles = {}
 }) => {
   const [inputValue, setInputValue] = useState('')
 
-  const customStyles = useMemo(() => getStyles(theme, isMulti), [
+  const customStyles = useMemo(() => getStyles(theme, isMulti, styles), [
     isMulti,
-    theme
+    theme,
+    styles
   ])
 
   const onChangeHandler = useCallback(
@@ -277,7 +316,7 @@ const FormControlChips = ({
         </InputLabel>
       )}
 
-      <Select
+      <WindowedSelect
         styles={customStyles}
         isSearchable={isSearchable}
         isLoading={isLoading}
@@ -333,11 +372,16 @@ FormControlChips.propTypes = {
   handleInputChange: PropTypes.func,
   error: PropTypes.string,
   isSearchable: PropTypes.bool,
-  touched: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]),
+  touched: PropTypes.oneOfType([
+    PropTypes.bool,
+    PropTypes.object,
+    PropTypes.array
+  ]),
   handleMenuScrollToBottom: PropTypes.func,
   handleBlur: PropTypes.func,
   isClearable: PropTypes.bool,
-  components: PropTypes.object
+  components: PropTypes.object,
+  styles: PropTypes.object
 }
 
 export default translate('translations')(

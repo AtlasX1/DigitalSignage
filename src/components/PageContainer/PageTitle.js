@@ -3,16 +3,14 @@ import { Typography, withStyles } from '@material-ui/core'
 import { translate } from 'react-i18next'
 import PropTypes from 'prop-types'
 
-const styles = ({ palette, type }) => ({
+const styles = ({ typography, type }) => ({
   selectTitle: {
-    fontSize: '22px',
-    fontWeight: 'bold',
-    color: palette[type].pageContainer.header.titleColor
+    ...typography.darkAccent[type],
+    fontSize: '1.125rem'
   },
   selectSubTitle: {
-    fontSize: '15px',
-    fontWeight: 'bold',
-    color: palette[type].pageContainer.header.titleColor
+    ...typography.darkAccent[type],
+    fontSize: '1rem'
   }
 })
 

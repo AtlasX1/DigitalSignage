@@ -1,9 +1,11 @@
-import React, { useState } from 'react'
+import React, { useState, useCallback } from 'react'
 import PropTypes from 'prop-types'
 import { useDrag, useDrop } from 'react-dnd'
 
+import { disabledPreviewMediaFeatures } from 'constants/media'
 import { Grid, Typography, withStyles, RootRef } from '@material-ui/core'
 import { KeyboardArrowDown, Settings } from '@material-ui/icons'
+import { getMediaPreview, showMediaPreview } from 'actions/mediaActions'
 
 import LibraryTypeIcon from 'components/LibraryTypeIcon'
 import { TagChip } from 'components/Chip'
@@ -12,11 +14,12 @@ import { MediaActionDropdown } from 'components/Media'
 import Popup from 'components/Popup'
 
 import { dndConstants } from 'constants/index'
+import { useSelector, useDispatch } from 'react-redux'
 
 const tags = ['A1', 'A2', 'A3', 'A4', 'A5', 'T4']
 
 const styles = theme => {
-  const { type, palette } = theme
+  const { type, palette, typography } = theme
   return {
     mediaItem: {
       padding: '0 12px',
@@ -27,12 +30,11 @@ const styles = theme => {
       }
     },
     indexNumber: {
-      fontSize: '14px',
-      fontWeight: 'bold',
-      lineHeight: '70px',
-      color: palette[type].sideModal.tabs.item.titleColor
+      ...typography.darkAccent[type],
+      lineHeight: '70px'
     },
     typeIconWrap: {
+      cursor: 'pointer',
       margin: '17px 24px',
       textAlign: 'center'
     },
@@ -42,19 +44,15 @@ const styles = theme => {
       justifyContent: 'center'
     },
     mediaTitle: {
-      fontSize: '14px',
-      fontWeight: 'bold',
-      lineHeight: '18px',
-      color: palette[type].sideModal.tabs.item.titleColor,
       maxWidth: '25ch',
       whiteSpace: 'nowrap',
       textOverflow: 'ellipsis',
-      overflow: 'hidden'
+      overflow: 'hidden',
+      ...typography.darkAccent[type]
     },
     mediaDuration: {
-      fontSize: '14px',
-      lineHeight: '18px',
-      color: palette[type].sideModal.tabs.item.titleColor
+      ...typography.lightText[type],
+      fontSize: '11px'
     },
     rightSide: {
       display: 'flex',
@@ -96,13 +94,19 @@ const styles = theme => {
 }
 
 const PlaybackItem = ({ classes, item, onDelete, ...props }) => {
+  const dispatchAction = useDispatch()
+  const mediaPreview = useSelector(({ media }) => media.preview)
+
   const [dropdown, setDropdown] = useState(false)
 
-  const originalIndex = props.findItem(item.id).index
+  const [transitionsReducer] = useSelector(state => [state.config.transitions])
+
+  const originalIndex = props.findItem(item.uid).index
   const [{ isDragging }, drag] = useDrag({
     item: {
       type: dndConstants.schedulePublishItemTypes.PLAYLIST_ITEM,
       id: item.id,
+      uid: item.uid,
       originalIndex
     },
     canDrag: () => !dropdown,
@@ -112,18 +116,34 @@ const PlaybackItem = ({ classes, item, onDelete, ...props }) => {
   })
 
   const [, drop] = useDrop({
+    drop: ({ uid }) => {
+      const { item } = props.findItem(uid)
+      props.saveItem(item, uid)
+    },
     accept: [
       dndConstants.schedulePublishItemTypes.PLAYLIST_ITEM,
       dndConstants.schedulePublishItemTypes.MEDIA_ITEM
     ],
-    canDrop: () => false,
-    hover({ id: draggedId }) {
-      if (draggedId !== item.id) {
-        const { index: overIndex } = props.findItem(item.id)
-        props.moveItem(draggedId, overIndex)
+    hover({ id: draggedId, uid }) {
+      if (uid !== item.uid) {
+        const { index: overIndex } = props.findItem(item.uid)
+        props.moveItem(draggedId, overIndex, uid)
       }
     }
   })
+
+  const handlePreviewClick = useCallback(() => {
+    const { id, feature } = item
+    if (disabledPreviewMediaFeatures.includes(feature.name)) {
+      return
+    }
+
+    if (mediaPreview.id !== id || mediaPreview.error) {
+      dispatchAction(getMediaPreview(id))
+    } else {
+      dispatchAction(showMediaPreview())
+    }
+  }, [dispatchAction, item, mediaPreview])
 
   const TagsButtonComponent = (
     <CircleIconButton className={classes.tagsIcon}>
@@ -148,6 +168,7 @@ const PlaybackItem = ({ classes, item, onDelete, ...props }) => {
                 <LibraryTypeIcon
                   type={item.type}
                   wrapHelperClass={classes.typeIconWrap}
+                  onClick={handlePreviewClick}
                 />
               </Grid>
               <Grid item className={classes.mediaInfoWrap}>
@@ -178,8 +199,8 @@ const PlaybackItem = ({ classes, item, onDelete, ...props }) => {
               }}
             >
               <Grid container className={classes.tagsList}>
-                {tags.map((tag, index) => (
-                  <Grid item key={`tag-${index}`}>
+                {tags.map(tag => (
+                  <Grid item key={tag}>
                     <TagChip label={tag} />
                   </Grid>
                 ))}
@@ -207,7 +228,27 @@ const PlaybackItem = ({ classes, item, onDelete, ...props }) => {
                 border: 'none'
               }}
             >
-              <MediaActionDropdown onDelete={onDelete} />
+              <MediaActionDropdown
+                transitionId={item.transitionId}
+                daypartStartTime={item.daypartStartTime}
+                daypartEndTime={item.daypartEndTime}
+                playtime={item.playtime}
+                transitions={
+                  transitionsReducer.response &&
+                  transitionsReducer.response.map(i => ({
+                    id: i.id,
+                    value: i.code,
+                    label: i.name
+                  }))
+                }
+                onValueChange={(f, v) =>
+                  props.handleItemValueChange(f, v, props.index)
+                }
+                onDelete={onDelete}
+                options={{
+                  disableTransition: true
+                }}
+              />
             </Popup>
           </Grid>
         </Grid>

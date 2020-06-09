@@ -2,14 +2,9 @@ import React, { useEffect, useState, useCallback, useMemo, useRef } from 'react'
 import { translate } from 'react-i18next'
 import { mediaConstants as constants } from '../../../constants'
 import update from 'immutability-helper'
-import {
-  withStyles,
-  Grid,
-  Typography,
-  Tooltip,
-  CircularProgress
-} from '@material-ui/core'
+import { withStyles, Grid, Typography } from '@material-ui/core'
 import { get as _get } from 'lodash'
+import Tooltip from 'components/Tooltip'
 
 import { MediaInfo, MediaTabActions } from '..'
 import {
@@ -26,7 +21,6 @@ import { useFormik } from 'formik'
 
 import {
   createMediaPostData,
-  getAllowedFeatureId,
   getMediaInfoFromBackendData
 } from 'utils/mediaUtils'
 import { useSelector, useDispatch } from 'react-redux'
@@ -38,13 +32,14 @@ import {
   getMediaItemsAction,
   clearAddedMedia
 } from 'actions/mediaActions'
+import useDetermineMediaFeatureId from 'hooks/useDetermineMediaFeatureId'
 
-const styles = ({ palette, type, formControls }) => ({
+const styles = ({ palette, type, formControls, typography }) => ({
   root: {
-    margin: '31px 25px'
+    margin: '15px 30px'
   },
   tabToggleButtonGroup: {
-    marginBottom: '19px'
+    marginBottom: 16
   },
   tabToggleButton: {
     width: '128px'
@@ -57,11 +52,10 @@ const styles = ({ palette, type, formControls }) => ({
     boxShadow: 'none'
   },
   previewMediaRow: {
-    marginTop: '44px'
+    marginTop: 45
   },
   previewMediaText: {
-    fontWeight: 'bold',
-    color: palette[type].sideModal.action.button.color
+    ...typography.lightText[type]
   },
   featureIconTabContainer: {
     justifyContent: 'center'
@@ -75,11 +69,10 @@ const styles = ({ palette, type, formControls }) => ({
     border: `solid 1px ${palette[type].pages.media.card.border}`,
     backgroundColor: palette[type].pages.media.card.background,
     borderRadius: '4px',
-    marginBottom: '22px'
+    marginBottom: 16
   },
   themeOptions1: {
-    padding: '0 15px',
-    margin: '25px 0 20px'
+    padding: 15
   },
   themeInputContainer: {
     padding: '0 7px',
@@ -88,7 +81,7 @@ const styles = ({ palette, type, formControls }) => ({
   tabToggleButtonContainer: {
     justifyContent: 'center',
     background: 'transparent',
-    marginTop: '17px'
+    marginTop: 16
   },
   formControlInput: {
     width: '100%'
@@ -98,18 +91,6 @@ const styles = ({ palette, type, formControls }) => ({
     borderBottom: `1px solid ${palette[type].pages.media.card.border}`,
     backgroundColor: palette[type].pages.media.card.header.background
   },
-  themeHeader1: {
-    padding: '0 15px',
-    borderBottom: `1px solid ${palette[type].pages.media.card.border}`,
-    marginBottom: '15px'
-  },
-  themeHeaderText: {
-    fontWeight: 'bold',
-    lineHeight: '42px',
-    color: palette[type].pages.media.card.header.color,
-    fontSize: '12px'
-  },
-
   colorPaletteContainer: {
     display: 'flex',
     '&:nth-child(2n+1)': {
@@ -127,33 +108,17 @@ const styles = ({ palette, type, formControls }) => ({
     marginRight: '19px'
   },
   palettePickerContainer: {
-    marginBottom: '9px'
+    marginBottom: 16
   },
   marginTop1: {
-    marginTop: '22px'
-  },
-  urlInputContainer: {
-    padding: '0 15px'
+    marginTop: 16
   },
   labelClass: {
-    fontSize: '17px'
+    fontSize: '1.0833rem'
   },
   formWrapper: {
     position: 'relative',
     height: '100%'
-  },
-  loaderWrapper: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingTop: '100px',
-    width: '100%',
-    height: '100%',
-    position: 'absolute',
-    top: '0',
-    left: '0',
-    backgroundColor: 'rgba(255,255,255,.5)',
-    zIndex: 1
   },
   formControlRootClass: {
     marginBottom: 0
@@ -161,17 +126,11 @@ const styles = ({ palette, type, formControls }) => ({
   switchContainerClass: {
     width: '160px'
   },
-  inputContainerClass: {
-    margin: '0 10px'
-  },
   inputClass: {
     width: '46px'
   },
   checkboxSwitcherLabelClass: {
     fontSize: '13px'
-  },
-  formControlInputWrap: {
-    marginBottom: '12px'
   },
   tabContent: {
     height: '100%'
@@ -187,10 +146,10 @@ const styles = ({ palette, type, formControls }) => ({
     marginRight: 0
   },
   inputLabel: {
-    fontSize: '17px'
+    fontSize: '1.0833rem'
   },
   infoLabel: {
-    fontSize: '17px',
+    fontSize: '1.0833rem',
     borderBottom: '1px dashed #0A83C8',
     '&:hover': {
       cursor: 'pointer',
@@ -245,7 +204,7 @@ const InfoMessageStyles = ({ typography }) => ({
   infoMessageContainer: {
     display: 'flex',
     alignItems: 'flex-start',
-    padding: '0 5px 15px'
+    padding: '0 0 16px'
   },
   infoMessage: {
     marginLeft: '20px',
@@ -311,8 +270,7 @@ const Smugmug = ({
     [t]
   )
 
-  const [featureId, setFeatureId] = useState(null)
-  const [isLoading, setLoading] = useState(false)
+  const featureId = useDetermineMediaFeatureId('Gallery', 'Smugmug')
   const [formSubmitting, setFormSubmitting] = useState(false)
   const [autoClose, setAutoClose] = useState(false)
 
@@ -547,19 +505,9 @@ const Smugmug = ({
         mediaInfo: getMediaInfoFromBackendData(backendData)
       }
       form.setValues(initialFormValues.current)
-      setLoading(false)
     }
     // eslint-disable-next-line
   }, [backendData])
-
-  const { configMediaCategory } = useSelector(({ config }) => config)
-  useEffect(() => {
-    if (configMediaCategory.response.length) {
-      setFeatureId(
-        getAllowedFeatureId(configMediaCategory, 'Gallery', 'Smugmug')
-      )
-    }
-  }, [configMediaCategory])
 
   const handleShowPreview = async () => {
     const {
@@ -625,11 +573,6 @@ const Smugmug = ({
       className={classes.formWrapper}
       onSubmit={form.handleSubmit}
     >
-      {isLoading && (
-        <div className={classes.loaderWrapper}>
-          <CircularProgress size={30} thickness={5} />
-        </div>
-      )}
       <Grid item xs={7} className={classes.tabContent}>
         <div className={classes.root}>
           <InfoMessage iconClassName={'icon-interface-information-1'} />

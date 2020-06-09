@@ -15,6 +15,7 @@ import {
   Button
 } from '@material-ui/core'
 // import { CheckRounded, CloseRounded } from '@material-ui/icons'
+import arrayMove from 'array-move'
 
 import { TablePaper } from 'components/Paper'
 import {
@@ -31,20 +32,21 @@ import LibraryTypeIcon from 'components/LibraryTypeIcon'
 import { LibraryLoader } from 'components/Loaders'
 import {
   getMediaItemsAction,
-  getMediaLibraryPref,
-  putMediaLibraryPref,
   getMediaPreview,
   showMediaPreview
 } from 'actions/mediaActions'
-import { formatBytes, sortByOrder } from 'utils'
+import { formatBytes, stableSort } from 'utils'
 import { mediaService } from 'services'
 import { getConfigMediaCategory } from 'actions/configActions'
 import { getFeatureNameById } from 'utils/mediaUtils'
 import { mediaFileSubTypes } from 'constants/api'
 import { disabledPreviewMediaFeatures } from 'constants/media'
+import LibraryTagChips from '../../../components/LibraryTagChips'
 import { labelToSec, secToLabel } from 'utils/secToLabel'
+import { withPreference } from 'hooks/tableLibrary/usePreference'
+import { entityConstants } from 'constants/index'
 
-const styles = () => ({
+const styles = ({ typography, type }) => ({
   root: {
     width: '100%',
     boxShadow: 'none'
@@ -54,7 +56,7 @@ const styles = () => ({
     minHeight: 1000
   },
   name: {
-    fontWeight: 'bold'
+    ...typography.darkAccent[type]
   },
   toggleApprovedIcon: {
     width: 24,
@@ -68,16 +70,31 @@ const styles = () => ({
   }
 })
 
-// TODO Rename [rows] state to columns in all table components
+const initialColumns = [
+  { id: 'feature', label: 'Type', display: true },
+  { id: 'title', label: 'Name', display: true },
+  { id: 'group', label: 'Group', display: true },
+  { id: 'duration', label: 'Duration', align: 'center', display: true },
+  { id: 'updatedAt', label: 'Updated On', align: 'center', display: true },
+  { id: 'size', label: 'Size (MB)', align: 'center', display: true },
+  { id: 'tag', label: 'Tags', align: 'center' },
+  { id: 'status', label: 'Status', align: 'center', display: true }
+  // { id: 'approved', label: 'Approved', align: 'center', display: true }
+]
+
 class MediaTable extends Component {
   static propTypes = {
     classes: PropTypes.object.isRequired,
     enqueueSnackbar: PropTypes.func.isRequired,
     getMediaItemsAction: PropTypes.func,
-    getMediaLibraryPref: PropTypes.func,
-    putMediaLibraryPref: PropTypes.func,
     library: PropTypes.object,
-    preference: PropTypes.object
+    preferenceColumns: PropTypes.array,
+    preferencePerPage: PropTypes.number,
+    preferenceActions: PropTypes.shape({
+      changeRecordsPerPage: PropTypes.func,
+      toggleDisplayColumn: PropTypes.func,
+      changeColumns: PropTypes.func
+    })
   }
 
   state = {
@@ -86,61 +103,26 @@ class MediaTable extends Component {
     orderBy: 'updatedAt',
     selected: [],
     data: [],
-    meta: {},
     page: 1,
-    rowsPerPage: 10,
-    emptyRowHeight: 0,
-    statuses: {},
-    columns: [
-      { id: 'feature', label: 'Type' },
-      { id: 'title', label: 'Name' },
-      { id: 'group', label: 'Group' },
-      { id: 'duration', label: 'Duration', align: 'center' },
-      { id: 'updatedAt', label: 'Updated On', align: 'center' },
-      { id: 'size', label: 'Size (MB)', align: 'center' },
-      { id: 'status', label: 'Status', align: 'center' }
-      // { id: 'approved', label: 'Approved', align: 'center' }
-    ]
+    emptyRowHeight: 0
   }
 
   componentDidMount() {
-    const {
-      getConfigMediaCategory,
-      getMediaItemsAction,
-      getMediaLibraryPref,
-      library,
-      preference,
-      configMediaCategory,
-      queryParams
-    } = this.props
-    const { page, rowsPerPage, order, orderBy } = this.state
+    const { getConfigMediaCategory, library, configMediaCategory } = this.props
     if (!_get(configMediaCategory, '.response.length', false)) {
       getConfigMediaCategory()
     }
-    getMediaItemsAction({
-      ...queryParams,
-      page,
-      limit: rowsPerPage,
-      order,
-      sort: orderBy
-    })
-    if (!preference.response) {
-      getMediaLibraryPref()
-    }
     if (library.response) {
-      this.setData(library.response.data)
-      this.setMeta(library.response.meta)
-    }
-    if (preference.response) {
-      this.setStatuses(preference.response)
+      this.setData(library.response.data || [])
     }
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const { page, rowsPerPage, order, orderBy } = this.state
+    const { page, order, orderBy } = this.state
+    const { preferencePerPage, library } = this.props
     if (
       page !== prevState.page ||
-      rowsPerPage !== prevState.rowsPerPage ||
+      preferencePerPage !== prevProps.preferencePerPage ||
       order !== prevState.order ||
       orderBy !== prevState.orderBy
     ) {
@@ -149,21 +131,20 @@ class MediaTable extends Component {
       getMediaItemsAction({
         ...queryParams,
         page: page,
-        limit: rowsPerPage,
+        limit: preferencePerPage,
         order,
         sort: orderBy
       })
     }
 
-    if (
-      this.props.library !== prevProps.library &&
-      this.props.library.response
-    ) {
-      this.setData(this.props.library.response.data)
-      this.setMeta(this.props.library.response.meta)
+    if (library !== prevProps.library && library.response) {
+      this.setState({
+        data: _get(this.props, 'library.response.data', []),
+        loading: false
+      })
     }
 
-    if (this.state.meta !== prevState.meta) {
+    if (!isEqual(library.meta, prevProps.library.meta)) {
       this.handleEmptyRow()
     }
 
@@ -172,38 +153,8 @@ class MediaTable extends Component {
     }
   }
 
-  shouldComponentUpdate(nextProps, nextState, nextContext) {
-    const { preference } = this.props
-
-    if (nextProps.preference.response) {
-      if (
-        !preference.response ||
-        !isEqual(preference.response, nextProps.preference.response)
-      ) {
-        this.setStatuses(nextProps.preference.response)
-        return false
-      }
-    }
-
-    return true
-  }
-
   setData = data => {
     this.setState({ data })
-  }
-
-  setMeta = meta => {
-    this.setState({ meta })
-  }
-
-  setStatuses = pref => {
-    if (!pref) return
-
-    const entity = pref.find(p => p.entity === 'MediaLibrary')
-    const statuses = entity && entity.gridColumn ? entity.gridColumn : {}
-
-    const columns = sortByOrder(statuses, this.state.columns)
-    this.setState({ statuses, loading: false, columns })
   }
 
   handleRequestSort = (event, property) => {
@@ -263,11 +214,13 @@ class MediaTable extends Component {
   }
 
   handleChangeRowsPerPage = rowsPerPage => {
-    this.setState({ rowsPerPage })
+    const { preferenceActions } = this.props
+    this.setState({ page: 1 })
+    preferenceActions.changeRecordsPerPage(rowsPerPage)
   }
 
   handleEmptyRow = () => {
-    const { count } = this.state.meta
+    const { count } = this.props.library.meta
     const rowHeight = 90
     const tableHeight = window.innerHeight - 380
     const emptyRowHeight = tableHeight - count * rowHeight
@@ -362,70 +315,39 @@ class MediaTable extends Component {
     this.setState({ data: newData })
   }
 
-  handleColumnChange = (index, value) => {
-    const { putMediaLibraryPref } = this.props
-    const { columns, statuses } = this.state
-
-    const id = columns[index].id
-
-    let data
-    if (id in statuses) {
-      data = update(statuses, {
-        [id]: {
-          $merge: { display: value }
-        }
-      })
-    } else {
-      data = update(statuses, {
-        $merge: { [id]: { display: value } }
-      })
+  handleReorder = async ({ source, destination }) => {
+    if (!source || !destination) {
+      return
     }
 
-    putMediaLibraryPref(data)
-  }
+    const { preferenceColumns: columns, preferenceActions } = this.props
 
-  handleReorder = async result => {
-    const { putMediaLibraryPref } = this.props
-    const { columns, statuses } = this.state
+    const sourceId = columns[source.index].id
+    const destinationId = columns[destination.index].id
 
-    if (result.source !== null && result.destination !== null) {
-      const column = columns[result.source.index]
+    const newColumns = stableSort(
+      columns,
+      (lhs, rhs) => (lhs.sortOrder || 0) - (rhs.sortOrder || 0)
+    )
+    let sIdx = -1
+    let dIdx = -1
 
-      const index = result.source.index
-      const destIndex = result.destination.index
+    newColumns.forEach(({ id }, idx) => {
+      if (id === sourceId) {
+        sIdx = idx
+      }
+      if (id === destinationId) {
+        dIdx = idx
+      }
+    })
 
-      await this.setState(
-        update(this.state, {
-          columns: {
-            $splice: [
-              [index, 1],
-              [destIndex, 0, column]
-            ]
-          }
-        })
-      )
+    const shiftedColumns = update(newColumns, {
+      $set: arrayMove(columns, sIdx, dIdx)
+    })
 
-      let data = statuses
-      this.state.columns.forEach((c, i) => {
-        if (data[c.id]) {
-          data = update(data, {
-            [c.id]: {
-              $merge: { sortOrder: i }
-            }
-          })
-        } else {
-          data = update(data, {
-            $merge: {
-              [c.id]: {
-                sortOrder: i
-              }
-            }
-          })
-        }
-      })
-
-      putMediaLibraryPref(data)
-    }
+    preferenceActions.changeColumns(
+      shiftedColumns.map((col, idx) => ({ ...col, sortOrder: idx }))
+    )
   }
 
   generateGroups(groups) {
@@ -446,25 +368,23 @@ class MediaTable extends Component {
   }
 
   render() {
-    const { classes, t } = this.props
     const {
-      loading,
-      data,
-      order,
-      orderBy,
-      selected,
-      rowsPerPage,
-      columns,
-      statuses,
-      meta
-    } = this.state
-
-    const { currentPage, perPage, lastPage } = meta
+      classes,
+      t,
+      preferenceActions,
+      preferenceColumns: columns,
+      preferencePerPage: perPage,
+      library
+    } = this.props
+    const { data, order, orderBy, selected, loading } = this.state
+    const { currentPage, lastPage } = _get(library, 'response.meta', {
+      currentPage: 0,
+      lastPage: 0
+    })
 
     const filter = id => {
-      return statuses[id] && statuses[id].display !== undefined
-        ? statuses[id].display
-        : true
+      const col = columns.find(col => col.id === id)
+      return !col || col.display !== false
     }
 
     return loading ? (
@@ -487,7 +407,7 @@ class MediaTable extends Component {
               rowCount={data.length}
               columns={columns}
               filter={filter}
-              handleColumnChange={this.handleColumnChange}
+              handleColumnChange={preferenceActions.toggleDisplayColumn}
               handleReorder={this.handleReorder}
             />
             <TableBody>
@@ -617,6 +537,12 @@ class MediaTable extends Component {
                           //       )}
                           //     </TableLibraryCell>
                           //   )
+                          case 'tag':
+                            return (
+                              <TableLibraryCell key={c.id} align="center">
+                                <LibraryTagChips tags={row.tag} />
+                              </TableLibraryCell>
+                            )
                           default:
                             return null
                         }
@@ -651,13 +577,13 @@ class MediaTable extends Component {
         </div>
         <TableLibraryFooter
           page={currentPage}
-          perPage={parseInt(perPage, 10)}
+          perPage={perPage}
           pageCount={lastPage}
           data={data}
           selected={selected}
           allSelected={this.state.selected.length === this.state.data.length}
           onSelectAllClick={this.handleSelectAllClick}
-          rowsPerPage={rowsPerPage}
+          handleSelect={this.handleSelectAllClick}
           onPageChange={this.handlePageChange}
           onPressJumper={this.handlePressJumper}
           handleChangeRowsPerPage={this.handleChangeRowsPerPage}
@@ -670,7 +596,6 @@ class MediaTable extends Component {
 const mapStateToProps = ({ media, config }) => ({
   library: media.library,
   mediaPreview: media.preview,
-  preference: media.preference,
   configMediaCategory: config.configMediaCategory
 })
 
@@ -678,19 +603,29 @@ const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
       getMediaItemsAction,
-      getMediaLibraryPref,
       getMediaPreview,
       showMediaPreview,
-      putMediaLibraryPref,
       getConfigMediaCategory
     },
     dispatch
   )
+
+const mapPropsToPreference = ({ library, getMediaItemsAction }) => {
+  return {
+    initialColumns,
+    fetcher: getMediaItemsAction,
+    entity: entityConstants.MediaLibrary,
+    initialPerPage: _get(library, 'response.meta.perPage', 10),
+    order: 'desc',
+    sort: 'updatedAt'
+  }
+}
 
 export default compose(
   translate('translations'),
   withStyles(styles),
   withSnackbar,
   withRouter,
-  connect(mapStateToProps, mapDispatchToProps)
+  connect(mapStateToProps, mapDispatchToProps),
+  withPreference(mapPropsToPreference)
 )(MediaTable)

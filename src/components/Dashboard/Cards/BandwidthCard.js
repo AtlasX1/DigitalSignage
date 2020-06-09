@@ -44,11 +44,13 @@ const BandwidthCard = ({
           data: {
             $set: [
               {
-                name: 'Used',
+                id: 'Used',
+                label: 'Used',
                 value: parseFloat(total) - parseFloat(remaining)
               },
               {
-                name: 'Remaining',
+                id: 'Remaining',
+                label: 'Remaining',
                 value: parseFloat(remaining)
               }
             ]

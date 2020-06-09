@@ -15,7 +15,6 @@ import {
   withStyles,
   Grid,
   Typography,
-  CircularProgress,
   Tooltip,
   InputLabel
 } from '@material-ui/core'
@@ -44,7 +43,6 @@ import {
 
 import {
   createMediaPostData,
-  getAllowedFeatureId,
   getMediaInfoFromBackendData,
   getMediaThemesSettings,
   ObjectToFormData
@@ -57,13 +55,13 @@ import {
   generateMediaPreview,
   getMediaItemsAction
 } from 'actions/mediaActions'
-import { getThemeOfMediaFeatureById } from 'actions/configActions'
 
 import MediaThemeSelector from '../MediaThemeSelector'
 import { MediaInfo, MediaTabActions } from 'components/Media'
 
 import ExpansionPanel from 'components/Pages/Template/CreateTemplate/SettingsSide/ExpansionPanel'
 import fileDownload from 'utils/fileDownload'
+import useMediaTheme from 'hooks/useMediaTheme'
 
 const TabIconStyles = () => ({
   tabIconWrap: {
@@ -103,10 +101,10 @@ const DownloadFileButton = withStyles(DownloadFileButtonClasses)(
   )
 )
 
-const styles = ({ palette, type, formControls }) => {
+const styles = ({ palette, type, formControls, typography }) => {
   return {
     root: {
-      margin: '22px 30px'
+      margin: '15px 30px'
     },
     previewMediaBtn: {
       padding: '10px 25px 8px',
@@ -116,14 +114,13 @@ const styles = ({ palette, type, formControls }) => {
       boxShadow: 'none'
     },
     previewMediaRow: {
-      marginTop: '1rem'
+      marginTop: 45
     },
     marginTop8: {
-      marginTop: 8
+      marginTop: 16
     },
     previewMediaText: {
-      fontWeight: 'bold',
-      color: palette[type].sideModal.action.button.color
+      ...typography.lightText[type]
     },
     themeCardWrap: {
       border: `solid 1px ${palette[type].pages.media.general.card.border}`,
@@ -144,22 +141,21 @@ const styles = ({ palette, type, formControls }) => {
       ...formControls.mediaApps.refreshEverySlider.label
     },
     marginBottom1: {
-      marginBottom: '15px'
+      marginBottom: 16
     },
     dateInputsStyles1: {
-      marginTop: '14px'
+      marginTop: 16
     },
     dateInputsStyles2: {
-      marginTop: '20px',
-      padding: '0 20px 35px',
+      padding: '16px 15px 15px',
       borderBottom: `1px solid ${palette[type].sideModal.content.border}`
     },
     dateInputsStyles3: {
-      marginTop: '18px',
-      padding: '0 20px'
+      padding: '16px 15px 0',
+      borderBottom: `1px solid ${palette[type].sideModal.content.border}`
     },
     tabToggleButtonGroup: {
-      marginBottom: '19px',
+      marginBottom: 16,
       justifyContent: 'center'
     },
     tabToggleButtonContainer: {
@@ -231,7 +227,8 @@ const styles = ({ palette, type, formControls }) => {
       }
     },
     formGroupPadding: {
-      padding: '0 20px 35px'
+      padding: '0 15px',
+      margin: 0
     },
     tabToggleButtonMultiline: {
       '& > span': {
@@ -672,9 +669,6 @@ const CourtDockets = ({
   onShareStateCallback
 }) => {
   const dispatchAction = useDispatch()
-  const { configMediaCategory, themeOfMedia } = useSelector(
-    ({ config }) => config
-  )
   const addMediaReducer = useSelector(({ addMedia }) => addMedia.premium)
   const mediaItemReducer = useSelector(({ media }) => media.mediaItem)
 
@@ -684,10 +678,8 @@ const CourtDockets = ({
     selectedPalette: docketsPalettePresets[0]
   })
 
-  const [isLoading, setLoading] = useState(false)
   const [formSubmitting, setFormSubmitting] = useState(false)
   const [autoClose, setAutoClose] = useState(false)
-  const [featureId, setFeatureId] = useState(null)
   const [themeType, setThemeType] = useState(initialFormState.current.themeType)
   const [themes, setThemes] = useState([])
   const [allowedThemeSetting, setAllowedThemeSetting] = useState({})
@@ -702,6 +694,12 @@ const CourtDockets = ({
     fontSettingTabs.TITLE
   )
   const [openedAccordionTab, setOpenedAccordionTab] = useState()
+
+  const { themes: themeOfMedia, featureId } = useMediaTheme(
+    'Premium',
+    'Dockets'
+  )
+
   const initialFormValues = useRef({
     themeId: null,
     source: dataSourceTabs.IMPORT_FILE,
@@ -916,24 +914,14 @@ const CourtDockets = ({
         mediaInfo: getMediaInfoFromBackendData(backendData)
       }
       form.setValues(initialFormValues.current)
-      setLoading(false)
     }
     // eslint-disable-next-line
   }, [backendData])
 
   useEffect(() => {
-    if (!configMediaCategory.response.length) return
-    const id = getAllowedFeatureId(configMediaCategory, 'Premium', 'Dockets')
-
-    setFeatureId(id)
-    dispatchAction(getThemeOfMediaFeatureById(id))
-    // eslint-disable-next-line
-  }, [configMediaCategory])
-
-  useEffect(() => {
-    const legacyThemes = _get(themeOfMedia, 'response.Legacy', [])
-    const modernThemes = _get(themeOfMedia, 'Modern.Legacy', [])
-
+    const legacyThemes = _get(themeOfMedia, 'Legacy', [])
+    const modernThemes = _get(themeOfMedia, 'Modern', [])
+    console.log({ legacyThemes, modernThemes })
     if (backendData && backendData.id) {
       const legacyTheme = legacyThemes.find(
         ({ id }) => id === backendData.themeId
@@ -971,12 +959,6 @@ const CourtDockets = ({
 
     // eslint-disable-next-line
   }, [themeOfMedia, backendData])
-
-  useEffect(() => {
-    if (mode === 'edit' && !backendData?.id) {
-      setLoading(true)
-    }
-  }, [mode, backendData])
 
   useEffect(() => {
     const values = _get(formData, 'values')
@@ -1382,7 +1364,7 @@ const CourtDockets = ({
         )
       case transitionTypes.SCROLL:
         return (
-          <div>
+          <div className={classes.marginBottom1}>
             <FormControlSpeedInput
               labelAtEnd={false}
               step={1}
@@ -1410,11 +1392,6 @@ const CourtDockets = ({
 
   return (
     <form className={classes.formWrapper} onSubmit={form.handleSubmit}>
-      {isLoading && (
-        <div className={classes.loaderWrapper}>
-          <CircularProgress size={30} thickness={5} />
-        </div>
-      )}
       <Grid container className={classes.tabContent}>
         <Grid item xs={7}>
           <div className={classes.root}>
@@ -1526,7 +1503,18 @@ const CourtDockets = ({
                         </TabToggleButton>
                       </TabToggleButtonGroup>
                     </Grid>
-                    <Grid item xs={12} className={classes.dateInputsStyles2}>
+                    <Grid
+                      item
+                      xs={12}
+                      className={classNames({
+                        [classes.dateInputsStyles2]:
+                          form.values.date_range_type ===
+                          dateRangeTypeTabs.AUTOMATED,
+                        [classes.dateInputsStyles3]:
+                          form.values.date_range_type ===
+                          dateRangeTypeTabs.MANUAL
+                      })}
+                    >
                       {dateRangeTabContent}
                     </Grid>
                   </Grid>

@@ -288,6 +288,19 @@ const postDeviceNote = async (id, data) => {
   }
 }
 
+async function getCapAlertDevices() {
+  try {
+    const response = await api({
+      method: 'GET',
+      url: '/capAlert/device'
+    })
+
+    return response.data
+  } catch (error) {
+    throw errorHandler(error)
+  }
+}
+
 export default {
   getItem,
   getItems,
@@ -308,5 +321,6 @@ export default {
   getSleepMode,
   putSleepMode,
   getDeviceNotes,
-  postDeviceNote
+  postDeviceNote,
+  getCapAlertDevices
 }

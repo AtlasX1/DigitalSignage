@@ -1,26 +1,34 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import WebFont from 'webfontloader'
 
 import { compose } from 'redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { translate } from 'react-i18next'
-import { withStyles, Grid } from '@material-ui/core'
+import { withStyles } from '@material-ui/core'
+import { isNull as _isNull } from 'lodash'
 
 import ExpansionPanel from '../Template/CreateTemplate/SettingsSide/ExpansionPanel'
 import AlignmentsRotations from './components/rightSidebar/AlignmentsRotations'
 import FontStyle from './components/rightSidebar/FontStyle'
 import TextAlign from './components/rightSidebar/TextAlign'
 import BulletsSpacing from './components/rightSidebar/BulletsSpacing'
-import TextShadow from './components/rightSidebar/TextShadow'
+import ShadowsOverlays from './components/rightSidebar/ShadowsOverlays'
+import CanvasResolutions from './components/rightSidebar/settingsTabs/CanvasResolutions'
+import CanvasColor from './components/rightSidebar/settingsTabs/CanvasColors'
+import CanvasBgImages from './components/rightSidebar/settingsTabs/CanvasBgImages'
+import CanvasBgPattern from './components/rightSidebar/settingsTabs/CanvasBgPattern'
 import { useCanvasState } from './components/canvas/CanvasProvider'
 
 import { Scrollbars } from 'components/Scrollbars'
-import { BlueButton, WhiteButton } from 'components/Buttons'
+
+import {
+  setOpenLeftSidebar,
+  setOpenRightSidebar
+} from 'actions/designGalleryActions'
 
 import './styles/_rightSidebar.scss'
 
 const styles = theme => {
-  const { palette, type } = theme
-
   return {
     rootClass: {
       border: 'none'
@@ -68,29 +76,6 @@ const styles = theme => {
       right: '0',
       left: 'auto'
     },
-    buttonWrapper: {
-      height: 50,
-      padding: '0 10px'
-    },
-    buttonClass: {
-      paddingLeft: '10px'
-    },
-    action: {
-      paddingTop: '5',
-      paddingBottom: '5'
-    },
-    actionCancel: {
-      borderColor: palette[type].sideModal.action.button.border,
-      boxShadow: 'none',
-      backgroundImage: palette[type].sideModal.action.button.background,
-      color: palette[type].sideModal.action.button.color,
-
-      '&:hover': {
-        color: '#fff',
-        background: '#006198',
-        borderColor: '#006198'
-      }
-    },
     settings: {
       flexGrow: 1
     }
@@ -98,18 +83,31 @@ const styles = theme => {
 }
 
 const RightSidebar = props => {
-  const { t, classes, onSave, onSaveAs, onReset, edit } = props
+  const { classes } = props
+
+  const dispatch = useDispatch()
+  const [isOpenRightSidebar] = useSelector(state => [
+    state.editor.designGallery.isOpenRightSidebar
+  ])
+
   const [{ canvasHandlers, activeObject }] = useCanvasState()
+  const [isCanvasSettings, setCanvasSettings] = useState(true)
+
+  const toggleSidebar = () => {
+    dispatch(setOpenRightSidebar(!isOpenRightSidebar))
+    dispatch(setOpenLeftSidebar(false))
+  }
 
   const handleFontFamilyChange = val => {
-    WebFont.load({
-      google: {
-        families: [val]
-      },
-      active: () => {
-        canvasHandlers.setTextBoxProps({ fontFamily: val })
-      }
-    })
+    val &&
+      WebFont.load({
+        google: {
+          families: [val]
+        },
+        active: () => {
+          canvasHandlers.setTextBoxProps({ fontFamily: val })
+        }
+      })
   }
 
   const handleAlignmentChange = (val, gap) => {
@@ -132,9 +130,51 @@ const RightSidebar = props => {
     canvasHandlers.setObjectsShadow(shadow)
   }
 
+  const handleOverlayChange = overlay => {
+    canvasHandlers.setObjectsOverlay(overlay)
+  }
+
   const handleListChange = value => {
     canvasHandlers.setListStyle(value)
   }
+
+  const handleResolutionChange = value => {
+    canvasHandlers.setFrameSize(value)
+  }
+
+  const handleCanvasColorChange = value => {
+    canvasHandlers.setFrameColor(value)
+  }
+
+  const handleCanvasGradientChange = value => {
+    canvasHandlers.setFrameGradient(value)
+  }
+
+  const handleChangeBackground = value => {
+    const { id, src, type, selected } = value
+    if (selected) {
+      canvasHandlers.removeBackground()
+    } else {
+      const url = src.original ? src.original : src.small
+      canvasHandlers.setBackground({ id, url, type })
+    }
+  }
+
+  useEffect(
+    () => {
+      if (activeObject && !_isNull(activeObject)) {
+        setCanvasSettings(false)
+        dispatch(setOpenRightSidebar(true))
+        dispatch(setOpenLeftSidebar(false))
+      } else {
+        setCanvasSettings(true)
+        dispatch(setOpenRightSidebar(false))
+        dispatch(setOpenLeftSidebar(false))
+      }
+    },
+    // eslint-disable-next-line
+    [activeObject]
+  )
 
   const ExpansionPanels = [
     {
@@ -173,75 +213,89 @@ const RightSidebar = props => {
         <BulletsSpacing
           activeObject={activeObject}
           onListChange={handleListChange}
+          onTextStyleChange={handleTextBoxChange}
         />
       )
     },
     {
-      label: 'Text Shadow',
-      component: <TextShadow onShadowChange={handleShadowChange} />
+      label: 'Shadows & Overlays',
+      component: (
+        <ShadowsOverlays
+          onShadowChange={handleShadowChange}
+          onOverlayChange={handleOverlayChange}
+        />
+      )
+    }
+  ]
+
+  const CanvasSettingsPanels = [
+    {
+      label: 'Canvas Settings',
+      component: (
+        <CanvasResolutions onChangeResolution={handleResolutionChange} />
+      )
+    },
+    {
+      label: 'Color',
+      component: (
+        <CanvasColor
+          onChangeColor={handleCanvasColorChange}
+          onChangeGradient={handleCanvasGradientChange}
+        />
+      )
+    },
+    {
+      label: 'Images',
+      component: <CanvasBgImages onChangeBackground={handleChangeBackground} />
+    },
+    {
+      label: 'Patterns',
+      component: <CanvasBgPattern onChangeBackground={handleChangeBackground} />
     }
   ]
 
   return (
-    <div className={'right-sidebar scroll-container'}>
+    <div
+      className={['right-sidebar', isOpenRightSidebar ? '' : 'closed'].join(
+        ' '
+      )}
+    >
+      <div className="toggle-button" onClick={toggleSidebar}>
+        {isOpenRightSidebar ? (
+          <i className="fa fa-chevron-right" />
+        ) : (
+          <i className="fa fa-chevron-left" />
+        )}
+      </div>
       <div className={classes.settings}>
         <Scrollbars>
-          {ExpansionPanels.map((panel, key) => (
-            <ExpansionPanel
-              key={key}
-              expanded={true}
-              title={panel.label}
-              children={panel.component}
-              rootClass={classes.rootClass}
-              summaryClass={classes.summaryClass}
-              summaryIconClass={classes.summaryIconClass}
-              formControlLabelClass={classes.labelClass}
-            />
-          ))}
+          {isCanvasSettings
+            ? CanvasSettingsPanels.map((panel, key) => (
+                <ExpansionPanel
+                  key={key}
+                  expanded={true}
+                  title={panel.label}
+                  children={panel.component}
+                  rootClass={classes.rootClass}
+                  summaryClass={classes.summaryClass}
+                  summaryIconClass={classes.summaryIconClass}
+                  formControlLabelClass={classes.labelClass}
+                />
+              ))
+            : ExpansionPanels.map((panel, key) => (
+                <ExpansionPanel
+                  key={key}
+                  expanded={true}
+                  title={panel.label}
+                  children={panel.component}
+                  rootClass={classes.rootClass}
+                  summaryClass={classes.summaryClass}
+                  summaryIconClass={classes.summaryIconClass}
+                  formControlLabelClass={classes.labelClass}
+                />
+              ))}
         </Scrollbars>
       </div>
-      <Grid
-        container
-        alignItems={'center'}
-        justify={'flex-end'}
-        className={classes.buttonWrapper}
-      >
-        <Grid item xs={4} className={classes.buttonClass}>
-          <BlueButton
-            // disabled={disabled}
-            fullWidth={true}
-            className={classes.action}
-            onClick={onSave}
-          >
-            Save
-          </BlueButton>
-        </Grid>
-        {edit && (
-          <Grid item xs={4} className={classes.buttonClass}>
-            <BlueButton
-              // disabled={disabled}
-              fullWidth={true}
-              className={classes.action}
-              onClick={onSaveAs}
-            >
-              Save As
-            </BlueButton>
-          </Grid>
-        )}
-        <Grid item xs={4} className={classes.buttonClass}>
-          <WhiteButton
-            fullWidth={true}
-            className={[
-              'hvr-radial-out',
-              classes.action,
-              classes.actionCancel
-            ].join(' ')}
-            onClick={onReset}
-          >
-            {t('Reset')}
-          </WhiteButton>
-        </Grid>
-      </Grid>
     </div>
   )
 }

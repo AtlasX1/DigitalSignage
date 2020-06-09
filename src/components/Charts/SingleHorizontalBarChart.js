@@ -1,113 +1,154 @@
-import React, { useMemo, useRef } from 'react'
+import React, { useMemo, useCallback } from 'react'
 import { translate } from 'react-i18next'
-
+import classNames from 'classnames'
 import { withStyles } from '@material-ui/core'
 
-import { BarChart, Bar, XAxis, YAxis, Tooltip } from 'recharts'
+import { Bar } from '@nivo/bar'
+import { BasicTooltip } from '@nivo/tooltip'
+import { capitalize } from 'utils'
 
-const styles = () => ({
-  root: {
-    position: 'relative',
-    zIndex: 10,
-    borderRadius: '15px'
+const BarComponent = ({
+  x,
+  y,
+  width,
+  height,
+  color,
+  data,
+  tooltip,
+  showTooltip,
+  hideTooltip,
+  onMouseEnter,
+  onMouseLeave
+}) => {
+  const handleTooltip = useCallback(e => showTooltip(tooltip(data), e), [
+    showTooltip,
+    tooltip,
+    data
+  ])
+  const handleMouseEnter = useCallback(
+    e => {
+      onMouseEnter(data, e)
+      showTooltip(tooltip(data), e)
+    },
+    [onMouseEnter, showTooltip, tooltip, data]
+  )
+  const handleMouseLeave = useCallback(
+    e => {
+      onMouseLeave(data, e)
+      hideTooltip(e)
+    },
+    [onMouseLeave, hideTooltip, data]
+  )
+
+  return (
+    <g
+      onMouseEnter={handleMouseEnter}
+      onMouseMove={handleTooltip}
+      onMouseLeave={handleMouseLeave}
+    >
+      <rect
+        x={x}
+        y={y}
+        width={width}
+        height={height}
+        fill={color}
+        style={{ clipPath: `url(#horizontal-bar-clip)` }}
+      />
+    </g>
+  )
+}
+
+const ClipPath = ({ width, height }) => {
+  const clipPath = useMemo(() => {
+    const borderRadius = height / 2
+    return (
+      <clipPath id={`horizontal-bar-clip`}>
+        <rect
+          width={width}
+          height={height}
+          rx={borderRadius}
+          ry={borderRadius}
+        ></rect>
+      </clipPath>
+    )
+  }, [width, height])
+  return clipPath
+}
+
+const styles = ({ typography }) => ({
+  tooltip: {
+    fontSize: 14,
+    lineHeight: '28px',
+    fontFamily: typography.fontFamily
   }
 })
-
-let chartCounter = 0
 
 const SingleHorizontalBarChart = ({
   width,
   height,
-  classes,
   chartData = [],
   fillColors = [],
+  tooltipColors = fillColors,
   chartWrapClassName = '',
-  roundedCorners = true
+  margin: {
+    top: marginTop = 7,
+    right: marginRight = 5,
+    bottom: marginBottom = 7,
+    left: marginLeft = 5
+  } = {},
+  classes
 }) => {
-  const chartId = useRef(chartCounter++)
-  const fontFamily = useMemo(
-    () =>
-      [
-        '"Nunito Sans"',
-        '-apple-system',
-        'BlinkMacSystemFont',
-        '"Segoe UI"',
-        'Roboto',
-        '"Helvetica Neue"',
-        'Arial',
-        'sans-serif',
-        '"Apple Color Emoji"',
-        '"Segoe UI Emoji"',
-        '"Segoe UI Symbol"'
-      ].join(','),
-    []
+  const tooltip = useCallback(
+    ({ data, id }) => (
+      <BasicTooltip
+        id={id}
+        renderContent={() => (
+          <div className={classes.tooltip}>
+            <div>{capitalize(data.name)}</div>
+            <div style={{ color: tooltipColors[0] }}>
+              Active: {data.active || 0}
+            </div>
+            <div style={{ color: tooltipColors[1] }}>
+              Inactive: {data.inactive || 0}
+            </div>
+          </div>
+        )}
+      />
+    ),
+    [classes.tooltip, tooltipColors]
   )
-
-  const displayClipPath = useMemo(() => {
-    if (!roundedCorners) {
-      return null
-    }
-
-    const yOffset = height / 10 + 4
-    const clipPathHeight = Math.floor(height - 2 * yOffset)
-
-    return (
-      <clipPath id={`horizontal-bar-clip-${chartId.current}`}>
-        <rect
-          x="5"
-          y={yOffset}
-          width={width - 10}
-          height={clipPathHeight}
-          rx={clipPathHeight / 2}
-        ></rect>
-      </clipPath>
-    )
-  }, [width, height, roundedCorners])
-
-  const barStyle = useMemo(
-    () =>
-      roundedCorners
-        ? { clipPath: `url(#horizontal-bar-clip-${chartId.current})` }
-        : undefined,
-    [roundedCorners]
-  )
-
   return (
-    <div className={[classes.root, chartWrapClassName].join(' ')}>
-      <BarChart
+    <div className={classNames(classes.root, chartWrapClassName)}>
+      <Bar
+        data={chartData}
         width={width}
         height={height}
-        data={chartData}
-        layout="vertical"
-        stackOffset="expand"
-      >
-        {displayClipPath}
-        <XAxis type="number" hide />
-        <YAxis dataKey="name" type="category" hide />
-        <Tooltip
-          cursor={false}
-          contentStyle={{
-            fontSize: '14px',
-            fontFamily
-          }}
-        />
-        <Bar
-          dataKey="active"
-          stackId="a"
-          fill={fillColors[0]}
-          style={barStyle}
-        />
-        <Bar
-          dataKey="inactive"
-          stackId="a"
-          fill={fillColors[1]}
-          style={barStyle}
-        />
-      </BarChart>
+        keys={['active', 'inactive']}
+        indexBy="name"
+        margin={{
+          top: marginTop,
+          right: marginRight,
+          bottom: marginBottom,
+          left: marginLeft
+        }}
+        layers={[ClipPath, 'bars']}
+        padding={0}
+        layout="horizontal"
+        colors={chartData[0].active ? fillColors : [fillColors[1]]}
+        axisBottom={null}
+        axisLeft={null}
+        enableGridY={false}
+        enableLabel={false}
+        labelSkipWidth={10}
+        labelSkipHeight={12}
+        legends={[]}
+        barComponent={BarComponent}
+        tooltip={tooltip}
+        animate={true}
+      />
     </div>
   )
 }
-
 export default translate('translations')(
   withStyles(styles)(SingleHorizontalBarChart)
 )

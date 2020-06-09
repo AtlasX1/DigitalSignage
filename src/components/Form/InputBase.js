@@ -14,7 +14,7 @@ const BootstrapInputBase = withStyles(
         backgroundColor: palette[type].formControls.input.background,
         border: `1px solid ${palette[type].formControls.input.border}`,
         color: palette[type].formControls.input.color,
-        fontSize: 14,
+        fontSize: '0.875rem',
         width: '100%',
         height: '38px',
         padding: '5px 26px 5px 7px',

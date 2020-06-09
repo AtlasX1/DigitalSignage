@@ -59,9 +59,7 @@ const ScheduleDetailsModal = ({ t, classes, ...props }) => {
         </Typography>
       </Grid>
       <Grid item xs={4}>
-        <Typography className={classes.scheduleDetail}>
-          {t('Working Days')}
-        </Typography>
+        <Typography className={classes.scheduleDetail}>{t('Days')}</Typography>
       </Grid>
       <Grid item xs={8}>
         <Typography

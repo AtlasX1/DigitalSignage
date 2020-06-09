@@ -111,19 +111,23 @@ const WorkplacePostersLibrary = ({
       { id: 'tag', label: 'Tags' },
       {
         id: 'size',
-        label: 'Size'
+        label: 'Size',
+        align: 'center'
       },
       {
         id: 'uploadType',
-        label: 'Type'
+        label: 'Type',
+        align: 'center'
       },
       {
         id: 'orientation',
-        label: 'Orientation'
+        label: 'Orientation',
+        align: 'center'
       },
       {
         id: 'updatedAt',
-        label: 'Updated on'
+        label: 'Updated on',
+        align: 'center'
       }
     ],
     []

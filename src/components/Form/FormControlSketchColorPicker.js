@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { SketchPicker } from 'react-color'
 import { translate } from 'react-i18next'
 
@@ -8,7 +8,7 @@ import BootstrapInputBase from './InputBase'
 import { RoundedTab, RoundedTabs } from '../Tabs'
 import Popup from '../Popup'
 import classNames from 'classnames'
-import '../../styles/forms/_colorpicker.scss'
+import 'styles/forms/_colorpicker.scss'
 import { rgbaToString } from '../Pages/DesignGallery/utils'
 
 const styles = theme => {
@@ -21,11 +21,12 @@ const styles = theme => {
       marginBottom: theme.spacing.unit * 2
     },
     label: {
-      marginBottom: 7,
+      marginBottom: 0,
       ...formControls.mediaApps.colorSelect.label
     },
     inputWrap: {
-      position: 'relative'
+      position: 'relative',
+      width: 'inherit'
     },
     bootstrapRoot: {
       width: '100%',
@@ -74,11 +75,11 @@ const styles = theme => {
       position: 'absolute',
       top: 0,
       right: 0,
-      width: 45,
+      width: 30,
       height: '100%',
       borderLeft: '1px solid lightgray',
       '& > .hex-class': {
-        width: '93%'
+        width: '90%'
       }
     }
   }
@@ -99,13 +100,15 @@ const FormControlSketchColorPicker = ({ t, classes, ...props }) => {
     inputProps = {},
     colorPickerProps = {},
     color = '#000',
-    handleChange,
     onColorChange = () => {},
     disabled = false,
     position = 'bottom right',
     marginBottom = true,
     inputValue,
-    withBorder = false
+    withBorder = false,
+    isHex = false,
+    width = 200,
+    name
   } = props
 
   const [pickerColor, setPickerColor] = useState(color)
@@ -113,20 +116,32 @@ const FormControlSketchColorPicker = ({ t, classes, ...props }) => {
   const [isColorMixed, setColorMixed] = useState(false)
 
   useEffect(() => {
-    if (handleChange) handleChange(pickerColor)
-    //eslint-disable-next-line
-  }, [pickerColor])
-
-  useEffect(() => {
     setColorMixed(color === 'mix')
     setPickerColor(color)
   }, [color])
 
   const onTabChange = (event, tab) => setCurrentTab(tab)
-  const handleSketchPicker = val => {
-    const color = rgbaToString(val.rgb)
-    setPickerColor(color)
-    onColorChange(color)
+
+  const handleSketchPicker = useCallback(
+    val => {
+      const color = isHex ? val.hex : rgbaToString(val.rgb)
+      setPickerColor(color)
+      if (!name) {
+        onColorChange(color)
+      } else {
+        onColorChange({ target: { name, value: color } })
+      }
+    },
+    // eslint-disable-next-line
+    [name, onColorChange]
+  )
+
+  const handleChangeInput = ({ target: { name, value } }) => {
+    if (!name) {
+      onColorChange(value)
+    } else {
+      onColorChange({ target: { name, value } })
+    }
   }
 
   // In case when passed tabs array
@@ -140,16 +155,14 @@ const FormControlSketchColorPicker = ({ t, classes, ...props }) => {
     <Grid
       container
       alignItems="center"
-      className={[
-        classes.root,
-        rootClass,
-        marginBottom ? classes.margin : ''
-      ].join(' ')}
+      className={classNames(classes.root, rootClass, {
+        [classes.margin]: marginBottom
+      })}
     >
       {label && (
         <InputLabel
           shrink
-          className={[classes.label, formControlLabelClass].join(' ')}
+          className={classNames(classes.label, formControlLabelClass)}
         >
           {label}
         </InputLabel>
@@ -161,7 +174,7 @@ const FormControlSketchColorPicker = ({ t, classes, ...props }) => {
         disabled={disabled}
         trigger={
           <div
-            className={[classes.inputWrap, formControlInputWrapClass].join(' ')}
+            className={classNames(classes.inputWrap, formControlInputWrapClass)}
           >
             <BootstrapInputBase
               id={id}
@@ -170,16 +183,16 @@ const FormControlSketchColorPicker = ({ t, classes, ...props }) => {
                 inputValue || (isColorMixed ? 'mixed' : String(pickerColor))
               }
               placeholder={null}
+              name={name}
               classes={{
-                root: [classes.bootstrapRoot, formControlInputRootClass].join(
-                  ' '
+                root: classNames(
+                  classes.bootstrapRoot,
+                  formControlInputRootClass
                 ),
                 input: formControlInputClass
               }}
               disabled={disabled}
-              onChange={e => {
-                handleChange && handleChange(e.target.value)
-              }}
+              onChange={handleChangeInput}
               {...inputProps}
             />
 
@@ -197,13 +210,13 @@ const FormControlSketchColorPicker = ({ t, classes, ...props }) => {
             ) : (
               <span
                 style={{ backgroundColor: pickerColor }}
-                className={[classes.hexColor, hexColorClass].join(' ')}
+                className={classNames(classes.hexColor, hexColorClass)}
               />
             )}
           </div>
         }
         contentStyle={{
-          width: 200,
+          width,
           border: 0,
           paddingTop: 5,
           paddingBottom: 5,

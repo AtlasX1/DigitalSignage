@@ -20,7 +20,6 @@ import {
   watchFeedback,
   watchTags,
   watchGroups,
-  watchSignageEditor,
   watchFonts,
   watchConfig,
   watchClientPackage,
@@ -36,12 +35,12 @@ import {
   watchContents,
   watchAlert,
   watchRole,
-  watchAnnouncements,
   watchWorkplacePosters,
   watchCustomEmailTemplate,
   watchPreference,
   watchClientUsers,
   watchWhiteLabel,
+  watchSmartPlaylist,
   watchQuotes,
   watchDesignGallery
 } from './watchers'
@@ -67,7 +66,6 @@ export default function* rootSaga() {
   yield fork(watchDashboard)
   yield fork(watchTags)
   yield fork(watchGroups)
-  yield fork(watchSignageEditor)
   yield fork(watchConfig)
   yield fork(watchFonts)
   yield fork(watchClientSettings)
@@ -82,13 +80,13 @@ export default function* rootSaga() {
   yield fork(watchCategories)
   yield fork(watchContents)
   yield fork(watchRole)
-  yield fork(watchAnnouncements)
   yield fork(watchWorkplacePosters)
   yield fork(watchCustomEmailTemplate)
   yield fork(watchPreference)
   yield fork(watchClientUsers)
   yield fork(watchWhiteLabel)
   yield fork(watchQuotes)
+  yield fork(watchSmartPlaylist)
   yield fork(watchAlert)
   yield fork(watchDesignGallery)
 }

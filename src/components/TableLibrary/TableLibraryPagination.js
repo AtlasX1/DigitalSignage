@@ -22,7 +22,7 @@ import {
 } from 'components/Dropdowns'
 
 const styles = theme => {
-  const { palette, type } = theme
+  const { palette, type, typography } = theme
   return {
     root: {
       height: '50px',
@@ -43,7 +43,7 @@ const styles = theme => {
     },
     paginationText: {
       marginRight: '10px',
-      color: '#74809a'
+      ...typography.lightText[type]
     },
     paginationInput: {
       height: '32px'
@@ -68,6 +68,9 @@ const styles = theme => {
     rowActionBtnIcon: {
       width: 18,
       height: 18
+    },
+    textLight: {
+      ...typography.lightText[type]
     }
   }
 }
@@ -106,7 +109,10 @@ const TableLibraryPagination = ({
           marginPagesDisplayed={marginPagesDisplayed}
           pageRangeDisplayed={pageRangeDisplayed}
           onPageChange={onPageChange}
-          containerClassName={'TableLibraryPagination'}
+          containerClassName={classNames(
+            'TableLibraryPagination',
+            classes.textLight
+          )}
           subContainerClassName={
             'TableLibraryPagination_pages TableLibraryPagination_pagination'
           }

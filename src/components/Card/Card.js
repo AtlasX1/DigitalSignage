@@ -15,92 +15,87 @@ import Popup from '../Popup'
 import { CircleIconButton } from '../Buttons'
 import 'styles/card/_card.scss'
 
-const styles = theme => {
-  const { palette, type } = theme
-  return {
-    root: {
-      padding: '22px 32px',
-      borderRadius: 0,
-      boxShadow: 'none',
-      background: palette[type].card.background,
-      overflow: 'visible'
-    },
-    radius: {
-      borderRadius: '6px'
-    },
-    shadow: {
-      boxShadow: `-2px 0 4px 0 ${palette[type].card.shadow}`
-    },
-    noRootSidePaddings: {
-      paddingLeft: 0,
-      paddingRight: 0
-    },
-    noRootTopPadding: {
-      paddingTop: 0
-    },
-    header: {
-      marginBottom: '20px'
-    },
-    headerSidePaddings: {
-      paddingLeft: '32px',
-      paddingRight: '32px'
-    },
-    circleIcon: {
-      padding: '4px',
-      color: '#afb7c7'
-    },
-    menuDropdown: {
-      width: '215px'
-    },
-    cardTitle: {
-      fontSize: '18px',
+const styles = ({ palette, type, typography }) => ({
+  root: {
+    padding: '22px 32px',
+    borderRadius: 0,
+    boxShadow: 'none',
+    background: palette[type].card.background,
+    overflow: 'visible'
+  },
+  radius: {
+    borderRadius: '6px'
+  },
+  shadow: {
+    boxShadow: `-2px 0 4px 0 ${palette[type].card.shadow}`
+  },
+  noRootSidePaddings: {
+    paddingLeft: 0,
+    paddingRight: 0
+  },
+  noRootTopPadding: {
+    paddingTop: 0
+  },
+  header: {
+    marginBottom: '20px'
+  },
+  headerSidePaddings: {
+    paddingLeft: '32px',
+    paddingRight: '32px'
+  },
+  circleIcon: {
+    padding: '4px',
+    color: '#afb7c7'
+  },
+  menuDropdown: {
+    width: '215px'
+  },
+  cardTitle: {
+    ...typography.darkAccent[type],
+    fontSize: '1.125rem'
+  },
+  cardMenuList: {
+    padding: '10px 0 10px 10px'
+  },
+  cardMenuText: {
+    color: palette[type].list.item.color,
+    transition: 'all .4s',
+
+    '&:hover': {
       fontWeight: 'bold',
-      lineHeight: '32px',
-      color: palette[type].card.titleColor
-    },
-    cardMenuList: {
-      padding: '10px 0 10px 10px'
-    },
-    cardMenuText: {
-      color: palette[type].list.item.color,
-      transition: 'all .4s',
-
-      '&:hover': {
-        fontWeight: 'bold',
-        color: palette[type].list.item.colorActive
-      }
-    },
-
-    grayHeader: {
-      marginLeft: '-32px',
-      marginRight: '-32px',
-      backgroundColor: palette[type].card.greyHeader.background,
-      borderTop: `1px solid ${palette[type].pages.adminSettings.content.border}`,
-      borderBottom: `1px solid ${palette[type].pages.adminSettings.content.border}`
-    },
-    noNegativeHeaderSideMargins: {
-      marginLeft: 0,
-      marginRight: 0
-    },
-    grayHeaderTitle: {
-      fontSize: '12px',
-      color: palette[type].card.greyHeader.color,
-      paddingLeft: '32px',
-      lineHeight: '44px'
-    },
-
-    flatHeader: {
-      marginTop: '8px',
-      marginBottom: '30px'
-    },
-    flatHeaderTitle: {
-      fontSize: '20px',
-      fontWeight: 'normal',
-      lineHeight: '24px',
-      color: palette[type].card.flatHeader.color
+      color: palette[type].list.item.colorActive
     }
+  },
+
+  grayHeader: {
+    marginLeft: '-32px',
+    marginRight: '-32px',
+    backgroundColor: palette[type].card.greyHeader.background,
+    borderTop: `1px solid ${palette[type].pages.adminSettings.content.border}`,
+    borderBottom: `1px solid ${palette[type].pages.adminSettings.content.border}`
+  },
+  noNegativeHeaderSideMargins: {
+    marginLeft: 0,
+    marginRight: 0
+  },
+  grayHeaderTitle: {
+    fontSize: '12px',
+    color: palette[type].card.greyHeader.color,
+    paddingLeft: '32px',
+    lineHeight: '44px'
+  },
+
+  flatHeader: {
+    marginTop: '8px',
+    marginBottom: '30px'
+  },
+  flatHeaderTitle: {
+    fontSize: '20px',
+    fontWeight: 'normal',
+    lineHeight: '24px',
+    color: palette[type].card.flatHeader.color
   }
-}
+})
 
 const Card = ({
   t,
@@ -131,6 +126,7 @@ const Card = ({
   menuDropdownContainerClassName = '',
   showMenuOnHover = false,
   popupContentStyle = {},
+  onClick = f => f,
   ...props
 }) => {
   return (
@@ -142,6 +138,7 @@ const Card = ({
         [classes.noRootTopPadding]: grayHeader,
         Card__Container: showMenuOnHover
       })}
+      onClick={onClick}
     >
       {(title || titleComponent) && (
         <header

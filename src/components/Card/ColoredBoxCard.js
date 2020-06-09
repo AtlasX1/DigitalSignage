@@ -7,7 +7,7 @@ import Card from './Card'
 
 import { minTwoDigits } from '../../utils'
 
-const styles = () => ({
+const styles = ({ typography, type }) => ({
   coloredBox: {
     width: '125px',
     padding: '10px 0 15px',
@@ -33,11 +33,15 @@ const styles = () => ({
     color: '#fff'
   },
   cardCount: {
-    fontSize: '36px'
+    fontWeight: 'bold',
+    lineHeight: '1.667em',
+    fontSize: '1.125rem',
+    color: '#fff'
   },
   cardLabel: {
-    fontSize: '13px',
-    textTransform: 'uppercase'
+    ...typography.lightText[type],
+    textTransform: 'uppercase',
+    color: '#fff'
   },
   menuContainer: {
     whiteSpace: 'nowrap'

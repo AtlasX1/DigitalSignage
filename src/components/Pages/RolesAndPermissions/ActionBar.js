@@ -13,16 +13,11 @@ const styles = theme => {
       borderTop: palette[type].sideModal.action.border,
       marginTop: 'auto'
     },
-    actionWrap: {
-      paddingRight: '12px',
-      width: '125px',
-      marginLeft: '35px'
-    },
     action: {
       paddingTop: '9px',
       paddingBottom: '9px',
-      width: '125px',
-      marginLeft: '35px'
+      minwidth: '125px',
+      marginRight: '12px'
     },
     actionCancel: {
       borderColor: palette[type].sideModal.action.button.border,

@@ -17,6 +17,7 @@ import {
 } from 'components/Form'
 import groupService from 'services/groupsService'
 import { stableSort } from 'utils'
+import * as axios from 'axios'
 
 const styles = theme => ({
   root: {
@@ -43,6 +44,8 @@ const styles = theme => ({
   }
 })
 
+//TODO: fix disableType when Playlists search will be added
+
 const MediaSearchForm = ({
   classes,
   t,
@@ -50,6 +53,9 @@ const MediaSearchForm = ({
   queryParams,
   onSubmit,
   onReset,
+  options = {
+    disableType: false
+  },
   close
 }) => {
   const form = useFormik({
@@ -66,17 +72,32 @@ const MediaSearchForm = ({
     // eslint-disable-next-line
   }, [queryParams])
 
+  const CancelToken = axios.CancelToken
+  const source = CancelToken.source()
+
   const getGroupOptions = async value => {
-    const response = await groupService.getGroupByEntity('Media', {
-      fields: 'title',
-      title: value || undefined,
-      sort: 'title',
-      order: 'asc'
-    })
+    const response = await groupService.getGroupByEntity(
+      'Media',
+      {
+        fields: 'title',
+        title: value || undefined,
+        sort: 'title',
+        order: 'asc'
+      },
+      source.token
+    )
     const groups = response ? response.data : []
 
     return groups.map(({ title }) => ({ value: title, label: title }))
   }
+
+  useEffect(
+    () => () => {
+      source.cancel()
+    },
+    // eslint-disable-next-line
+    []
+  )
 
   const typeOptions = useMemo(() => {
     const options =
@@ -107,20 +128,24 @@ const MediaSearchForm = ({
           classes.labelTransform
         )}
       />
-      <FormControlReactSelect
-        name="featureId"
-        fullWidth
-        label={t('Type')}
-        value={form.values.featureId}
-        handleChange={form.handleChange}
-        options={typeOptions}
-        formControlLabelClass={classNames(
-          classes.label,
-          classes.labelTransform
-        )}
-        isClearable
-      />
+      {!options.disableType && (
+        <FormControlReactSelect
+          marginBottom={16}
+          name="featureId"
+          fullWidth
+          label={t('Type')}
+          value={form.values.featureId}
+          handleChange={form.handleChange}
+          options={typeOptions}
+          formControlLabelClass={classNames(
+            classes.label,
+            classes.labelTransform
+          )}
+          isClearable
+        />
+      )}
       <FormControlAutocomplete
+        marginBottom={16}
         name="group"
         fullWidth
         label={t('Group')}

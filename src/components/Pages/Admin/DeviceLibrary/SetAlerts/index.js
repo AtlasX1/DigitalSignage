@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react'
+import React, { useState, useCallback, useMemo } from 'react'
 import PropTypes from 'prop-types'
 import { translate } from 'react-i18next'
 import { Link, Route, Switch } from 'react-router-dom'
@@ -36,6 +36,20 @@ const SetAlerts = ({ t, classes, location }) => {
     },
     [setSelectedTab]
   )
+  const renderRoutes = useMemo(() => {
+    return (
+      <Switch>
+        <Route
+          path={getUrlPrefix(routeByName.device.alerts.getByName('cap-alert'))}
+          component={CapAlertTab}
+        />
+        <Route
+          path={getUrlPrefix(routeByName.device.alerts.match)}
+          component={HurricaneTab}
+        />
+      </Switch>
+    )
+  }, [])
   return (
     <SideModal
       width="78%"
@@ -75,18 +89,7 @@ const SetAlerts = ({ t, classes, location }) => {
           )}
         </Grid>
         <Grid item xs className={classes.tabContainer}>
-          <Switch>
-            <Route
-              path={getUrlPrefix(
-                routeByName.device.alerts.getByName('cap-alert')
-              )}
-              component={CapAlertTab}
-            />
-            <Route
-              path={getUrlPrefix(routeByName.device.alerts.match)}
-              component={HurricaneTab}
-            />
-          </Switch>
+          {renderRoutes}
         </Grid>
       </Grid>
     </SideModal>

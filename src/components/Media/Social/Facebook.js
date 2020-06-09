@@ -15,7 +15,6 @@ import {
   withStyles,
   Grid,
   Typography,
-  CircularProgress,
   Dialog,
   DialogTitle,
   DialogContent
@@ -29,14 +28,9 @@ import { MediaInfo, MediaTabActions } from '../index'
 import FormControlSketchColorPicker from '../../Form/FormControlSketchColorPicker'
 import FormControlReactSelect from '../../Form/FormControlReactSelect'
 
-import {
-  clearMediaThemes,
-  getThemeOfMediaFeatureById,
-  getTransitions
-} from 'actions/configActions'
+import { clearMediaThemes, getTransitions } from 'actions/configActions'
 import {
   createMediaPostData,
-  getAllowedFeatureId,
   getMediaInfoFromBackendData,
   getMediaThemesSettings
 } from 'utils/mediaUtils'
@@ -48,6 +42,7 @@ import {
   getMediaItemsAction
 } from 'actions/mediaActions'
 import { mediaConstants as constants } from '../../../constants'
+import useMediaTheme from 'hooks/useMediaTheme'
 
 const images = {
   step1: require('../../../common/assets/images/facebook_step2.png'),
@@ -73,7 +68,7 @@ const InfoMessageStyles = ({ typography }) => ({
   infoMessageContainer: {
     display: 'flex',
     alignItems: 'flex-start',
-    padding: '0 5px 67px'
+    padding: '0 0 16px'
   },
   infoMessage: {
     marginLeft: '20px',
@@ -83,7 +78,7 @@ const InfoMessageStyles = ({ typography }) => ({
     color: '#74809A'
   },
   marginTop: {
-    marginTop: '20px'
+    marginTop: 16
   }
 })
 
@@ -114,10 +109,10 @@ const InfoMessage = withStyles(InfoMessageStyles)(
 )
 
 const styles = theme => {
-  const { palette, type } = theme
+  const { palette, type, formControls, typography } = theme
   return {
     root: {
-      margin: '31px 30px'
+      margin: '15px 30px'
     },
     formWrapper: {
       height: '100%',
@@ -131,7 +126,7 @@ const styles = theme => {
       boxShadow: 'none'
     },
     previewMediaRow: {
-      marginTop: '34px'
+      marginTop: 45
     },
     tabContent: {
       height: '100%'
@@ -150,8 +145,7 @@ const styles = theme => {
       zIndex: 1
     },
     previewMediaText: {
-      fontWeight: 'bold',
-      color: palette[type].sideModal.action.button.color
+      ...typography.lightText[type]
     },
     featureIconTabContainer: {
       justifyContent: 'center'
@@ -177,7 +171,7 @@ const styles = theme => {
       padding: '0 15px',
       borderBottom: `1px solid ${palette[type].pages.media.card.border}`,
       backgroundColor: palette[type].pages.media.card.header.background,
-      marginBottom: '15px'
+      marginBottom: 16
     },
     themeHeaderText: {
       fontWeight: 'bold',
@@ -185,27 +179,12 @@ const styles = theme => {
       color: palette[type].pages.media.card.header.color,
       fontSize: '12px'
     },
-    themeOptions1: {
-      padding: '0 15px'
-    },
-    themeOptions2: {
-      padding: '0 15px',
-      marginTop: '31px'
-    },
-    themeOptions3: {
-      padding: '0 15px',
-      margin: '5px 0 29px'
-    },
     inputLabel: {
       display: 'block',
       fontSize: '13px',
       color: '#74809a',
       transform: 'none !important',
       marginRight: '10px'
-    },
-    themeInputContainer: {
-      padding: '0 4px',
-      margin: '0 -4px'
     },
     colorPaletteContainer: {
       display: 'flex',
@@ -218,32 +197,20 @@ const styles = theme => {
         justifyContent: 'flex-start'
       }
     },
-    formControlLabel: {
-      fontSize: '12px',
-      color: '#74809A',
-      marginRight: '19px'
-    },
     formControlRootClass: {
       marginBottom: 0
     },
     palettePickerContainer: {
       marginBottom: '3px'
     },
-    accountSettingsContainer: {
-      margin: '12px 0 20px',
-      padding: '0 15px'
-    },
     transitionFormContainer: {
-      padding: '15px 15px 17px'
+      padding: '16px 0'
     },
     dateRangeContainer: {
-      padding: '15px 15px 17px'
+      padding: '16px 0'
     },
     facebookNameContainer: {
-      marginBottom: '27px'
-    },
-    formControlLabelClass: {
-      fontSize: '17px'
+      marginBottom: 16
     },
     formInputLabel: {
       color: '#74809a',
@@ -255,8 +222,7 @@ const styles = theme => {
       width: '46px'
     },
     sliderInputLabel: {
-      color: '#74809A',
-      fontSize: '13px',
+      ...formControls.mediaApps.refreshEverySlider.label,
       lineHeight: '15px',
       marginRight: '15px'
     },
@@ -266,15 +232,11 @@ const styles = theme => {
         height: '36px'
       }
     },
-    inputContainer: {
-      padding: '0 12px',
-      margin: '0 -12px'
-    },
     marginTop1: {
-      marginTop: '10px'
+      marginTop: 16
     },
     marginTop2: {
-      marginTop: '17px'
+      marginTop: 16
     },
     firstTabContent: {
       maxHeight: '100%',
@@ -368,29 +330,28 @@ const Facebook = props => {
   const dispatchAction = useDispatch()
 
   const [
-    configMediaCategory,
     addMediaReducer,
     mediaItemReducer,
-    transitionsReducer,
-    themesReducer
+    transitionsReducer
   ] = useSelector(state => [
-    state.config.configMediaCategory,
     state.addMedia.social,
     state.media.mediaItem,
-    state.config.transitions,
-    state.config.themeOfMedia.response
+    state.config.transitions
   ])
 
-  const [isLoading, setLoading] = useState(false)
   const [formSubmitting, setFormSubmitting] = useState(false)
   const [autoClose, setAutoClose] = useState(false)
-  const [featureId, setFeatureId] = useState(null)
   const [themes, setThemes] = useState([])
   const [transitionOptions, setTransitionOptions] = useState([])
   const [showUserIdHelp, setShowUserIdHelp] = useState(false)
 
   const [allowedThemeSetting, setAllowedThemeSetting] = useState(undefined)
   const [selectedThemeType, setSelectedThemeType] = useState('Modern')
+
+  const { themes: themesReducer, featureId } = useMediaTheme(
+    'Social',
+    'Facebook'
+  )
 
   const initialFormValues = useRef({
     themeId: undefined,
@@ -719,7 +680,6 @@ const Facebook = props => {
         mediaInfo: getMediaInfoFromBackendData(backendData)
       }
       form.setValues(initialFormValues.current)
-      setLoading(false)
     }
     // eslint-disable-next-line
   }, [backendData, themesReducer])
@@ -758,7 +718,6 @@ const Facebook = props => {
           themeId: themesReducer[selectedThemeType][0].id,
           theme_settings: defaultTheme
         })
-        setLoading(false)
       }
 
       setThemes(_get(themesReducer, selectedThemeType, []))
@@ -768,37 +727,8 @@ const Facebook = props => {
   )
 
   useEffect(() => {
-    if (
-      allowedThemeSetting &&
-      Object.keys(allowedThemeSetting).length &&
-      backendData
-    ) {
-      setLoading(false)
-    }
-    // eslint-disable-next-line
-  }, [allowedThemeSetting])
-
-  useEffect(() => {
-    if (!configMediaCategory.response.length) return
-    const id = getAllowedFeatureId(configMediaCategory, 'Social', 'Facebook')
-    setFeatureId(id)
-  }, [configMediaCategory])
-
-  useEffect(() => {
-    if (featureId) {
-      dispatchAction(getThemeOfMediaFeatureById(featureId))
-    }
-  }, [featureId, dispatchAction])
-
-  useEffect(() => {
     onShareStateCallback(handleShareState)
   }, [handleShareState, onShareStateCallback])
-
-  useEffect(() => {
-    if (mode === 'edit') {
-      setLoading(true)
-    }
-  }, [mode])
 
   useEffect(
     () => () => {
@@ -812,11 +742,6 @@ const Facebook = props => {
 
   return (
     <form className={classes.formWrapper} onSubmit={form.handleSubmit}>
-      {isLoading && (
-        <div className={classes.loaderWrapper}>
-          <CircularProgress size={30} thickness={5} />
-        </div>
-      )}
       <Grid container className={classes.tabContent}>
         <Grid item xs={7} className={classes.firstTabContent}>
           <div className={classes.root}>
@@ -830,7 +755,6 @@ const Facebook = props => {
                     <TabIcon iconClassName={'icon-interface-information-1'} />
                   }
                   formControlRootClass={classes.formControlRootClass}
-                  formControlLabelClass={classes.formControlLabelClass}
                   value={values.page_name}
                   error={errors.page_name}
                   touched={touched.page_name}
@@ -883,8 +807,9 @@ const Facebook = props => {
                       container
                       className={classes.transitionFormContainer}
                       justify="space-between"
+                      spacing={16}
                     >
-                      <Grid item xs={6} className={classes.themeInputContainer}>
+                      <Grid item xs={6}>
                         <FormControlReactSelect
                           label={'Font Family'}
                           value={values.theme_settings.font_family}
@@ -918,7 +843,7 @@ const Facebook = props => {
                           }
                         />
                       </Grid>
-                      <Grid item xs={6} className={classes.themeInputContainer}>
+                      <Grid item xs={6}>
                         <FormControlSketchColorPicker
                           label={'Сomments Сount Color'}
                           formControlInputWrapClass={classes.formControlInput}
@@ -933,7 +858,7 @@ const Facebook = props => {
                           }
                         />
                       </Grid>
-                      <Grid item xs={6} className={classes.themeInputContainer}>
+                      <Grid item xs={6}>
                         <FormControlSketchColorPicker
                           label={'Likes Count Color'}
                           formControlInputWrapClass={classes.formControlInput}
@@ -948,7 +873,7 @@ const Facebook = props => {
                           }
                         />
                       </Grid>
-                      <Grid item xs={6} className={classes.themeInputContainer}>
+                      <Grid item xs={6}>
                         <FormControlSketchColorPicker
                           label={'Post Message Color'}
                           formControlInputWrapClass={classes.formControlInput}
@@ -963,7 +888,7 @@ const Facebook = props => {
                           }
                         />
                       </Grid>
-                      <Grid item xs={6} className={classes.themeInputContainer}>
+                      <Grid item xs={6}>
                         <FormControlSketchColorPicker
                           marginBottom={false}
                           label={'Post Title Color'}
@@ -979,7 +904,7 @@ const Facebook = props => {
                           }
                         />
                       </Grid>
-                      <Grid item xs={6} className={classes.themeInputContainer}>
+                      <Grid item xs={6}>
                         <FormControlSketchColorPicker
                           marginBottom={false}
                           label={'Profile Color'}
@@ -996,11 +921,7 @@ const Facebook = props => {
                         />
                       </Grid>
                       {values.themeId === 229 && (
-                        <Grid
-                          item
-                          xs={6}
-                          className={classes.themeInputContainer}
-                        >
+                        <Grid item xs={6}>
                           <FormControlSketchColorPicker
                             marginBottom={false}
                             label={'Location Color'}
@@ -1028,10 +949,10 @@ const Facebook = props => {
                       container
                       className={classes.transitionFormContainer}
                       justify="space-between"
+                      spacing={16}
                     >
-                      <Grid item xs={6} className={classes.themeInputContainer}>
+                      <Grid item xs={6}>
                         <FormControlReactSelect
-                          formControlLabelClass={classes.formControlLabelClass}
                           inputClasses={{
                             input: classes.formControlInput
                           }}
@@ -1047,7 +968,7 @@ const Facebook = props => {
                           marginBottom={0}
                         />
                       </Grid>
-                      <Grid item xs={6} className={classes.themeInputContainer}>
+                      <Grid item xs={6}>
                         <FormControlInput
                           custom
                           label="Duration"
@@ -1055,7 +976,6 @@ const Facebook = props => {
                           formControlContainerClass={
                             classes.formControlInputNumber
                           }
-                          formControlLabelClass={classes.formControlLabelClass}
                           formControlInputClass={classes.formControlInput}
                           value={values.transition.duration}
                           handleChange={value =>
@@ -1074,8 +994,9 @@ const Facebook = props => {
                       container
                       justify="space-between"
                       className={classes.dateRangeContainer}
+                      spacing={16}
                     >
-                      <Grid item xs={6} className={classes.themeInputContainer}>
+                      <Grid item xs={6}>
                         <FormControlReactSelect
                           label={'Days :'}
                           marginBottom={0}
@@ -1090,7 +1011,7 @@ const Facebook = props => {
                           }
                         />
                       </Grid>
-                      <Grid item xs={6} className={classes.themeInputContainer}>
+                      <Grid item xs={6}>
                         <FormControlReactSelect
                           label={'Time Zone :'}
                           marginBottom={0}
@@ -1120,12 +1041,9 @@ const Facebook = props => {
                       container
                       justify="space-between"
                       className={classes.dateRangeContainer}
+                      spacing={16}
                     >
-                      <Grid
-                        item
-                        xs={12}
-                        className={classes.themeInputContainer}
-                      >
+                      <Grid item xs={12}>
                         <WysiwygEditor
                           label={'Content 1'}
                           name="content1"
@@ -1143,11 +1061,7 @@ const Facebook = props => {
                           }}
                         />
                       </Grid>
-                      <Grid
-                        item
-                        xs={12}
-                        className={classes.themeInputContainer}
-                      >
+                      <Grid item xs={12}>
                         <WysiwygEditor
                           label={'Content 2'}
                           name="content2"

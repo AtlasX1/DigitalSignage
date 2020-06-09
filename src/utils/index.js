@@ -61,6 +61,7 @@ import durationToTimeSpan from './durationToTimeSpan'
 import * as distinctFilter from './distinctFilter'
 import fileDownlaod from './fileDownload'
 import * as docketsFileParser from './docketsFileParser'
+import * as truncateStringUtils from './truncateStringUtils'
 
 export {
   createMediaDummyData,
@@ -123,5 +124,6 @@ export {
   durationToTimeSpan,
   distinctFilter,
   fileDownlaod,
-  docketsFileParser
+  docketsFileParser,
+  truncateStringUtils
 }

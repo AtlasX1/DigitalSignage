@@ -1,5 +1,23 @@
 import * as types from './index'
 
+const postSchedule = data => ({
+  type: types.POST_SCHEDULE,
+  data
+})
+
+const editSchedule = ({ id, data }) => ({
+  type: types.PUT_SCHEDULE,
+  data,
+  meta: {
+    id
+  }
+})
+
+const getSchedule = id => ({
+  type: types.GET_SCHEDULE_BY_ID,
+  data: id
+})
+
 const getScheduleItemsAction = params => ({
   type: types.GET_SCHEDULE_ITEMS,
   params
@@ -22,9 +40,9 @@ const clearGetScheduleGroupsInfoAction = () => ({
   type: types.CLEAR_GET_SCHEDULE_GROUPS_INFO
 })
 
-const getScheduleGroupItemsAction = id => ({
+const getScheduleGroupItemsAction = (id, params) => ({
   type: types.GET_SCHEDULE_GROUP_ITEMS,
-  payload: id
+  payload: { id, params }
 })
 
 const clearGetScheduleGroupItemsInfoAction = () => ({
@@ -71,7 +89,22 @@ const cloneSchedule = data => ({
   data
 })
 
+const clearScheduleStatus = () => ({
+  type: types.CLEAR_SCHEDULE_STATUS
+})
+
+const clearAddedSchedule = () => ({
+  type: types.CLEAR_ADDED_SCHEDULE
+})
+
+const clearScheduleError = () => ({
+  type: types.CLEAR_SCHEDULE_ERROR
+})
+
 export {
+  getSchedule,
+  postSchedule,
+  editSchedule,
   getScheduleItemsAction,
   getScheduleLibraryPrefAction,
   putScheduleLibraryPrefAction,
@@ -87,5 +120,8 @@ export {
   clearResponseInfo,
   cloneSchedule,
   deleteSchedule,
-  clearScheduleGroupItemsInfo
+  clearScheduleGroupItemsInfo,
+  clearScheduleStatus,
+  clearAddedSchedule,
+  clearScheduleError
 }

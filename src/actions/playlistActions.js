@@ -54,9 +54,9 @@ const clearGetPlaylistGroupInfoAction = () => ({
   type: types.CLEAR_GET_PLAYLIST_GROUP_INFO
 })
 
-const getPlaylistGroupItemsAction = id => ({
+const getPlaylistGroupItemsAction = (id, params) => ({
   type: types.GET_PLAYLIST_GROUP_ITEMS,
-  payload: id
+  payload: { id, params }
 })
 
 const clearGetPlaylistGroupItemsInfoAction = () => ({

@@ -42,6 +42,7 @@ import {
   entityGroupsConstants,
   routeByName
 } from 'constants/index'
+import { sortByTitle } from 'utils/libraryUtils'
 
 const styles = theme => {
   const { palette, type } = theme
@@ -73,10 +74,11 @@ const styles = theme => {
 const initialColumns = [
   { id: 'scheduleType', label: 'Type', display: true },
   { id: 'title', label: 'Name', display: true },
-  { id: 'group', label: 'Group', display: true },
-  { id: 'duration', label: 'Working Dates', display: true },
-  { id: 'workingDays', label: 'Working Days', display: true },
-  { id: 'orientation', label: 'Working Time', display: true },
+  { id: 'group', label: 'Group', align: 'center', display: true },
+  { id: 'workingDates', label: 'Dates', align: 'center', display: true },
+  { id: 'workingDays', label: 'Days', align: 'center', display: true },
+  { id: 'orientation', label: 'Time', align: 'center', display: true },
+  { id: 'tag', label: 'Tags', align: 'center', display: true },
   { id: 'status', label: 'Status', align: 'center', display: true }
 ]
 
@@ -106,8 +108,7 @@ const ScheduleLibrary = ({
   deleteScheduleGroupItemAction,
   postGroupItemReducer,
   groupItemsReducer,
-  deleteGroupItemReducer,
-  modalHeight
+  deleteGroupItemReducer
 }) => {
   const [selectedPeriod, setSelectedPeriod] = useState(t('All Schedule Tab'))
 
@@ -129,7 +130,7 @@ const ScheduleLibrary = ({
     initialColumns,
     fetcher: getItems,
     entity: entityConstants.ScheduleLibrary,
-    perPage: meta.perPage
+    initialPerPage: meta.perPage
   })
 
   const fetchItems = useCallback(
@@ -180,144 +181,141 @@ const ScheduleLibrary = ({
     },
     [deleteScheduleGroupItemAction]
   )
-
+  const groupSchedules = useMemo(
+    () =>
+      sortByTitle(items).map((schedule, index) => (
+        <ScheduleItem key={schedule.id} schedule={schedule} index={index} />
+      )),
+    [items]
+  )
   return (
-    <div style={{ height: modalHeight }}>
-      <PageContainer
-        pageTitle={translate.title}
-        PageTitleComponent={
-          <PageTitle
-            selectedCount={selectedList.count}
-            title={translate.title}
-          />
-        }
-        MiddleActionComponent={
-          <TabToggleButtonGroup
-            value={selectedPeriod}
-            exclusive
-            onChange={(event, selectedValue) =>
-              setSelectedPeriod(selectedValue)
-            }
-          >
-            <TabToggleButton value={t('All Schedule Tab')}>
-              {t('All Schedule Tab')}
-            </TabToggleButton>
-            <TabToggleButton value={t('Today Schedule Tab')}>
-              {t('Today Schedule Tab')}
-            </TabToggleButton>
-            <TabToggleButton value={t('Week Schedule Tab')}>
-              {t('Week Schedule Tab')}
-            </TabToggleButton>
-            <TabToggleButton value={t('Month Schedule Tab')}>
-              {t('Month Schedule Tab')}
-            </TabToggleButton>
-          </TabToggleButtonGroup>
-        }
-        ActionButtonsComponent={
-          <Fragment>
-            <WhiteButton
-              className={`hvr-radial-out ${classes.actionIcons}`}
-              component={Link}
-              to={routeByName.schedule.groups}
-            >
-              <i
-                className={`${classes.iconColor} icon-navigation-show-more-vertical`}
-              />
-              {translate.groups}
-            </WhiteButton>
-            <WhiteButton
-              className={`hvr-radial-out ${classes.actionIcons}`}
-              component={Link}
-              to={routeByName.schedule.publish}
-            >
-              <i className={`${classes.iconColor} icon-folder-video`} />
-              {translate.add}
-            </WhiteButton>
-          </Fragment>
-        }
-        SubHeaderMenuComponent={<ScheduleSearchForm />}
-      >
-        <BaseTable
-          meta={meta}
-          fetcher={getItems}
-          columns={preference.columns}
-          preferenceActions={preference.actions}
-          deleteSelectedItems={deleteSelectedItems}
-          selectedList={selectedList}
-          placeholderMessage="No saved schedule"
+    <PageContainer
+      pageTitle={translate.title}
+      PageTitleComponent={
+        <PageTitle selectedCount={selectedList.count} title={translate.title} />
+      }
+      MiddleActionComponent={
+        <TabToggleButtonGroup
+          value={selectedPeriod}
+          exclusive
+          onChange={(event, selectedValue) => setSelectedPeriod(selectedValue)}
         >
-          {items.map(row => (
-            <ScheduleTableRow
-              row={row}
-              columns={preference.columns}
-              selected={selectedList.isSelect(row.id)}
-              onToggleSelect={selectedList.toggle}
-              onUnselect={selectedList.unselect}
-              key={`schedule-row-${row.id}`}
-              onClone={handleCloneRow}
+          <TabToggleButton value={t('All Schedule Tab')}>
+            {t('All Schedule Tab')}
+          </TabToggleButton>
+          <TabToggleButton value={t('Today Schedule Tab')}>
+            {t('Today Schedule Tab')}
+          </TabToggleButton>
+          <TabToggleButton value={t('Week Schedule Tab')}>
+            {t('Week Schedule Tab')}
+          </TabToggleButton>
+          <TabToggleButton value={t('Month Schedule Tab')}>
+            {t('Month Schedule Tab')}
+          </TabToggleButton>
+        </TabToggleButtonGroup>
+      }
+      ActionButtonsComponent={
+        <Fragment>
+          <WhiteButton
+            className={`hvr-radial-out ${classes.actionIcons}`}
+            component={Link}
+            to={routeByName.schedule.groups}
+          >
+            <i
+              className={`${classes.iconColor} icon-navigation-show-more-vertical`}
             />
-          ))}
-        </BaseTable>
-        <CopyItemModal
-          data={dataOfCopyModal}
-          onCloseModal={handleCloseModal}
-          modalTitle="Copy schedule"
-          inputPlaceholder="Schedule name"
-          onClickSave={handleCopySchedule}
-        />
-        <Route
-          path={routeByName.schedule.publish}
-          component={SchedulePublish}
-        />
-        <Route
-          path={routeByName.schedule.groups}
-          render={props => (
-            <GroupModal
-              {...props}
-              title={t('Schedule Groups')}
-              closeLink={routeByName.schedule.root}
-              entity={entityGroupsConstants.Schedule}
-              groupItemsTitle={t('Schedules')}
-              dropItemType={dndConstants.scheduleGroupsItemTypes.SCHEDULE_ITEM}
-              onMoveItem={handleMoveItem}
-              itemsLoading={meta.isLoading}
-              groupItemsReducer={groupItemsReducer}
-              postGroupItemReducer={postGroupItemReducer}
-              deleteGroupItemReducer={deleteGroupItemReducer}
-              clearGroupItemsInfo={clearScheduleGroupItemsInfo}
-              displayOverflow={true}
-              itemsPopupProps={{
-                getGroupItems: getScheduleGroupItemsAction,
-                onDeleteItem: handleDeleteGroupItem,
-                clearGroupItemsInfo: clearGetScheduleGroupItemsInfoAction
-              }}
-            >
-              <Grid container className={classes.schedulesList}>
-                {items.map((schedule, index) => (
-                  <ScheduleItem
-                    key={`schedule-${index}`}
-                    schedule={schedule}
-                    index={index}
-                  />
-                ))}
-              </Grid>
-            </GroupModal>
-          )}
-        />
-      </PageContainer>
-    </div>
+            {translate.groups}
+          </WhiteButton>
+          <WhiteButton
+            className={`hvr-radial-out ${classes.actionIcons}`}
+            component={Link}
+            to={routeByName.schedule.publish}
+          >
+            <i className={`${classes.iconColor} icon-folder-video`} />
+            {translate.add}
+          </WhiteButton>
+        </Fragment>
+      }
+      SubHeaderMenuComponent={<ScheduleSearchForm />}
+    >
+      <BaseTable
+        meta={meta}
+        fetcher={getItems}
+        columns={preference.columns}
+        preferenceActions={preference.actions}
+        deleteSelectedItems={deleteSelectedItems}
+        selectedList={selectedList}
+        placeholderMessage="No saved schedule"
+      >
+        {items.map(row => (
+          <ScheduleTableRow
+            row={row}
+            columns={preference.columns}
+            selected={selectedList.isSelect(row.id)}
+            onToggleSelect={selectedList.toggle}
+            onUnselect={selectedList.unselect}
+            key={`schedule-row-${row.id}`}
+            onClone={handleCloneRow}
+          />
+        ))}
+      </BaseTable>
+      <CopyItemModal
+        data={dataOfCopyModal}
+        onCloseModal={handleCloseModal}
+        modalTitle="Copy schedule"
+        inputPlaceholder="Schedule name"
+        onClickSave={handleCopySchedule}
+      />
+      <Route path={routeByName.schedule.publish} component={SchedulePublish} />
+      <Route
+        path="/schedule-library/:id/edit"
+        render={props => <SchedulePublish {...props} edit />}
+      />
+      <Route
+        path={routeByName.schedule.groups}
+        render={props => (
+          <GroupModal
+            {...props}
+            title={t('Schedule Groups')}
+            closeLink={routeByName.schedule.root}
+            entity={entityGroupsConstants.Schedule}
+            groupItemsTitle={t('Schedules')}
+            dropItemType={dndConstants.scheduleGroupsItemTypes.SCHEDULE_ITEM}
+            onMoveItem={handleMoveItem}
+            itemsLoading={meta.isLoading}
+            groupItemsReducer={groupItemsReducer}
+            postGroupItemReducer={postGroupItemReducer}
+            deleteGroupItemReducer={deleteGroupItemReducer}
+            clearGroupItemsInfo={clearScheduleGroupItemsInfo}
+            itemsPopupProps={{
+              getGroupItems: id =>
+                getScheduleGroupItemsAction(id, {
+                  order: 'asc',
+                  sort: 'title',
+                  fields: 'id,title'
+                }),
+              onDeleteItem: handleDeleteGroupItem,
+              clearGroupItemsInfo: clearGetScheduleGroupItemsInfoAction
+            }}
+          >
+            <Grid container className={classes.schedulesList}>
+              {groupSchedules}
+            </Grid>
+          </GroupModal>
+        )}
+      />
+    </PageContainer>
   )
 }
 
-const mapStateToProps = ({ schedule, appReducer }) => ({
+const mapStateToProps = ({ schedule }) => ({
   items: schedule.library.response,
   meta: schedule.library.meta,
   del: schedule.del,
   clone: schedule.clone,
   postGroupItemReducer: schedule.postGroupItem,
   groupItemsReducer: schedule.groupItems,
-  deleteGroupItemReducer: schedule.deleteGroupItem,
-  modalHeight: appReducer.height
+  deleteGroupItemReducer: schedule.deleteGroupItem
 })
 
 const mapDispatchToProps = dispatch =>

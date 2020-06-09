@@ -8,6 +8,7 @@ import { withStyles, Grid } from '@material-ui/core'
 
 import { Card } from '../../Card'
 import { MediaBarChart } from '../../Charts'
+import { parseLocaleNumberValue } from 'utils/numbers'
 
 const styles = {
   cardWrapper: {
@@ -16,6 +17,9 @@ const styles = {
   },
   cardTransparentBorder: {
     borderColor: 'transparent'
+  },
+  menuContainer: {
+    whiteSpace: 'nowrap'
   }
 }
 
@@ -34,7 +38,8 @@ const MediaUsageCard = ({
       const mediaUsage = info.response.mediaUsage
       const arr = mediaUsage.map(e => ({
         name: Object.keys(e)[0],
-        value: Object.values(e)[0]
+        value: parseLocaleNumberValue(Object.values(e)[0]),
+        displayValue: Object.values(e)[0]
       }))
 
       setData(arr)
@@ -53,8 +58,9 @@ const MediaUsageCard = ({
         rootClassName={[hoverClassName, dragging ? draggingClassName : ''].join(
           ' '
         )}
+        menuDropdownContainerClassName={classes.menuContainer}
       >
-        <MediaBarChart chartData={data} width="100%" />
+        <MediaBarChart chartData={data} />
       </Card>
     </Grid>
   )

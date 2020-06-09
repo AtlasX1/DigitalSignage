@@ -6,7 +6,7 @@ import { Grid } from '@material-ui/core'
 const styles = ({ palette, type, typography }) => {
   return {
     root: {
-      padding: '13px 10px 8px',
+      padding: 15,
       fontFamily: typography.fontFamily
     },
     chartContainer: {},

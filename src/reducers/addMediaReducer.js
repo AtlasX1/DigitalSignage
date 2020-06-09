@@ -57,7 +57,6 @@ const initialState = {
     feeds: { ...shapeOfBody },
     flightstats: { ...shapeOfBody },
     signagecreator: { ...shapeOfBody },
-    licensedchannels: { ...shapeOfBody },
     livetransit: { ...shapeOfBody }
   },
   premium: {

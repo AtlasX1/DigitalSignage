@@ -6,4 +6,8 @@ const getUrlPrefix = url => {
   return `/${level}/${url}`
 }
 
+export function getLogoutUrl(pathname) {
+  return pathname.includes('system') ? '/system/sign-in' : '/sign-in'
+}
+
 export default getUrlPrefix

@@ -55,31 +55,22 @@
     }
 
     &-search {
-      margin-bottom: 16px;
+      margin-bottom: 10px;
       flex-shrink: 0;
+      display: flex;
+
+      .search {
+        flex-grow: 1;
+      }
     }
 
     &-filter {
       display: flex;
       align-items: center;
-      width: 100%;
-      // margin-top: 20px;
-      margin-bottom: 8px;
-      flex-shrink: 0;
+    }
 
-      &__dropdown {
-        margin-right: auto;
-      }
-
-      &__sorting {
-        display: inline-flex;
-        align-items: center;
-        flex-wrap: wrap;
-
-        button.is-active {
-          color: #1481ce;
-        }
-      }
+    &-tabs {
+      margin-bottom: 10px;
     }
 
     &-content {

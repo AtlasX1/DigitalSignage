@@ -19,7 +19,7 @@ const LegacyThemeContent = props => {
   } = props
 
   return (
-    <Grid container className={classes.marginTop2}>
+    <Grid container className={classes.marginTop}>
       <Grid item xs={12}>
         <Typography className={classes.templateLabel}>
           Template Style
@@ -88,7 +88,7 @@ const LegacyThemeContent = props => {
                 <Grid
                   container
                   alignItems="center"
-                  className={classes.marginTop3}
+                  className={classes.marginTop}
                 >
                   <Grid item xs={4}>
                     <InputLabel className={classes.inputLabel}>
@@ -127,7 +127,7 @@ const LegacyThemeContent = props => {
                 <Grid
                   container
                   alignItems="center"
-                  className={classes.marginTop3}
+                  className={classes.marginTop}
                 >
                   <Grid item xs={4}>
                     <InputLabel className={classes.inputLabel}>
@@ -167,7 +167,7 @@ const LegacyThemeContent = props => {
                 <Grid
                   container
                   alignItems="center"
-                  className={classes.marginTop3}
+                  className={classes.marginTop}
                 >
                   <Grid item xs={4}>
                     <InputLabel className={classes.inputLabel}>
@@ -219,7 +219,7 @@ const LegacyThemeContent = props => {
                           }
                         />
                       </Grid>
-                      <Grid item xs={12} className={classes.marginTop3}>
+                      <Grid item xs={12} className={classes.marginTop}>
                         <FormControlSketchColorPicker
                           rootClass={classes.colorPickerRoot}
                           color={
@@ -242,7 +242,7 @@ const LegacyThemeContent = props => {
                 <Grid
                   container
                   alignItems="center"
-                  className={classes.marginTop3}
+                  className={classes.marginTop}
                 >
                   <Grid item xs={4}>
                     <InputLabel className={classes.inputLabel}>

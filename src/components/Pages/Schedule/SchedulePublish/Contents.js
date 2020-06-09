@@ -5,34 +5,65 @@ import { withStyles, Grid } from '@material-ui/core'
 
 import MediaList from './MediaList'
 import PlaybackContent from './PlaybackContent'
-import { Scrollbars } from 'components/Scrollbars'
 
 const styles = {
   contentsCardContainer: {
     height: 'calc(100% - 66px)'
   },
   mediaListItem: {
-    height: '100%',
-    overflowX: 'auto'
+    height: '100%'
   }
 }
 
-const Contents = ({ classes, media, getMediaItem }) => (
-  <Grid container className={classes.contentsCardContainer}>
-    <Grid item xs={5} className={classes.mediaListItem}>
-      <Scrollbars>
-        <MediaList media={media} />
-      </Scrollbars>
+const Contents = props => {
+  const {
+    classes,
+    media,
+    getMediaItem,
+    handleTypeChange,
+    type,
+    handlePageChange,
+    handleValueChange,
+    page,
+    loading,
+    values,
+    errors,
+    touched
+  } = props
+
+  return (
+    <Grid container className={classes.contentsCardContainer}>
+      <Grid item xs={5} className={classes.mediaListItem}>
+        <MediaList
+          media={media}
+          handleTypeChange={handleTypeChange}
+          type={type}
+          onPageChange={handlePageChange}
+          page={page}
+          loading={loading}
+          values={values}
+          errors={errors}
+          touched={touched}
+        />
+      </Grid>
+      <Grid item xs={7}>
+        <PlaybackContent
+          media={media}
+          type={type}
+          getMediaItem={getMediaItem}
+          handleValueChange={handleValueChange}
+          values={values}
+          errors={errors}
+          touched={touched}
+        />
+      </Grid>
     </Grid>
-    <Grid item xs={7}>
-      <PlaybackContent media={media} getMediaItem={getMediaItem} />
-    </Grid>
-  </Grid>
-)
+  )
+}
 
 Contents.propTypes = {
   classes: PropTypes.object,
-  media: PropTypes.array,
+  media: PropTypes.object,
   getMediaItem: PropTypes.func
 }
 

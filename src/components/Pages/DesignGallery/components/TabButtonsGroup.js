@@ -9,6 +9,11 @@ const TabToggleButtonStyles = makeStyles({
     borderColor: '#0084CE !important',
     backgroundColor: '#0084CE !important',
     fontWeight: 'normal'
+  },
+  tabToggleButton: {
+    padding: 0,
+    flex: 1,
+    height: 32
   }
 })
 
@@ -28,7 +33,7 @@ const TabButtonsGroup = ({ fullWidth, buttons, value, onChange }) => {
         <TabToggleButton
           key={key}
           value={text}
-          className={'TabToggleButton'}
+          className={classes.tabToggleButton}
           classes={{
             selected: classes.selected
           }}

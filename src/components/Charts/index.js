@@ -6,8 +6,8 @@ import MediaBarChart from './MediaBarChart'
 import TwoPieChart from './TwoPieChart'
 import CustomReportPieChart from './CustomReportPieChart'
 import CustomReportBarChart from './CustomReportBarChart'
-import CustomReportVerticalBarChart from './CustomReportVerticalBarChart'
 import CustomReportLineChart from './CustomReportLineChart'
+import AnimatedPie from './AnimatedPie'
 
 export {
   BandwidthChart,
@@ -18,6 +18,6 @@ export {
   TwoPieChart,
   CustomReportPieChart,
   CustomReportBarChart,
-  CustomReportVerticalBarChart,
-  CustomReportLineChart
+  CustomReportLineChart,
+  AnimatedPie
 }

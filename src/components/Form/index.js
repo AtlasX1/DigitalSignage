@@ -25,8 +25,12 @@ import FormControlSelectFont from './FormControlSelectFont'
 import FormControlSelectTextTheme from './FormControlSelectTextTheme'
 import FormControlCounter from './FormControlCounter'
 import FormControlAutocomplete from './FormControlAutocomplete'
+import FormControlAutocompleteSync from './FormControlAutocompleteSync'
 import FormControlFileDropzone from './FormControlFileDropzone'
 import FormControlSpeedInput from './FormControlSpeedInput'
+import FormControlSelectResolution from './FormControlCounter'
+import FormControlSelectSkin from './FormControlSelectSkin'
+import FormControlBackgroundSelect from './FormControlBackgroundSelect'
 
 export {
   WysiwygEditor,
@@ -56,6 +60,10 @@ export {
   FormControlSelectTextTheme,
   FormControlCounter,
   FormControlAutocomplete,
+  FormControlAutocompleteSync,
   FormControlFileDropzone,
-  FormControlSpeedInput
+  FormControlSpeedInput,
+  FormControlSelectResolution,
+  FormControlSelectSkin,
+  FormControlBackgroundSelect
 }

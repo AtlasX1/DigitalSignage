@@ -13,18 +13,17 @@ const styles = () => ({
     marginBottom: 70,
     padding: '0 8px'
   },
-  mainFooterNavigation: {
-    fontSize: 13
-  },
   mainFooterNavigationLink: {
     marginRight: '1rem',
     textDecoration: 'none',
     display: 'inline-block'
   },
   mainFooterText: {
-    fontSize: '16px',
     transform: 'translate(0, 1.5px) scale(0.75)',
-    color: '#888996'
+    fontSize: '0.75rem',
+    color: '#bac0cd',
+    lineHeight: '1.6667em',
+    fontWeight: '400'
   },
   footerCopyright: {
     marginRight: 10,
@@ -45,7 +44,7 @@ const Footer = ({ classes, t }) => {
     <footer className={classes.mainFooter}>
       <Grid container justify="space-between" alignItems="center">
         <Grid item>
-          <nav className={classes.mainFooterNavigation}>
+          <nav>
             <a
               href={whiteLabelInfo.privacyPolicy.link}
               className={classes.mainFooterNavigationLink}

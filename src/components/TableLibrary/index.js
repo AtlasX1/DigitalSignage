@@ -5,6 +5,7 @@ import TableLibraryRow from './TableLibraryRow'
 import TableLibraryCell from './TableLibraryCell'
 import TableLibraryFooter from './TableLibraryFooter'
 import DateTimeView from './DateTimeView'
+import UserNameView from './UserNameView'
 
 export {
   TableLibraryRow,
@@ -13,5 +14,6 @@ export {
   TableLibraryFooter,
   TableLibraryPagination,
   TableLibraryRowActionButton,
-  DateTimeView
+  DateTimeView,
+  UserNameView
 }

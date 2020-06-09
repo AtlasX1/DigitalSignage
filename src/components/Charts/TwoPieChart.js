@@ -1,97 +1,54 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 
-import { Typography } from '@material-ui/core'
-import { PieChart, Pie, Cell, Tooltip } from 'recharts'
+import TwoLevelPie from './TwoLevelPie'
+import AnimatedPie from './AnimatedPie'
+import { withTheme } from '@material-ui/core/styles'
 
-const RADIAN = Math.PI / 180
+const TwoPieChart = ({ chartData = [], fillColors, theme }) => {
+  const innerPieData = chartData[0]
+  const outerPieData = chartData[1]
+  const innerColors = [...fillColors]
+  const outerColors = innerColors.splice(innerColors.length - 1, 1)
 
-const renderCustomizedLabel = ({
-  cx,
-  cy,
-  midAngle,
-  innerRadius,
-  outerRadius,
-  percent,
-  index,
-  name
-}) => {
-  const radius = innerRadius + (outerRadius - innerRadius) * 0.5
-  const x = cx + radius * Math.cos(-midAngle * RADIAN)
-  const y = cy + radius * Math.sin(-midAngle * RADIAN)
+  const chartTheme = useMemo(
+    () =>
+      theme
+        ? {
+            tooltip: {
+              container: {
+                fontFamily: theme.typography.fontFamily,
+                fontSize: 12
+              }
+            }
+          }
+        : undefined,
+    [theme]
+  )
 
   return (
-    <Typography
-      component="tspan"
-      x={x}
-      y={y}
-      fill="white"
-      textAnchor={x > cx ? 'start' : 'end'}
-      dominantBaseline="central"
-    >
-      {name}
-    </Typography>
+    <AnimatedPie
+      chartComponent={TwoLevelPie}
+      width={210}
+      height={210}
+      startAngle={90}
+      endAngle={450}
+      margin={{ top: 5, right: 5, bottom: 5, left: 5 }}
+      padAngle={1}
+      theme={chartTheme}
+      enableRadialLabels={false}
+      enableSlicesLabels={false}
+      innerPieProps={{
+        colors: innerColors,
+        data: innerPieData,
+        outerRadius: 0.6
+      }}
+      outerPieProps={{
+        innerRadius: 0.7,
+        colors: outerColors,
+        data: outerPieData
+      }}
+    />
   )
 }
 
-const TwoLevelPieChart = ({ chartData, fillColors }) => {
-  const firstPieData = chartData[0]
-  const secondPieData = chartData[1]
-
-  const fontFamily = [
-    '"Nunito Sans"',
-    '-apple-system',
-    'BlinkMacSystemFont',
-    '"Segoe UI"',
-    'Roboto',
-    '"Helvetica Neue"',
-    'Arial',
-    'sans-serif',
-    '"Apple Color Emoji"',
-    '"Segoe UI Emoji"',
-    '"Segoe UI Symbol"'
-  ].join(',')
-
-  return (
-    <PieChart width={210} height={210}>
-      <Tooltip
-        contentStyle={{
-          fontSize: '14px',
-          fontFamily
-        }}
-      />
-      <Pie
-        cx={100}
-        cy={100}
-        data={firstPieData}
-        dataKey="value"
-        outerRadius={60}
-        labelLine={false}
-        label={renderCustomizedLabel}
-      >
-        {firstPieData.map((entry, index) => (
-          <Cell
-            key={`firstPie-${index}`}
-            fill={fillColors[index % (fillColors.length - 1)]}
-          />
-        ))}
-      </Pie>
-      <Pie
-        cx={100}
-        cy={100}
-        data={secondPieData}
-        dataKey="value"
-        innerRadius={70}
-        outerRadius={100}
-      >
-        {secondPieData.map((entry, index) => (
-          <Cell
-            key={`secondPie-${index}`}
-            fill={fillColors[fillColors.length - 1]}
-          />
-        ))}
-      </Pie>
-    </PieChart>
-  )
-}
-
-export default TwoLevelPieChart
+export default withTheme()(TwoPieChart)

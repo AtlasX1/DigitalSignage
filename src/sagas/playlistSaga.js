@@ -130,7 +130,11 @@ function* getGroups({ params }) {
 
 function* getGroupItems(action) {
   try {
-    const response = yield call(playlistService.getGroupItems, action.payload)
+    const response = yield call(
+      playlistService.getGroupItems,
+      action.payload.id,
+      action.payload.params
+    )
     yield put({
       type: types.GET_PLAYLIST_GROUP_ITEMS_SUCCESS,
       payload: response

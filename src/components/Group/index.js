@@ -90,9 +90,7 @@ const GroupModal = ({
   enqueueSnackbar,
   closeSnackbar,
   groupCardItemsTitle,
-  children,
-  refModalHeight,
-  displayOverflow
+  children
 }) => {
   const newGroupForm = useFormik({
     initialValues: {
@@ -180,13 +178,7 @@ const GroupModal = ({
   )
 
   return (
-    <SideModal
-      displayOverflow={displayOverflow || false}
-      width="78%"
-      title={title}
-      closeLink={closeLink}
-      refModalHeight={refModalHeight}
-    >
+    <SideModal width="78%" title={title} closeLink={closeLink} displayOverflow>
       <Grid container className={classes.groupsContainer}>
         <Grid item xs={4} className={classes.groupContainer}>
           <Card

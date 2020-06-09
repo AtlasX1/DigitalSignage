@@ -1,5 +1,13 @@
 import * as types from './index'
-export const setHeight = payload => ({
-  type: types.SET_HEIGHT_COMPONENT,
-  payload
+
+const setPendingStatus = status => ({
+  type: types.SET_PENDING_STATUS,
+  payload: status
 })
+
+const setGroupModalHeight = height => ({
+  type: types.SET_GROUP_MODAL_HEIGHT,
+  payload: height
+})
+
+export { setPendingStatus, setGroupModalHeight }

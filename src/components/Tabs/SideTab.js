@@ -2,7 +2,7 @@ import React from 'react'
 import { Tab, withStyles } from '@material-ui/core'
 
 export const SideTab = withStyles(theme => {
-  const { palette, type } = theme
+  const { palette, type, typography } = theme
   return {
     root: {
       minWidth: '210px',
@@ -13,7 +13,7 @@ export const SideTab = withStyles(theme => {
       borderBottom: 'solid 1px transparent',
       textTransform: 'none',
       textAlign: 'left',
-      color: '#9394a0',
+      color: '#74809A',
       cursor: 'pointer'
     },
     selected: {
@@ -39,8 +39,7 @@ export const SideTab = withStyles(theme => {
       minHeight: 'auto'
     },
     label: {
-      fontSize: '14px',
-      fontWeight: 'bold',
+      ...typography.lightAccent[type],
       color: 'inherit'
     }
   }

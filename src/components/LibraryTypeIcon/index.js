@@ -16,9 +16,6 @@ const styles = theme => ({
   typeIcon: {
     fontSize: '20px',
     color: '#fff'
-  },
-  iconElement: {
-    marginTop: '0.5em'
   }
 })
 
@@ -32,7 +29,7 @@ const LibraryTypeIcon = ({
   icon: Icon,
   ...props
 }) => {
-  const { typeIcon, typeIconWrap, iconElement } = classes
+  const { typeIcon, typeIconWrap } = classes
 
   const backgroundImage = color
     ? `linear-gradient(to bottom, ${shadeColor(color, 20)}, ${color})`
@@ -51,7 +48,7 @@ const LibraryTypeIcon = ({
           })}
         />
       ) : (
-        <Icon className={classNames(typeIcon, iconHelperClass, iconElement)} />
+        <Icon className={classNames(typeIcon, iconHelperClass)} />
       )}
     </Component>
   )

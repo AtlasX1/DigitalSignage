@@ -12,7 +12,8 @@ const styles = () => ({
     margin: '15px 30px'
   },
   formControlLabelClass: {
-    fontSize: '17px',
+    fontSize: '1.0833rem',
+    lineHeight: '24px',
     color: '#74809A',
     paddingRight: '15px'
   },
@@ -22,33 +23,28 @@ const styles = () => ({
     color: '#818ca4'
   },
   formControlLabelLink: {
-    borderBottom: '1px dashed #0A83C8',
+    textDecoration: 'underline',
+    textDecorationStyle: 'dotted',
+    textDecorationColor: '#0378ba',
     '&:hover': {
       cursor: 'pointer',
-      borderBottomStyle: 'solid'
+      textDecorationStyle: 'solid'
     }
   },
   formControlRootClass: {
     marginBottom: '0'
   },
-  marginTop1: {
-    marginTop: '29px'
-  },
-  marginTop2: {
-    marginTop: '2px'
-  },
-  marginTop3: {
-    marginTop: '13px'
+  marginTop: {
+    marginTop: 16
   },
   inputContainer: {
-    padding: '0 8px',
-    margin: '0 -8px'
+    padding: '0 8px'
   },
   themeCardWrap: {
     border: 'solid 1px #e4e9f3',
     backgroundColor: 'rgba(245, 246, 250, 0.5)',
     borderRadius: '4px',
-    padding: '17px 15px'
+    padding: 15
   },
   helperCardWrap: {
     backgroundColor: '#f5fcff',
@@ -66,6 +62,9 @@ const styles = () => ({
     fontSize: '12px',
     color: '#0378BA',
     lineHeight: '15px'
+  },
+  label: {
+    whiteSpace: 'nowrap'
   }
 })
 
@@ -79,7 +78,7 @@ const LocalFilePath = ({
 }) => {
   return (
     <>
-      <Grid container justify="center" className={classes.marginTop1}>
+      <Grid container justify="center" className={classes.marginTop}>
         <Grid item xs={12}>
           <FormControlInput
             className={classes.formControlInput}
@@ -94,7 +93,7 @@ const LocalFilePath = ({
           />
         </Grid>
       </Grid>
-      <Grid container className={classes.marginTop2}>
+      <Grid container className={classes.marginTop}>
         <Grid item xs={12} className={classes.helperCardWrap}>
           <Grid container>
             <Grid item xs={3}>
@@ -132,14 +131,14 @@ const LocalFilePath = ({
           </Grid>
         </Grid>
       </Grid>
-      <Grid container justify="space-between" className={classes.marginTop3}>
+      <Grid container justify="space-between" className={classes.marginTop}>
         <Grid item xs={12} className={classes.themeCardWrap}>
           <Grid container justify="space-between">
             <Grid item xs={6} className={classes.inputContainer}>
               <FormControlTimeDurationPicker
                 id={'duration'}
                 label={
-                  <>
+                  <div className={classes.label}>
                     <span
                       className={classes.formControlLabelLink}
                       onClick={() => onShowModal(true)}
@@ -149,7 +148,7 @@ const LocalFilePath = ({
                     <small className={classes.formControlLabelSmall}>
                       (hh:mm:ss)
                     </small>
-                  </>
+                  </div>
                 }
                 value={values.duration}
                 onChange={val => onChange('duration', val)}
@@ -159,12 +158,12 @@ const LocalFilePath = ({
               <FormControlTimeDurationPicker
                 id={'updateDuration'}
                 label={
-                  <>
+                  <div className={classes.label}>
                     Media Update Frequency:
                     <small className={classes.formControlLabelSmall}>
                       (hh:mm:ss)
                     </small>
-                  </>
+                  </div>
                 }
                 value={values.updateFrequency}
                 onChange={val => onChange('updateFrequency', val)}

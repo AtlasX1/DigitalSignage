@@ -140,11 +140,12 @@ const getGroups = async params => {
   }
 }
 
-const getGroupItems = async id => {
+const getGroupItems = async (id, params) => {
   try {
     const response = await api({
       method: 'GET',
-      url: `/playlist/group/${id}`
+      url: `/playlist/group/${id}`,
+      params
     })
 
     return response.data

@@ -17,7 +17,7 @@ import { getUrlPrefix, roles } from 'utils'
 import routeByName from 'constants/routes'
 
 const styles = theme => {
-  const { palette, type } = theme
+  const { palette, type, typography } = theme
   return {
     iconButtonWrapper: {
       marginRight: '1rem',
@@ -37,20 +37,18 @@ const styles = theme => {
       padding: 0
     },
     navigationSubMenuText: {
-      color: palette[type].header.navItem.color,
+      ...typography.lightText[type],
       transition: 'all .4s'
     },
     navigationSubMenuActive: {
-      fontWeight: 'bold',
-      color: palette[type].header.navItem.activeColor
+      fontWeight: 'bold'
     },
     subMenuItem: {
       '&:hover $subMenuIcon': {
         opacity: 1
       },
       '&:hover $navigationSubMenuText': {
-        fontWeight: 'bold',
-        color: palette[type].header.navItem.activeColor
+        fontWeight: 'bold'
       }
     },
     subMenuIcon: {

@@ -20,9 +20,8 @@ const useStyles = makeStyles({
   item: {
     display: 'inline-flex',
     alignItems: 'center',
-    width: 'calc(100% / 6)',
     color: '#8D96A6',
-    padding: '9.5px 0',
+    padding: '9.5px',
     cursor: 'pointer',
     '&:hover': {
       color: '#0084CE'
@@ -31,6 +30,12 @@ const useStyles = makeStyles({
       // color: 'rgba(141, 150, 166, 0.5)',
       opacity: '.5',
       pointerEvents: 'none'
+    },
+    '&:first-child': {
+      paddingLeft: 0
+    },
+    '&:last-child': {
+      paddingRight: 0
     }
   }
 })

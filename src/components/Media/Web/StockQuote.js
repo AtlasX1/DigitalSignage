@@ -1,16 +1,10 @@
-import {
-  CircularProgress,
-  Grid,
-  Typography,
-  withStyles
-} from '@material-ui/core'
-import { getThemeOfMediaFeatureById } from 'actions/configActions'
+import { Grid, Typography, withStyles } from '@material-ui/core'
 import { generateMediaPreview } from 'actions/mediaActions'
 import { CheckboxSwitcher } from 'components/Checkboxes'
 import { useFormik } from 'formik'
 import update from 'immutability-helper'
 import PropTypes from 'prop-types'
-import React, { useCallback, useEffect, useState, useRef } from 'react'
+import React, { useCallback, useEffect, useState, useRef, useMemo } from 'react'
 import { translate } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import * as Yup from 'yup'
@@ -24,7 +18,6 @@ import {
 import { mediaConstants, timezones } from '../../../constants'
 import {
   createMediaPostData,
-  getAllowedFeatureId,
   getMediaInfoFromBackendData
 } from '../../../utils/mediaUtils'
 import { WhiteButton } from '../../Buttons'
@@ -35,25 +28,14 @@ import {
   FormControlSketchColorPicker
 } from '../../Form'
 import MediaHtmlCarousel from '../MediaHtmlCarousel'
+import useMediaTheme from 'hooks/useMediaTheme'
 
 const styles = theme => {
-  const { palette, type } = theme
+  const { palette, type, typography } = theme
   return {
     root: {
-      margin: '20px 24px',
-      fontFamily: [
-        '"Segoe UI"',
-        '"Product Sans"',
-        '-apple-system',
-        'BlinkMacSystemFont',
-        'Roboto',
-        '"Helvetica Neue"',
-        'Arial',
-        'sans-serif',
-        '"Apple Color Emoji"',
-        '"Segoe UI Emoji"',
-        '"Segoe UI Symbol"'
-      ].join(',')
+      margin: '15px 30px',
+      fontFamily: typography.fontFamily
     },
     formWrapper: {
       position: 'relative',
@@ -72,13 +54,9 @@ const styles = theme => {
       backgroundColor: 'rgba(255,255,255,.5)',
       zIndex: 1
     },
-    tabToggleButtonGroup: {
-      marginBottom: '14px'
-    },
     tabToggleButton: {
       width: '128px'
     },
-
     featureIconTabContainer: {
       justifyContent: 'center'
     },
@@ -107,7 +85,6 @@ const styles = theme => {
       color: palette[type].pages.media.card.header.color,
       fontSize: '12px'
     },
-
     formControlSketchColorPickerLabelClass: {
       marginBottom: '0',
       fontSize: '16px'
@@ -115,15 +92,13 @@ const styles = theme => {
     labelClass: {
       fontSize: '16px',
       fontWeight: '300',
-      marginBottom: '8px',
+      marginBottom: 0,
       transform: 'translate(0, 1.5px) scale(0.75)',
       whiteSpace: 'nowrap'
     },
-
     formControlSketchColorPickerInputClass: {
       width: '100%'
     },
-
     inputLabel: {
       display: 'block',
       fontSize: '13px',
@@ -132,15 +107,13 @@ const styles = theme => {
       marginRight: '10px'
     },
     inputContainer: {
-      padding: '0 7px',
-      margin: '0 0 16px'
+      marginBottom: 16
     },
     inputContainerShrink: {
       padding: '0 7px 0',
       margin: '0 0 16px',
       maxWidth: '275px'
     },
-
     formControlRootClass: {
       marginBottom: 0
     },
@@ -165,7 +138,6 @@ const styles = theme => {
         paddingBottom: 0
       }
     },
-
     previewMediaBtn: {
       padding: '10px 25px 8px',
       border: `1px solid ${palette[type].sideModal.action.button.border}`,
@@ -174,12 +146,10 @@ const styles = theme => {
       boxShadow: 'none'
     },
     previewMediaRow: {
-      marginTop: '51px',
-      paddingLeft: '7px'
+      marginTop: 45
     },
     previewMediaText: {
-      fontWeight: 'bold',
-      color: palette[type].sideModal.action.button.color
+      ...typography.lightText[type]
     }
   }
 }
@@ -210,13 +180,14 @@ const StockQuote = ({
   onShareStateCallback,
   ...props
 }) => {
-  const [featureId, setFeatureId] = useState(null)
-  const [isLoading, setLoading] = useState(false)
   const [formSubmitting, setFormSubmitting] = useState(false)
   const [autoClose, setAutoClose] = useState(false)
 
   const addMediaReducer = useSelector(({ addMedia }) => addMedia.web)
   const mediaItemReducer = useSelector(({ media }) => media.mediaItem)
+
+  const { themes, featureId } = useMediaTheme('Web', 'StockQuote')
+  const previewThemes = useMemo(() => themes.Legacy || [], [themes.Legacy])
 
   const initialFormValues = useRef({
     themeId: 23,
@@ -254,33 +225,6 @@ const StockQuote = ({
     },
     [dispatch]
   )
-
-  const { configMediaCategory } = useSelector(({ config }) => config)
-  useEffect(() => {
-    if (configMediaCategory.response.length) {
-      setFeatureId(
-        getAllowedFeatureId(configMediaCategory, 'Web', 'StockQuote')
-      )
-    }
-  }, [configMediaCategory])
-
-  useEffect(() => {
-    if (featureId) {
-      dispatch(getThemeOfMediaFeatureById(featureId))
-    }
-    // eslint-disable-next-line
-  }, [featureId])
-
-  const previewThemes = useSelector(({ config }) => {
-    if (
-      config.themeOfMedia &&
-      config.themeOfMedia.response &&
-      config.themeOfMedia.response.Legacy
-    ) {
-      return config.themeOfMedia.response.Legacy
-    }
-    return []
-  })
 
   useEffect(() => {
     if (!formSubmitting) return
@@ -362,16 +306,9 @@ const StockQuote = ({
         )
         form.setFieldValue('symbols', initialFormValues.current.symbols)
       }
-      setLoading(false)
     }
     // eslint-disable-next-line
   }, [backendData])
-
-  useEffect(() => {
-    if (mode === 'edit') {
-      setLoading(true)
-    }
-  }, [mode])
 
   const validationSchema = Yup.object().shape({
     symbol: Yup.string().when('themeId', {
@@ -569,11 +506,6 @@ const StockQuote = ({
       className={classes.formWrapper}
       onSubmit={form.handleSubmit}
     >
-      {isLoading && (
-        <div className={classes.loaderWrapper}>
-          <CircularProgress size={30} thickness={5} />
-        </div>
-      )}
       <Grid item xs={7} className={classes.tabContent}>
         <Grid>
           <div className={classes.root}>
@@ -618,8 +550,8 @@ const StockQuote = ({
             </Grid>
 
             {form.values.themeId === 23 && (
-              <Grid container>
-                <Grid item xs={12} className={classes.inputContainer}>
+              <Grid container spacing={16}>
+                <Grid item xs={12}>
                   <FormControlInput
                     label={`${t('Ticker Symbol')}:`}
                     formControlLabelClass={classes.labelClass}
@@ -631,57 +563,50 @@ const StockQuote = ({
                     error={form.errors.symbol}
                   />
                 </Grid>
-                <Grid container justify="space-between">
-                  <Grid item xs={6} className={classes.inputContainerShrink}>
-                    <FormControlReactSelect
-                      label={`${t('Default Interval')}:`}
-                      formControlLabelClass={classes.labelClass}
-                      value={{
-                        label: form.values.default_interval,
-                        value: form.values.default_interval
-                      }}
-                      handleChange={event =>
-                        form.setFieldValue(
-                          'default_interval',
-                          event.target.value
-                        )
-                      }
-                      options={durationOptions}
-                    />
-                  </Grid>
-                  <Grid item xs={6} className={classes.inputContainerShrink}>
-                    <FormControlReactSelect
-                      label={`${t('Time Zone')}:`}
-                      formControlLabelClass={classes.labelClass}
-                      value={{
-                        label: form.values.time_zone,
-                        value: form.values.time_zone
-                      }}
-                      handleChange={event =>
-                        form.setFieldValue('time_zone', event.target.value)
-                      }
-                      options={timezones}
-                    />
-                  </Grid>
+                <Grid item xs={6}>
+                  <FormControlReactSelect
+                    label={`${t('Default Interval')}:`}
+                    formControlLabelClass={classes.labelClass}
+                    value={{
+                      label: form.values.default_interval,
+                      value: form.values.default_interval
+                    }}
+                    handleChange={event =>
+                      form.setFieldValue('default_interval', event.target.value)
+                    }
+                    options={durationOptions}
+                  />
                 </Grid>
-                <Grid container justify="space-between">
-                  <Grid item xs={6} className={classes.inputContainerShrink}>
-                    <FormControlReactSelect
-                      label={`${t('Color Theme')}:`}
-                      formControlLabelClass={classes.labelClass}
-                      value={{
-                        label: form.values.color_theme,
-                        value: form.values.color_theme
-                      }}
-                      handleChange={event =>
-                        form.setFieldValue('color_theme', event.target.value)
-                      }
-                      options={[
-                        { label: 'Light', value: 'light' },
-                        { label: 'Dark', value: 'dark' }
-                      ]}
-                    />
-                  </Grid>
+                <Grid item xs={6}>
+                  <FormControlReactSelect
+                    label={`${t('Time Zone')}:`}
+                    formControlLabelClass={classes.labelClass}
+                    value={{
+                      label: form.values.time_zone,
+                      value: form.values.time_zone
+                    }}
+                    handleChange={event =>
+                      form.setFieldValue('time_zone', event.target.value)
+                    }
+                    options={timezones}
+                  />
+                </Grid>
+                <Grid item xs={6}>
+                  <FormControlReactSelect
+                    label={`${t('Color Theme')}:`}
+                    formControlLabelClass={classes.labelClass}
+                    value={{
+                      label: form.values.color_theme,
+                      value: form.values.color_theme
+                    }}
+                    handleChange={event =>
+                      form.setFieldValue('color_theme', event.target.value)
+                    }
+                    options={[
+                      { label: 'Light', value: 'light' },
+                      { label: 'Dark', value: 'dark' }
+                    ]}
+                  />
                 </Grid>
               </Grid>
             )}

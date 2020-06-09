@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { translate } from 'react-i18next'
-
+import classNames from 'classnames'
 import { withStyles, Grid } from '@material-ui/core'
 
 import { TabToggleButton, TabToggleButtonGroup } from '../Buttons'
@@ -25,11 +25,8 @@ const styles = ({ palette, type, typography }) => {
       justifyContent: 'center',
       background: 'transparent'
     },
-    marginTop1: {
-      marginTop: '10px'
-    },
-    marginTop2: {
-      marginTop: '17px'
+    marginTop: {
+      marginTop: 16
     }
   }
 }
@@ -37,8 +34,9 @@ const styles = ({ palette, type, typography }) => {
 const MediaThemeSelector = ({ t, classes, value, onChange, carousel }) => (
   <Grid item xs={12} className={classes.themeCardWrap}>
     <TabToggleButtonGroup
-      className={[classes.tabToggleButtonContainer, classes.marginTop1].join(
-        ' '
+      className={classNames(
+        classes.tabToggleButtonContainer,
+        classes.marginTop
       )}
       value={value}
       onChange={onChange}
@@ -51,7 +49,7 @@ const MediaThemeSelector = ({ t, classes, value, onChange, carousel }) => (
         {t('Legacy Theme')}
       </TabToggleButton>
     </TabToggleButtonGroup>
-    <Grid container className={classes.marginTop2}>
+    <Grid container className={classes.marginTop}>
       <Grid item xs={12}>
         <MediaHtmlCarousel {...carousel} />
       </Grid>

@@ -1,41 +1,35 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
-import { translate } from 'react-i18next'
-import { Link, Route } from 'react-router-dom'
-import { bindActionCreators } from 'redux'
-import { connect } from 'react-redux'
-import { withSnackbar } from 'notistack'
 import { withStyles } from '@material-ui/core'
-
+import {
+  impersonateUserAction,
+  logoutUserAction
+} from 'actions/authenticationActions'
 import {
   clearResponseInfo,
   deleteSelectedItems,
   getItems
 } from 'actions/clientUsersActions'
-import {
-  impersonateUserAction,
-  logoutUserAction
-} from 'actions/authenticationActions'
-
-import routeByName from 'constants/routes'
-import { apiConstants } from 'constants/index'
-import { userRoleLevels } from 'constants/api'
-
 import { WhiteButton } from 'components/Buttons'
 import { CheckboxSwitcher } from 'components/Checkboxes'
 import PageContainer from 'components/PageContainer'
-import BaseTable from 'components/TableLibrary/BaseTable'
 import PageTitle from 'components/PageContainer/PageTitle'
-
+import BaseTable from 'components/TableLibrary/BaseTable'
+import { userRoleLevels } from 'constants/api'
+import { apiConstants } from 'constants/index'
+import routeByName from 'constants/routes'
+import { useCustomSnackbar } from 'hooks/index'
+import useIds from 'hooks/tableLibrary/useIds'
+import useSelectedList from 'hooks/tableLibrary/useSelectedList'
+import { withSnackbar } from 'notistack'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import { translate } from 'react-i18next'
+import { connect } from 'react-redux'
+import { Link, Route } from 'react-router-dom'
+import { bindActionCreators } from 'redux'
+import { notificationAnalyzer, setToken } from 'utils'
+import saveOriginalToken from 'utils/saveOriginalToken'
 import AddEditUser from './AddEditUser'
 import Filter from './Filter'
 import TableRow from './TableRow'
-
-import { notificationAnalyzer, setToken } from 'utils'
-import saveOriginalToken from 'utils/saveOriginalToken'
-
-import { useCustomSnackbar } from 'hooks/index'
-import useSelectedList from 'hooks/tableLibrary/useSelectedList'
-import useIds from 'hooks/tableLibrary/useIds'
 
 const styles = ({ palette, type }) => ({
   actionIcons: {
@@ -56,9 +50,9 @@ const initialColumns = [
     display: true
   },
   { id: 'email', label: 'Email', display: true },
-  { id: 'tag', label: 'Tags', display: true },
   { id: 'phone', label: 'Phone', align: 'center', display: true },
   { id: 'lastLogin', label: 'Last Login', align: 'center', display: true },
+  { id: 'tag', label: 'Tags', align: 'center', display: true },
   { id: 'status', label: 'Status', align: 'center', display: true }
 ]
 

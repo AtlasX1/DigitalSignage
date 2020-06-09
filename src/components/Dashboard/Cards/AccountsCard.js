@@ -73,6 +73,7 @@ const AccountsCard = ({
           height={32}
           chartData={[{ name: 'accounts', ...data[period] }]}
           fillColors={['#2087c2', '#dedede']}
+          tooltipColors={['#2087c2', '#888996']}
         />
         <Grid
           container

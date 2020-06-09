@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState, useRef } from 'react'
+import React, { useCallback, useEffect, useState, useRef, useMemo } from 'react'
 
 import update from 'immutability-helper'
 
@@ -18,8 +18,7 @@ import {
   Dialog,
   Typography,
   DialogTitle,
-  DialogContent,
-  CircularProgress
+  DialogContent
 } from '@material-ui/core'
 
 import {
@@ -38,7 +37,6 @@ import {
 
 import {
   createMediaPostData,
-  getAllowedFeatureId,
   getMediaInfoFromBackendData
 } from '../../../utils/mediaUtils'
 
@@ -49,6 +47,7 @@ import {
   generateMediaPreview,
   getMediaItemsAction
 } from '../../../actions/mediaActions'
+import useDetermineMediaFeatureId from 'hooks/useDetermineMediaFeatureId'
 
 const images = {
   user1: require('../../../common/assets/images/flickr_step3.png'),
@@ -99,9 +98,9 @@ const InfoMessage = withStyles(InfoMessageStyles)(
   )
 )
 
-const styles = ({ palette, type, typography }) => ({
+const styles = ({ palette, type, typography, formControls }) => ({
   root: {
-    margin: '31px 25px',
+    margin: '15px 30px',
     fontFamily: typography.fontFamily
   },
   previewMediaBtn: {
@@ -112,11 +111,10 @@ const styles = ({ palette, type, typography }) => ({
     boxShadow: 'none'
   },
   previewMediaText: {
-    fontWeight: 'bold',
-    color: palette[type].sideModal.action.button.color
+    ...typography.lightText[type]
   },
   previewMediaRow: {
-    marginTop: '61px'
+    marginTop: 45
   },
   themeCardWrap: {
     border: `solid 1px ${palette[type].pages.media.card.border}`,
@@ -125,12 +123,7 @@ const styles = ({ palette, type, typography }) => ({
     marginBottom: '22px'
   },
   themeOptions1: {
-    padding: '0 15px',
-    margin: '25px 0 20px'
-  },
-  themeInputContainer: {
-    padding: '0 7px',
-    margin: '0 -7px'
+    padding: 15
   },
   tabToggleButton: {
     width: '128px'
@@ -138,7 +131,7 @@ const styles = ({ palette, type, typography }) => ({
   tabToggleButtonContainer: {
     justifyContent: 'center',
     background: 'transparent',
-    marginTop: '17px'
+    marginTop: 15
   },
   locationInput: {
     marginBottom: 0
@@ -150,24 +143,23 @@ const styles = ({ palette, type, typography }) => ({
     marginRight: 4
   },
   sliderInputLabel: {
-    color: '#74809A',
-    fontSize: '13px',
+    ...formControls.mediaApps.refreshEverySlider.label,
     lineHeight: '15px',
-    marginRight: '15px'
+    marginRight: '15px',
+    whiteSpace: 'nowrap'
   },
   inputLabel: {
-    fontSize: '17px'
+    fontSize: '1.0833rem'
   },
   infoLabel: {
-    fontSize: '17px',
-    borderBottom: '1px dashed #0A83C8',
+    fontSize: '1.0833rem',
+    textDecoration: 'underline',
+    textDecorationStyle: 'dotted',
+    textDecorationColor: '#0378ba',
     '&:hover': {
       cursor: 'pointer',
-      borderBottomStyle: 'solid'
+      textDecorationStyle: 'solid'
     }
-  },
-  marginTop1: {
-    marginTop: '30px'
   },
   dialog: {
     background: palette[type].dialog.background,
@@ -271,50 +263,48 @@ const Flickr = props => {
 
   const dispatchAction = useDispatch()
 
-  const [
-    configMediaCategory,
-    addMediaReducer,
-    mediaItemReducer
-  ] = useSelector(state => [
-    state.config.configMediaCategory,
+  const [addMediaReducer, mediaItemReducer] = useSelector(state => [
     state.addMedia.gallery,
     state.media.mediaItem
   ])
 
-  const [isLoading, setLoading] = useState(false)
   const [formSubmitting, setFormSubmitting] = useState(false)
   const [autoClose, setAutoClose] = useState(false)
-  const [featureId, setFeatureId] = useState(null)
   const [showUserIdHelp, setShowUserIdHelp] = useState(false)
   const [showAlbumIdHelp, setShowAlbumIdHelp] = useState(false)
 
-  const transitions = [
-    { label: t('No Transition'), value: 'random' },
-    { label: t('Random'), value: 'no-transition' },
-    { label: t('Fall'), value: 'new-fall' },
-    { label: t('Room to Left'), value: 'room-to-left' },
-    { label: t('Room to Right'), value: 'room-to-right' },
-    { label: t('Room to Top'), value: 'room-to-top' },
-    { label: t('Room to Bottom'), value: 'room-to-bottom' },
-    { label: t('Slide Left'), value: 'fade-left-right' },
-    { label: t('Slide Right'), value: 'fade-right-left' },
-    { label: t('Slide Top'), value: 'fade-top-bottom' },
-    { label: t('Slide Bottom'), value: 'fade-bottom-top' },
-    { label: t('Scale Down/From Right'), value: 'scale-down-right' },
-    { label: t('Scale Down/From Left'), value: 'scale-down-left' },
-    { label: t('Scale Down/From Bottom'), value: 'scale-down-bottom' },
-    { label: t('Scale Down/From Top'), value: 'scale-down-top' },
-    { label: t('Scale Down/Scale Up'), value: 'scale-down-up' },
-    { label: t('Flip Right'), value: '3D-flip-right' },
-    { label: t('Flip Left'), value: '3D-flip-left' },
-    { label: t('Flip Top'), value: '3D-flip-top' },
-    { label: t('Flip Bottom'), value: '3D-flip-bottom' },
-    { label: t('Carousel Left'), value: 'carousel-left' },
-    { label: t('Carousel Right'), value: 'carousel-right' },
-    { label: t('Carousel Top'), value: 'carousel-top' },
-    { label: t('Carousel Bottom'), value: 'carousel-bottom' },
-    { label: t('Fade'), value: 'simpleFade' }
-  ]
+  const featureId = useDetermineMediaFeatureId('Gallery', 'Flickr')
+
+  const transitions = useMemo(
+    () => [
+      { label: t('No Transition'), value: 'random' },
+      { label: t('Random'), value: 'no-transition' },
+      { label: t('Fall'), value: 'new-fall' },
+      { label: t('Room to Left'), value: 'room-to-left' },
+      { label: t('Room to Right'), value: 'room-to-right' },
+      { label: t('Room to Top'), value: 'room-to-top' },
+      { label: t('Room to Bottom'), value: 'room-to-bottom' },
+      { label: t('Slide Left'), value: 'fade-left-right' },
+      { label: t('Slide Right'), value: 'fade-right-left' },
+      { label: t('Slide Top'), value: 'fade-top-bottom' },
+      { label: t('Slide Bottom'), value: 'fade-bottom-top' },
+      { label: t('Scale Down/From Right'), value: 'scale-down-right' },
+      { label: t('Scale Down/From Left'), value: 'scale-down-left' },
+      { label: t('Scale Down/From Bottom'), value: 'scale-down-bottom' },
+      { label: t('Scale Down/From Top'), value: 'scale-down-top' },
+      { label: t('Scale Down/Scale Up'), value: 'scale-down-up' },
+      { label: t('Flip Right'), value: '3D-flip-right' },
+      { label: t('Flip Left'), value: '3D-flip-left' },
+      { label: t('Flip Top'), value: '3D-flip-top' },
+      { label: t('Flip Bottom'), value: '3D-flip-bottom' },
+      { label: t('Carousel Left'), value: 'carousel-left' },
+      { label: t('Carousel Right'), value: 'carousel-right' },
+      { label: t('Carousel Top'), value: 'carousel-top' },
+      { label: t('Carousel Bottom'), value: 'carousel-bottom' },
+      { label: t('Fade'), value: 'simpleFade' }
+    ],
+    [t]
+  )
   const initialFormValues = useRef({
     type: 'user_id',
     flickr_user_id: '',
@@ -584,37 +574,19 @@ const Flickr = props => {
         mediaInfo: getMediaInfoFromBackendData(backendData)
       }
       form.setValues(initialFormValues.current)
-      setLoading(false)
     }
     // eslint-disable-next-line
   }, [backendData])
 
   useEffect(() => {
-    if (!configMediaCategory.response.length) return
-    const id = getAllowedFeatureId(configMediaCategory, 'Gallery', 'Flickr')
-    setFeatureId(id)
-  }, [configMediaCategory])
-
-  useEffect(() => {
     onShareStateCallback(handleShareState)
   }, [handleShareState, onShareStateCallback])
-
-  useEffect(() => {
-    if (mode === 'edit') {
-      setLoading(true)
-    }
-  }, [mode])
 
   const { values, errors, touched, submitCount, isValid } = form
   const isButtonsDisable = formSubmitting || (submitCount > 0 && !isValid)
 
   return (
     <form className={classes.formWrapper} onSubmit={form.handleSubmit}>
-      {isLoading && (
-        <div className={classes.loaderWrapper}>
-          <CircularProgress size={30} thickness={5} />
-        </div>
-      )}
       <Grid container className={classes.tabContent}>
         <Grid item xs={7}>
           <div className={classes.root}>
@@ -644,10 +616,11 @@ const Flickr = props => {
                   container
                   justify="space-between"
                   className={classes.themeOptions1}
+                  spacing={16}
                 >
                   {values.type === 'user_id' ? (
                     <>
-                      <Grid item xs={6} className={classes.themeInputContainer}>
+                      <Grid item xs={6}>
                         <FormControlInput
                           label={'Flickr User ID'}
                           formControlRootClass={classes.locationInput}
@@ -667,7 +640,7 @@ const Flickr = props => {
                           }
                         />
                       </Grid>
-                      <Grid item xs={6} className={classes.themeInputContainer}>
+                      <Grid item xs={6}>
                         <FormControlInput
                           label={'Image Tags'}
                           formControlRootClass={classes.locationInput}
@@ -683,7 +656,7 @@ const Flickr = props => {
                       </Grid>
                     </>
                   ) : (
-                    <Grid item xs={6} className={classes.themeInputContainer}>
+                    <Grid item xs={6}>
                       <FormControlInput
                         label={'Album Id'}
                         formControlRootClass={classes.locationInput}
@@ -707,8 +680,8 @@ const Flickr = props => {
                 </Grid>
               </Grid>
             </Grid>
-            <Grid container justify="space-between">
-              <Grid item xs={6} className={classes.themeInputContainer}>
+            <Grid container justify="space-between" spacing={16}>
+              <Grid item xs={6}>
                 <FormControlSelect
                   custom
                   label={'Transition'}
@@ -723,7 +696,7 @@ const Flickr = props => {
                   }
                 />
               </Grid>
-              <Grid item xs={6} className={classes.themeInputContainer}>
+              <Grid item xs={6}>
                 <FormControlSelect
                   custom
                   label={'Image Type'}
@@ -738,14 +711,7 @@ const Flickr = props => {
                   }
                 />
               </Grid>
-            </Grid>
-            <Grid
-              container
-              justify="space-between"
-              alignItems={'flex-end'}
-              className={classes.marginTop1}
-            >
-              <Grid item xs={3} className={classes.themeInputContainer}>
+              <Grid item xs={3}>
                 <FormControlInput
                   custom
                   label={'Number of Images'}
@@ -765,7 +731,7 @@ const Flickr = props => {
                   }
                 />
               </Grid>
-              <Grid item xs={3} className={classes.themeInputContainer}>
+              <Grid item xs={3}>
                 <FormControlInput
                   custom
                   label={'Duration'}

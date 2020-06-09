@@ -26,7 +26,13 @@ const initialState = {
   sleepMode: {},
   putSleepMode: {},
   note: {},
-  postNote: {}
+  postNote: {},
+  capAlertDevices: {
+    isFetching: false,
+    isFetched: false,
+    items: [],
+    error: null
+  }
 }
 
 export default (state = initialState, action) => {
@@ -268,6 +274,35 @@ export default (state = initialState, action) => {
       return update(state, {
         postNote: {
           error: { $set: action.payload }
+        }
+      })
+    case types.REQUEST_CAP_ALERT_DEVICES:
+      return update(state, {
+        capAlertDevices: {
+          $merge: {
+            isFetching: true
+          }
+        }
+      })
+    case types.CAP_ALERT_DEVICES_SUCCESS:
+      return update(state, {
+        capAlertDevices: {
+          $merge: {
+            isFetching: false,
+            isFetched: true,
+            items: action.payload,
+            error: null
+          }
+        }
+      })
+    case types.CAP_ALERT_DEVICES_ERROR:
+      return update(state, {
+        capAlertDevices: {
+          $merge: {
+            isFetching: false,
+            isFetched: true,
+            error: action.payload
+          }
         }
       })
     default:

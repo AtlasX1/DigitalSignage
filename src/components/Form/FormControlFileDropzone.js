@@ -56,7 +56,8 @@ const styles = ({ palette, type, spacing, transitions }) => ({
     }
   },
   bootstrapFormLabel: {
-    fontSize: 16,
+    fontSize: '1.0833rem',
+    lineHeight: '24px',
     color: palette[type].formControls.label.color
   },
   labelRightComponentContainer: {

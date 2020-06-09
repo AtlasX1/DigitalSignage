@@ -7,12 +7,7 @@ import { compose } from 'redux'
 import { get as _get } from 'lodash'
 import { useDispatch, useSelector } from 'react-redux'
 import { translate } from 'react-i18next'
-import {
-  CircularProgress,
-  Grid,
-  Typography,
-  withStyles
-} from '@material-ui/core'
+import { Grid, Typography, withStyles } from '@material-ui/core'
 
 import { mediaConstants as constants } from '../../../constants'
 import { MediaInfo, MediaTabActions } from '../index'
@@ -22,7 +17,6 @@ import FormControlInput from '../../Form/FormControlInput'
 import FormControlSketchColorPicker from '../../Form/FormControlSketchColorPicker'
 import {
   createMediaPostData,
-  getAllowedFeatureId,
   getMediaInfoFromBackendData
 } from '../../../utils/mediaUtils'
 import {
@@ -32,12 +26,13 @@ import {
   generateMediaPreview,
   getMediaItemsAction
 } from '../../../actions/mediaActions'
+import useDetermineMediaFeatureId from 'hooks/useDetermineMediaFeatureId'
 
 const styles = theme => {
-  const { palette, type } = theme
+  const { palette, type, formControls, typography } = theme
   return {
     root: {
-      margin: '21px 25px 0'
+      margin: '15px 30px'
     },
     formWrapper: {
       position: 'relative',
@@ -67,11 +62,10 @@ const styles = theme => {
       boxShadow: 'none'
     },
     previewMediaRow: {
-      marginTop: '105px'
+      marginTop: 45
     },
     previewMediaText: {
-      fontWeight: 'bold',
-      color: palette[type].sideModal.action.button.color
+      ...typography.lightText[type]
     },
     colorPickerLabel: {
       color: '#74809A',
@@ -91,24 +85,23 @@ const styles = theme => {
     formControlInputClass: {
       height: '28px',
       width: '102px',
-      fontSize: '12px',
+      fontSize: '0.875rem',
       lineHeight: '14px'
     },
     colorPickerContainer: {
-      marginBottom: '18px',
+      marginBottom: '16px',
       '&:last-of-type': {
         marginBottom: '0'
       }
     },
     formControlInputWrap: {
-      marginBottom: '18px'
+      marginBottom: '16px'
     },
     sliderInputContainer: {
-      marginBottom: '27px'
+      marginBottom: '16px'
     },
     sliderInputLabel: {
-      color: '#74809A',
-      fontSize: '13px',
+      ...formControls.mediaApps.refreshEverySlider.label,
       lineHeight: '15px',
       marginRight: '15px'
     },
@@ -116,7 +109,7 @@ const styles = theme => {
       width: '46px'
     },
     formControlLabelClass: {
-      fontSize: '17px',
+      fontSize: '1.0833rem',
       color: '#74809A'
     },
     error: {
@@ -150,14 +143,13 @@ const Qr = props => {
     onShareStateCallback
   } = props
   const dispatchAction = useDispatch()
-  const { configMediaCategory } = useSelector(({ config }) => config)
+
   const addMediaReducer = useSelector(({ addMedia }) => addMedia.general)
   const mediaItemReducer = useSelector(({ media }) => media.mediaItem)
 
-  const [isLoading, setLoading] = useState(false)
   const [formSubmitting, setFormSubmitting] = useState(false)
   const [autoClose, setAutoClose] = useState(false)
-  const [featureId, setFeatureId] = useState(null)
+  const featureId = useDetermineMediaFeatureId('General', 'QRCode')
 
   const initialFormValues = useRef({
     content: '',
@@ -359,37 +351,19 @@ const Qr = props => {
         mediaInfo: getMediaInfoFromBackendData(backendData)
       }
       form.setValues(initialFormValues.current)
-      setLoading(false)
     }
 
     // eslint-disable-next-line
   }, [backendData])
 
   useEffect(() => {
-    if (!configMediaCategory.response.length) return
-    const id = getAllowedFeatureId(configMediaCategory, 'General', 'QRCode')
-    setFeatureId(id)
-  }, [configMediaCategory])
-
-  useEffect(() => {
     onShareStateCallback(handleShareState)
   }, [handleShareState, onShareStateCallback])
-
-  useEffect(() => {
-    if (mode === 'edit') {
-      setLoading(true)
-    }
-  }, [mode])
 
   const { values, errors, touched, submitCount, isValid } = form
   const isButtonsDisable = formSubmitting || (submitCount > 0 && !isValid)
   return (
     <form className={classes.formWrapper} onSubmit={form.handleSubmit}>
-      {isLoading && (
-        <div className={classes.loaderWrapper}>
-          <CircularProgress size={30} thickness={5} />
-        </div>
-      )}
       <Grid container className={classes.tabContent}>
         <Grid item xs={7}>
           <div className={classes.root}>

@@ -1,8 +1,9 @@
-import React, { useEffect, useState, useCallback } from 'react'
+import React, { useEffect, useState, useCallback, useMemo, memo } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { bindActionCreators, compose } from 'redux'
 import { translate } from 'react-i18next'
+import classNames from 'classnames'
 import {
   withStyles,
   Dialog,
@@ -13,12 +14,12 @@ import {
   TableRow,
   TableCell,
   TableHead,
-  TableBody,
-  CircularProgress
+  TableBody
 } from '@material-ui/core'
 import { ModalPaper } from 'components/Paper'
 import { Close as CloseIcon } from '@material-ui/icons'
 import { BlueButton } from 'components/Buttons'
+import { CircularLoader } from 'components/Loaders'
 
 import {
   getMediaItemsAction,
@@ -29,6 +30,7 @@ import {
   clearPutDeviceMediaEmergencyAlertInfoAction,
   getDeviceMediaEmergencyAlert
 } from 'actions/alertActions'
+import { isEmpty, isEqual, isFalsy, takeTruth } from 'utils/generalUtils'
 
 const styles = ({ palette, type }) => ({
   dialogPaper: {
@@ -74,7 +76,7 @@ const styles = ({ palette, type }) => ({
   tableCell: {
     border: 'none',
     borderColor: palette[type].table.head.border,
-    borderBottomWidth: 2,
+    borderBottomWidth: 1,
     borderBottomStyle: 'solid',
     color: palette[type].table.body.cell.color,
     width: '33.3%',
@@ -89,6 +91,9 @@ const styles = ({ palette, type }) => ({
       borderRight: 'none'
     }
   },
+  tableCellFullWidth: {
+    width: '100%'
+  },
   noFoundText: {
     width: '100%',
     height: 48,
@@ -102,17 +107,31 @@ const styles = ({ palette, type }) => ({
   },
   cancelBtn: {
     marginRight: 20
-  },
-  loaderWrapper: {
-    width: '100%',
-    height: '100%',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    position: 'absolute',
-    zIndex: 1
   }
 })
+
+function SingleRow({ classes, id, isSelected, title, onClick }) {
+  const handleClick = useCallback(() => {
+    onClick(id)
+  }, [id, onClick])
+  return (
+    <TableRow
+      className={classNames(classes.tableRow, {
+        [classes.tableRowSelected]: isSelected
+      })}
+      key={id}
+      onClick={handleClick}
+    >
+      <TableCell className={classes.tableCell} align="center">
+        {title}
+      </TableCell>
+      <TableCell className={classes.tableCell} align="center" />
+      <TableCell className={classes.tableCell} />
+    </TableRow>
+  )
+}
+
+const SingleRowMemoized = memo(SingleRow)
 
 const AlertMediaLibrary = ({
   t,
@@ -143,12 +162,15 @@ const AlertMediaLibrary = ({
   }, [getMediaItemsAction, id])
 
   useEffect(() => {
-    if (libraryReducer.response) {
+    const { response, error } = libraryReducer
+    if (response) {
+      const { data } = response
+      setData(takeTruth(data, []))
+      clearGetMediaItemsInfoAction()
       setIsLoading(false)
-      setData(libraryReducer.response.data)
+    } else if (error) {
       clearGetMediaItemsInfoAction()
-    } else if (libraryReducer.error) {
-      clearGetMediaItemsInfoAction()
+      setIsLoading(false)
     }
     // eslint-disable-next-line
   }, [libraryReducer])
@@ -177,6 +199,40 @@ const AlertMediaLibrary = ({
     // eslint-disable-next-line
   }, [putDeviceMediaEmergencyAlertReducer])
 
+  const renderRows = useMemo(() => {
+    if (isEmpty(data)) {
+      return (
+        <TableRow className={classes.tableRow}>
+          <TableCell
+            className={classNames(
+              classes.tableCell,
+              classes.tableCellFullWidth
+            )}
+          >
+            <Typography className={classes.noFoundText}>
+              {t('No Records Found')}
+            </Typography>
+          </TableCell>
+        </TableRow>
+      )
+    }
+    return data.map(({ id, title }) => (
+      <SingleRowMemoized
+        key={id}
+        id={id}
+        title={title}
+        classes={classes}
+        isSelected={isEqual(id, selectedId)}
+        onClick={setSelectedId}
+      />
+    ))
+  }, [data, selectedId, setSelectedId, classes, t])
+
+  const renderLoader = useMemo(() => {
+    if (isFalsy(isLoading)) return null
+    return <CircularLoader />
+  }, [isLoading])
+
   return (
     <Dialog
       open={open}
@@ -185,11 +241,7 @@ const AlertMediaLibrary = ({
         paper: classes.dialogPaper
       }}
     >
-      {isLoading && (
-        <div className={classes.loaderWrapper}>
-          <CircularProgress size={30} thickness={5} />
-        </div>
-      )}
+      {renderLoader}
       <ModalPaper className={classes.paper}>
         <Typography className={classes.title}>
           {t('Alert media library').toUpperCase()}
@@ -217,33 +269,8 @@ const AlertMediaLibrary = ({
                   <TableCell className={classes.tableCell} align="center" />
                 </TableRow>
               </TableHead>
-              {!!data.length && (
-                <TableBody>
-                  {data.map(m => (
-                    <TableRow
-                      className={[
-                        classes.tableRow,
-                        selectedId === m.id ? classes.tableRowSelected : ''
-                      ].join(' ')}
-                      key={m.id}
-                      onClick={() => setSelectedId(m.id)}
-                    >
-                      <TableCell className={classes.tableCell} align="center">
-                        {m.title}
-                      </TableCell>
-                      <TableCell className={classes.tableCell} align="center" />
-                      <TableCell className={classes.tableCell} />
-                    </TableRow>
-                  ))}
-                </TableBody>
-              )}
+              <TableBody>{renderRows}</TableBody>
             </Table>
-
-            {!data.length && (
-              <Typography className={classes.noFoundText}>
-                {t('No Records Found')}
-              </Typography>
-            )}
           </Grid>
 
           <Grid container justify="flex-end">

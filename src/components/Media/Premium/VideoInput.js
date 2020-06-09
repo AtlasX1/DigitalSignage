@@ -6,12 +6,7 @@ import _get from 'lodash/get'
 import { useDispatch, useSelector } from 'react-redux'
 import classNames from 'classnames'
 
-import {
-  withStyles,
-  Grid,
-  Typography,
-  CircularProgress
-} from '@material-ui/core'
+import { withStyles, Grid, Typography } from '@material-ui/core'
 
 import { mediaConstants as constants } from '../../../constants'
 import { FormControlSelect, FormControlInput } from '../../Form'
@@ -19,7 +14,6 @@ import { CheckboxSwitcher } from '../../Checkboxes'
 import { MediaInfo, MediaTabActions } from '../../Media'
 import {
   createMediaPostData,
-  getAllowedFeatureId,
   getMediaInfoFromBackendData
 } from 'utils/mediaUtils'
 import {
@@ -28,35 +22,27 @@ import {
   editMedia,
   getMediaItemsAction
 } from 'actions/mediaActions'
+import useDetermineMediaFeatureId from 'hooks/useDetermineMediaFeatureId'
 
 const styles = ({ palette, type, typography }) => ({
   root: {
-    margin: '21px 25px',
+    margin: '15px 30px',
     fontFamily: typography.fontFamily
   },
   themeCardWrap: {
     border: `solid 1px ${palette[type].pages.media.card.border}`,
     backgroundColor: palette[type].pages.media.card.background,
     borderRadius: '4px',
-    marginBottom: '15px'
+    marginTop: 16
   },
   formControlRootClass: {
     marginBottom: 0
   },
   themeOptions1: {
-    padding: '0 15px',
-    margin: '10px 0 14px'
-  },
-  inputItem: {
-    padding: '0 10px',
-    margin: '0 -10px'
+    padding: 15
   },
   lastUpdatedSwitch: {
     margin: '0 auto'
-  },
-  inputItemContainer: {
-    padding: '0 6px',
-    margin: '0 -6px'
   },
   marginTop1: {
     marginTop: '18px'
@@ -72,11 +58,6 @@ const styles = ({ palette, type, typography }) => ({
     fontSize: '13px',
     lineHeight: '15px',
     paddingRight: '15px'
-  },
-  formControlLabelClass: {
-    fontSize: '12px',
-    color: '#4C5057',
-    fontWeight: '700'
   },
   mediaInfoContainer: {
     height: '100%'
@@ -151,21 +132,17 @@ const VideoInput = ({
   onShowSnackbar,
   onModalClose
 }) => {
-  const [isLoading, setLoading] = useState(false)
   const [autoClose, setAutoClose] = useState(false)
-  const [featureId, setFeatureId] = useState(null)
   const [formSubmitting, setFormSubmitting] = useState(false)
+  const featureId = useDetermineMediaFeatureId('Premium', 'VideoInput')
 
   const dispatchAction = useDispatch()
-  const {
-    configMediaCategory,
-    addMediaReducer,
-    mediaItemReducer
-  } = useSelector(({ config, addMedia, media }) => ({
-    configMediaCategory: config.configMediaCategory,
-    addMediaReducer: addMedia.premium,
-    mediaItemReducer: media.mediaItem
-  }))
+  const { addMediaReducer, mediaItemReducer } = useSelector(
+    ({ addMedia, media }) => ({
+      addMediaReducer: addMedia.premium,
+      mediaItemReducer: media.mediaItem
+    })
+  )
 
   const initialFormValues = useRef({
     device_input: deviceInputOptions[0].value,
@@ -219,12 +196,6 @@ const VideoInput = ({
   }
 
   useEffect(() => {
-    if (!configMediaCategory.response.length) return
-    const id = getAllowedFeatureId(configMediaCategory, 'Premium', 'VideoInput')
-    setFeatureId(id)
-  }, [configMediaCategory])
-
-  useEffect(() => {
     const values = _get(formData, 'values')
     if (values) {
       initialFormValues.current = {
@@ -235,12 +206,6 @@ const VideoInput = ({
     }
   }, [form, formData])
 
-  useEffect(() => {
-    if (mode === 'edit') {
-      setLoading(true)
-    }
-  }, [mode])
-
   // Load data for editing
   useEffect(() => {
     if (backendData && backendData.id) {
@@ -250,7 +215,6 @@ const VideoInput = ({
         mediaInfo: getMediaInfoFromBackendData(backendData)
       }
       form.setValues(initialFormValues.current)
-      setLoading(false)
     }
     // eslint-disable-next-line
   }, [backendData])
@@ -319,20 +283,19 @@ const VideoInput = ({
 
   return (
     <form className={classes.formWrapper} onSubmit={form.handleSubmit}>
-      {isLoading && (
-        <div className={classes.loaderWrapper}>
-          <CircularProgress size={30} thickness={5} />
-        </div>
-      )}
       <Grid container className={classes.tabContent}>
         <Grid item xs={7}>
           <div className={classes.root}>
-            <Grid container justify="space-between" alignItems="center">
-              <Grid item xs={4} className={classes.inputItemContainer}>
+            <Grid
+              container
+              justify="space-between"
+              alignItems="center"
+              spacing={16}
+            >
+              <Grid item xs={4}>
                 <FormControlSelect
                   id="device_input"
                   label={t('Device Input')}
-                  formControlContainerClass={classes.inputItem}
                   marginBottom={false}
                   options={deviceInputOptions}
                   value={form.values.device_input}
@@ -341,11 +304,10 @@ const VideoInput = ({
                   handleChange={form.handleChange}
                 />
               </Grid>
-              <Grid item xs={4} className={classes.inputItemContainer}>
+              <Grid item xs={4}>
                 <FormControlSelect
                   id="input_type"
                   label={t('Input Type')}
-                  formControlContainerClass={classes.inputItem}
                   marginBottom={false}
                   options={inputTypeOptions}
                   value={form.values.input_type}
@@ -354,11 +316,10 @@ const VideoInput = ({
                   handleChange={form.handleChange}
                 />
               </Grid>
-              <Grid item xs={4} className={classes.inputItemContainer}>
+              <Grid item xs={4}>
                 <FormControlSelect
                   id="ratio"
                   label={t('Ratio')}
-                  formControlContainerClass={classes.inputItem}
                   marginBottom={false}
                   options={ratioOptions}
                   value={form.values.ratio}
@@ -368,13 +329,14 @@ const VideoInput = ({
                 />
               </Grid>
             </Grid>
-            <Grid container className={classes.marginTop1}>
+            <Grid container>
               <Grid item xs={12} className={classes.themeCardWrap}>
                 <Grid
                   container
                   className={classes.themeOptions1}
                   justify="space-between"
                   alignItems="center"
+                  spacing={16}
                 >
                   <Grid item xs={4}>
                     <Grid container alignItems="center">
@@ -426,7 +388,6 @@ const VideoInput = ({
                     <CheckboxSwitcher
                       label={t('Audio')}
                       formControlRootClass={classes.lastUpdatedSwitch}
-                      formControlLabelClass={classes.formControlLabelClass}
                       labelPlacement="end"
                       value={form.values.audio}
                       error={form.errors.audio}

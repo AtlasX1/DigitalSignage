@@ -58,6 +58,9 @@ const styles = () => ({
     fontSize: '13px',
     fontWeight: '300',
     transform: 'translate(0, 1.5px)'
+  },
+  spacing: {
+    marginBottom: 16
   }
 })
 const statusOptions = [
@@ -218,6 +221,7 @@ const DeviceSearchForm = ({
         handleChange={onNameChange}
         components={{ Option: NameOption }}
         isClearable
+        formControlContainerClass={classes.spacing}
       />
       <FormControlReactSelect
         isSearchable
@@ -231,6 +235,7 @@ const DeviceSearchForm = ({
         value={form.values.city}
         handleChange={form.handleChange}
         isClearable
+        formControlContainerClass={classes.spacing}
       />
       {!role.org && (
         <FormControlInput
@@ -251,6 +256,7 @@ const DeviceSearchForm = ({
         value={form.values.status}
         handleChange={form.handleChange}
         isClearable
+        formControlContainerClass={classes.spacing}
       />
       {role.org && (
         <FormControlAutocomplete
@@ -262,6 +268,7 @@ const DeviceSearchForm = ({
           handleChange={form.handleChange}
           formControlLabelClass={classes.label}
           isClearable
+          formControlContainerClass={classes.spacing}
         />
       )}
       {role.org && (
@@ -275,6 +282,7 @@ const DeviceSearchForm = ({
           getOptions={getTagOptions}
           formControlLabelClass={classes.label}
           isClearable
+          formControlContainerClass={classes.spacing}
         />
       )}
 

@@ -34,14 +34,14 @@ const TabIcon = withStyles(TabIconStyles)(({ iconClassName = '', classes }) => (
 ))
 
 const styles = theme => {
-  const { palette, type } = theme
+  const { palette, type, formControls, typography } = theme
   return {
     root: {
-      margin: '20px 24px'
+      margin: '15px 30px'
     },
     tabToggleButtonGroup: {
-      marginTop: '14px',
-      marginBottom: '20px'
+      marginTop: 16,
+      marginBottom: 16
     },
     tabToggleButton: {
       width: '128px'
@@ -54,11 +54,10 @@ const styles = theme => {
       boxShadow: 'none'
     },
     previewMediaRow: {
-      marginTop: '32px'
+      marginTop: 45
     },
     previewMediaText: {
-      fontWeight: 'bold',
-      color: palette[type].sideModal.action.button.color
+      ...typography.lightText[type]
     },
     featureIconTabContainer: {
       justifyContent: 'center'
@@ -75,7 +74,7 @@ const styles = theme => {
       border: `solid 1px ${palette[type].pages.media.card.border}`,
       backgroundColor: palette[type].pages.media.card.background,
       borderRadius: '4px',
-      marginBottom: '45px'
+      marginBottom: 16
     },
     themeHeader: {
       padding: '0 15px',
@@ -87,28 +86,12 @@ const styles = theme => {
       lineHeight: '42px',
       color: palette[type].pages.media.card.header.color
     },
-    themeOptions1: {
-      padding: '0 15px',
-      marginTop: '22px'
-    },
-    themeOptions2: {
-      padding: '0 15px',
-      marginTop: '31px'
-    },
-    themeOptions3: {
-      padding: '0 15px',
-      margin: '5px 0 29px'
-    },
     inputLabel: {
       display: 'block',
       fontSize: '13px',
       color: '#74809a',
       transform: 'none !important',
       marginRight: '10px'
-    },
-    themeInputContainer: {
-      padding: '0 7px',
-      margin: '0 -7px'
     },
     colorPaletteContainer: {
       display: 'flex',
@@ -122,14 +105,15 @@ const styles = theme => {
       }
     },
     formControlLabelClass: {
-      fontSize: '18px'
+      fontSize: '1.0833rem'
     },
     sliderInputLabelClass: {
+      ...formControls.mediaApps.refreshEverySlider.label,
       paddingRight: '15px',
       fontStyle: 'normal'
     },
     labelClass: {
-      fontSize: '17px'
+      fontSize: '1.0833rem'
     },
     checkboxSwitcherLabelClass: {
       fontSize: '13px'
@@ -336,14 +320,15 @@ class Youtube extends Component {
           container
           justify="space-between"
           className={classes.formControlSelectWrap}
+          spacing={16}
         >
-          <Grid item xs={6} className={classes.themeInputContainer}>
+          <Grid item xs={6}>
             <FormControlSelect
               label={'Transition'}
               formControlLabelClass={classes.labelClass}
             />
           </Grid>
-          <Grid item xs={6} className={classes.themeInputContainer}>
+          <Grid item xs={6}>
             <FormControlSelect
               label={'Duration'}
               formControlLabelClass={classes.labelClass}

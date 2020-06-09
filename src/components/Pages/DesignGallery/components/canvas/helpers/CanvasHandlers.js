@@ -16,12 +16,12 @@ import {
   SAVED_OBJECT_OPTIONS,
   MAX_ZOOM,
   MIN_ZOOM,
-  RULER_HEIGHT,
   FABRIC_EXAMPLE_TEXT,
   ALLOWED_SELECTION_STYLES
 } from '../../../constans'
 
-import { setSelectedBg } from 'actions/signageEditorActions'
+import { setSelectedBg, removeSelectedBg } from 'actions/designGalleryActions'
+import { hex2rgba } from '../../../utils'
 
 class CanvasHandlers {
   constructor(props) {
@@ -112,8 +112,8 @@ class CanvasHandlers {
     }
   }
 
-  getShadowProperties = shadow => {
-    const { id, ...props } = shadow
+  getProperties = config => {
+    const { id, ...props } = config
     return props
   }
 
@@ -130,10 +130,10 @@ class CanvasHandlers {
       const propValue = objectWithProp[propName]
       const findedObjects = activeObjects.filter(obj => {
         const exception = (objValue = {}, othValue = {}) => {
-          if (propName === 'shadow') {
+          if (propName === 'shadow' || propName === 'overlay') {
             return _isEqual(
-              this.getShadowProperties(objValue),
-              this.getShadowProperties(othValue)
+              this.getProperties(objValue),
+              this.getProperties(othValue)
             )
           }
           return _isEqual(objValue, othValue)
@@ -176,11 +176,181 @@ class CanvasHandlers {
     return { allowed, disallowed }
   }
 
+  setFrameSize = value => {
+    const frame = this.getFrameLayer()
+
+    this.setLoading(true)
+    !this.isEmptyFrame() && this.resetCanvas()
+
+    const { width, height } = this.getContentViewport()
+
+    frame.set(value)
+
+    let zoom
+    if (value.width > value.height) {
+      zoom = Math.floor((width / value.width) * 10) / 10
+    } else zoom = Math.floor((height / value.height) * 10) / 10
+
+    this.setZoom(undefined, zoom - (zoom > 1.5 ? 0.5 : 0))
+
+    this.canvasRuler.updateCanvasFrame()
+
+    this.setCenterAll()
+    this.canvasHistory.updateHistory()
+    this.setLoading(false)
+  }
+
+  setFrameColor = value => {
+    const frame = this.getFrameLayer()
+
+    this.setLoading(true)
+    !this.isEmptyFrame() && this.resetCanvas()
+
+    frame.set({ fill: value })
+
+    this.canvasHistory.updateHistory()
+
+    this.setLoading(false)
+    this.canvas.renderAll()
+  }
+
+  setFrameGradient = value => {
+    const frame = this.getFrameLayer()
+
+    this.setLoading(true)
+    !this.isEmptyFrame() && this.resetCanvas()
+
+    const angle2rect = (angle, sx, sy) => {
+      while (angle < 0) angle += 360
+      angle %= 360
+
+      const a = sy,
+        b = a + sx,
+        c = b + sy, // 3 first corners
+        p = (sx + sy) * 2, // perimeter
+        rp = p * 0.00277, // ratio between perimeter & 360
+        pp = Math.round((angle * rp + (sy >> 1)) % p) // angle position on perimeter
+
+      if (pp <= a) return { x: 0, y: sy - pp }
+      if (pp <= b) return { y: 0, x: pp - a }
+      if (pp <= c) return { x: sx, y: pp - b }
+      return { y: sy, x: sx - (pp - c) }
+    }
+
+    const odx = frame.width >> 1
+    const ody = frame.height >> 1
+    const gradient = {
+      start: angle2rect(value.angle, frame.width, frame.height)
+    }
+
+    gradient.end = {
+      x: frame.width - gradient.start.x,
+      y: frame.height - gradient.start.y
+    }
+
+    frame.setGradient('fill', {
+      type: 'linear',
+      x1: gradient.start.x - odx,
+      y1: gradient.start.y - ody,
+      x2: gradient.end.x - odx,
+      y2: gradient.end.y - ody,
+      colorStops: {
+        0: value.color1,
+        1: value.color2
+      }
+    })
+
+    this.canvasHistory.updateHistory()
+
+    this.setLoading(false)
+    this.canvas.renderAll()
+  }
+
   setObjectsShadow = shadow => {
     const { canvas, canvasHistory } = this
     const activeObjects = canvas.getActiveObjects()
+
+    const { offsetX, offsetY, blur, color, transparency } = shadow
+
     activeObjects.forEach(obj => {
-      obj.setShadow(shadow)
+      obj.setShadow({
+        offsetX,
+        offsetY,
+        blur,
+        color: hex2rgba(color, transparency)
+      })
+    })
+    canvas.renderAll()
+    canvasHistory.updateHistory()
+    this.updateAtiveObjects()
+  }
+
+  setObjectsOverlay = overlay => {
+    const { color, transparency } = overlay
+    const { canvas, canvasHistory } = this
+    const activeObjects = canvas.getActiveObjects()
+
+    activeObjects.forEach(obj => {
+      const angle = obj.angle
+
+      if (obj.isOverlayGroup) {
+        obj._objects.forEach(item => {
+          if (item.isOverlay) {
+            if (item._objects && item._objects.length) {
+              item._objects.forEach(item => item.set('fill', color))
+            } else {
+              item.set('fill', color)
+            }
+            item.set('opacity', transparency)
+          }
+        })
+        obj.overlay = overlay
+      } else {
+        let overlayGroup
+
+        if (obj.type === 'image') {
+          const overlayRect = new fabric.Rect({
+            width: obj.width * obj.scaleX,
+            height: obj.height * obj.scaleY,
+            top: obj.top,
+            left: obj.left,
+            fill: color,
+            opacity: transparency,
+            isOverlay: true
+          })
+
+          overlayGroup = new fabric.Group([obj, overlayRect], {
+            isOverlayGroup: true,
+            overlay,
+            angle
+          })
+        } else {
+          obj.set('angle', 0)
+
+          obj.clone(clone => {
+            if (clone._objects && clone._objects.length) {
+              clone._objects.forEach(item => item.set('fill', color))
+            } else {
+              clone.set('fill', color)
+            }
+
+            clone.set({
+              isOverlay: true,
+              opacity: transparency
+            })
+
+            overlayGroup = new fabric.Group([obj, clone], {
+              isOverlayGroup: true,
+              angle,
+              overlay
+            })
+          })
+        }
+
+        canvas.add(overlayGroup)
+        canvas.remove(obj)
+        canvas.setActiveObject(overlayGroup)
+      }
     })
     canvas.renderAll()
     canvasHistory.updateHistory()
@@ -596,6 +766,11 @@ class CanvasHandlers {
     this.dispatchAction(setSelectedBg(id))
   }
 
+  removeBackground = () => {
+    this.deleteCanvasBg()
+    this.dispatchAction(removeSelectedBg())
+  }
+
   setObjectAsBackground(obj) {
     const { canvas } = this
     canvas.sendToBack(obj)
@@ -633,8 +808,9 @@ class CanvasHandlers {
 
   updateClipPath() {
     const { canvas } = this
+    const frame = this.getFrameLayer()
     canvas.getObjects().forEach(obj => {
-      if (obj.clipPath) obj.clipPath = this.getFrameLayer()
+      if (!obj.isFrame) obj.clipPath = frame
     })
     canvas.renderAll()
   }
@@ -645,6 +821,9 @@ class CanvasHandlers {
 
     this.canvas.loadFromJSON(this.canvasHistory.state[index], () => {
       this.updateClipPath()
+      this.canvasRuler.updateCanvasFrame()
+
+      this.canvas.renderAll()
     })
   }
 
@@ -1134,18 +1313,26 @@ class CanvasHandlers {
 
   animateObjectIn({ obj, ownCenter, coords = {}, anim = true }) {
     const { canvas, canvasHistory } = this
-    const { x, y } = canvas.getVpCenter()
+    const frame = this.getFrameLayer()
+    const { y } = canvas.getVpCenter()
     const currentZoom = canvas.getZoom()
     const endPosition = {
-      x: coords.x ? coords.x - ownCenter.x : x - RULER_HEIGHT / 2 - ownCenter.x,
-      y: coords.y ? coords.y - ownCenter.y : y - RULER_HEIGHT / 2 - ownCenter.y
+      x: coords.x
+        ? coords.x - ownCenter.x
+        : frame.left + frame.width / 2 - ownCenter.x,
+      y: coords.y
+        ? coords.y - ownCenter.y
+        : frame.top + frame.height / 2 - ownCenter.y
     }
     const startYPosition = y - canvas.height / 2 / currentZoom
+
+    obj.clipPath = frame
 
     obj
       .set({
         top: anim ? startYPosition : endPosition.y,
-        left: endPosition.x
+        left: endPosition.x,
+        clipPath: this.getFrameLayer()
       })
       .setCoords()
 
@@ -1199,7 +1386,7 @@ class CanvasHandlers {
   addSVG = (url, coords = {}) => {
     fabric.loadSVGFromURL(url, (objects, options) => {
       const svg = fabric.util.groupSVGElements(objects, options)
-      svg.scaleToWidth(100).scaleToHeight(50).setCoords()
+      svg.scaleToWidth(256).scaleToHeight(256).setCoords()
 
       const svgOwnCenter = {
         x: (svg.width * svg.scaleX) / 2,
@@ -1325,6 +1512,8 @@ class CanvasHandlers {
       loadedImg => {
         if (loadedImg.width > 480) {
           loadedImg.scaleToWidth(480).setCoords()
+        } else if (loadedImg.width < 256) {
+          loadedImg.scaleToWidth(256).setCoords()
         }
         const imgOwnCenter = {
           x: loadedImg.getScaledWidth() / 2,
@@ -1339,6 +1528,22 @@ class CanvasHandlers {
       },
       { crossOrigin: 'Anonymous' }
     )
+  }
+
+  isEmptyFrame = () => {
+    const objects = this.canvas.getObjects()
+
+    return objects.every(o => o.isFrame || o.isBackground)
+  }
+
+  resetCanvas = () => {
+    const objects = this.canvas.getObjects().filter(i => i.type !== 'rect')
+
+    const frame = this.getFrameLayer()
+
+    frame.set({ fill: '#fff' })
+
+    this.canvas.remove(...objects)
   }
 }
 

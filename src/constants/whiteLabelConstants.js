@@ -1,9 +1,12 @@
+import headerLogo from 'common/icons/xhibit-logo-dark.svg'
+import headerLogoLight from 'common/icons/xhibit-logo-light.svg'
+
 const fallbackValues = {
   id: 1,
   name: 'XhibitSignage',
   windowTitle: 'XhibitSignage',
-  headerLogo:
-    'https://v3dev.xhibitsignage.com/assets/wlprofile/1/settings/5Du1yhFoZcwOmt035JjeQEfgXhddrKB3oTP9BRyp.png',
+  headerLogo,
+  headerLogoLight,
   footerLogo:
     'https://v3dev.xhibitsignage.com/assets/wlprofile/1/settings/RC9DWrZNtjRG6uFzykJzktcU4ANlWTHfNL6HVl2u.png',
   sso: { google: true, facebook: true, microsoft: true, linkedin: true },

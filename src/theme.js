@@ -20,23 +20,39 @@ export default {
     },
     MuiTableCell: {
       root: {
-        borderBottomColor: '#e4e9f3'
+        borderBottomColor: '#e4e9f3',
+        fontSize: '0.8125rem',
+        color: '#2C2D3A',
+        lineHeight: '1.6667em'
       },
       head: {
         paddingTop: 0,
-        paddingBottom: '8px',
-        verticalAlign: 'bottom',
-        fontSize: '0.9375rem',
-        color: '#74809a'
+        verticalAlign: 'baseline',
+        fontSize: '0.8125rem',
+        color: '#2C2D3A'
       },
       body: {
         paddingTop: '33px',
         paddingBottom: '33px',
-        fontSize: '0.875rem',
-        color: '#040d37'
+        fontSize: '0.8125rem',
+        color: '#74809A'
       },
       paddingCheckbox: {
         paddingLeft: '21px'
+      }
+    },
+    MuiTableSortLabel: {
+      root: {
+        '&:hover': {
+          color: 'inherit',
+          fontWeight: 'bold'
+        },
+        '&:focus': {
+          color: 'inherit'
+        }
+      },
+      active: {
+        color: 'inherit'
       }
     },
     MuiLink: {
@@ -52,6 +68,46 @@ export default {
     MuiToggleButton: {
       root: {
         lineHeight: 'normal'
+      }
+    },
+    MuiTooltip: {
+      tooltip: {
+        fontSize: '0.75rem',
+        color: '#bac0cd',
+        lineHeight: '1.6667em',
+        fontWeight: '400'
+      }
+    },
+    MuiTypography: {
+      body2: {
+        color: '#2C2D3A'
+      },
+      colorPrimary: {
+        color: '#0378ba'
+      }
+    },
+    MuiFormLabel: {
+      root: {
+        color: '#74809A',
+        fontSize: '0.8125rem',
+        lineHeight: '1.6667em'
+      }
+    },
+    MuiButton: {
+      root: {
+        fontFamily: [
+          '"Nunito Sans"',
+          '-apple-system',
+          'BlinkMacSystemFont',
+          '"Segoe UI"',
+          'Roboto',
+          '"Helvetica Neue"',
+          'Arial',
+          'sans-serif',
+          '"Apple Color Emoji"',
+          '"Segoe UI Emoji"',
+          '"Segoe UI Symbol"'
+        ].join(',')
       }
     }
   },
@@ -200,7 +256,7 @@ export default {
         background: '#fff',
         toggleButton: {
           background: '#fff',
-          color: '#606066',
+          color: '#74809A',
           border: '#e4e9f3'
         }
       },
@@ -211,7 +267,7 @@ export default {
         background: '#fff',
         item: {
           color: '#888996',
-          colorActive: '#102046'
+          colorActive: '#888996'
         }
       },
       buttons: {
@@ -233,7 +289,7 @@ export default {
         header: {
           background: '#f5f6fa',
           border: '#E4E9F4',
-          titleColor: '#000',
+          titleColor: '#2C2D3A',
           selecting: '#EFF0F4',
           infoIcon: {
             border: '#e4e9f3',
@@ -253,9 +309,7 @@ export default {
           background: '#fff'
         },
         head: {
-          label: {
-            colorHover: '#000'
-          },
+          color: '#2C2D3A',
           iconColor: '#afb7c7'
         },
         body: {
@@ -276,7 +330,7 @@ export default {
             }
           },
           cell: {
-            color: '#040d37',
+            color: '#74809A',
             border: '#e4e9f3'
           }
         },
@@ -317,15 +371,15 @@ export default {
         input: {
           background: '#fff',
           border: '#ced4da',
-          color: '#9394A0'
+          color: '#74809A'
         },
         disabled: {
           background: 'rgb(235, 235, 228)',
           color: 'rgb(84, 84, 84)'
         },
         label: {
-          color: 'rgba(0, 0, 0, 0.54)',
-          activeColor: '#303f9f'
+          color: '#74809A',
+          activeColor: '#0378ba'
         },
         multipleTimePicker: {
           input: {
@@ -374,7 +428,7 @@ export default {
           background: '#f5f6fa',
           border: '#f5f6fa',
           button: {
-            color: '#818ca4',
+            color: '#74809A',
             background: 'linear-gradient(to right, #ffffff, #fefefe)',
             border: '#cbd3e3'
           }
@@ -412,7 +466,7 @@ export default {
       sideTab: {
         selected: {
           background: '#fff',
-          color: '#0a83c8'
+          color: '#0378ba'
         }
       },
       singleIconTab: {
@@ -652,7 +706,7 @@ export default {
             expansion: {
               header: {
                 background: 'linear-gradient(to left, #fdfefe, #f8f9fc)',
-                color: '#000'
+                color: '#2C2D3A'
               },
               body: {
                 background: '#fff',
@@ -757,7 +811,7 @@ export default {
             background: 'rgba(245, 246, 250, 0.5)',
             header: {
               background: 'rgba(245, 246, 250, 0.5)',
-              color: '#4c5057'
+              color: '#2C2D3A'
             }
           },
           general: {
@@ -766,7 +820,7 @@ export default {
               background: 'rgba(245, 246, 250, 0.5)',
               header: {
                 background: 'rgba(245, 246, 250, 0.5)',
-                color: '#4c5057'
+                color: '#2C2D3A'
               }
             },
             chart: {
@@ -789,7 +843,7 @@ export default {
           },
           local: {
             card: {
-              color: '#000000',
+              color: '#2C2D3A',
               background: '#FAFBFD',
               border: '#D4DCE7',
               header: {
@@ -917,7 +971,7 @@ export default {
       },
       languageSelector: {
         background: '#fff',
-        color: '#888996'
+        color: '#74809A'
       }
     },
     dark: {
@@ -1117,9 +1171,7 @@ export default {
           background: '#0A1526'
         },
         head: {
-          label: {
-            colorHover: '#fff'
-          },
+          color: '#fff',
           iconColor: '#5C697F'
         },
         body: {
@@ -1163,12 +1215,12 @@ export default {
           color: '#fff',
           border: '#162949'
         },
-        row: {
-          selected: {
-            background: 'rgba(10, 21, 38, 0.5)'
-          }
-        },
         body: {
+          row: {
+            selected: {
+              background: 'rgba(10, 21, 38, 0.5)'
+            }
+          },
           cell: {
             color: '#9394A0'
           }
@@ -1181,14 +1233,14 @@ export default {
         input: {
           background: '#112034',
           border: '#1E3966',
-          color: '#9394A0'
+          color: '#74809A'
         },
         disabled: {
           background: '#172b47',
           color: 'rgb(84, 84, 84)'
         },
         label: {
-          color: 'rgba(255, 255, 255, 0.54)',
+          color: '#74809A',
           activeColor: '#fff'
         },
         multipleTimePicker: {
@@ -1785,7 +1837,7 @@ export default {
       },
       languageSelector: {
         background: '#0A1526',
-        color: '#8993A3'
+        color: '#74809A'
       }
     },
     background: { default: '#f9fafc' }
@@ -1804,16 +1856,101 @@ export default {
       '"Apple Color Emoji"',
       '"Segoe UI Emoji"',
       '"Segoe UI Symbol"'
-    ].join(',')
+    ].join(','),
+    pageTitle: {
+      light: {
+        fontSize: '1.125rem',
+        lineHeight: '1.667em',
+        color: '#2C2D3A',
+        fontWeight: '700'
+      },
+      dark: {
+        fontSize: '1.125rem',
+        lineHeight: '1.667em',
+        color: '#fff',
+        fontWeight: '700'
+      }
+    },
+    lightText: {
+      light: {
+        fontSize: '0.8125rem',
+        lineHeight: '1.667em',
+        color: '#74809A',
+        fontWeight: '400'
+      },
+      dark: {
+        fontSize: '0.8125rem',
+        lineHeight: '1.667em',
+        color: '#74809A',
+        fontWeight: '400'
+      }
+    },
+    darkText: {
+      light: {
+        fontSize: '0.8125rem',
+        lineHeight: '1.667em',
+        color: '#2C2D3A',
+        fontWeight: '400'
+      },
+      dark: {
+        fontSize: '0.8125rem',
+        lineHeight: '1.667em',
+        color: '#fff',
+        fontWeight: '400'
+      }
+    },
+    lightAccent: {
+      light: {
+        fontSize: '0.8125rem',
+        lineHeight: '1.667em',
+        color: '#74809A',
+        fontWeight: '700'
+      },
+      dark: {
+        fontSize: '0.8125rem',
+        lineHeight: '1.667em',
+        color: '#74809A',
+        fontWeight: '700'
+      }
+    },
+    darkAccent: {
+      light: {
+        fontSize: '0.8125rem',
+        lineHeight: '1.667em',
+        color: '#2C2D3A',
+        fontWeight: '700'
+      },
+      dark: {
+        fontSize: '0.8125rem',
+        lineHeight: '1.667em',
+        color: '#fff',
+        fontWeight: '700'
+      }
+    },
+    subtitle: {
+      light: {
+        fontSize: '0.75rem',
+        lineHeight: '1.6667em',
+        color: '#74809A',
+        fontWeight: '400'
+      },
+      dark: {
+        fontSize: '0.75rem',
+        lineHeight: '1.6667em',
+        color: '#74809A',
+        fontWeight: '400'
+      }
+    }
   },
   formControls: {
     label: {
-      fontSize: 16,
-      color: 'rgba(0, 0, 0, 0.54)'
+      fontSize: '0.8125rem',
+      lineHeight: '24px',
+      color: '#74809A'
     },
     input: {
       padding: '9px 15px',
-      fontSize: 14,
+      fontSize: '0.875rem',
       height: 38
     },
     root: {
@@ -1846,9 +1983,10 @@ export default {
           height: 38
         },
         label: {
-          fontSize: 16,
+          fontSize: '1.0833rem',
+          lineHeight: '24px',
           transform: 'scale(0.75)',
-          color: 'rgba(0, 0, 0, 0.54)'
+          color: '#74809A'
         }
       },
       colorSelect: {
@@ -1859,9 +1997,10 @@ export default {
           height: 38
         },
         label: {
-          fontSize: 16,
+          fontSize: '1.0833rem',
+          lineHeight: '24px',
           transform: 'scale(0.75)',
-          color: 'rgba(0, 0, 0, 0.54)'
+          color: '#74809A'
         }
       },
       timeDurationPicker: {
@@ -1871,9 +2010,10 @@ export default {
           height: 38
         },
         label: {
-          fontSize: 16,
+          fontSize: '1.0833rem',
+          lineHeight: '24px',
           transform: 'scale(0.75)',
-          color: 'rgba(0, 0, 0, 0.54)'
+          color: '#74809A'
         }
       },
       refreshEverySlider: {
@@ -1886,9 +2026,10 @@ export default {
           alignItems: 'center'
         },
         label: {
-          fontSize: 16,
+          fontSize: '1.0833rem',
+          lineHeight: '24px',
           transform: 'scale(0.75)',
-          color: 'rgba(0, 0, 0, 0.54)'
+          color: '#74809A'
         }
       }
     }

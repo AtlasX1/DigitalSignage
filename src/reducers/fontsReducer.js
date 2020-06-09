@@ -21,6 +21,7 @@ const initialState = {
     language: 'allLanguage',
     sort: 'trendingNow'
   },
+  fontLabels: [],
   library: {},
   delete: {},
   post: {}
@@ -38,7 +39,7 @@ export default (state = initialState, action) => {
           $set: action.items
         },
         fontLabels: {
-          $set: action.fontLabels
+          $set: action.items.map(f => f.family)
         }
       })
     case types.GET_GOOGLE_FONTS_ERROR:

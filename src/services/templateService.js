@@ -101,11 +101,12 @@ const getGroups = async () => {
   }
 }
 
-const getGroupItems = async id => {
+const getGroupItems = async (id, params) => {
   try {
     const response = await api({
       method: 'GET',
-      url: `/template/group/${id}`
+      url: `/template/group/${id}`,
+      params
     })
 
     return response.data

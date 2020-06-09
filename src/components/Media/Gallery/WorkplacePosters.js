@@ -16,16 +16,10 @@ import { FormControlSelect, FormControlInput } from '../../Form'
 import MediaHtmlCarousel from '../MediaHtmlCarousel'
 import { mediaConstants as constants, durationArray } from '../../../constants'
 
-import {
-  CircularProgress,
-  Grid,
-  Typography,
-  withStyles
-} from '@material-ui/core'
+import { Grid, Typography, withStyles } from '@material-ui/core'
 
 import {
   createMediaPostData,
-  getAllowedFeatureId,
   getMediaInfoFromBackendData
 } from '../../../utils/mediaUtils'
 
@@ -37,13 +31,11 @@ import {
   getMediaItemsAction
 } from '../../../actions/mediaActions'
 
-import {
-  getContentSourceOfMediaFeatureById,
-  getTransitions
-} from '../../../actions/configActions'
+import { getTransitions } from '../../../actions/configActions'
 
 import { MediaInfo, MediaTabActions } from '../index'
 import { labelToSec, secToLabel } from '../../../utils/secToLabel'
+import useMediaContentSource from 'hooks/useMediaContentSource'
 
 const TabIconStyles = () => ({
   tabIconWrap: {
@@ -63,7 +55,7 @@ const InfoMessageStyles = ({ typography }) => ({
   infoMessageContainer: {
     display: 'flex',
     alignItems: 'flex-start',
-    padding: '0 5px 30px'
+    paddingBottom: 16
   },
   infoMessage: {
     marginLeft: '20px',
@@ -127,9 +119,9 @@ const PosterTab = ({
   </Grid>
 )
 
-const styles = ({ palette, type, typography }) => ({
+const styles = ({ palette, type, typography, formControls }) => ({
   root: {
-    margin: '20px 25px',
+    margin: '15px 30px',
     fontFamily: typography.fontFamily
   },
   formWrapper: {
@@ -160,17 +152,16 @@ const styles = ({ palette, type, typography }) => ({
     boxShadow: 'none'
   },
   previewMediaText: {
-    fontWeight: 'bold',
-    color: palette[type].sideModal.action.button.color
+    ...typography.lightText[type]
   },
   previewMediaRow: {
-    marginTop: '45px'
+    marginTop: 45
   },
   themeCardWrap: {
     border: `solid 1px ${palette[type].pages.media.card.border}`,
     backgroundColor: palette[type].pages.media.card.background,
     borderRadius: '4px',
-    marginBottom: '22px'
+    marginBottom: 16
   },
   themeHeader: {
     padding: '0 15px',
@@ -182,18 +173,6 @@ const styles = ({ palette, type, typography }) => ({
     lineHeight: '42px',
     color: palette[type].pages.media.card.header.color,
     fontSize: '12px'
-  },
-  inputItem: {
-    padding: '0 10px',
-    margin: '0 -10px 24px'
-  },
-  themeInputContainer: {
-    padding: '0 7px',
-    margin: '0 -7px'
-  },
-  inputContainer: {
-    padding: '0 calc(32px / 3)',
-    margin: '0 calc(-32px / 3) 24px'
   },
   workplaceCardContainer: {
     display: 'flex',
@@ -250,8 +229,7 @@ const styles = ({ palette, type, typography }) => ({
     width: '46px'
   },
   sliderInputLabel: {
-    color: '#74809A',
-    fontSize: '13px',
+    ...formControls.mediaApps.refreshEverySlider.label,
     lineHeight: '15px',
     marginRight: '15px'
   },
@@ -278,7 +256,7 @@ const styles = ({ palette, type, typography }) => ({
     cursor: 'pointer'
   },
   formControlLabelClass: {
-    fontSize: 18
+    fontSize: '1.0833rem'
   },
   formControlInputClass: {
     padding: '5px 26px 5px 7px'
@@ -302,19 +280,20 @@ const WorkplacePosters = ({
   onShowSnackbar
 }) => {
   const dispatchAction = useDispatch()
-  const { configMediaCategory, contentSourceOfMediaFeature } = useSelector(
-    ({ config }) => config
-  )
   const addMediaReducer = useSelector(({ addMedia }) => addMedia.gallery)
   const mediaItemReducer = useSelector(({ media }) => media.mediaItem)
   const transitionsReducer = useSelector(({ config }) => config.transitions)
 
-  const [isLoading, setLoading] = useState(true)
   const [formSubmitting, setFormSubmitting] = useState(false)
   const [autoClose, setAutoClose] = useState(false)
-  const [featureId, setFeatureId] = useState(null)
+  // const [featureId, setFeatureId] = useState(null)
   const [transitionOptions, setTransitionOptions] = useState([])
   const [mediaPosters, setMediaPosters] = useState([])
+
+  const { contentSources, featureId } = useMediaContentSource(
+    'Gallery',
+    'WorkplacePosters'
+  )
   const initialFormValues = useRef({
     posters: [],
     duration: 10,
@@ -567,13 +546,6 @@ const WorkplacePosters = ({
   }, [transitionsReducer])
 
   useEffect(() => {
-    if (featureId) {
-      dispatchAction(getContentSourceOfMediaFeatureById(featureId))
-    }
-    // eslint-disable-next-line
-  }, [featureId])
-
-  useEffect(() => {
     if (backendData && backendData.id) {
       const {
         duration,
@@ -588,37 +560,22 @@ const WorkplacePosters = ({
         mediaInfo: getMediaInfoFromBackendData(backendData)
       }
       form.setValues(initialFormValues.current)
-      setLoading(false)
     }
     // eslint-disable-next-line
   }, [backendData])
 
   useEffect(() => {
-    if (!configMediaCategory.response.length) return
-    const id = getAllowedFeatureId(
-      configMediaCategory,
-      'Gallery',
-      'WorkplacePosters'
-    )
-    setFeatureId(id)
-  }, [configMediaCategory])
+    const posters = _get(contentSources, '[0].source', [])
 
-  useEffect(() => {
-    if (
-      contentSourceOfMediaFeature.response &&
-      contentSourceOfMediaFeature.response[0] &&
-      contentSourceOfMediaFeature.response[0].source &&
-      contentSourceOfMediaFeature.response[0].source.length
-    ) {
+    if (posters && posters.length) {
       setMediaPosters(
-        contentSourceOfMediaFeature.response[0].source.map(i => ({
+        posters.map(i => ({
           content_source_id: i.id,
           image: i.thumbUri
         }))
       )
-      setLoading(false)
     }
-  }, [contentSourceOfMediaFeature])
+  }, [contentSources])
 
   useEffect(() => {
     onShareStateCallback(handleShareState)
@@ -653,11 +610,6 @@ const WorkplacePosters = ({
   const { values, errors, touched } = form
   return (
     <form className={classes.formWrapper} onSubmit={form.handleSubmit}>
-      {isLoading && (
-        <div className={classes.loaderWrapper}>
-          <CircularProgress size={30} thickness={5} />
-        </div>
-      )}
       <Grid container className={classes.tabContent}>
         <Grid item xs={7}>
           <div className={classes.root}>
@@ -725,8 +677,13 @@ const WorkplacePosters = ({
               </Grid>
             )}
 
-            <Grid container justify="space-between" alignItems="center">
-              <Grid item xs={4} className={classes.inputContainer}>
+            <Grid
+              container
+              justify="space-between"
+              alignItems="center"
+              spacing={16}
+            >
+              <Grid item xs={4}>
                 <FormControlSelect
                   label="Transition:"
                   marginBottom={false}
@@ -739,7 +696,7 @@ const WorkplacePosters = ({
                   options={transitionOptions}
                 />
               </Grid>
-              <Grid item xs={4} className={classes.inputContainer}>
+              <Grid item xs={4}>
                 <FormControlSelect
                   label="Poster Duration:"
                   marginBottom={false}
@@ -752,7 +709,7 @@ const WorkplacePosters = ({
                   options={durationArray}
                 />
               </Grid>
-              <Grid item xs={4} className={classes.inputContainer}>
+              <Grid item xs={4}>
                 <FormControlInput
                   label="Total Poster Duration:"
                   value={values.totalDuration}

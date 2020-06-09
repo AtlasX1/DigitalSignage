@@ -18,6 +18,7 @@ import i18n from '../../i18n'
 import { BlueButton, WhiteButton } from 'components/Buttons'
 import { FormControlInput } from 'components/Form'
 import UserPic from 'components/UserPic'
+import { UserNameView } from 'components/TableLibrary'
 
 const styles = ({ palette, type }) => ({
   container: {
@@ -219,7 +220,10 @@ const NoteDialog = ({
                     component="h1"
                     title={note.user.email}
                   >
-                    {`${note.user.firstName} ${note.user.lastName}`}
+                    <UserNameView
+                      firstName={note.user.firstName}
+                      lastName={note.user.lastName}
+                    />
                   </Typography>
                   <Typography className={classes.time} component="h2">
                     {`${new Date(note.time).toLocaleDateString(i18n.language)} |

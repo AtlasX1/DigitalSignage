@@ -11,7 +11,7 @@ import CreateReport from './CreateReport'
 import CustomReport from './CustomReport'
 import DesignGallery from './DesignGallery'
 import RolesAndPermissions from './RolesAndPermissions'
-import HTMLContentAndAnnouncementsLibrary from './HTMLContentAndAnnouncementsLibrary'
+import HTMLContentLibrary from './HTMLContentLibrary'
 import WorkplacePostersLibrary from './WorkplacePostersLibrary'
 
 export {
@@ -28,6 +28,6 @@ export {
   CustomReport,
   DesignGallery,
   RolesAndPermissions,
-  HTMLContentAndAnnouncementsLibrary,
+  HTMLContentLibrary,
   WorkplacePostersLibrary
 }

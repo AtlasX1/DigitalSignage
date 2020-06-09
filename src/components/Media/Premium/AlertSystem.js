@@ -40,7 +40,7 @@ const styles = theme => {
   const { palette, type } = theme
   return {
     root: {
-      margin: '22px 30px'
+      margin: '15px 30px'
     },
     themeCardWrap: {
       border: `solid 1px ${palette[type].pages.media.card.border}`,
@@ -53,7 +53,7 @@ const styles = theme => {
       backgroundColor: palette[type].pages.media.card.header.background
     },
     tabToggleButtonGroup: {
-      marginBottom: '13px',
+      marginBottom: 15,
       justifyContent: 'center'
     },
     tabToggleButton: {
@@ -69,13 +69,13 @@ const styles = theme => {
       }
     },
     marginTop1: {
-      marginTop: '17px'
+      marginTop: 16
     },
     urlInputContainer: {
       padding: '0 15px'
     },
     labelClass: {
-      fontSize: '17px'
+      fontSize: '1.0833rem'
     },
     mediaInfoContainer: {
       height: '100%'

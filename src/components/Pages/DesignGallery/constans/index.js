@@ -7,7 +7,12 @@ export const TABS_NAMES = {
   fonts: 'Fonts',
   libraryImages: 'Library Images',
   stockImages: 'Stock Images',
-  templates: 'Templates'
+  templates: 'Templates',
+  myDesigns: 'My Designs',
+  stockDesigns: 'Stock Designs',
+  sharedDesigns: 'Shared Designs',
+  customFonts: 'Custom Fonts',
+  systemFonts: 'System Fonts'
 }
 
 export const SIDEBAR_WIDTH = 300

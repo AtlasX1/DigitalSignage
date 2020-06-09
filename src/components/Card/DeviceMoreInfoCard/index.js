@@ -18,7 +18,7 @@ import {
 import { SingleHorizontalBarChart } from '../../Charts'
 import { formatBytes } from '../../../utils'
 
-const styles = ({ palette, type }) => ({
+const styles = ({ palette, type, typography }) => ({
   cardRoot: {
     padding: 0,
     borderRadius: '7px',
@@ -32,9 +32,8 @@ const styles = ({ palette, type }) => ({
     borderRadius: '8px 8px 0 0'
   },
   moreInfoCardHeaderText: {
-    fontSize: '12px',
-    lineHeight: '45px',
-    color: palette[type].deviceCard.row.value
+    ...typography.darkAccent[type],
+    lineHeight: '45px'
   },
   content: {
     padding: '20px'
@@ -55,25 +54,25 @@ const styles = ({ palette, type }) => ({
   },
   imageContainer: {
     width: '100%',
-    height: 150,
-    position: 'relative'
+    height: 216,
+    position: 'relative',
+    marginBottom: 20
   },
   loaderWrapper: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    minHeight: 236
+    minHeight: 500
   },
   capacity: {
-    fontSize: '10px',
-    color: '#535d73',
+    ...typography.darkText[type],
     textAlign: 'right'
   },
   colLeft: {
-    paddingRight: 8
+    paddingRight: 10
   },
   colRight: {
-    paddingLeft: 8
+    paddingLeft: 10
   }
 })
 
@@ -121,7 +120,7 @@ const DeviceMoreInfoCard = ({
     >
       <div className={classes.content}>
         <Grid container>
-          <Grid item xs={6} className={classes.colLeft}>
+          <Grid item xs={12}>
             <div className={classes.screenshotWrap}>
               <Grid
                 container
@@ -143,6 +142,15 @@ const DeviceMoreInfoCard = ({
               </Grid>
             </div>
           </Grid>
+          <Grid item xs={6} className={classes.colLeft}>
+            <DeviceInfoRow title="Device Name">{device.name}</DeviceInfoRow>
+            <DeviceInfoRow title="Description">
+              {device.description}
+            </DeviceInfoRow>
+            <DeviceInfoRow title="Device LAN IP">{device.lanIP}</DeviceInfoRow>
+            <DeviceInfoRow title="Device WAN IP">{device.wanIP}</DeviceInfoRow>
+            <DeviceInfoRow title="MAC address"></DeviceInfoRow>
+          </Grid>
           <Grid item xs={6} className={classes.colRight}>
             <DeviceInfoRow title="RAM" customValueType>
               {device.ram && (
@@ -153,6 +161,7 @@ const DeviceMoreInfoCard = ({
                       height={16}
                       chartData={device.ram}
                       fillColors={['#b2df63', '#dedede']}
+                      tooltipColors={['#b2df63', '#888996']}
                     />
                   )}
                   <Typography className={classes.capacity}>
@@ -179,6 +188,7 @@ const DeviceMoreInfoCard = ({
                       height={16}
                       chartData={device.deviceHardDisk}
                       fillColors={['#b2df63', '#dedede']}
+                      tooltipColors={['#b2df63', '#888996']}
                     />
                   )}
                   <Typography className={classes.capacity}>
@@ -202,19 +212,8 @@ const DeviceMoreInfoCard = ({
             </DeviceInfoRow>
             <DeviceInfoRow title="Processors">{device.cpu}</DeviceInfoRow>
             <DeviceInfoRow title="OS Version">{device.os}</DeviceInfoRow>
-          </Grid>
-          <Grid item xs={6} className={classes.colLeft}>
-            <DeviceInfoRow title="Device Name">{device.name}</DeviceInfoRow>
-            <DeviceInfoRow title="Device LAN IP">{device.lanIP}</DeviceInfoRow>
-            <DeviceInfoRow title="Device WAN IP">{device.wanIP}</DeviceInfoRow>
-            <DeviceInfoRow title="MAC address"></DeviceInfoRow>
-          </Grid>
-          <Grid item xs={6} className={classes.colRight}>
             <DeviceInfoRow title="Browser Version">
               {device.browser}
-            </DeviceInfoRow>
-            <DeviceInfoRow title="Description">
-              {device.description}
             </DeviceInfoRow>
           </Grid>
         </Grid>

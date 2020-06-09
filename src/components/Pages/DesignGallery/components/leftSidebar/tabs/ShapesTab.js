@@ -4,11 +4,9 @@ import { Typography } from '@material-ui/core'
 
 import LeftSidebarPanel from '../LeftSidebarPanel'
 import { TABS_NAMES } from '../../../constans'
-import {
-  getShapes,
-  getIcons,
-  getEmojis
-} from '../../../../../../actions/signageEditorActions'
+
+import { getShapes, getIcons, getEmojis } from 'actions/designGalleryActions'
+
 import PreviewGrids from '../grids/PreviewGrids'
 import CanvasBgSettingLoader from '../../commonBlocks/CanvasBgSettingLoader'
 import { useCanvasState } from '../../canvas/CanvasProvider'

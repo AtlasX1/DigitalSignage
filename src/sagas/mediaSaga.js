@@ -1,6 +1,7 @@
 import { call, put } from 'redux-saga/effects'
 
 import * as types from '../actions'
+import { mediaCapAlertSuccess, mediaCapAlertError } from 'actions/mediaActions'
 import { mediaService } from '../services'
 
 function* getItems({ params }) {
@@ -45,13 +46,13 @@ function* addMedia({ data, meta }) {
     yield put({
       type: types.ADD_MEDIA_SUCCESS,
       payload: response,
-      meta: meta
+      meta
     })
   } catch (error) {
     yield put({
       type: types.ADD_MEDIA_ERROR,
       payload: error,
-      meta: meta
+      meta
     })
   }
 }
@@ -82,7 +83,11 @@ function* generateMediaPreview(action) {
 
 function* getGroupItems(action) {
   try {
-    const response = yield call(mediaService.getGroupItems, action.payload)
+    const response = yield call(
+      mediaService.getGroupItems,
+      action.payload.id,
+      action.payload.params
+    )
     yield put({ type: types.GET_MEDIA_GROUP_ITEMS_SUCCESS, payload: response })
   } catch (error) {
     yield put({ type: types.GET_MEDIA_GROUP_ITEMS_ERROR, payload: error })
@@ -153,6 +158,15 @@ function* getFeatureMediaItems(action) {
   }
 }
 
+function* getMediaCapAlertWorker() {
+  try {
+    const { data } = yield call(mediaService.getMediaCapAlert)
+    yield put(mediaCapAlertSuccess(data))
+  } catch (error) {
+    yield put(mediaCapAlertError(error))
+  }
+}
+
 export default {
   addMedia,
   getItems,
@@ -166,5 +180,6 @@ export default {
   getGroupItems,
   postGroupItem,
   deleteGroupItem,
-  getFeatureMediaItems
+  getFeatureMediaItems,
+  getMediaCapAlertWorker
 }

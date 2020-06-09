@@ -79,8 +79,7 @@ const styles = ({ type, palette, transitions, formControls }) => ({
     }
   },
   formLabel: {
-    ...formControls.mediaApps.timeDurationPicker.label,
-    marginBottom: 7
+    ...formControls.mediaApps.timeDurationPicker.label
   },
   pickerIcon: {
     // Safari fix
@@ -113,6 +112,7 @@ const FormControlTimeDurationPicker = ({
   formControlInputRootClass = '',
   formControlInputClass = '',
   deepLabel = '',
+  position = 'bottom center',
   error,
   touched,
   disabled
@@ -217,7 +217,7 @@ const FormControlTimeDurationPicker = ({
               arrow={false}
               on="click"
               contentStyle={contentStyle}
-              position="bottom center"
+              position={position}
               disabled={disabled}
               trigger={
                 <FormControlInput

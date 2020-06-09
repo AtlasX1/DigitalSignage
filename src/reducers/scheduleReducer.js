@@ -18,11 +18,64 @@ const initialState = {
   groups: {},
   groupItems: {},
   postGroupItem: {},
-  deleteGroupItem: {}
+  deleteGroupItem: {},
+  scheduleItem: {
+    status: null,
+    response: null,
+    error: null
+  }
 }
 
 export default (state = initialState, action) => {
   switch (action.type) {
+    case types.CLEAR_ADDED_SCHEDULE:
+      return update(state, {
+        scheduleItem: {
+          status: { $set: null },
+          response: { $set: null },
+          error: { $set: null }
+        }
+      })
+    case types.CLEAR_SCHEDULE_STATUS:
+      return update(state, {
+        scheduleItem: {
+          status: { $set: null }
+        }
+      })
+    case types.GET_SCHEDULE_BY_ID_SUCCESS:
+      return update(state, {
+        scheduleItem: {
+          response: { $set: action.payload }
+        }
+      })
+    case types.GET_SCHEDULE_BY_ID_ERROR:
+      return update(state, {
+        scheduleItem: {
+          error: { $set: action.payload }
+        }
+      })
+    case types.POST_SCHEDULE_SUCCESS:
+    case types.PUT_SCHEDULE_SUCCESS:
+      return update(state, {
+        scheduleItem: {
+          status: { $set: 'successfully' }
+        }
+      })
+    case types.CLEAR_SCHEDULE_ERROR:
+      return update(state, {
+        scheduleItem: {
+          status: { $set: null },
+          error: { $set: null }
+        }
+      })
+    case types.POST_SCHEDULE_ERROR:
+    case types.PUT_SCHEDULE_ERROR:
+      return update(state, {
+        scheduleItem: {
+          status: { $set: 'error' },
+          error: { $set: action.payload }
+        }
+      })
     case types.GET_SCHEDULE_ITEMS_SUCCESS:
       return update(state, {
         library: {

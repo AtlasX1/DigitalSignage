@@ -3,14 +3,12 @@ import { Grid, Typography, withStyles } from '@material-ui/core'
 import moment from 'moment'
 import classNames from 'classnames'
 
-const styles = ({ type, palette }) => ({
+const styles = ({ type, typography }) => ({
   text: {
-    color: palette[type].tableLibrary.body.cell.color
+    ...typography.darkAccent[type]
   },
   textSmall: {
-    fontSize: '11px',
-    lineHeight: '18px',
-    color: '#9EA0AB'
+    ...typography.subtitle[type]
   }
 })
 
@@ -18,8 +16,8 @@ const DateTimeView = ({ date, classes }) => {
   const { formattedDate, formattedTime } = useMemo(() => {
     const dateTime = moment(date)
     return {
-      formattedDate: dateTime.format('DD MMM YYYY'),
-      formattedTime: dateTime.format('hh:mmA')
+      formattedDate: dateTime.format('MMM DD, YYYY'),
+      formattedTime: dateTime.format('h:mmA')
     }
   }, [date])
 

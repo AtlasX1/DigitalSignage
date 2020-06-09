@@ -31,7 +31,7 @@ const DropzoneWithoutClickStyles = () => ({
     justifyContent: 'center',
     width: '100%',
     height: '182px',
-    marginTop: '14px',
+    marginTop: '16px',
     padding: '20px',
     borderWidth: '1px',
     borderStyle: 'dashed',
@@ -41,7 +41,7 @@ const DropzoneWithoutClickStyles = () => ({
   },
   dropzoneText: {
     marginTop: '20px',
-    fontSize: '14px',
+    fontSize: '0.8125rem',
     color: '#0378ba'
   }
 })

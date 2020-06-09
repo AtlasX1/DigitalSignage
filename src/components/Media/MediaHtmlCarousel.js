@@ -5,7 +5,7 @@ import Slider from 'react-slick'
 import classNames from 'classnames'
 import { withStyles, Typography } from '@material-ui/core'
 
-import '../../styles/slider/_slick-slider.scss'
+import 'styles/slider/_slick-slider.scss'
 
 const styles = () => ({
   root: {
@@ -128,9 +128,9 @@ class MediaHtmlCarousel extends Component {
     const isActive = name => {
       if (multiple) {
         // if multiple -> activeSlide should be an Array of names -> [name, name, name]
-        return !!activeSlide.find(poster => poster === name)
+        return activeSlide && !!activeSlide.find(poster => poster === name)
       }
-      return activeSlide === name
+      return activeSlide && activeSlide === name
     }
 
     return (

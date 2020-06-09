@@ -44,7 +44,7 @@ const DropzoneWithoutClickStyles = theme => {
     },
     dropzoneText: {
       margin: '25px 0 0 20px',
-      fontSize: '14px',
+      fontSize: '0.8125rem',
       color: '#0378ba'
     },
     hidden: {

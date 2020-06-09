@@ -2,7 +2,7 @@ import React, { useEffect, useState, Fragment } from 'react'
 
 import { useSelector, useDispatch } from 'react-redux'
 
-import { debounce as _debounce } from 'lodash'
+import { debounce as _debounce, get as _get } from 'lodash'
 import update from 'immutability-helper'
 
 import { Typography } from '@material-ui/core'
@@ -12,7 +12,7 @@ import CanvasBgSettingLoader from '../../commonBlocks/CanvasBgSettingLoader'
 import PreviewGrids from '../grids/PreviewGrids'
 import LeftSidebarPanel from '../LeftSidebarPanel'
 
-import { getStockImages } from 'actions/signageEditorActions'
+import { getStockImages } from 'actions/designGalleryActions'
 import { getMediaItemsAction } from 'actions/mediaActions'
 
 import { TABS_NAMES } from '../../../constans'
@@ -144,8 +144,8 @@ const ImagesTab = () => {
 
       if (
         activeTab === TABS_NAMES.libraryImages &&
-        mediaReducer &&
-        mediaReducer.data.length
+        _get(mediaReducer, 'data') &&
+        _get(mediaReducer, 'data').length
       ) {
         if (mediaReducer.data.length) {
           const grids = []

@@ -93,9 +93,9 @@ const clearMediaGroupItemsInfo = () => ({
   type: types.CLEAR_MEDIA_GROUP_ITEMS_RESPONSE_INFO
 })
 
-const getMediaGroupItemsAction = id => ({
+const getMediaGroupItemsAction = (id, params) => ({
   type: types.GET_MEDIA_GROUP_ITEMS,
-  payload: id
+  payload: { id, params }
 })
 
 const clearGetMediaGroupItemsInfoAction = () => ({
@@ -133,6 +133,26 @@ const getFeatureMediaItemsAction = data => ({
 const clearGetFeatureMediaItemsInfoAction = () => ({
   type: types.CLEAR_GET_FEATURE_MEDIA_ITEMS_INFO
 })
+
+export function getMediaCapAlert() {
+  return {
+    type: types.REQUEST_MEDIA_CAP_ALERT
+  }
+}
+
+export function mediaCapAlertSuccess(data) {
+  return {
+    type: types.MEDIA_CAP_ALERT_SUCCESS,
+    payload: data
+  }
+}
+
+export function mediaCapAlertError(error) {
+  return {
+    type: types.MEDIA_CAP_ALERT_ERROR,
+    payload: error
+  }
+}
 
 export {
   getMediaLibraryPref,

@@ -1,7 +1,6 @@
 import * as apiConstants from './api'
 import * as createTemplateConstants from './createTemplate'
 import * as dndConstants from './dnd'
-import * as createPlaylistConstants from './createPlaylist'
 import * as mediaConstants from './media'
 import { default as timezones } from './timezones'
 import * as playlistConstants from './playlist'
@@ -17,7 +16,6 @@ export {
   dndConstants,
   apiConstants,
   createTemplateConstants,
-  createPlaylistConstants,
   mediaConstants,
   timezones,
   playlistConstants,

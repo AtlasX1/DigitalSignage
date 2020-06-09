@@ -36,6 +36,7 @@ class CanvasInstance {
       preserveObjectStacking: true,
       stopContextMenu: true
     })
+
     this.addCanvasFrame()
     setPrototypes(this.canvas)
   }

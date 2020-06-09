@@ -1,8 +1,10 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect, useCallback, useMemo, memo } from 'react'
 import { translate } from 'react-i18next'
-import { connect } from 'react-redux'
-import { bindActionCreators, compose } from 'redux'
+import { useSelector, useDispatch } from 'react-redux'
+import { compose } from 'redux'
 import { withSnackbar } from 'notistack'
+import classNames from 'classnames'
+import { createSelector } from 'reselect'
 import {
   withStyles,
   Grid,
@@ -15,12 +17,16 @@ import {
 } from '@material-ui/core'
 import { BlueButton, CircleIconButton } from 'components/Buttons'
 import AlertMediaLibrary from './AlertMediaLibrary'
+import { CircularLoader } from 'components/Loaders'
 
 import {
   getDeviceMediaEmergencyAlert,
   clearGetDeviceMediaEmergencyAlertInfo
 } from 'actions/alertActions'
 import { useCustomSnackbar } from 'hooks/index'
+import { alertTypesSelectors } from 'selectors/configSelectors'
+import { deviceMediaEmergencyAlertSelector } from 'selectors/alertSelectors'
+import { isEmpty, isEqual, isFalsy } from 'utils/generalUtils'
 
 const styles = ({ type, palette }) => ({
   table: {
@@ -40,7 +46,7 @@ const styles = ({ type, palette }) => ({
   tableCell: {
     border: 'none',
     borderColor: palette[type].table.head.border,
-    borderBottomWidth: 2,
+    borderBottomWidth: 1,
     borderBottomStyle: 'solid',
     color: palette[type].table.body.cell.color,
     width: '33.3%',
@@ -54,6 +60,9 @@ const styles = ({ type, palette }) => ({
       borderRight: 'none'
     }
   },
+  tableCellFullWidth: {
+    width: '100%'
+  },
   noFoundText: {
     width: '100%',
     height: 48,
@@ -66,59 +75,85 @@ const styles = ({ type, palette }) => ({
     marginBottom: 20
   },
   circleIcon: {
-    padding: '4px',
+    padding: 10,
     color: '#afb7c7',
     transform: 'scale(0.9)'
   }
 })
 
-const EmergencyAlert = ({
-  t,
-  id,
-  classes,
-  alertTypesReducer,
-  deviceMediaEmergencyAlertReducer,
-  getDeviceMediaEmergencyAlert,
-  clearGetDeviceMediaEmergencyAlertInfo,
-  enqueueSnackbar,
-  closeSnackbar
-}) => {
+const selector = createSelector(
+  alertTypesSelectors,
+  deviceMediaEmergencyAlertSelector,
+  (alertTypes, emergencyAlertRequest) => [
+    alertTypes.response,
+    emergencyAlertRequest
+  ]
+)
+
+function SingleRow({ classes, id, name, getTitle, onClick }) {
+  const handleClick = useCallback(() => {
+    onClick(id)
+  }, [onClick, id])
+  return (
+    <TableRow className={classes.tableRow}>
+      <TableCell className={classes.tableCell} align="center">
+        {name}
+      </TableCell>
+      <TableCell className={classes.tableCell} align="center">
+        {getTitle(id)}
+      </TableCell>
+      <TableCell className={classes.tableCell} align="center">
+        <CircleIconButton
+          className={classNames('hvr-grow', classes.circleIcon)}
+          onClick={handleClick}
+        >
+          <i className="icon-pencil-3" />
+        </CircleIconButton>
+      </TableCell>
+    </TableRow>
+  )
+}
+
+const SingleRowMemoized = memo(SingleRow)
+
+function EmergencyAlert({ t, id, classes, enqueueSnackbar, closeSnackbar }) {
+  const dispatch = useDispatch()
+  const [alertTypes, emergencyAlertRequest] = useSelector(selector)
   const showSnackbar = useCustomSnackbar(t, enqueueSnackbar, closeSnackbar)
-  const [data, setData] = useState([])
-  const [emergencyAlert, setEmergencyAlert] = useState([])
+  const [items, setItems] = useState([])
   const [dialog, setDialog] = useState(false)
   const [alertId, setAlertId] = useState(null)
+  const [isLoading, setLoading] = useState(true)
 
   useEffect(() => {
-    if (!deviceMediaEmergencyAlertReducer.response) {
-      getDeviceMediaEmergencyAlert(id)
+    dispatch(getDeviceMediaEmergencyAlert(id))
+    return () => {
+      dispatch(clearGetDeviceMediaEmergencyAlertInfo())
     }
-    // eslint-disable-next-line
-  }, [])
+  }, [id, dispatch])
 
   useEffect(() => {
-    if (alertTypesReducer.response) {
-      setData(alertTypesReducer.response)
+    const { response } = emergencyAlertRequest
+    if (response) {
+      setLoading(false)
+      setItems(response)
     }
-    // eslint-disable-next-line
-  }, [alertTypesReducer])
+  }, [emergencyAlertRequest, setItems, setLoading])
 
-  useEffect(() => {
-    if (deviceMediaEmergencyAlertReducer.response) {
-      setEmergencyAlert(deviceMediaEmergencyAlertReducer.response)
-      clearGetDeviceMediaEmergencyAlertInfo()
-    } else if (deviceMediaEmergencyAlertReducer.error) {
-      clearGetDeviceMediaEmergencyAlertInfo()
-    }
-    // eslint-disable-next-line
-  }, [deviceMediaEmergencyAlertReducer])
-
-  const findAlertMedia = useCallback(
+  const getMediaTitle = useCallback(
     id => {
-      const item = emergencyAlert.find(e => e.alertType.id === id)
-      return item ? item.media : { title: 'Na' }
+      const item = items.find(item => isEqual(item.alertType.id, id))
+      return item ? item.media.title : 'N/A'
     },
-    [emergencyAlert]
+    [items]
+  )
+
+  const getMediaId = useCallback(
+    id => {
+      const item = items.find(item => isEqual(item.alertType.id, id))
+      return item ? item.media.id : null
+    },
+    [items]
   )
 
   const openDialog = useCallback(
@@ -129,8 +164,71 @@ const EmergencyAlert = ({
     [setAlertId, setDialog]
   )
 
+  const renderRows = useMemo(() => {
+    if (isEmpty(alertTypes)) {
+      return (
+        <TableRow className={classes.tableRow}>
+          <TableCell
+            className={classNames(
+              classes.tableCell,
+              classes.tableCellFullWidth
+            )}
+          >
+            <Typography className={classes.noFoundText}>
+              {t('No Records Found')}
+            </Typography>
+          </TableCell>
+        </TableRow>
+      )
+    }
+    return alertTypes.map(({ id, name }) => (
+      <SingleRowMemoized
+        key={id}
+        id={id}
+        name={name}
+        classes={classes}
+        getTitle={getMediaTitle}
+        onClick={openDialog}
+      />
+    ))
+  }, [t, alertTypes, getMediaTitle, openDialog, classes])
+
+  const closeDialog = useCallback(() => {
+    setDialog(false)
+  }, [setDialog])
+
+  const handleFail = useCallback(() => {
+    showSnackbar(t('Error'))
+  }, [showSnackbar, t])
+
+  const handleSuccess = useCallback(() => {
+    showSnackbar(t('Successfully added'))
+    closeDialog()
+  }, [showSnackbar, t, closeDialog])
+
+  const renderDialog = useMemo(() => {
+    if (isFalsy(dialog)) return null
+    return (
+      <AlertMediaLibrary
+        id={alertId}
+        deviceId={id}
+        open={dialog}
+        selectedMediaId={getMediaId(alertId)}
+        handleClose={closeDialog}
+        onFail={handleFail}
+        onSuccess={handleSuccess}
+      />
+    )
+  }, [dialog, alertId, id, getMediaId, closeDialog, handleFail, handleSuccess])
+
+  const renderLoader = useMemo(() => {
+    if (isFalsy(isLoading)) return null
+    return <CircularLoader />
+  }, [isLoading])
+
   return (
     <Grid container direction="column">
+      {renderLoader}
       <Grid container direction="column" className={classes.tableContainer}>
         <Table className={classes.table}>
           <TableHead className={classes.tableHead}>
@@ -148,73 +246,21 @@ const EmergencyAlert = ({
               <TableCell className={classes.tableCell} align="center" />
             </TableRow>
           </TableHead>
-          {!!data.length && (
-            <TableBody>
-              {data.map(a => (
-                <TableRow className={classes.tableRow} key={a.id}>
-                  <TableCell className={classes.tableCell} align="center">
-                    {a.name}
-                  </TableCell>
-                  <TableCell className={classes.tableCell} align="center">
-                    {findAlertMedia(a.id).title}
-                  </TableCell>
-                  <TableCell className={classes.tableCell} align="center">
-                    <CircleIconButton
-                      className={['hvr-grow', classes.circleIcon].join(' ')}
-                      onClick={() => openDialog(a.id)}
-                    >
-                      <i className="icon-pencil-3" />
-                    </CircleIconButton>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          )}
+          <TableBody>{renderRows}</TableBody>
         </Table>
-
-        {!data.length && (
-          <Typography className={classes.noFoundText}>
-            {t('No Records Found')}
-          </Typography>
-        )}
       </Grid>
-
       <Grid container justify="flex-end">
         <BlueButton>{t('OK')}</BlueButton>
       </Grid>
-
-      {dialog && (
-        <AlertMediaLibrary
-          id={alertId}
-          deviceId={id}
-          open={dialog}
-          selectedMediaId={findAlertMedia(alertId).id}
-          handleClose={() => setDialog(false)}
-          onFail={() => showSnackbar(t('Error'))}
-          onSuccess={() => showSnackbar(t('Successfully added'))}
-        />
-      )}
+      {renderDialog}
     </Grid>
   )
 }
 
-const mapStateToProps = ({ config, alert }) => ({
-  alertTypesReducer: config.alertTypes,
-  deviceMediaEmergencyAlertReducer: alert.deviceMediaEmergencyAlert
-})
-
-const mapDispatchToProps = dispatch =>
-  bindActionCreators(
-    {
-      getDeviceMediaEmergencyAlert,
-      clearGetDeviceMediaEmergencyAlertInfo
-    },
-    dispatch
-  )
-
-export default compose(
-  translate('translations'),
-  withStyles(styles),
-  withSnackbar,
-  connect(mapStateToProps, mapDispatchToProps)
-)(EmergencyAlert)
+export default memo(
+  compose(
+    translate('translations'),
+    withStyles(styles),
+    withSnackbar
+  )(EmergencyAlert)
+)

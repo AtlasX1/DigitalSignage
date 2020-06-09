@@ -7,7 +7,8 @@ import FormControlChips from 'components/Form/FormControlChips'
 
 const styles = ({ palette, type }) => ({
   bootstrapFormLabel: {
-    fontSize: 16,
+    fontSize: '1.0833rem',
+    lineHeight: '24px',
     color: palette[type].formControls.label.color,
     whiteSpace: 'pre'
   },
@@ -39,7 +40,7 @@ const styles = ({ palette, type }) => ({
     alignSelf: 'flex-start'
   },
   topLabelMargin: {
-    marginBottom: '7px'
+    marginBottom: 0
   },
   bottomLabelMargin: {
     marginTop: '7px'

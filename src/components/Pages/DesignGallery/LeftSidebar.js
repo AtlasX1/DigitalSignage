@@ -1,6 +1,5 @@
 import React, { useMemo, memo } from 'react'
 
-import './styles/_leftSidebar.scss'
 import CubeIcon from './components/icons/CubeIcon'
 import InboxDocumentIcon from './components/icons/InboxDocumentIcon'
 // import PlaylistIcon from './components/icons/PlaylistIcon'
@@ -14,6 +13,8 @@ import ShapesTab from './components/leftSidebar/tabs/ShapesTab'
 import FontsTab from './components/leftSidebar/tabs/FontsTab'
 import ImagesTab from './components/leftSidebar/tabs/ImagesTab'
 import DesignsTab from './components/leftSidebar/tabs/DesignsTab'
+
+import './styles/_leftSidebar.scss'
 
 const LeftSidebar = memo(() => {
   const tabsStructure = useMemo(
@@ -40,7 +41,7 @@ const LeftSidebar = memo(() => {
       {
         icon: <GradientIcon />,
         content: <CanvasBgSetting />,
-        tooltip: 'Canvas'
+        tooltip: 'Canvas Background'
       },
       {
         icon: <LandscapeImageIcon />,

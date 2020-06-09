@@ -2,7 +2,8 @@ import React, { Fragment } from 'react'
 import InputRange from 'react-input-range'
 import NumericInput from 'react-numeric-input'
 import classNames from 'classnames'
-import { withStyles, Grid, Typography, Tooltip } from '@material-ui/core'
+import { withStyles, Grid, Typography } from '@material-ui/core'
+import Tooltip from 'components/Tooltip'
 import 'react-input-range/lib/bundle/react-input-range.css'
 import BootstrapInputBase from './InputBase'
 import 'styles/forms/_slider-input-range.scss'
@@ -26,13 +27,6 @@ const styles = ({ palette, type, transitions, typography, formControls }) => ({
     marginRight: '16px',
     transform: 'translate(0, 1.5px) scale(0.75)',
     ...formControls.mediaApps.refreshEverySlider.label
-  },
-  labelLink: {
-    borderBottom: '1px dashed #0A83C8',
-    '&:hover': {
-      cursor: 'pointer',
-      borderBottomStyle: 'solid'
-    }
   },
   error: {
     color: 'red',
@@ -76,6 +70,7 @@ const SliderInputRange = ({ classes, ...props }) => {
     tooltip = '',
     input = true,
     formatLabel = () => '',
+    precision = 0,
     value = 0,
     disabled = false,
     customInput = true,
@@ -90,7 +85,7 @@ const SliderInputRange = ({ classes, ...props }) => {
           {tooltip ? (
             <Tooltip title={tooltip} placement="top">
               <Typography className={classNames(classes.label, labelClass)}>
-                <span className={classes.labelLink}>{label}</span>
+                {label}
               </Typography>
             </Tooltip>
           ) : (
@@ -113,6 +108,7 @@ const SliderInputRange = ({ classes, ...props }) => {
           minValue={minValue}
           value={value}
           step={step}
+          precision={precision}
           onChange={onChange}
           onChangeComplete={onChange}
           disabled={disabled}

@@ -6,12 +6,7 @@ import { get as _get } from 'lodash'
 import { Base64 } from 'js-base64'
 import PropTypes from 'prop-types'
 
-import {
-  withStyles,
-  Grid,
-  Typography,
-  CircularProgress
-} from '@material-ui/core'
+import { withStyles, Grid, Typography } from '@material-ui/core'
 
 import { FormControlSelect, SliderInputRange } from 'components/Form'
 import {
@@ -28,7 +23,6 @@ import { useFormik } from 'formik'
 import { mediaConstants as constants } from '../../../constants'
 import {
   createMediaPostData,
-  getAllowedFeatureId,
   getMediaInfoFromBackendData,
   ObjectToFormData
 } from '../../../utils/mediaUtils'
@@ -40,15 +34,15 @@ import {
   generateMediaPreview,
   getMediaItemsAction
 } from '../../../actions/mediaActions'
-import { getContentSourceOfMediaFeatureById } from '../../../actions/configActions'
 import { MediaInfo, MediaTabActions } from '../index'
 import { CheckboxSwitcher } from '../../Checkboxes'
+import useMediaContentSource from 'hooks/useMediaContentSource'
 
 const styles = theme => {
-  const { palette, type } = theme
+  const { palette, type, formControls, typography } = theme
   return {
     root: {
-      margin: '22px 30px'
+      margin: '15px 30px'
     },
     columnWrap: {
       padding: '0 5px',
@@ -93,15 +87,13 @@ const styles = theme => {
       boxShadow: 'none'
     },
     previewMediaRow: {
-      marginTop: '23px'
+      marginTop: 45
     },
     previewMediaText: {
-      fontWeight: 'bold',
-      color: palette[type].sideModal.action.button.color
+      ...typography.lightText[type]
     },
     sliderInputLabel: {
-      color: '#74809A',
-      fontSize: '13px',
+      ...formControls.mediaApps.refreshEverySlider.label,
       lineHeight: '15px',
       marginRight: '15px'
     }
@@ -544,16 +536,16 @@ const Html = props => {
   } = props
 
   const dispatchAction = useDispatch()
-  const { configMediaCategory, contentSourceOfMediaFeature } = useSelector(
-    ({ config }) => config
-  )
   const addMediaReducer = useSelector(({ addMedia }) => addMedia.general)
   const mediaItemReducer = useSelector(({ media }) => media.mediaItem)
 
-  const [isLoading, setLoading] = useState(true)
   const [formSubmitting, setFormSubmitting] = useState(false)
   const [autoClose, setAutoClose] = useState(false)
-  const [featureId, setFeatureId] = useState(null)
+
+  const { contentSources, featureId } = useMediaContentSource(
+    'General',
+    'HtmlCode'
+  )
 
   const initialFormValues = useRef({
     contentSourceId: undefined,
@@ -714,19 +706,6 @@ const Html = props => {
   }, [handleShareState, onShareStateCallback])
 
   useEffect(() => {
-    if (!configMediaCategory.response.length) return
-    const id = getAllowedFeatureId(configMediaCategory, 'General', 'HtmlCode')
-    setFeatureId(id)
-  }, [configMediaCategory])
-
-  useEffect(() => {
-    if (featureId) {
-      dispatchAction(getContentSourceOfMediaFeatureById(featureId))
-    }
-    // eslint-disable-next-line
-  }, [featureId])
-
-  useEffect(() => {
     if (!formSubmitting) return
     const currentReducer = addMediaReducer[selectedTab]
     if (!currentReducer) return
@@ -806,8 +785,6 @@ const Html = props => {
         mediaInfo: getMediaInfoFromBackendData(backendData)
       }
       form.setValues(initialFormValues.current)
-
-      setLoading(false)
     }
     // eslint-disable-next-line
   }, [backendData])
@@ -838,13 +815,6 @@ const Html = props => {
     // eslint-disable-next-line
     [form.values.section]
   )
-
-  useEffect(() => {
-    if (contentSourceOfMediaFeature.response) {
-      setLoading(false)
-    }
-    // eslint-disable-next-line
-  }, [contentSourceOfMediaFeature])
 
   const handleShowPreview = async () => {
     const {
@@ -928,7 +898,7 @@ const Html = props => {
             touched={form.touched}
             onChange={form.setFieldValue}
             editorThemes={editorThemes}
-            mediaSource={contentSourceOfMediaFeature}
+            mediaSource={contentSources}
             mode={mode}
           />
         )
@@ -967,11 +937,6 @@ const Html = props => {
 
   return (
     <form className={classes.formWrapper} onSubmit={form.handleSubmit}>
-      {isLoading && (
-        <div className={classes.loaderWrapper}>
-          <CircularProgress size={30} thickness={5} />
-        </div>
-      )}
       <Grid container className={classes.tabContent}>
         <Grid item xs={7} className={classes.firstTabContent}>
           <Scrollbars>

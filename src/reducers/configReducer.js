@@ -1,6 +1,7 @@
 import update from 'immutability-helper'
 
 import * as types from '../actions'
+import { shapeOfBody, shapeOfBodyWithMeta } from 'constants/initialLibraryState'
 
 const fieldBodyShape = {
   response: [],
@@ -36,7 +37,8 @@ const initialState = {
     cities: []
   },
   themeOfMedia: {
-    ...fieldBodyShape
+    ...fieldBodyShape,
+    response: {}
   },
   contentSourceOfMediaFeature: {
     ...fieldBodyShape
@@ -47,7 +49,11 @@ const initialState = {
   alertTypes: {
     ...fieldBodyShape
   },
-  locationsInfo: fieldBodyShape
+  airlines: fieldBodyShape,
+  airports: fieldBodyShape,
+  locationsInfo: fieldBodyShape,
+  backgroundImages: shapeOfBodyWithMeta,
+  backgroundPatterns: shapeOfBody
 }
 
 export default (state = initialState, action) => {
@@ -217,10 +223,13 @@ export default (state = initialState, action) => {
         }
       })
     }
-    case types.CLEAR_THEME_OF_MEDIA_SUCCESS: {
+    case types.CLEAR_THEME_OF_MEDIA: {
       return update(state, {
         themeOfMedia: {
-          response: { $set: action.payload }
+          $set: {
+            ...fieldBodyShape,
+            response: {}
+          }
         }
       })
     }
@@ -245,6 +254,63 @@ export default (state = initialState, action) => {
     case types.GET_LOCATION_INFO_ERROR:
       return update(state, {
         locationsInfo: {
+          error: { $set: action.payload }
+        }
+      })
+
+    case types.GET_AIRLINES_SUCCESS:
+      return update(state, {
+        airlines: {
+          response: { $set: action.payload }
+        }
+      })
+    case types.GET_AIRLINES_ERROR:
+      return update(state, {
+        airlines: {
+          error: { $set: action.payload }
+        }
+      })
+
+    case types.GET_AIRPORTS_SUCCESS:
+      return update(state, {
+        airports: {
+          response: { $set: action.payload }
+        }
+      })
+    case types.GET_AIRPORTS_ERROR:
+      return update(state, {
+        airports: {
+          error: { $set: action.payload }
+        }
+      })
+    case types.CLEAR_MEDIA_CONTENT_SOURCE:
+      return update(state, {
+        contentSourceOfMediaFeature: {
+          $set: fieldBodyShape
+        }
+      })
+    case types.GET_BACKGROUND_PATTERNS_SUCCESS:
+      return update(state, {
+        backgroundPatterns: {
+          response: { $set: action.payload }
+        }
+      })
+    case types.GET_BACKGROUND_PATTERNS_ERROR:
+      return update(state, {
+        backgroundPatterns: {
+          error: { $set: action.payload }
+        }
+      })
+    case types.GET_BACKGROUND_IMAGES_FROM_MEDIA_SUCCESS:
+      return update(state, {
+        backgroundImages: {
+          response: { $set: action.payload.data },
+          meta: { $set: action.payload.meta }
+        }
+      })
+    case types.GET_BACKGROUND_IMAGES_FROM_MEDIA_ERROR:
+      return update(state, {
+        backgroundImages: {
           error: { $set: action.payload }
         }
       })

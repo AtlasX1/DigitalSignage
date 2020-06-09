@@ -1,5 +1,4 @@
 import {
-  ANNOUNCEMENT,
   HTML_CONTENT,
   EMAIL_TEMPLATE,
   CUSTOM_EMAIL_TEMPLATE
@@ -11,7 +10,6 @@ const {
   RSSFeed,
   DemoFeeds,
   MediaRSS,
-  LicensedChannels,
   YouTube,
   Radio,
   CustomWidget
@@ -20,7 +18,6 @@ const {
 const systemPrefix = '/system'
 
 const libraryGroups = {
-  [ANNOUNCEMENT]: `${systemPrefix}/announcements-library`,
   workplacePoster: `${systemPrefix}/workplace-posters-library`,
   [HTML_CONTENT]: `${systemPrefix}/html-contents-library`,
   [EMAIL_TEMPLATE]: `${systemPrefix}/messages-library`,
@@ -31,7 +28,6 @@ const libraryGroups = {
   [Feeds]: `${systemPrefix}/feeds`,
   [DemoFeeds]: `${systemPrefix}/demo-feeds`,
   [MediaRSS]: `${systemPrefix}/media-rss`,
-  [LicensedChannels]: `${systemPrefix}/licensed-channels`,
   [YouTube]: `${systemPrefix}/youtube`,
   [Radio]: `${systemPrefix}/radio`,
   [CustomWidget]: `${systemPrefix}/custom-widget`
@@ -48,9 +44,7 @@ const generateLibraryRoutes = prefix => ({
 const libraryRoutes = Object.keys(libraryGroups).reduce(
   (accum, prefix) => ({
     ...accum,
-    [prefix]: {
-      ...generateLibraryRoutes(prefix)
-    }
+    [prefix]: generateLibraryRoutes(prefix)
   }),
   {}
 )
@@ -92,7 +86,11 @@ const routeByName = {
     create: '/playlist-library/create',
     groups: '/playlist-library/groups',
     preview: '/playlist-library/:id/preview',
+    interactive: '/playlist-library/interactive-playlist',
+    editInteractive: '/playlist-library/interactive-playlist/:id/edit',
     smart: '/playlist-library/smart-playlist',
+    editSmart: '/playlist-library/smart-playlist/:id/edit',
+    editSmartPlaylist: id => `/playlist-library/smart-playlist/${id}/edit`,
     editWithId: id => `/playlist-library/${id}/edit`,
     previewWithId: id => `/playlist-library/${id}/preview`
   },
@@ -101,7 +99,7 @@ const routeByName = {
     edit: '/schedule-library/:id/edit',
     groups: '/schedule-library/groups',
     publish: '/schedule-library/schedule-publish',
-    editWithId: id => `/playlist-library/${id}/edit`
+    editWithId: id => `/schedule-library/${id}/edit`
   },
   template: {
     root: '/template-library',

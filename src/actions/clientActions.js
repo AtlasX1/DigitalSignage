@@ -26,9 +26,9 @@ const putItem = (id, data) => ({
   data
 })
 
-const getClientGroupItems = id => ({
+const getClientGroupItems = (id, params) => ({
   type: types.GET_CLIENT_GROUP_ITEMS,
-  payload: id
+  payload: { id, params }
 })
 
 const postClientGroupItem = data => ({

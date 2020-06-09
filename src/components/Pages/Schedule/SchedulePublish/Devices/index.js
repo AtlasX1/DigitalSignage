@@ -6,17 +6,33 @@ import { withStyles, Grid, Table, TableBody } from '@material-ui/core'
 import { connect } from 'react-redux'
 import { bindActionCreators, compose } from 'redux'
 
-import { FormControlInput, FormControlSelect } from 'components/Form'
+import { FormControlInput } from 'components/Form'
 
 import Item from './Item'
+import { useDispatch, useSelector } from 'react-redux'
 import { getDeviceItemsAction } from 'actions/deviceActions'
 import { LibraryLoader } from 'components/Loaders'
 import { TableLibraryPagination } from 'components/TableLibrary'
+import { BlueButton } from '../../../../Buttons'
 
 const styles = ({ typography }) => ({
   devicesCardContainer: {
     height: 'calc(100% - 116px)',
     overflowY: 'auto'
+  },
+  paginationWrapper: {
+    display: 'flex',
+    justifyContent: 'center'
+  },
+  loaderWrapper: {
+    position: 'absolute',
+    height: '100%',
+    width: '100%',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    background: 'rgba(255,255,255,.7)',
+    zIndex: 99
   },
   inputIcon: {
     width: 16,
@@ -32,10 +48,8 @@ const styles = ({ typography }) => ({
     display: 'flex',
     alignItems: 'center',
     flexDirection: 'row',
-    marginBottom: 0
-  },
-  inputContainerContainer: {
-    width: 'calc(100% - 268px)'
+    marginBottom: 0,
+    marginRight: 16
   },
   inputRoot: {
     width: '100%'
@@ -71,7 +85,7 @@ const styles = ({ typography }) => ({
   },
   inputsContainer: {
     marginBottom: 7,
-    paddingLeft: 12
+    padding: 5
   },
   itemsContainer: {
     maxHeight: 'calc(100% - 45px)',
@@ -82,52 +96,61 @@ const styles = ({ typography }) => ({
   }
 })
 
-const devices = [
-  { value: 0, label: 'Select by Devices' },
-  { value: 1, label: '1' },
-  { value: 2, label: '2' }
-]
+const Devices = ({ t, classes, values, selectedDevices, onSelectedChange }) => {
+  const dispatchAction = useDispatch()
 
-const Devices = ({
-  t,
-  classes,
-  selectedDeviceIds = [],
-  onSelectedChange = f => f,
-  library,
-  meta,
-  getDeviceItemsAction
-}) => {
+  const [deviceReducer, { currentPage, lastPage }] = useSelector(state => [
+    state.device.library.response,
+    state.device.meta
+  ])
+
   const [search, setSearch] = useState('')
-  const [select, setSelect] = useState(0)
+
   const [page, setPage] = useState(1)
+
   const [rowsPerPage, setRowsPerPage] = useState(10)
+
   const [loading, setLoading] = useState(true)
+
   const [data, setData] = useState([])
 
-  const { currentPage, lastPage } = meta
-
-  useEffect(() => {
-    getDeviceItemsAction({
-      page,
-      limit: rowsPerPage
-    })
-  }, [getDeviceItemsAction, page, rowsPerPage])
-
-  useEffect(() => {
-    if (library.response) {
-      setData(library.response)
-      setLoading(false)
-    }
-
+  useEffect(
+    () => {
+      setLoading(true)
+      dispatchAction(
+        getDeviceItemsAction({
+          page,
+          limit: rowsPerPage,
+          ...(search && { name: search })
+        })
+      )
+    },
     //eslint-disable-next-line
-  }, [library])
+    [page, rowsPerPage]
+  )
 
-  const handleChange = (id, value) => {
-    const newSelectedDevicesIds = value
-      ? [...selectedDeviceIds, id]
-      : selectedDeviceIds.filter(selectedDeviceId => selectedDeviceId !== id)
+  useEffect(() => {
+    if (deviceReducer.length) {
+      setData(deviceReducer)
+    }
+    setLoading(false)
+  }, [deviceReducer])
 
-    onSelectedChange(newSelectedDevicesIds)
+  const handleChange = (item, value) => {
+    const newSelectedDevices = value
+      ? [...selectedDevices, item]
+      : selectedDevices.filter(({ id }) => id !== item.id)
+
+    onSelectedChange(newSelectedDevices)
+  }
+
+  const handleSearch = () => {
+    dispatchAction(
+      getDeviceItemsAction({
+        ...(search && { name: search }),
+        limit: 10
+      })
+    )
   }
 
   const handlePageChange = ({ selected }) => {
@@ -158,34 +181,27 @@ const Devices = ({
       >
         <Grid
           container
-          justify="space-between"
           className={classes.inputsContainer}
+          justify={'space-between'}
         >
-          <FormControlInput
-            value={search}
-            placeholder={t('Search Devices')}
-            handleChange={e => setSearch(e.target.value)}
-            formControlContainerClass={classes.inputContainerContainer}
-            formControlRootClass={classes.inputContainer}
-            formControlInputRootClass={classes.inputRoot}
-            formControlLabelClass={classes.inputLabel}
-            formControlInputClass={classes.input}
-            icon={
-              <i className={`icon-beauty-hand-mirror ${classes.inputIcon}`} />
-            }
-          />
-
-          <FormControlSelect
-            custom
-            value={select}
-            options={devices}
-            handleChange={e => setSelect(e.target.value)}
-            marginBottom={false}
-            nativeSelectIconClassName={classes.selectIcon}
-            inputClasses={{
-              input: classes.selectInput
-            }}
-          />
+          <Grid item xs={9}>
+            <FormControlInput
+              value={search}
+              fullWidth={true}
+              placeholder={t('Search Devices')}
+              handleChange={e => setSearch(e.target.value)}
+              formControlRootClass={classes.inputContainer}
+              formControlInputRootClass={classes.inputRoot}
+              icon={
+                <i className={`icon-beauty-hand-mirror ${classes.inputIcon}`} />
+              }
+            />
+          </Grid>
+          <Grid item xs={2}>
+            <BlueButton fullWidth={true} onClick={handleSearch}>
+              {t('Search')}
+            </BlueButton>
+          </Grid>
         </Grid>
 
         <Grid container direction="column" className={classes.itemsContainer}>
@@ -199,8 +215,8 @@ const Devices = ({
                   location={`${i.city}, ${i.state}`}
                   lastUpdate={i.updatedAt}
                   status={i.status}
-                  isSelected={selectedDeviceIds.includes(i.id)}
-                  handleChange={handleChange}
+                  isSelected={values.deviceList.includes(i.id)}
+                  handleChange={value => handleChange(i, value)}
                   id={i.id}
                 />
               ))}
@@ -226,7 +242,6 @@ const Devices = ({
 
 Devices.propTypes = {
   classes: PropTypes.object,
-  selectedDeviceIds: PropTypes.arrayOf(PropTypes.number),
   onSelectedChange: PropTypes.func
 }
 

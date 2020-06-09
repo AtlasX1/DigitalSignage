@@ -12,6 +12,7 @@ import {
   clearPostRoleAction,
   clearPutRoleAction
 } from '../../../actions/roleActions'
+import { CheckboxSwitcher } from 'components/Checkboxes'
 import { FormControlInput, FormControlSelect } from '../../Form'
 import { SideModal } from '../../Modal'
 import ActionBar from './ActionBar'
@@ -30,11 +31,16 @@ const styles = theme => {
       textTransform: 'capitalize'
     },
     form: {
-      padding: '0 26px'
+      padding: '0 20px'
+    },
+    textareaRoot: {
+      padding: '2px 0 0 0'
     },
     label: {
-      color: '#74809A',
-      fontSize: '16px'
+      color: palette[type].formControls.label.color,
+      fontSize: '13px',
+      lineHeight: '22px',
+      transform: 'translate(0, 1.5px)'
     },
     select: {
       padding: '9px 15px'
@@ -53,7 +59,8 @@ const defaults = {
   form: {
     name: '',
     category: '',
-    description: ''
+    description: '',
+    restricted: 0
   },
   disabled: {
     name: false,
@@ -170,7 +177,8 @@ const AddEditRole = ({
         updateForm({
           name: role && role.displayName,
           category: metadata && metadata.level,
-          description: role && role.description
+          description: role && role.description,
+          restricted: role && role.restricted
         })
         setDisabled({
           category: true,
@@ -181,7 +189,8 @@ const AddEditRole = ({
         updateForm({
           name: role && role.displayName,
           category: metadata && metadata.level,
-          description: role && role.description
+          description: role && role.description,
+          restricted: role && role.restricted
         })
         setDisabled({
           category: true
@@ -286,7 +295,8 @@ const AddEditRole = ({
               !!value &&
               value.length > 0 &&
               new RegExp('[\\d-]+').test(value) === false)
-          : (accumulator[key] = !!value && value.length > 0)
+          : key !== 'restricted' &&
+            (accumulator[key] = !!value && value.length > 0)
         return accumulator
       },
       {}
@@ -309,7 +319,7 @@ const AddEditRole = ({
         description: form.description.trim(),
         status: 'Active',
         lockedPermissions: false,
-        restricted: false
+        restricted: form.restricted
       }
       const generatedName = form.name.trim().split(' ').join('-').toLowerCase()
       const generatedIndex =
@@ -428,13 +438,25 @@ const AddEditRole = ({
               disabled={disabled && disabled.description}
               error={t('Validation error description')}
               touched={isValid.description === false}
+              formControlInputRootClass={classes.textareaRoot}
               formControlLabelClass={classes.label}
               label={t('Role Description')}
               value={form.description}
               id="role-description"
               multiline={true}
+              marginBottom={false}
               fullWidth={true}
               rows={10}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <CheckboxSwitcher
+              label={t('Restricted')}
+              value={!!form.restricted}
+              handleChange={checked =>
+                updateForm({ ...form, restricted: checked ? 1 : 0 })
+              }
+              formControlLabelClass={classes.label}
             />
           </Grid>
         </Grid>

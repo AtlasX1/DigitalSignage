@@ -126,6 +126,26 @@ const getDeviceNotesAction = id => ({
   id
 })
 
+export function getCapAlertDevices() {
+  return {
+    type: types.REQUEST_CAP_ALERT_DEVICES
+  }
+}
+
+export function capAlertDevicesSuccess(data) {
+  return {
+    type: types.CAP_ALERT_DEVICES_SUCCESS,
+    payload: data
+  }
+}
+
+export function capAlertDevicesError(error) {
+  return {
+    type: types.CAP_ALERT_DEVICES_ERROR,
+    payload: error
+  }
+}
+
 export {
   getDeviceItemsAction,
   getDeviceLibraryPrefAction,

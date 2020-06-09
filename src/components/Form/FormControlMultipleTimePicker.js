@@ -1,12 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback } from 'react'
 import PropTypes from 'prop-types'
 
-import { withStyles, Grid, Typography, List } from '@material-ui/core'
+import { withStyles, Grid, Typography } from '@material-ui/core'
 
-import Popup from '../Popup'
-import { DropdownHoverListItem, DropdownHoverListItemText } from '../Dropdowns'
-
-import { secToLabel } from '../../utils/secToLabel'
+import FormControlTimeDurationPicker from './FormControlTimeDurationPicker'
 
 const styles = theme => {
   const { palette, type } = theme
@@ -55,6 +52,13 @@ const styles = theme => {
       height: '100%',
       overflow: 'auto',
       zIndex: 111
+    },
+    smallTimePicker: {
+      width: 72,
+      padding: '0 13px',
+      height: 26,
+      border: 0,
+      fontSize: 11
     }
   }
 }
@@ -63,50 +67,19 @@ const FormControlMultipleTimePicker = ({
   classes,
   small = false,
   onChange = f => f,
-  fromValue = 0,
-  toValue = 0
+  fromValue: from = '00:00:00',
+  toValue: to = '00:00:00'
 }) => {
-  const [fromDropdown, setFromDropdown] = useState(false)
-  const [toDropdown, setToDropdown] = useState(false)
-
-  const [fromOptions, setFromOptions] = useState([])
-  const [toOptions, setToOptions] = useState([])
-
-  const [from, setFrom] = useState(fromValue)
-  const [to, setTo] = useState(toValue)
-
-  useEffect(() => {
-    setFromOptions(createOptions('from'))
-    setToOptions(createOptions('to'))
-    //eslint-disable-next-line
-  }, [])
-
-  const selectOption = (field, value) => {
-    if (field === 'from') {
-      setFrom(value)
-      onChange([value, to])
-    } else {
-      setTo(value)
-      onChange([from, value])
-    }
-  }
-
-  const createOptions = field => {
-    let options = []
-
-    for (let i = 10; i <= 3600; i += 10) {
-      options.push(
-        <DropdownHoverListItem
-          key={`field-${i}`}
-          onClick={() => selectOption(field, i)}
-        >
-          <DropdownHoverListItemText primary={secToLabel(i)} />
-        </DropdownHoverListItem>
-      )
-    }
-
-    return options
-  }
+  const selectOption = useCallback(
+    field => value => {
+      if (field === 'from') {
+        onChange([value, to])
+      } else {
+        onChange([from, value])
+      }
+    },
+    [from, to, onChange]
+  )
 
   return (
     <Grid
@@ -117,41 +90,12 @@ const FormControlMultipleTimePicker = ({
       )}
     >
       <Grid item>
-        <Popup
-          trigger={
-            <Typography
-              className={[classes.input, small ? classes.inputSmall : ''].join(
-                ' '
-              )}
-            >
-              {secToLabel(from)}
-            </Typography>
-          }
-          on="click"
-          open={fromDropdown}
-          onOpen={() => {
-            if (toDropdown) setToDropdown(false)
-            setFromDropdown(true)
-          }}
-          onClose={() => setFromDropdown(false)}
-          arrow={false}
-          contentStyle={{
-            width: 100,
-            height: 300,
-            borderBottomLeftRadius: 6,
-            borderBottomRightRadius: 6,
-            animation: 'fade-in 500ms'
-          }}
-        >
-          <List
-            component="nav"
-            disablePadding={true}
-            className={classes.dropdownListWrap}
-            onClick={() => setFromDropdown(false)}
-          >
-            {fromOptions}
-          </List>
-        </Popup>
+        <FormControlTimeDurationPicker
+          value={from}
+          onChange={selectOption('from')}
+          label={null}
+          formControlInputClass={classes.smallTimePicker}
+        />
       </Grid>
       <Grid
         item
@@ -163,41 +107,13 @@ const FormControlMultipleTimePicker = ({
         <Typography className={classes.dividerLabel}>TO</Typography>
       </Grid>
       <Grid item>
-        <Popup
-          trigger={
-            <Typography
-              className={[classes.input, small ? classes.inputSmall : ''].join(
-                ' '
-              )}
-            >
-              {secToLabel(to)}
-            </Typography>
-          }
-          on="click"
-          open={toDropdown}
-          onOpen={() => {
-            if (fromDropdown) setFromDropdown(false)
-            setToDropdown(true)
-          }}
-          onClose={() => setToDropdown(false)}
-          arrow={false}
-          contentStyle={{
-            width: 100,
-            height: 300,
-            borderBottomLeftRadius: 6,
-            borderBottomRightRadius: 6,
-            animation: 'fade-in 500ms'
-          }}
-        >
-          <List
-            component="nav"
-            disablePadding={true}
-            className={classes.dropdownListWrap}
-            onClick={() => setToDropdown(false)}
-          >
-            {toOptions}
-          </List>
-        </Popup>
+        <FormControlTimeDurationPicker
+          value={to}
+          formControlInputClass={classes.smallTimePicker}
+          onChange={selectOption('to')}
+          label={null}
+          position={'bottom right'}
+        />
       </Grid>
     </Grid>
   )

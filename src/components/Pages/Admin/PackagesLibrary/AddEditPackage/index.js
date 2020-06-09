@@ -80,7 +80,7 @@ const styles = ({ palette, type }) => ({
     color: palette[type].pages.users.addUser.button.color
   },
   amountLabel: {
-    fontSize: '17px',
+    fontSize: '1.0833rem',
     fontStyle: 'italic',
     color: '#74809a',
     marginLeft: '15px'

@@ -5,6 +5,7 @@ import ForgotPassword from './ForgotPassword'
 import AccountInfoWithStatus from './AccountInfoWithStatus'
 import SystemSignIn from './SystemSignIn'
 import EnterpriseSignIn from './EnterpriseSignIn'
+import AccessDenied from './AccessDenied'
 
 export {
   SignIn,
@@ -13,5 +14,6 @@ export {
   AccountNavigationLink,
   AccountInfoWithStatus,
   SystemSignIn,
-  EnterpriseSignIn
+  EnterpriseSignIn,
+  AccessDenied
 }

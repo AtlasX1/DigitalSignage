@@ -2,12 +2,7 @@ import React, { useState, useEffect, useCallback, useRef } from 'react'
 import { translate } from 'react-i18next'
 import classNames from 'classnames'
 
-import {
-  withStyles,
-  Grid,
-  Typography,
-  CircularProgress
-} from '@material-ui/core'
+import { withStyles, Grid, Typography } from '@material-ui/core'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { WhiteButton } from '../../Buttons'
@@ -17,7 +12,6 @@ import { useFormik } from 'formik'
 import { mediaConstants as constants } from '../../../constants'
 import {
   createMediaPostData,
-  getAllowedFeatureId,
   getMediaInfoFromBackendData
 } from 'utils/mediaUtils'
 import {
@@ -35,6 +29,7 @@ import {
   FormControlSelect,
   SliderInputRange
 } from '../../Form'
+import useDetermineMediaFeatureId from 'hooks/useDetermineMediaFeatureId'
 
 const TabIconStyles = () => ({
   tabIconWrap: {
@@ -54,7 +49,7 @@ const InfoMessageStyles = ({ typography }) => ({
   infoMessageContainer: {
     display: 'flex',
     alignItems: 'flex-start',
-    padding: '0 5px 47px'
+    padding: '0 0 16px'
   },
   infoMessage: {
     marginLeft: '20px',
@@ -78,12 +73,12 @@ const InfoMessage = withStyles(InfoMessageStyles)(
   )
 )
 
-const styles = ({ palette, type }) => ({
+const styles = ({ palette, type, formControls, typography }) => ({
   root: {
-    margin: '31px 25px'
+    margin: '15px 30px'
   },
   tabToggleButtonGroup: {
-    marginBottom: '19px'
+    marginBottom: 16
   },
   tabToggleButton: {
     width: '128px'
@@ -96,11 +91,10 @@ const styles = ({ palette, type }) => ({
     boxShadow: 'none'
   },
   previewMediaRow: {
-    marginTop: '25px'
+    marginTop: 45
   },
   previewMediaText: {
-    fontWeight: 'bold',
-    color: palette[type].sideModal.action.button.color
+    ...typography.lightText[type]
   },
   featureIconTabContainer: {
     justifyContent: 'center'
@@ -117,13 +111,13 @@ const styles = ({ palette, type }) => ({
     border: `solid 1px ${palette[type].pages.media.card.border}`,
     backgroundColor: palette[type].pages.media.card.background,
     borderRadius: '4px',
-    marginBottom: '20px'
+    marginBottom: 16
   },
   themeHeader: {
     padding: '0 15px',
     borderBottom: `1px solid ${palette[type].pages.media.card.border}`,
     backgroundColor: palette[type].pages.media.card.header.background,
-    marginBottom: '15px'
+    marginBottom: 16
   },
   themeHeaderText: {
     fontWeight: 'bold',
@@ -131,28 +125,12 @@ const styles = ({ palette, type }) => ({
     color: palette[type].pages.media.card.header.color,
     fontSize: '12px'
   },
-  themeOptions1: {
-    padding: '0 15px',
-    marginBottom: '37px'
-  },
-  themeOptions2: {
-    padding: '0 15px',
-    marginTop: '31px'
-  },
-  themeOptions3: {
-    padding: '0 15px',
-    margin: '5px 0 29px'
-  },
   inputLabel: {
     display: 'block',
     fontSize: '13px',
     color: '#74809a',
     transform: 'none !important',
     marginRight: '10px'
-  },
-  themeInputContainer: {
-    padding: '0 5px',
-    margin: '0 -5px'
   },
   colorPaletteContainer: {
     display: 'flex',
@@ -173,18 +151,11 @@ const styles = ({ palette, type }) => ({
   formControlRootClass: {
     marginBottom: 0
   },
-  palettePickerContainer: {
-    marginBottom: '3px'
-  },
-  accountSettingsContainer: {
-    margin: '12px 0 20px',
-    padding: '0 15px'
-  },
   themeCardBodyContainer: {
-    padding: '14px 20px 7px'
+    padding: 15
   },
   marginTop1: {
-    marginTop: '22px'
+    marginTop: 16
   },
   numberInput: {
     '& span': {
@@ -199,13 +170,12 @@ const styles = ({ palette, type }) => ({
     paddingRight: '15px'
   },
   sliderInputLabel: {
-    color: '#74809A',
-    fontSize: '13px',
+    ...formControls.mediaApps.refreshEverySlider.label,
     lineHeight: '15px',
     marginRight: '15px'
   },
   formControlLabelClass: {
-    fontSize: '17px'
+    fontSize: '1.0833rem'
   },
   formWrapper: {
     position: 'relative',
@@ -292,14 +262,12 @@ const Pinterest = ({
   onShowSnackbar
 }) => {
   const dispatchAction = useDispatch()
-  const { configMediaCategory } = useSelector(({ config }) => config)
   const addMediaReducer = useSelector(({ addMedia }) => addMedia.social)
   const mediaItemReducer = useSelector(({ media }) => media.mediaItem)
 
-  const [isLoading, setLoading] = useState(false)
   const [formSubmitting, setFormSubmitting] = useState(false)
   const [autoClose, setAutoClose] = useState(false)
-  const [featureId, setFeatureId] = useState(null)
+  const featureId = useDetermineMediaFeatureId('Social', 'Pinterest')
 
   const initialFormValues = useRef({
     pinterest_user_name: '',
@@ -447,12 +415,6 @@ const Pinterest = ({
     // eslint-disable-next-line
   }, [])
 
-  useEffect(() => {
-    if (!configMediaCategory.response.length) return
-    const id = getAllowedFeatureId(configMediaCategory, 'Social', 'Pinterest')
-    setFeatureId(id)
-  }, [configMediaCategory])
-
   const handleShareState = useCallback(
     () => ({
       values: form.values
@@ -474,8 +436,6 @@ const Pinterest = ({
         mediaInfo: getMediaInfoFromBackendData(backendData)
       }
       form.setValues(initialFormValues.current)
-
-      setLoading(false)
     }
     // eslint-disable-next-line
   }, [backendData])
@@ -487,17 +447,12 @@ const Pinterest = ({
 
   return (
     <form className={classes.formWrapper} onSubmit={form.handleSubmit}>
-      {isLoading && (
-        <div className={classes.loaderWrapper}>
-          <CircularProgress size={30} thickness={5} />
-        </div>
-      )}
       <Grid container className={classes.tabContent}>
         <Grid item xs={7}>
           <div className={classes.root}>
             <InfoMessage iconClassName={'icon-interface-information-1'} />
-            <Grid container justify="space-between">
-              <Grid item xs={6} className={classes.themeInputContainer}>
+            <Grid container justify="space-between" spacing={16}>
+              <Grid item xs={6}>
                 <FormControlInput
                   id="pinterest_user_name"
                   label={t('Pinterest User Name')}
@@ -509,7 +464,7 @@ const Pinterest = ({
                   handleChange={form.handleChange}
                 />
               </Grid>
-              <Grid item xs={6} className={classes.themeInputContainer}>
+              <Grid item xs={6}>
                 <FormControlInput
                   id="board_name"
                   label={t('Board Name')}

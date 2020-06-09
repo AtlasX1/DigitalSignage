@@ -6,9 +6,15 @@ import { withStyles, Grid } from '@material-ui/core'
 import TemplateTypes from './TemplateTypes'
 import BottomTemplateActions from './BottomTemplateActions'
 import Template from './Template'
-import bgGridPattern from 'common/icons/bg-grid-pattern.svg'
+import bgLightGridPattern from 'common/icons/bg-grid-pattern.svg'
+import bgDarkGridPattern from 'common/icons/bg-dark-grid-pattern.svg'
 
-const styles = () => ({
+const bgGridPattern = {
+  light: bgLightGridPattern,
+  dark: bgDarkGridPattern
+}
+
+const styles = ({ type }) => ({
   templateTypesRoot: {
     width: '100%',
     height: '46px'
@@ -16,7 +22,7 @@ const styles = () => ({
   templateRoot: {
     width: '100%',
     minHeight: 'calc(100% - (46px + 42px))',
-    backgroundImage: `url(${bgGridPattern})`
+    backgroundImage: `url(${bgGridPattern[type]})`
   },
   bottomTemplateActionsRoot: {
     width: '100%',

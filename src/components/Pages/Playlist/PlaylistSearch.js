@@ -69,14 +69,6 @@ class PlaylistSearchForm extends Component {
             ' '
           )}
         />
-        <FormControlSelect
-          id="playlist-duration"
-          fullWidth={true}
-          label={t('Duration')}
-          formControlLabelClass={[classes.label, classes.labelTransform].join(
-            ' '
-          )}
-        />
         <FormControlDateRangePickers
           id="updated-on"
           label={t('Media search updated on')}

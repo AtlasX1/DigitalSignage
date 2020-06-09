@@ -25,7 +25,6 @@ import groupSaga from './groupSaga'
 import configSaga from './configSaga'
 import clientSettingsSaga from './clientSettingsSaga'
 import settingsSaga from './settingsSaga'
-import signageEditorSagas from './signageEditorSagas'
 import clientPackageSaga from './clientPackageSaga'
 import HTMLContentSaga from './HTMLContentSaga'
 import bannerSaga from './bannerSaga'
@@ -38,11 +37,11 @@ import helpSaga from './helpSaga'
 import categoriesSaga from './categoriesSaga'
 import contentsSaga from './contentsSaga'
 import roleSaga from './roleSaga'
-import announcementSaga from './announcementSaga'
 import workplacePosterSaga from './workplacePosterSaga'
 import preferenceSaga from './preferenceSaga'
 import clientUsersSaga from './clientUsersSaga'
 import whiteLabelSaga from './whiteLabelSaga'
+import smartPlaylistSaga from './smartPlaylistSaga'
 import quoteSaga from './quoteSaga'
 import alertSaga from './alertSaga'
 import designGallerySaga from './designGallerySaga'
@@ -96,7 +95,8 @@ export function* watchMedia() {
     takeLatest(types.DELETE_MEDIA_GROUP_ITEM, mediaSaga.deleteGroupItem),
     takeLatest(types.GET_MEDIA_ITEM_BY_ID, mediaSaga.getMediaItemById),
     takeLatest(types.PUT_MEDIA, mediaSaga.putMediaItemById),
-    takeLatest(types.GET_FEATURE_MEDIA_ITEMS, mediaSaga.getFeatureMediaItems)
+    takeLatest(types.GET_FEATURE_MEDIA_ITEMS, mediaSaga.getFeatureMediaItems),
+    takeEvery(types.REQUEST_MEDIA_CAP_ALERT, mediaSaga.getMediaCapAlertWorker)
   ])
 }
 
@@ -144,6 +144,9 @@ export function* watchTemplate() {
 
 export function* watchSchedule() {
   yield all([
+    takeLatest(types.POST_SCHEDULE, scheduleSaga.postSchedule),
+    takeLatest(types.GET_SCHEDULE_BY_ID, scheduleSaga.getSchedule),
+    takeLatest(types.PUT_SCHEDULE, scheduleSaga.editSchedule),
     takeLatest(types.GET_SCHEDULE_ITEMS, scheduleSaga.getItems),
     takeLatest(types.GET_SCHEDULE_PREFERENCE, scheduleSaga.getPreference),
     takeLatest(types.PUT_SCHEDULE_PREFERENCE, scheduleSaga.putPreference),
@@ -177,7 +180,11 @@ export function* watchDevice() {
     takeLatest(types.GET_DEVICE_SLEEP_MODE, deviceSaga.getSleepMode),
     takeLatest(types.PUT_DEVICE_SLEEP_MODE, deviceSaga.putSleepMode),
     takeLatest(types.GET_DEVICE_NOTES, deviceSaga.getDeviceNotes),
-    takeLatest(types.POST_DEVICE_NOTE, deviceSaga.postDeviceNote)
+    takeLatest(types.POST_DEVICE_NOTE, deviceSaga.postDeviceNote),
+    takeEvery(
+      types.REQUEST_CAP_ALERT_DEVICES,
+      deviceSaga.getCapAlertDevicesWorker
+    )
   ])
 }
 export function* watchReport() {
@@ -301,7 +308,6 @@ export function* watchConfig() {
       types.GET_THEME_OF_MEDIA_FEATURE_BY_ID,
       configSaga.getThemeOfMediaFeatureById
     ),
-    takeLatest(types.CLEAR_THEME_OF_MEDIA, configSaga.clearMediaThemes),
     takeLatest(
       types.GET_CONTENT_SOURCE_OF_MEDIA_FEATURE_BY_ID,
       configSaga.getContentSourceOfMediaFeatureById
@@ -309,7 +315,15 @@ export function* watchConfig() {
     takeLatest(types.GET_LOCATION, configSaga.getLocation),
     takeLatest(types.GET_CONFIG_TRANSITIONS, configSaga.getTransitions),
     takeLatest(types.GET_CONFIG_ALERT_TYPES, configSaga.getAlertTypes),
-    takeLatest(types.GET_LOCATION_INFO, configSaga.getLocationInfo)
+    takeLatest(types.GET_AIRLINES, configSaga.getAirlines),
+    takeLatest(types.GET_AIRPORTS, configSaga.getAirports),
+    takeLatest(types.GET_CONFIG_ALERT_TYPES, configSaga.getAlertTypes),
+    takeLatest(types.GET_LOCATION_INFO, configSaga.getLocationInfo),
+    takeLatest(types.GET_BACKGROUND_PATTERNS, configSaga.getBackgroundPattern),
+    takeLatest(
+      types.GET_BACKGROUND_IMAGES_FROM_MEDIA,
+      configSaga.getBackgroundImagesFromMedia
+    )
   ])
 }
 
@@ -320,24 +334,6 @@ export function* watchFonts() {
     takeLatest(types.GET_FONTS, fontsSaga.getFonts),
     takeLatest(types.DELETE_FONT, fontsSaga.deleteFont),
     takeLatest(types.POST_FONT, fontsSaga.postFont)
-  ])
-}
-
-export function* watchSignageEditor() {
-  yield all([
-    takeLatest(
-      types.GET_BACKGROUND_IMAGES,
-      signageEditorSagas.getBackgroundImages
-    ),
-    takeLatest(types.GET_PATTERNS, signageEditorSagas.getPatterns),
-    takeLatest(types.SET_SELECTED_BG, signageEditorSagas.setSelectedBg),
-    takeLatest(types.GET_SHAPES, signageEditorSagas.getShapes),
-    takeLatest(types.GET_ICONS, signageEditorSagas.getIcons),
-    takeLatest(types.GET_EMOJIS, signageEditorSagas.getEmojis),
-    takeLatest(types.GET_LIBRARY_IMAGES, signageEditorSagas.getLibraryImages),
-    takeLatest(types.GET_STOCK_IMAGES, signageEditorSagas.getStockImages),
-    takeLatest(types.GET_TEMPLATES, signageEditorSagas.getTemplates),
-    takeLatest(types.ADD_TEMPLATE, signageEditorSagas.addTemplate)
   ])
 }
 
@@ -535,20 +531,6 @@ export function* watchRole() {
   ])
 }
 
-export function* watchAnnouncements() {
-  yield all([
-    takeLatest(types.GET_ANNOUNCEMENTS, announcementSaga.getAnnouncements),
-    takeLatest(types.POST_ANNOUNCEMENT, announcementSaga.postAnnouncement),
-    takeLatest(types.DELETE_ANNOUNCEMENT, announcementSaga.deleteAnnouncement),
-    takeLatest(
-      types.DELETE_SELECTED_ANNOUNCEMENT,
-      announcementSaga.deleteSelectedAnnouncements
-    ),
-    takeLatest(types.GET_ANNOUNCEMENT, announcementSaga.getAnnouncement),
-    takeLatest(types.PUT_ANNOUNCEMENT, announcementSaga.putAnnouncement)
-  ])
-}
-
 export function* watchWorkplacePosters() {
   yield all([
     takeLatest(
@@ -628,7 +610,22 @@ export function* watchAlert() {
       alertSaga.putDeviceMediaCapAlert
     ),
     takeLatest(types.DISABLE_ALERT, alertSaga.disableAlert),
-    takeLatest(types.DISABLE_DEVICE_ALERT, alertSaga.disableDeviceAlert)
+    takeLatest(types.DISABLE_DEVICE_ALERT, alertSaga.disableDeviceAlert),
+    takeEvery(
+      types.REQUEST_ASSOCIATE_CAP_ALERT,
+      alertSaga.associateCapAlertWorker
+    )
+  ])
+}
+
+export function* watchSmartPlaylist() {
+  yield all([
+    takeLatest(
+      types.BUILD_SMART_PLAYLIST,
+      smartPlaylistSaga.buildSmartPlaylist
+    ),
+    takeLatest(types.POST_SMART_PLAYLIST, smartPlaylistSaga.postSmartPlaylist),
+    takeLatest(types.PUT_SMART_PLAYLIST, smartPlaylistSaga.putSmartPlaylist)
   ])
 }
 
@@ -636,7 +633,18 @@ export function* watchDesignGallery() {
   yield all([
     takeLatest(types.GET_DESIGN_GALLERY, designGallerySaga.getDesignGallery),
     takeLatest(types.POST_DESIGN_GALLERY, designGallerySaga.postDesignGallery),
-    takeLatest(types.PUT_DESIGN_GALLERY, designGallerySaga.putDesignGallery)
+    takeLatest(types.PUT_DESIGN_GALLERY, designGallerySaga.putDesignGallery),
+    takeLatest(
+      types.GET_BACKGROUND_IMAGES,
+      designGallerySaga.getBackgroundImages
+    ),
+    takeLatest(types.GET_PATTERNS, designGallerySaga.getPatterns),
+    takeLatest(types.SET_SELECTED_BG, designGallerySaga.setSelectedBg),
+    takeLatest(types.GET_SHAPES, designGallerySaga.getShapes),
+    takeLatest(types.GET_ICONS, designGallerySaga.getIcons),
+    takeLatest(types.GET_EMOJIS, designGallerySaga.getEmojis),
+    takeLatest(types.GET_STOCK_IMAGES, designGallerySaga.getStockImages),
+    takeLatest(types.GET_DESIGNS, designGallerySaga.getDesigns)
   ])
 }
 

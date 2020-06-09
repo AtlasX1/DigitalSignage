@@ -3,7 +3,7 @@ import { fabric } from 'fabric'
 const rotateImage = require('common/icons/sync-solid.svg')
 
 const setPrototypes = canvas => {
-  fabric.Object.prototype.fill = 'rgba(0,0,0,1)'
+  fabric.Object.prototype.fill = '#000'
   fabric.Object.prototype.getZIndex = function () {
     return canvas.getObjects().indexOf(this)
   }

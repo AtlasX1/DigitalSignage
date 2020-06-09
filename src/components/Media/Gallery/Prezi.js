@@ -9,14 +9,7 @@ import { get as _get } from 'lodash'
 import { useDispatch, useSelector } from 'react-redux'
 import { translate } from 'react-i18next'
 import { makeStyles } from '@material-ui/styles'
-import {
-  CircularProgress,
-  Dialog,
-  Grid,
-  Link,
-  Typography,
-  withStyles
-} from '@material-ui/core'
+import { Dialog, Grid, Link, Typography, withStyles } from '@material-ui/core'
 
 import { mediaConstants as constants } from '../../../constants'
 import { MediaInfo, MediaTabActions } from '../index'
@@ -24,7 +17,6 @@ import { WhiteButton } from '../../Buttons'
 import FormControlInput from '../../Form/FormControlInput'
 import {
   createMediaPostData,
-  getAllowedFeatureId,
   getMediaInfoFromBackendData
 } from '../../../utils/mediaUtils'
 import {
@@ -37,6 +29,7 @@ import {
 import { CheckboxSwitcher } from '../../Checkboxes'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import DialogContent from '@material-ui/core/DialogContent'
+import useDetermineMediaFeatureId from 'hooks/useDetermineMediaFeatureId'
 
 const images = {
   idLocation: require('../../../common/assets/images/prezi-id-location.png'),
@@ -47,7 +40,7 @@ const images = {
 
 const styles = ({ palette, type, typography }) => ({
   root: {
-    margin: '25px',
+    margin: '15px 30px',
     fontFamily: typography.fontFamily
   },
   formWrapper: {
@@ -78,25 +71,27 @@ const styles = ({ palette, type, typography }) => ({
     boxShadow: 'none'
   },
   previewMediaText: {
-    fontWeight: 'bold',
-    color: palette[type].sideModal.action.button.color
+    ...typography.lightText[type]
   },
   previewMediaRow: {
-    marginTop: '28px'
+    marginTop: 45
   },
   themeInputContainer: {
-    margin: '0 0 25px',
+    margin: '0 0 16px',
     '&.is-error': {
       '& $formInfoText': {
-        marginTop: '20px'
+        marginTop: 16
       }
     }
+  },
+  numbInputContainer: {
+    marginTop: 16
   },
   formControlRoot: {
     marginBottom: 0
   },
   inputLabel: {
-    fontSize: '17px'
+    fontSize: '1.0833rem'
   },
   formLabel: {
     fontSize: '13px',
@@ -104,16 +99,19 @@ const styles = ({ palette, type, typography }) => ({
     paddingRight: '15px'
   },
   labelLinkClass: {
-    borderBottom: '1px dashed #0A83C8',
+    textDecoration: 'underline',
+    textDecorationStyle: 'dotted',
+    textDecorationColor: '#0378ba',
     '&:hover': {
       cursor: 'pointer',
-      borderBottomStyle: 'solid'
+      textDecorationStyle: 'solid'
     }
   },
   formControlInputNumber: {
     '& .react-numeric-input': {
       width: '100%',
-      height: '38px'
+      height: '38px',
+      fontSize: '0.875rem'
     }
   },
   formInfoText: {
@@ -216,16 +214,16 @@ const Prezi = props => {
     onShareStateCallback
   } = props
   const dispatchAction = useDispatch()
-  const { configMediaCategory } = useSelector(({ config }) => config)
   const addMediaReducer = useSelector(({ addMedia }) => addMedia.gallery)
   const mediaItemReducer = useSelector(({ media }) => media.mediaItem)
 
-  const [isLoading, setLoading] = useState(false)
   const [formSubmitting, setFormSubmitting] = useState(false)
   const [autoClose, setAutoClose] = useState(false)
-  const [featureId, setFeatureId] = useState(null)
   const [isShowPreziInfoDialog, setShowPreziInfoDialog] = useState(false)
   const [durationInfoShowDialog, setDurationInfoShowDialog] = useState(false)
+
+  const featureId = useDetermineMediaFeatureId('Gallery', 'Prezi')
+
   const initialFormValues = useRef({
     id: '',
     duration: 5,
@@ -434,38 +432,19 @@ const Prezi = props => {
         mediaInfo: getMediaInfoFromBackendData(backendData)
       }
       form.setValues(initialFormValues.current)
-      setLoading(false)
     }
 
     // eslint-disable-next-line
   }, [backendData])
 
   useEffect(() => {
-    if (!configMediaCategory.response.length) return
-    const id = getAllowedFeatureId(configMediaCategory, 'Gallery', 'Prezi')
-    setFeatureId(id)
-  }, [configMediaCategory])
-
-  useEffect(() => {
     onShareStateCallback(handleShareState)
   }, [handleShareState, onShareStateCallback])
-
-  useEffect(() => {
-    if (mode === 'edit') {
-      setLoading(true)
-    }
-  }, [mode])
 
   const { values, errors, touched } = form
   return (
     <>
       <form className={classes.formWrapper} onSubmit={form.handleSubmit}>
-        {isLoading && (
-          <div className={classes.loaderWrapper}>
-            <CircularProgress size={30} thickness={5} />
-          </div>
-        )}
-
         <Grid container className={classes.tabContent}>
           <Grid item xs={7}>
             <div className={classes.root}>
@@ -507,7 +486,7 @@ const Prezi = props => {
                 </Grid>
               </Grid>
               <Grid container spacing={16}>
-                <Grid item xs={6} className={classes.themeInputContainer}>
+                <Grid item xs={6}>
                   <FormControlInput
                     custom
                     withLabel
@@ -531,7 +510,13 @@ const Prezi = props => {
                 </Grid>
               </Grid>
 
-              <Grid container className={classes.themeInputContainer}>
+              <Grid
+                container
+                className={classNames(
+                  classes.themeInputContainer,
+                  classes.numbInputContainer
+                )}
+              >
                 <CheckboxSwitcher
                   label="Custom:"
                   switchBaseClass={classes.switchBaseClass}

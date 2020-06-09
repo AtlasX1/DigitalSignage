@@ -1,9 +1,10 @@
 import update from 'immutability-helper'
 
 import * as types from '../actions'
+import { shapeOfBodyWithMeta } from 'constants/initialLibraryState'
 
 const initialState = {
-  library: {},
+  library: shapeOfBodyWithMeta,
   preference: {},
   groups: {},
   preview: {
@@ -25,7 +26,13 @@ const initialState = {
   groupItems: {},
   postGroupItem: {},
   deleteGroupItem: {},
-  featureMediaItems: {}
+  featureMediaItems: {},
+  capAlert: {
+    isFetching: false,
+    isFetched: false,
+    items: [],
+    error: null
+  }
 }
 
 export default (state = initialState, action) => {
@@ -276,6 +283,33 @@ export default (state = initialState, action) => {
     case types.CLEAR_GET_FEATURE_MEDIA_ITEMS_INFO:
       return update(state, {
         featureMediaItems: { $set: {} }
+      })
+    case types.REQUEST_MEDIA_CAP_ALERT:
+      return update(state, {
+        capAlert: {
+          isFetching: { $set: true }
+        }
+      })
+    case types.MEDIA_CAP_ALERT_SUCCESS:
+      return update(state, {
+        capAlert: {
+          $merge: {
+            isFetching: false,
+            isFetched: true,
+            items: action.payload,
+            error: null
+          }
+        }
+      })
+    case types.MEDIA_CAP_ALERT_ERROR:
+      return update(state, {
+        capAlert: {
+          $merge: {
+            isFetching: false,
+            isFetched: true,
+            error: action.payload
+          }
+        }
       })
     default:
       return state

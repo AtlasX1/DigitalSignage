@@ -1,10 +1,4 @@
-import {
-  CircularProgress,
-  Grid,
-  Typography,
-  withStyles
-} from '@material-ui/core'
-import { getThemeOfMediaFeatureById } from 'actions/configActions'
+import { Grid, Typography, withStyles } from '@material-ui/core'
 import {
   addMedia,
   clearAddedMedia,
@@ -16,12 +10,11 @@ import { useFormik } from 'formik'
 import update from 'immutability-helper'
 import { get as _get } from 'lodash'
 import PropTypes from 'prop-types'
-import React, { useCallback, useEffect, useState, useRef } from 'react'
+import React, { useCallback, useEffect, useState, useRef, useMemo } from 'react'
 import { translate } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import {
   createMediaPostData,
-  getAllowedFeatureId,
   getMediaInfoFromBackendData
 } from 'utils/mediaUtils'
 import * as Yup from 'yup'
@@ -39,11 +32,12 @@ import {
   FormControlSketchColorPicker
 } from '../../Form'
 import MediaThemeSelector from '../MediaThemeSelector'
+import useMediaTheme from 'hooks/useMediaTheme'
 
-const styles = ({ palette, type, typography }) => {
+const styles = ({ palette, type, typography, formControls }) => {
   return {
     root: {
-      padding: '22px 25px',
+      padding: '15px 30px',
       fontFamily: typography.fontFamily,
       borderRight: `solid 1px ${palette[type].pages.media.card.border}`
     },
@@ -81,8 +75,8 @@ const styles = ({ palette, type, typography }) => {
       background: 'transparent'
     },
 
-    marginBottom1: {
-      marginBottom: '22px'
+    marginBottom: {
+      marginBottom: 5
     },
 
     themeCardWrap: {
@@ -106,7 +100,6 @@ const styles = ({ palette, type, typography }) => {
     label: {
       fontSize: '16px',
       fontWeight: '300',
-      marginBottom: '7px',
       transform: 'translate(0, 1.5px) scale(0.75)',
       whiteSpace: 'nowrap'
     },
@@ -137,8 +130,7 @@ const styles = ({ palette, type, typography }) => {
       width: '46px'
     },
     sliderInputLabel: {
-      color: '#74809A',
-      fontSize: '13px',
+      ...formControls.mediaApps.refreshEverySlider.label,
       lineHeight: '15px',
       marginRight: '15px'
     },
@@ -149,7 +141,7 @@ const styles = ({ palette, type, typography }) => {
       marginRight: '10px'
     },
     formControlSelectLabelClass: {
-      fontSize: '17px'
+      fontSize: '1.0833rem'
     },
 
     previewMediaBtn: {
@@ -158,11 +150,10 @@ const styles = ({ palette, type, typography }) => {
       backgroundImage: palette[type].sideModal.action.button.background,
       borderRadius: '4px',
       boxShadow: 'none',
-      marginTop: '37px'
+      marginTop: 45
     },
     previewMediaText: {
-      fontWeight: 'bold',
-      color: palette[type].sideModal.action.button.color
+      ...typography.lightText[type]
     }
   }
 }
@@ -182,18 +173,51 @@ const Clock = ({
   const intitialFromState = useRef({
     themeCategory: 'Modern'
   })
-  const [featureId, setFeatureId] = useState(null)
   const [themeCategory, setThemeCategory] = useState(
     intitialFromState.current.themeCategory
   )
   const [cities, setCities] = useState([])
-  const [isLoading, setLoading] = useState(false)
   const [formSubmitting, setFormSubmitting] = useState(false)
   const [autoClose, setAutoClose] = useState(false)
 
   const addMediaReducer = useSelector(({ addMedia }) => addMedia.local)
   const mediaItemReducer = useSelector(({ media }) => media.mediaItem)
   const { configMediaCategory } = useSelector(({ config }) => config)
+
+  const { themes, featureId } = useMediaTheme('Local', 'Clock')
+  const previewThemes = useMemo(() => {
+    const analogThemes = themes.Analog || []
+    const digitalThemes = themes.Digital || []
+    if (!analogThemes.length || !digitalThemes.length) {
+      return {}
+    }
+    return {
+      analog: {
+        Modern: analogThemes.length
+          ? analogThemes.filter(({ tooltip }) =>
+              new RegExp('^Modern+', 'i').test(tooltip)
+            )
+          : [],
+        Legacy: analogThemes.length
+          ? analogThemes.filter(({ tooltip }) =>
+              new RegExp('^Legacy+', 'i').test(tooltip)
+            )
+          : []
+      },
+      digital: {
+        Modern: digitalThemes.length
+          ? digitalThemes.filter(({ tooltip }) =>
+              new RegExp('^Modern+', 'i').test(tooltip)
+            )
+          : [],
+        Legacy: digitalThemes.length
+          ? digitalThemes.filter(({ tooltip }) =>
+              new RegExp('^Legacy+', 'i').test(tooltip)
+            )
+          : []
+      }
+    }
+  }, [themes])
 
   const initialFormValues = useRef({
     theme_type: 'analog',
@@ -208,43 +232,6 @@ const Clock = ({
     background: 'rgba(0,0,0,1)',
     border: 'rgba(0,0,0,1)',
     mediaInfo: mediaConstants.mediaInfoInitvalue
-  })
-
-  const previewThemes = useSelector(({ config }) => {
-    if (
-      config.themeOfMedia &&
-      config.themeOfMedia.response &&
-      config.themeOfMedia.response.Analog &&
-      config.themeOfMedia.response.Digital
-    ) {
-      return {
-        analog: {
-          Modern: config.themeOfMedia.response.Analog.length
-            ? config.themeOfMedia.response.Analog.filter(({ tooltip }) =>
-                new RegExp('^Modern+', 'i').test(tooltip)
-              )
-            : [],
-          Legacy: config.themeOfMedia.response.Analog.length
-            ? config.themeOfMedia.response.Analog.filter(({ tooltip }) =>
-                new RegExp('^Legacy+', 'i').test(tooltip)
-              )
-            : []
-        },
-        digital: {
-          Modern: config.themeOfMedia.response.Digital.length
-            ? config.themeOfMedia.response.Digital.filter(({ tooltip }) =>
-                new RegExp('^Modern+', 'i').test(tooltip)
-              )
-            : [],
-          Legacy: config.themeOfMedia.response.Digital.length
-            ? config.themeOfMedia.response.Digital.filter(({ tooltip }) =>
-                new RegExp('^Legacy+', 'i').test(tooltip)
-              )
-            : []
-        }
-      }
-    }
-    return {}
   })
 
   const dispatch = useDispatch()
@@ -362,16 +349,9 @@ const Clock = ({
       intitialFromState.current.themeCategory =
         backendData.attributes.themeCategory
       setThemeCategory(intitialFromState.current.themeCategory)
-      setLoading(false)
     }
     // eslint-disable-next-line
   }, [backendData])
-
-  useEffect(() => {
-    if (mode === 'edit') {
-      setLoading(true)
-    }
-  }, [mode])
 
   useEffect(() => {
     if (!configMediaCategory.response.length) return
@@ -380,16 +360,7 @@ const Clock = ({
         ? configMediaCategory.cities
         : []
     )
-    const id = getAllowedFeatureId(configMediaCategory, 'Local', 'Clock')
-    setFeatureId(id)
   }, [configMediaCategory])
-
-  useEffect(() => {
-    if (featureId) {
-      dispatch(getThemeOfMediaFeatureById(featureId))
-    }
-    // eslint-disable-next-line
-  }, [featureId])
 
   const validationSchema = Yup.object().shape({
     themeId: Yup.number().required().moreThan(0, 'Please select a theme'),
@@ -541,17 +512,12 @@ const Clock = ({
       className={classes.formWrapper}
       onSubmit={form.handleSubmit}
     >
-      {isLoading && (
-        <div className={classes.loaderWrapper}>
-          <CircularProgress size={30} thickness={5} />
-        </div>
-      )}
       <Grid item xs={7} className={classes.root}>
         <Grid container justify="center">
           <Grid
             item
             xs={12}
-            className={[classes.themeCardWrap, classes.marginBottom1].join(' ')}
+            className={[classes.themeCardWrap, classes.marginBottom].join(' ')}
           >
             <header className={classes.themeHeader}>
               <Grid container justify="space-between" alignItems="center">
@@ -615,7 +581,7 @@ const Clock = ({
             </Grid>
           </Grid>
         </Grid>
-        <Grid container>
+        <Grid container className={classes.marginBottom}>
           <Grid item>
             <CheckboxSwitcher
               label={t('Use System Time')}
@@ -640,7 +606,7 @@ const Clock = ({
                     classes.themeCardForm
                   ].join(' ')}
                 >
-                  <Grid item xs={12} className={classes.inputContainer}>
+                  <Grid item xs={12}>
                     <FormControlReactSelect
                       label={`${t('City')}:`}
                       placeholder={t('Select City')}
@@ -677,7 +643,7 @@ const Clock = ({
                   ].join(' ')}
                 >
                   {!form.values.use_system_time && (
-                    <Grid item xs={12} className={classes.inputContainer}>
+                    <Grid item xs={12}>
                       <FormControlReactSelect
                         label={`${t('City')}:`}
                         placeholder={t('Select City')}
@@ -699,130 +665,124 @@ const Clock = ({
                     </Grid>
                   )}
                   {themeCategory === 'Legacy' && (
-                    <Grid container>
-                      <Grid item container xs={12}>
-                        <Grid item xs={6} className={classes.inputContainer}>
-                          <FormControlReactSelect
-                            label={t('Font Family')}
-                            value={{
-                              label: form.values.text,
-                              value: form.values.text
-                            }}
-                            handleChange={event =>
-                              form.setFieldValue('text', event.target.value)
-                            }
-                            options={[
-                              'Arial',
-                              'Courier New',
-                              'Times New Roman',
-                              'Georgia',
-                              'Alegreya Sans SC',
-                              'Coiny',
-                              'Indie Flower',
-                              'Kanit',
-                              'Kite One',
-                              'Lobster',
-                              'Montserrat',
-                              'Pacifico',
-                              'Poppins',
-                              'Rasa'
-                            ].map(name => ({
-                              component: (
-                                <span style={{ fontFamily: name }}>{name}</span>
-                              ),
-                              label: name,
-                              value: name
-                            }))}
-                          />
-                        </Grid>
-                        <Grid item xs={6} className={classes.inputContainer}>
+                    <Grid container spacing={16}>
+                      <Grid item xs={6}>
+                        <FormControlReactSelect
+                          label={t('Font Family')}
+                          value={{
+                            label: form.values.text,
+                            value: form.values.text
+                          }}
+                          handleChange={event =>
+                            form.setFieldValue('text', event.target.value)
+                          }
+                          options={[
+                            'Arial',
+                            'Courier New',
+                            'Times New Roman',
+                            'Georgia',
+                            'Alegreya Sans SC',
+                            'Coiny',
+                            'Indie Flower',
+                            'Kanit',
+                            'Kite One',
+                            'Lobster',
+                            'Montserrat',
+                            'Pacifico',
+                            'Poppins',
+                            'Rasa'
+                          ].map(name => ({
+                            component: (
+                              <span style={{ fontFamily: name }}>{name}</span>
+                            ),
+                            label: name,
+                            value: name
+                          }))}
+                        />
+                      </Grid>
+                      <Grid item xs={6}>
+                        <FormControlSketchColorPicker
+                          label={t('Font Color')}
+                          color={form.values.text_color}
+                          onColorChange={color => {
+                            form.setFieldValue('text_color', color)
+                          }}
+                          formControlLabelClass={classes.label}
+                          rootClass={classes.formControlInputClass}
+                        />
+                      </Grid>
+                      <Grid item xs={3} className={classes.inputContainer}>
+                        <FormControlInput
+                          min={5}
+                          max={50}
+                          custom
+                          marginBottom
+                          label={t('Font Size')}
+                          value={form.values.text_size}
+                          handleChange={value =>
+                            form.setFieldValue('text_size', value)
+                          }
+                          formControlLabelClass={classes.label}
+                          formControlNumericInputRootClass={
+                            classes.formControlNumericInputRootClass
+                          }
+                        />
+                      </Grid>
+                      <Grid item xs={3} className={classes.inputContainer}>
+                        <FormControlInput
+                          min={1}
+                          max={11}
+                          custom
+                          marginBottom
+                          label={t('Date Format')}
+                          value={form.values.date_format}
+                          handleChange={value =>
+                            form.setFieldValue('date_format', value)
+                          }
+                          formControlLabelClass={classes.label}
+                          formControlNumericInputRootClass={
+                            classes.formControlNumericInputRootClass
+                          }
+                        />
+                      </Grid>
+                      <Grid item xs={6} className={classes.inputContainer}>
+                        <FormControlSketchColorPicker
+                          label={t('Border Color')}
+                          color={form.values.border}
+                          onColorChange={color => {
+                            form.setFieldValue('border', color)
+                          }}
+                          formControlLabelClass={classes.label}
+                          rootClass={classes.formControlInputClass}
+                        />
+                      </Grid>
+                      <Grid item xs={6} className={classes.inputContainer}>
+                        <CheckboxSwitcher
+                          label={t('Transparent Background')}
+                          value={form.values.transparent_background}
+                          handleChange={checked =>
+                            form.setFieldValue(
+                              'transparent_background',
+                              checked
+                            )
+                          }
+                          switchContainerClass={classes.switchContainerClass}
+                          formControlRootClass={classes.formControlRootClass}
+                          formControlLabelClass={classes.switchLabelClass}
+                        />
+                      </Grid>
+                      <Grid item xs={6} className={classes.inputContainer}>
+                        {!form.values.transparent_background && (
                           <FormControlSketchColorPicker
-                            label={t('Font Color')}
-                            color={form.values.text_color}
+                            label={t('Background Color')}
+                            color={form.values.background}
                             onColorChange={color => {
-                              form.setFieldValue('text_color', color)
+                              form.setFieldValue('background', color)
                             }}
                             formControlLabelClass={classes.label}
                             rootClass={classes.formControlInputClass}
                           />
-                        </Grid>
-                      </Grid>
-                      <Grid item container xs={12}>
-                        <Grid item xs={3} className={classes.inputContainer}>
-                          <FormControlInput
-                            min={5}
-                            max={50}
-                            custom
-                            marginBottom
-                            label={t('Font Size')}
-                            value={form.values.text_size}
-                            handleChange={value =>
-                              form.setFieldValue('text_size', value)
-                            }
-                            formControlLabelClass={classes.label}
-                            formControlNumericInputRootClass={
-                              classes.formControlNumericInputRootClass
-                            }
-                          />
-                        </Grid>
-                        <Grid item xs={3} className={classes.inputContainer}>
-                          <FormControlInput
-                            min={1}
-                            max={11}
-                            custom
-                            marginBottom
-                            label={t('Date Format')}
-                            value={form.values.date_format}
-                            handleChange={value =>
-                              form.setFieldValue('date_format', value)
-                            }
-                            formControlLabelClass={classes.label}
-                            formControlNumericInputRootClass={
-                              classes.formControlNumericInputRootClass
-                            }
-                          />
-                        </Grid>
-                        <Grid item xs={6} className={classes.inputContainer}>
-                          <FormControlSketchColorPicker
-                            label={t('Border Color')}
-                            color={form.values.border}
-                            onColorChange={color => {
-                              form.setFieldValue('border', color)
-                            }}
-                            formControlLabelClass={classes.label}
-                            rootClass={classes.formControlInputClass}
-                          />
-                        </Grid>
-                      </Grid>
-                      <Grid item container xs={12}>
-                        <Grid item xs={6} className={classes.inputContainer}>
-                          <CheckboxSwitcher
-                            label={t('Transparent Background')}
-                            value={form.values.transparent_background}
-                            handleChange={checked =>
-                              form.setFieldValue(
-                                'transparent_background',
-                                checked
-                              )
-                            }
-                            switchContainerClass={classes.switchContainerClass}
-                            formControlRootClass={classes.formControlRootClass}
-                            formControlLabelClass={classes.switchLabelClass}
-                          />
-                        </Grid>
-                        <Grid item xs={6} className={classes.inputContainer}>
-                          {!form.values.transparent_background && (
-                            <FormControlSketchColorPicker
-                              label={t('Background Color')}
-                              color={form.values.background}
-                              onColorChange={color => {
-                                form.setFieldValue('background', color)
-                              }}
-                              formControlLabelClass={classes.label}
-                              rootClass={classes.formControlInputClass}
-                            />
-                          )}
-                        </Grid>
+                        )}
                       </Grid>
                     </Grid>
                   )}

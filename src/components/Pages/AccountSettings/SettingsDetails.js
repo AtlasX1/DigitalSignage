@@ -1,9 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Grid, Typography, withStyles, Tooltip } from '@material-ui/core'
+import { Grid, Typography, withStyles } from '@material-ui/core'
 import { translate } from 'react-i18next'
 import classNames from 'classnames'
 
+import Tooltip from 'components/Tooltip'
 import { ClientSettingsSettingsLoader } from '../../Loaders'
 import { CheckboxSwitcher } from '../../Checkboxes'
 import { Card } from '../../Card'
@@ -42,10 +43,6 @@ const styles = ({ palette, type }) => ({
   },
   card: {
     background: 'transparent'
-  },
-  defaultScreenLabel: {
-    textDecoration: 'underline',
-    cursor: 'pointer'
   }
 })
 
@@ -105,9 +102,7 @@ const SettingsDetails = ({
                     'Select failover content on a device when no active Schedule is present'
                   )}
                 >
-                  <span className={classes.defaultScreenLabel}>
-                    {t('Default Screen')}
-                  </span>
+                  {t('Default Screen')}
                 </Tooltip>
               </Typography>
             </Grid>

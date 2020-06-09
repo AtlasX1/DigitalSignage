@@ -61,7 +61,7 @@ const InfoMessage = withStyles(InfoMessageStyles)(
   )
 )
 
-const styles = ({ palette, type, typography }) => {
+const styles = ({ palette, type, typography, formControls }) => {
   return {
     root: {
       margin: '30px 25px',
@@ -75,8 +75,7 @@ const styles = ({ palette, type, typography }) => {
       boxShadow: 'none'
     },
     previewMediaText: {
-      fontWeight: 'bold',
-      color: palette[type].sideModal.action.button.color
+      ...typography.lightText[type]
     },
     previewMediaRow: {
       marginTop: '61px'
@@ -91,20 +90,19 @@ const styles = ({ palette, type, typography }) => {
     tabToggleButtonContainer: {
       justifyContent: 'center',
       background: 'transparent',
-      marginTop: '17px'
+      marginTop: '1.0833rem'
     },
     picasaInput: {
       marginBottom: 0
     },
     inputLabel: {
-      fontSize: '17px'
+      fontSize: '1.0833rem'
     },
     marginTop1: {
       marginTop: '30px'
     },
     sliderInputLabel: {
-      color: '#74809A',
-      fontSize: '13px',
+      ...formControls.mediaApps.refreshEverySlider.label,
       lineHeight: '15px',
       marginRight: '15px'
     }

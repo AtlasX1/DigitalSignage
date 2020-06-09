@@ -13,6 +13,11 @@ const initialState = {
   disableDeviceAlert: {
     response: {},
     error: {}
+  },
+  associateCapAlert: {
+    isFetching: false,
+    isSuccess: false,
+    error: null
   }
 }
 
@@ -148,6 +153,47 @@ export default (state = initialState, action) => {
           disableDeviceAlert: {
             response: {},
             error: {}
+          }
+        }
+      })
+    case types.REQUEST_ASSOCIATE_CAP_ALERT:
+      return update(state, {
+        associateCapAlert: {
+          $merge: {
+            isFetching: true,
+            isSuccess: false,
+            error: null
+          }
+        }
+      })
+    case types.ASSOCIATE_CAP_ALERT_SUCCESS:
+      return update(state, {
+        associateCapAlert: {
+          $merge: {
+            isFetching: false,
+            isSuccess: true,
+            error: null
+          }
+        }
+      })
+    case types.ASSOCIATE_CAP_ALERT_ERROR:
+      const { message } = action.payload
+      return update(state, {
+        associateCapAlert: {
+          $merge: {
+            isFetching: false,
+            isSuccess: false,
+            error: message
+          }
+        }
+      })
+    case types.RESET_ASSOCIATE_CAP_ALERT:
+      return update(state, {
+        associateCapAlert: {
+          $merge: {
+            isFetching: false,
+            isSuccess: false,
+            error: null
           }
         }
       })

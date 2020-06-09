@@ -38,7 +38,8 @@ const styles = theme => ({
     minHeight: '90vh'
   },
   name: {
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    ...theme.typography.darkAccent[theme.type]
   },
   toggleApprovedIcon: {
     width: 24,
@@ -177,7 +178,7 @@ const ReportsTable = ({
                   case 'phone':
                     return (
                       <TableLibraryCell key={column} align="center">
-                        {row.phone}
+                        {row.phone ? row.phone : 'N/A'}
                       </TableLibraryCell>
                     )
                   case 'timeStamp':
@@ -189,13 +190,13 @@ const ReportsTable = ({
                   case 'status':
                     return (
                       <TableLibraryCell key={column} align="center">
-                        {row.status}
+                        {row.status ? row.status : 'N/A'}
                       </TableLibraryCell>
                     )
                   case 'IPAddress':
                     return (
                       <TableLibraryCell key={column} align="center">
-                        {row.IPAddress}
+                        {row.IPAddress ? row.IPAddress : 'N/A'}
                       </TableLibraryCell>
                     )
                   default:

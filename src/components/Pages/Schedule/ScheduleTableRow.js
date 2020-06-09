@@ -20,10 +20,10 @@ import routeByName from 'constants/routes'
 
 import { checkData } from 'utils/tableUtils'
 import { scheduleConstants } from 'constants/index'
+import LibraryTagChips from '../../../components/LibraryTagChips'
 
-const styles = () => ({
+const styles = ({ typography, type }) => ({
   previewLink: {
-    display: 'block',
     textDecoration: 'none'
   },
   workingDaysWrap: {
@@ -45,6 +45,9 @@ const styles = () => ({
     '&.active': {
       background: '#0379bb'
     }
+  },
+  name: {
+    ...typography.darkAccent[type]
   }
 })
 
@@ -62,7 +65,10 @@ const TableRow = ({
     workingDays,
     orientation,
     status,
-    scheduleType
+    scheduleType,
+    specificDates,
+    allDate,
+    tag
   },
   onToggleSelect = f => f,
   onUnselect = f => f,
@@ -138,7 +144,7 @@ const TableRow = ({
                 <TableLibraryCell
                   align="center"
                   padding="checkbox"
-                  key={`cell-schedule-${column}`}
+                  key={column}
                 >
                   <Tooltip title={scheduleTypeInfo.title}>
                     <LibraryTypeIcon
@@ -154,34 +160,42 @@ const TableRow = ({
               )
             case 'title':
               return (
-                <TableLibraryCell
-                  key={`cell-schedule-${column}`}
-                  style={{ fontWeight: 'bold' }}
-                >
+                <TableLibraryCell key={column} className={classes.name}>
                   {checkData(title)}
                 </TableLibraryCell>
               )
             case 'group':
               return (
-                <TableLibraryCell key={`cell-schedule-${column}`}>
+                <TableLibraryCell key={column}>
                   {checkData(group ? group.map(f => f.title).join(', ') : '')}
                 </TableLibraryCell>
               )
             case 'duration':
               return (
-                <TableLibraryCell key={`cell-schedule-${column}`}>
+                <TableLibraryCell key={column}>
                   {checkData(duration)}
                 </TableLibraryCell>
               )
             case 'workingDates':
               return (
                 <TableLibraryCell
-                  key={`cell-schedule-${column}`}
-                ></TableLibraryCell>
+                  key={column}
+                  title={
+                    specificDates.length &&
+                    specificDates.map(date => `${date}`).join('\n')
+                  }
+                  align="center"
+                >
+                  {allDate
+                    ? t('All dates')
+                    : specificDates.length
+                    ? t('Specific dates')
+                    : 'N/A'}
+                </TableLibraryCell>
               )
             case 'workingDays':
               return (
-                <TableLibraryCell key={`cell-schedule-${column}`}>
+                <TableLibraryCell key={column} align="center">
                   <div className={classes.workingDaysWrap}>
                     {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map(
                       (day, index) => {
@@ -204,28 +218,27 @@ const TableRow = ({
                 </TableLibraryCell>
               )
             case 'workingTime':
-              return (
-                <TableLibraryCell
-                  key={`cell-schedule-${column}`}
-                ></TableLibraryCell>
-              )
+              return <TableLibraryCell key={column} align="center" />
             case 'orientation':
               return (
-                <TableLibraryCell key={`cell-schedule-${column}`}>
-                  {checkData(orientation)}
+                <TableLibraryCell key={column} align="center">
+                  {checkData(orientation, 'N/A')}
                 </TableLibraryCell>
               )
             case 'status':
               return (
-                <TableLibraryCell
-                  key={`cell-schedule-${column}`}
-                  align="center"
-                >
+                <TableLibraryCell key={column} align="center">
                   {status === 'Active' ? (
                     <ActiveStatusChip label={t('Active')} />
                   ) : (
                     <InactiveStatusChip label={t('Inactive')} />
                   )}
+                </TableLibraryCell>
+              )
+            case 'tag':
+              return (
+                <TableLibraryCell key={column} align="center">
+                  <LibraryTagChips tags={tag} />
                 </TableLibraryCell>
               )
             default:

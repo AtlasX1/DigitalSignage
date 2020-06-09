@@ -5,6 +5,7 @@ import { TABS_NAMES } from '../../components/Pages/DesignGallery/constans'
 const initialState = {
   patterns: [],
   patternsPage: 0,
+  patterns_total: 0,
   photos: [],
   photosPage: 0,
   shapes: [],
@@ -19,24 +20,25 @@ const initialState = {
   stockImagesPage: 1,
   libraryImages: [],
   libraryImagesPage: 0,
-  templates: [],
-  templatesPage: 0,
-  templatesFilter: 'all',
+  designs: [],
+  designsPage: 0,
+  designsFilter: 'all',
   shapesTabQuery: '',
   backgroundsTabQuery: '',
   fontsTabQuery: '',
   imagesTabQuery: '',
-  templatesTabQuery: '',
+  designsTabQuery: '',
   perPage: 40,
-  isFetching: false
+  isFetching: false,
+  total_results: 0
 }
 
-const setPreviousPage = (payload = [], page) => {
-  return !payload.length ? page - 1 : page
-}
+// const setPreviousPage = (payload = [], page) => {
+//   return !payload.length ? page - 1 : page
+// }
 
 const setSelectedById = (array, id) => {
-  return array.map(el => ({ ...el, selected: el.id === id }))
+  return array.map(el => ({ ...el, selected: id ? el.id === id : false }))
 }
 export default (state = initialState, { action, data = {}, type, payload }) => {
   switch (type) {
@@ -50,12 +52,14 @@ export default (state = initialState, { action, data = {}, type, payload }) => {
         isFetching: true
       }
     case types.GET_PATTERNS_SUCCESS:
-      const patterns = !state.patternsPage
-        ? payload
-        : _concat(state.patterns, payload)
+      const patterns =
+        !state.patternsPage || payload.changeImages
+          ? payload.patterns
+          : _concat(state.patterns, payload.patterns)
       return {
         ...state,
         patterns,
+        patterns_total: payload.patterns_total,
         isFetching: false
       }
 
@@ -131,29 +135,22 @@ export default (state = initialState, { action, data = {}, type, payload }) => {
         isFetching: false
       }
 
-    // TEMPLATES
-    case types.ADD_TEMPLATE_SUCCESS:
+    // DESIGNS
+    case types.GET_DESIGNS:
       return {
         ...state,
-        templates: _concat(state.templates, payload)
-      }
-    case types.GET_TEMPLATES:
-      return {
-        ...state,
-        templatesFilter: data.filter,
-        templatesTabQuery: data.query,
-        templatesPage: data.templatesPage,
+        designsFilter: data.filter,
+        designsTabQuery: data.query,
+        designsPage: data.designsPage,
         perPage: data.perPage,
         isFetching: true
       }
-    case types.GET_TEMPLATES_SUCCESS:
-      const templates = !state.templatesPage
-        ? payload
-        : _concat(state.templates, payload)
+    case types.GET_DESIGNS_SUCCESS:
+      const designs = payload
       return {
         ...state,
-        templatesPage: setPreviousPage(payload, action.data.templatesPage),
-        templates,
+        // designsPage: setPreviousPage(payload, action.data.designsPage),
+        designs,
         isFetching: false
       }
 
@@ -175,10 +172,14 @@ export default (state = initialState, { action, data = {}, type, payload }) => {
         backgroundSize: 'cover',
         backgroundPosition: 'center'
       }))
-      const photos = !state.photosPage ? images : _concat(state.photos, images)
+      const photos =
+        !state.photosPage || payload.changeImages
+          ? images
+          : _concat(state.photos, images)
       return {
         ...state,
         photos,
+        total_results: payload.total_results,
         isFetching: false
       }
     case types.GET_BACKGROUND_IMAGES_ERROR:
@@ -246,6 +247,14 @@ export default (state = initialState, { action, data = {}, type, payload }) => {
         photos: setSelectedById(state.photos, data.id),
         patterns: setSelectedById(state.patterns, data.id)
       }
+
+    case types.REMOVE_SELECTED_BG_SUCCESS:
+      return {
+        ...state,
+        photos: setSelectedById(state.photos, false),
+        patterns: setSelectedById(state.patterns, false)
+      }
+
     default:
       return state
   }

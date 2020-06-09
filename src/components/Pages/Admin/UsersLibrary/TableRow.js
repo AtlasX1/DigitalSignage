@@ -1,13 +1,14 @@
 import React, { useCallback, useMemo } from 'react'
 import { translate } from 'react-i18next'
 import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
+import { bindActionCreators, compose } from 'redux'
 
 import {
   TableLibraryCell,
   TableLibraryRow,
   TableLibraryRowActionButton,
-  DateTimeView
+  DateTimeView,
+  UserNameView
 } from 'components/TableLibrary'
 import { Checkbox } from 'components/Checkboxes'
 import { deleteItem } from 'actions/usersActions'
@@ -19,9 +20,17 @@ import { ActiveStatusChip, InactiveStatusChip } from 'components/Chip'
 import { getUrlPrefix } from 'utils'
 import { userRoleLevels } from 'constants/api'
 import useDeterminePermissions from 'hooks/useDeterminePermissions'
+import { withStyles } from '@material-ui/core'
+
+const styles = ({ typography, type }) => ({
+  name: {
+    ...typography.darkAccent[type]
+  }
+})
 
 const TableRow = ({
   t,
+  classes,
   selected,
   deleteItem,
   columns,
@@ -50,8 +59,7 @@ const TableRow = ({
       clone: t('Clone'),
       impersonate: t('Impersonate'),
       del: t('Delete'),
-      permission: t('Permissions link'),
-      formatDate: t('Banners expirationDate format')
+      permission: t('Permissions link')
     }),
     [t]
   )
@@ -145,17 +153,20 @@ const TableRow = ({
             case 'firstName': {
               return (
                 <TableLibraryCell
-                  style={{ fontWeight: 'bold' }}
+                  className={classes.name}
                   key={`cell-user-${column}`}
                 >
-                  {firstName} {lastName}
+                  <UserNameView firstName={firstName} lastName={lastName} />
                 </TableLibraryCell>
               )
             }
             case 'client': {
               return variant !== userRoleLevels.org ? (
                 <TableLibraryCell key={`cell-user-${column}`}>
-                  {createdBy.firstName} {createdBy.lastName}
+                  <UserNameView
+                    firstName={createdBy.firstName}
+                    lastName={createdBy.lastName}
+                  />
                 </TableLibraryCell>
               ) : null
             }
@@ -166,10 +177,17 @@ const TableRow = ({
                 </TableLibraryCell>
               )
             }
+            case 'role': {
+              return (
+                <TableLibraryCell key={`cell-user-${column}`}>
+                  {role && role.displayName ? role.displayName : ''}
+                </TableLibraryCell>
+              )
+            }
             case 'phone': {
               return (
                 <TableLibraryCell key={`cell-user-${column}`} align="center">
-                  {checkData(phone)}
+                  {checkData(phone, 'N/A')}
                 </TableLibraryCell>
               )
             }
@@ -211,6 +229,8 @@ const mapDispatchToProps = dispatch =>
     dispatch
   )
 
-export default translate('translations')(
-  connect(null, mapDispatchToProps)(TableRow)
-)
+export default compose(
+  translate('translations'),
+  connect(null, mapDispatchToProps),
+  withStyles(styles)
+)(TableRow)

@@ -9,12 +9,7 @@ import 'brace/mode/javascript'
 import '../aceThemeImports'
 import '../../../../../styles/forms/_code-editor.scss'
 
-import {
-  withStyles,
-  Grid,
-  Typography,
-  CircularProgress
-} from '@material-ui/core'
+import { withStyles, Grid, Typography } from '@material-ui/core'
 
 import { FormControlSelect } from '../../../../Form'
 import { SingleIconTab, SingleIconTabs } from '../../../../Tabs'
@@ -121,20 +116,6 @@ const styles = theme => ({
     lineHeight: '42px',
     color: '#4c5057'
   },
-  previewMediaBtn: {
-    padding: '10px 25px 8px',
-    border: 'solid 1px #cbd3e3',
-    backgroundImage: 'linear-gradient(to right, #ffffff, #fefefe)',
-    borderRadius: '4px',
-    boxShadow: 'none'
-  },
-  previewMediaRow: {
-    marginTop: '23px'
-  },
-  previewMediaText: {
-    fontWeight: 'bold',
-    color: '#818ca4'
-  },
   featureIconTabContainer: {
     justifyContent: 'center'
   },
@@ -143,11 +124,8 @@ const styles = theme => ({
       marginRight: '30px'
     }
   },
-  marginTop1: {
-    marginTop: '23px'
-  },
-  marginTop2: {
-    marginTop: '21px'
+  marginTop: {
+    marginTop: 16
   },
   editorSelect: {
     width: '165px'
@@ -159,8 +137,7 @@ const styles = theme => ({
     maxHeight: 300
   },
   sliderInputLabel: {
-    color: '#74809A',
-    fontSize: '13px',
+    ...theme.formControls.mediaApps.refreshEverySlider.label,
     lineHeight: '15px',
     marginRight: '15px'
   },
@@ -179,7 +156,6 @@ const QuickStart = ({
   mediaSource = [],
   mode = 'add'
 }) => {
-  const [isLoading, setLoading] = useState(true)
   const [contentTabs, setContentTabs] = useState([])
   const [selectedFeedId, setSelectedFeedId] = useState(null)
   const [selectedFeedContent, setSelectedFeedContent] = useState([])
@@ -206,18 +182,16 @@ const QuickStart = ({
   useEffect(() => {
     if (contentTabs.length) {
       handleFeedIdChange({}, selectedFeedId)
-      setLoading(false)
     }
     // eslint-disable-next-line
   }, [contentTabs, selectedFeedId])
 
   useEffect(() => {
-    if (mediaSource.response) {
-      const { response = [] } = mediaSource
-      setContentTabs(response)
+    if (mediaSource) {
+      setContentTabs(mediaSource)
 
       if (values.contentSourceId) {
-        const selectedFeed = response.find(item => {
+        const selectedFeed = mediaSource.find(item => {
           const activeItem = item.source.find((i, index) => {
             if (i.id === values.contentSourceId) {
               setSelectedSlideIndex(index)
@@ -232,18 +206,18 @@ const QuickStart = ({
         }
       }
 
-      if (response[0] && !values.contentSourceId) {
-        if (selectedFeedId !== response[0].id) {
-          setSelectedFeedId(response[0].id)
+      if (mediaSource[0] && !values.contentSourceId) {
+        if (selectedFeedId !== mediaSource[0].id) {
+          setSelectedFeedId(mediaSource[0].id)
         }
 
         if (mode === 'add') {
-          if (values.contentSourceId !== response[0].source[0].id) {
-            onChange('contentSourceId', response[0].source[0].id)
+          if (values.contentSourceId !== mediaSource[0].source[0].id) {
+            onChange('contentSourceId', mediaSource[0].source[0].id)
           }
-          const html = _get(response[0].source[0], 'content.html')
-          const css = _get(response[0].source[0], 'content.css')
-          const js = _get(response[0].source[0], 'content.javascript')
+          const html = _get(mediaSource[0].source[0], 'content.html')
+          const css = _get(mediaSource[0].source[0], 'content.css')
+          const js = _get(mediaSource[0].source[0], 'content.javascript')
 
           onChange('content', {
             ...(!!html && { html: Base64.decode(html) }),
@@ -252,20 +226,13 @@ const QuickStart = ({
           })
         }
       }
-
-      setLoading(false)
     }
     // eslint-disable-next-line
   }, [mediaSource, values.contentSourceId])
 
   return (
     <>
-      <Grid container justify="center" className={classes.marginTop1}>
-        {isLoading && (
-          <div className={classes.loaderWrapper}>
-            <CircularProgress size={30} thickness={5} />
-          </div>
-        )}
+      <Grid container justify="center" className={classes.marginTop}>
         <Grid item xs={12} className={classes.themeCardWrap}>
           {!!contentTabs.length && (
             <Grid item xs={12} className={classes.themeCardWrap}>
@@ -313,7 +280,7 @@ const QuickStart = ({
           )}
         </Grid>
       </Grid>
-      <Grid container justify="space-between" className={classes.marginTop2}>
+      <Grid container justify="space-between" className={classes.marginTop}>
         <Grid item xs={12} className={classes.themeCardWrap}>
           <header className={classes.themeHeader}>
             <Grid container justify="space-between" alignItems="center">

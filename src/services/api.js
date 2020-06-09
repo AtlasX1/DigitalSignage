@@ -10,6 +10,10 @@ import {
 } from '../utils'
 import getUserRoleLevel from '../utils/getUserRoleLevel'
 
+import store from '../store/configureStore'
+import { setPendingStatus } from '../actions/appActions'
+import { isEqual, isFalsy, isTruthy } from 'utils/generalUtils'
+
 const urlsWithoutPrefix = ['system/login', 'org/login']
 
 const urlsWithoutEnterprisePrefix = [
@@ -36,7 +40,13 @@ const BaseAxiosInstance = axios.create({
   responseType: 'json'
 })
 
+let requestPending = 0
+
 BaseAxiosInstance.interceptors.request.use(req => {
+  requestPending++
+  if (requestPending === 1) {
+    store.dispatch(setPendingStatus(true))
+  }
   const headers = { ...req.headers }
 
   if (!headers.Authorization && getToken()) {
@@ -60,12 +70,36 @@ BaseAxiosInstance.interceptors.request.use(req => {
   }
 })
 
+BaseAxiosInstance.interceptors.response.use(
+  config => {
+    requestPending--
+    if (requestPending === 0) store.dispatch(setPendingStatus(false))
+
+    return config
+  },
+  err => {
+    requestPending--
+    if (requestPending === 0) store.dispatch(setPendingStatus(false))
+    return Promise.reject(err)
+  }
+)
+
 export default params =>
   new Promise((resolve, reject) => {
     BaseAxiosInstance(params)
       .then(res => resolve(res))
       .catch(error => {
-        if (_get(error, 'response.status') === 401) {
+        if (
+          isTruthy(
+            isEqual(_get(error, 'response.status'), 401),
+            isFalsy(
+              isEqual(
+                _get(error, 'response.data.message'),
+                'Credentials Invalid'
+              )
+            )
+          )
+        ) {
           handleUnauthorized()
         } else {
           reject(error)

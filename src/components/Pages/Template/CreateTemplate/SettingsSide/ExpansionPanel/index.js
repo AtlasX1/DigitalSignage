@@ -17,16 +17,12 @@ const PanelContainer = withStyles(theme => {
       borderColor: palette[type].pages.createTemplate.border,
       boxShadow: 'none',
 
-      '&:not(:last-child)': {
-        borderBottom: 0
-      },
-
       '&:before': {
         display: 'none'
       }
     },
     expanded: {
-      margin: 'auto'
+      margin: 'auto 0'
     }
   }
 })(MuiExpansionPanel)
@@ -105,9 +101,11 @@ const ExpansionPanel = ({
   rootClass = '',
   summaryClass = '',
   summaryIconClass = '',
+  contentClass = '',
   className,
   isExpanded: isExpandedProp,
-  onChange
+  onChange,
+  disabled
 }) => {
   const [isExpanded, setExpanded] = useState(expanded)
   const isControlled = typeof onChange === 'function'
@@ -121,6 +119,7 @@ const ExpansionPanel = ({
           isControlled ? onChange(!isExpandedProp) : setExpanded(!isExpanded)
         }
         className={rootClass}
+        disabled={disabled}
       >
         <ExpansionPanelSummary
           aria-controls="panel1d-content"
@@ -148,7 +147,9 @@ const ExpansionPanel = ({
             )}
           </div>
         </ExpansionPanelSummary>
-        <ExpansionPanelDetails>{children}</ExpansionPanelDetails>
+        <ExpansionPanelDetails className={contentClass}>
+          {children}
+        </ExpansionPanelDetails>
       </PanelContainer>
     </div>
   )

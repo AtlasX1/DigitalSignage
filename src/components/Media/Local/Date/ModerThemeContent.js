@@ -13,7 +13,7 @@ const ModernThemeContent = props => {
   } = props
 
   return (
-    <Grid container className={classes.marginTop2}>
+    <Grid container className={classes.marginTop}>
       <Grid item xs={12}>
         <Typography className={classes.templateLabel}>
           Template Style
@@ -27,7 +27,7 @@ const ModernThemeContent = props => {
                 <Grid
                   container
                   alignItems="center"
-                  className={classes.marginTop3}
+                  className={classes.marginTop}
                 >
                   <Grid item xs={4}>
                     <InputLabel className={classes.inputLabel}>
@@ -63,7 +63,7 @@ const ModernThemeContent = props => {
                 <Grid
                   container
                   alignItems="center"
-                  className={classes.marginTop3}
+                  className={classes.marginTop}
                 >
                   <Grid item xs={4}>
                     <InputLabel className={classes.inputLabel}>

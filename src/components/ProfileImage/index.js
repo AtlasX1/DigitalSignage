@@ -4,7 +4,7 @@ import { withStyles } from '@material-ui/core'
 import { translate } from 'react-i18next'
 import classNames from 'classnames'
 import { convertImageToFile } from 'utils'
-import { ReactComponent as PersonAvatars } from 'common/assets/icons/avatars/personAvatars.svg'
+import { ReactComponent as PersonAvatars } from 'common/assets/icons/personAvatars.svg'
 import Popup from 'components/Popup'
 
 const avatars = [

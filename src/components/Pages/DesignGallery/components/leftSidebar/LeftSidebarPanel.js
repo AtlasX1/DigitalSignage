@@ -9,19 +9,21 @@ import classNames from 'classnames'
 import { useBottomScrollListener } from 'react-bottom-scroll-listener'
 
 import {
-  ArrowDropDown as ArrowDropDownIcon,
   GridOn as GridOnIcon,
   Menu as MenuIcon,
   Close as CloseIcon
 } from '@material-ui/icons'
-
 import { IconButton, withStyles } from '@material-ui/core'
 
+import { CircleIconButton } from 'components/Buttons'
+import Popup from 'components/Popup'
+import LeftSidebarFilter from './LeftSidebarFilter'
 import TabButtonsGroup from '../TabButtonsGroup'
 import Search from '../commonBlocks/Search'
-import { FormControlCustomSelect } from 'components/Form'
+
+import { setOpenLeftSidebar } from 'actions/designGalleryActions'
+
 import { SORTING_TYPES } from '../../constans'
-import { setOpenLeftSidebar } from 'actions/signageEditorActions'
 
 import '../../styles/_leftSidebarPanel.scss'
 
@@ -85,8 +87,24 @@ const styles = theme => {
     },
     sortingIcon: {
       fontSize: 'inherit'
+    },
+    circleIcon: {
+      padding: 10,
+      marginLeft: 10,
+      marginTop: -5
     }
   }
+}
+
+const dropdownStyle = {
+  borderRadius: 6,
+  width: 350,
+  animation: 'fade-in 200ms'
+}
+
+const initialFilter = {
+  tags: '',
+  group: ''
 }
 
 const LeftSidebarPanel = props => {
@@ -101,7 +119,6 @@ const LeftSidebarPanel = props => {
     sortingBy,
     onChangeSorting,
     withFilter,
-    filterOptions = [],
     onChangeFilter,
     onChangeTabs,
     activeTab,
@@ -112,9 +129,7 @@ const LeftSidebarPanel = props => {
 
   const dispatchAction = useDispatch()
 
-  const [filter, setFilter] = useState(null)
-  const [isFilterOpen, setFilterOpen] = useState(false)
-
+  const [filter, setFilter] = useState(initialFilter)
   const contentRef = useBottomScrollListener(onContentScrollEnd)
   const sortingControls = [
     {
@@ -129,9 +144,8 @@ const LeftSidebarPanel = props => {
 
   // ---- methods
 
-  const handleSelectChange = value => {
-    setFilter(value)
-    setFilterOpen(false)
+  const onFilterReset = () => {
+    setFilter(initialFilter)
   }
 
   const handleChangeTabs = (e, value) => {
@@ -142,6 +156,11 @@ const LeftSidebarPanel = props => {
     dispatchAction(setOpenLeftSidebar(false))
   }
 
+  const onFilterSubmit = val => {
+    setFilter(val)
+    onChangeFilter(val)
+  }
+
   // ---- effects
 
   useEffect(() => {
@@ -150,13 +169,6 @@ const LeftSidebarPanel = props => {
     }
     // eslint-disable-next-line
   }, [scrollPosition])
-
-  useEffect(() => {
-    if (filter) {
-      onChangeFilter(filter.value)
-    }
-    // eslint-disable-next-line
-  }, [filter])
 
   // ---- UI
 
@@ -178,6 +190,28 @@ const LeftSidebarPanel = props => {
           value={searchTerm}
           onChange={onChangeSearch}
         />
+
+        {withFilter && (
+          <div className={'filter'}>
+            <Popup
+              on="click"
+              position="right top"
+              contentStyle={dropdownStyle}
+              className={'tabPane-filter__dropdown'}
+              trigger={
+                <CircleIconButton className={`hvr-grow ${classes.circleIcon}`}>
+                  <i className="icon-settings-1" />
+                </CircleIconButton>
+              }
+            >
+              <LeftSidebarFilter
+                queryParams={filter}
+                onSubmit={onFilterSubmit}
+                onReset={onFilterReset}
+              />
+            </Popup>
+          </div>
+        )}
       </div>
 
       {withTabs && (
@@ -192,44 +226,18 @@ const LeftSidebarPanel = props => {
       )}
 
       {withFilter && (
-        <div className={'tabPane-filter'}>
-          <div className={'tabPane-filter__dropdown'}>
-            <FormControlCustomSelect
-              placeholder={'Advanced Filter'}
-              value={filter}
-              options={filterOptions}
-              handleChange={handleSelectChange}
-              inputClassName={classes.transitionInputClass}
-              disableRipple
-              dropdownPosition="bottom left"
-              customOpen={isFilterOpen}
-              onOpen={() => setFilterOpen(true)}
-              onClose={() => setFilterOpen(false)}
-              customClasses={{ value: classes.placeholder }}
-              customIcon={
-                <ArrowDropDownIcon
-                  className={classes.transitionInputIconClass}
-                />
-              }
-              customContentStyle={{
-                height: 'auto',
-                maxHeight: 200
-              }}
-            />
-          </div>
-          <div className={'tabPane-filter__sorting'}>
-            {sortingControls.map(({ name, template }, key) => (
-              <IconButton
-                key={key}
-                className={classNames(classes.sortingButton, {
-                  'is-active': name === sortingBy
-                })}
-                onClick={() => onChangeSorting(name)}
-              >
-                {template}
-              </IconButton>
-            ))}
-          </div>
+        <div className={'tabPane-filter__sorting'}>
+          {sortingControls.map(({ name, template }, key) => (
+            <IconButton
+              key={key}
+              className={classNames(classes.sortingButton, {
+                'is-active': name === sortingBy
+              })}
+              onClick={() => onChangeSorting(name)}
+            >
+              {template}
+            </IconButton>
+          ))}
         </div>
       )}
 

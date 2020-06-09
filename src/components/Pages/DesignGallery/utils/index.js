@@ -3,8 +3,9 @@ import { fabric } from 'fabric'
 import { isObject as _isObject, isString as _isString } from 'lodash'
 
 export const initCenteringGuidelines = canvas => {
-  var canvasWidth = canvas.getWidth(),
+  let canvasWidth = canvas.getWidth(),
     canvasHeight = canvas.getHeight(),
+    zoom = canvas.getZoom(),
     canvasWidthCenter = canvasWidth / 2,
     canvasHeightCenter = canvasHeight / 2,
     canvasWidthCenterMap = {},
@@ -34,19 +35,19 @@ export const initCenteringGuidelines = canvas => {
 
   function showVerticalCenterLine() {
     showCenterLine(
-      canvasWidthCenter + 0.5,
+      canvasWidthCenter / zoom + 0.5,
       0,
-      canvasWidthCenter + 0.5,
-      canvasHeight
+      canvasWidthCenter / zoom + 0.5,
+      canvasHeight / zoom
     )
   }
 
   function showHorizontalCenterLine() {
     showCenterLine(
       0,
-      canvasHeightCenter + 0.5,
-      canvasWidth,
-      canvasHeightCenter + 0.5
+      canvasHeightCenter / zoom + 0.5,
+      canvasWidth / zoom,
+      canvasHeightCenter / zoom + 0.5
     )
   }
 
@@ -65,10 +66,11 @@ export const initCenteringGuidelines = canvas => {
 
   canvas.on('mouse:down', function () {
     viewportTransform = canvas.viewportTransform
+    zoom = canvas.getZoom()
   })
 
   canvas.on('object:moving', function (e) {
-    var object = e.target,
+    let object = e.target,
       objectCenter = object.getCenterPoint(),
       transform = canvas._currentTransform
 
@@ -112,19 +114,19 @@ export const initCenteringGuidelines = canvas => {
 }
 
 export const initAligningGuidelines = canvas => {
-  var ctx = canvas.getSelectionContext(),
+  let ctx = canvas.getSelectionContext(),
     aligningLineOffset = 5,
     aligningLineMargin = 4,
     aligningLineWidth = 1,
     aligningLineColor = 'rgb(0,255,0)',
     viewportTransform,
-    zoom = 1
+    zoom = canvas.getZoom()
 
   function drawVerticalLine(coords) {
     drawLine(
-      coords.x + 0.5,
+      coords.x * zoom + 0.5,
       coords.y1 > coords.y2 ? coords.y2 : coords.y1,
-      coords.x + 0.5,
+      coords.x * zoom + 0.5,
       coords.y2 > coords.y1 ? coords.y2 : coords.y1
     )
   }
@@ -132,9 +134,9 @@ export const initAligningGuidelines = canvas => {
   function drawHorizontalLine(coords) {
     drawLine(
       coords.x1 > coords.x2 ? coords.x2 : coords.x1,
-      coords.y + 0.5,
+      coords.y * zoom + 0.5,
       coords.x2 > coords.x1 ? coords.x2 : coords.x1,
-      coords.y + 0.5
+      coords.y * zoom + 0.5
     )
   }
 
@@ -143,14 +145,8 @@ export const initAligningGuidelines = canvas => {
     ctx.lineWidth = aligningLineWidth
     ctx.strokeStyle = aligningLineColor
     ctx.beginPath()
-    ctx.moveTo(
-      (x1 + viewportTransform[4]) * zoom,
-      (y1 + viewportTransform[5]) * zoom
-    )
-    ctx.lineTo(
-      (x2 + viewportTransform[4]) * zoom,
-      (y2 + viewportTransform[5]) * zoom
-    )
+    ctx.moveTo(x1 + viewportTransform[4], y1 + viewportTransform[5])
+    ctx.lineTo(x2 + viewportTransform[4], y2 + viewportTransform[5])
     ctx.stroke()
     ctx.restore()
   }
@@ -159,7 +155,7 @@ export const initAligningGuidelines = canvas => {
     value1 = Math.round(value1)
     value2 = Math.round(value2)
     for (
-      var i = value1 - aligningLineMargin, len = value1 + aligningLineMargin;
+      let i = value1 - aligningLineMargin, len = value1 + aligningLineMargin;
       i <= len;
       i++
     ) {
@@ -170,7 +166,7 @@ export const initAligningGuidelines = canvas => {
     return false
   }
 
-  var verticalLines = [],
+  let verticalLines = [],
     horizontalLines = []
 
   canvas.on('mouse:down', function () {
@@ -179,7 +175,7 @@ export const initAligningGuidelines = canvas => {
   })
 
   canvas.on('object:moving', function (e) {
-    var activeObject = e.target,
+    let activeObject = e.target,
       canvasObjects = canvas.getObjects(),
       activeObjectCenter = activeObject.getCenterPoint(),
       activeObjectLeft = activeObjectCenter.x,
@@ -197,10 +193,10 @@ export const initAligningGuidelines = canvas => {
     // It should be trivial to DRY this up by encapsulating (repeating) creation of x1, x2, y1, and y2 into functions,
     // but we're not doing it here for perf. reasons -- as this a function that's invoked on every mouse move
 
-    for (var i = canvasObjects.length; i--; ) {
+    for (let i = canvasObjects.length; i--; ) {
       if (canvasObjects[i] === activeObject) continue
 
-      var objectCenter = canvasObjects[i].getCenterPoint(),
+      let objectCenter = canvasObjects[i].getCenterPoint(),
         objectLeft = objectCenter.x,
         objectTop = objectCenter.y,
         objectBoundingRect = canvasObjects[i].getBoundingRect(),
@@ -382,10 +378,10 @@ export const initAligningGuidelines = canvas => {
   })
 
   canvas.on('after:render', function () {
-    for (var i = verticalLines.length; i--; ) {
+    for (let i = verticalLines.length; i--; ) {
       drawVerticalLine(verticalLines[i])
     }
-    for (var i = horizontalLines.length; i--; ) {
+    for (let i = horizontalLines.length; i--; ) {
       drawHorizontalLine(horizontalLines[i])
     }
 

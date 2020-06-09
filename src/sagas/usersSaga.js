@@ -98,9 +98,13 @@ function* getUngroupedUsers() {
   }
 }
 
-function* getUsersGroupItems({ id }) {
+function* getUsersGroupItems(action) {
   try {
-    const response = yield call(usersService.getGroupItems, id)
+    const response = yield call(
+      usersService.getGroupItems,
+      action.payload.id,
+      action.payload.params
+    )
     const modifiedMeta = transformMeta(response.meta)
     yield put({
       type: types.GET_USERS_GROUP_ITEMS_SUCCESS,

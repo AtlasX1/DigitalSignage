@@ -158,16 +158,12 @@ const getMediaCategory = async () => {
   }
 }
 
-const getLocation = async data => {
-  const params = () => {
-    const type = data.name ? '&name=' + data.name : '&zipcode=' + data.zipcode
-    return `${type}&page=${data.page || 1}`
-  }
-
+const getLocation = async params => {
   try {
     const response = await api({
       method: 'GET',
-      url: `/config/city?${params()}`
+      url: `/config/city`,
+      params
     })
 
     return response.data
@@ -202,6 +198,34 @@ const getAlertTypes = async () => {
   }
 }
 
+const getAirports = async params => {
+  try {
+    const { data } = await api({
+      method: 'GET',
+      url: '/config/airport',
+      params
+    })
+
+    return data
+  } catch (error) {
+    throw errorHandler(error)
+  }
+}
+
+const getAirlines = async params => {
+  try {
+    const { data } = await api({
+      method: 'GET',
+      url: '/config/airline',
+      params
+    })
+
+    return data
+  } catch (error) {
+    throw errorHandler(error)
+  }
+}
+
 const getLocationInfo = async location => {
   try {
     return await api({
@@ -210,6 +234,39 @@ const getLocationInfo = async location => {
       data: {
         location
       }
+    })
+  } catch (error) {
+    throw errorHandler(error)
+  }
+}
+
+const getBackgroundPattern = async () => {
+  try {
+    return await api({
+      method: 'GET',
+      url: '/config/backgroundPattern'
+    })
+  } catch (error) {
+    throw errorHandler(error)
+  }
+}
+
+const getMediaGroups = async () => {
+  try {
+    return await api({
+      method: 'GET',
+      url: '/config/feature/media?includeAll=1'
+    })
+  } catch (error) {
+    throw errorHandler(error)
+  }
+}
+
+const getBackgroundImagesFromMedia = async () => {
+  try {
+    return await api({
+      method: 'GET',
+      url: '/config/feature/media?includeAll=1'
     })
   } catch (error) {
     throw errorHandler(error)
@@ -231,6 +288,11 @@ export default {
   getContentSourceOfMediaFeatureById,
   getLocation,
   getTransitions,
+  getAirports,
+  getAirlines,
   getAlertTypes,
-  getLocationInfo
+  getLocationInfo,
+  getBackgroundPattern,
+  getBackgroundImagesFromMedia,
+  getMediaGroups
 }

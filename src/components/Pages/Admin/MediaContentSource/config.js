@@ -5,7 +5,6 @@ const {
   RSSFeed,
   DemoFeeds,
   MediaRSS,
-  LicensedChannels,
   YouTube,
   Radio,
   CustomWidget
@@ -63,20 +62,6 @@ const config = {
     tabTitle: 'Media RSS Channels - Digital Signage',
     add: 'Add Media RSS Channel',
     placeholderMessage: 'No created RSS Channel',
-    columns: [
-      { id: 'logo', label: 'Logo', display: true },
-      { id: 'name', label: 'Name', display: true },
-      { id: 'category', label: 'Category', display: true },
-      { id: 'url', label: 'URL', display: true, align: 'center' },
-      { id: 'updatedOn', label: 'Updated On', display: true, align: 'center' }
-    ]
-  },
-  [LicensedChannels]: {
-    keyWord: 'Licensed Channel',
-    title: 'Licensed Channels',
-    tabTitle: 'Licensed Channels - Digital Signage',
-    add: 'Add Licensed Channel',
-    placeholderMessage: 'No created Licensed Channel',
     columns: [
       { id: 'logo', label: 'Logo', display: true },
       { id: 'name', label: 'Name', display: true },

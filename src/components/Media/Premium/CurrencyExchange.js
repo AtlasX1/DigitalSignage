@@ -27,7 +27,7 @@ const InfoMessageStyles = ({ typography }) => ({
   infoMessageContainer: {
     display: 'flex',
     alignItems: 'center',
-    padding: '0 5px 44px'
+    padding: '0 0 16px'
   },
   infoMessage: {
     marginLeft: '20px',
@@ -51,7 +51,7 @@ const styles = theme => {
   const { palette, type } = theme
   return {
     root: {
-      margin: '31px 30px'
+      margin: '15px 30px'
     },
     expansionPanelLabelClass: {
       fontSize: '12px',

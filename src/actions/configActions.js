@@ -45,11 +45,9 @@ const getThemeOfMediaFeatureById = id => ({
   id
 })
 
-const clearMediaThemes = () => {
-  return {
-    type: types.CLEAR_THEME_OF_MEDIA
-  }
-}
+const clearMediaThemes = () => ({
+  type: types.CLEAR_THEME_OF_MEDIA
+})
 
 const getContentSourceOfMediaFeatureById = id => ({
   type: types.GET_CONTENT_SOURCE_OF_MEDIA_FEATURE_BY_ID,
@@ -73,9 +71,33 @@ const getTransitions = () => ({
   type: types.GET_CONFIG_TRANSITIONS
 })
 
+const getAirlines = params => ({
+  type: types.GET_AIRLINES,
+  params
+})
+
+const getAirports = params => ({
+  type: types.GET_AIRPORTS,
+  params
+})
+
 const getLocationInfo = location => ({
   type: types.GET_LOCATION_INFO,
   location
+})
+
+const clearMediaContentSource = location => ({
+  type: types.CLEAR_MEDIA_CONTENT_SOURCE,
+  location
+})
+
+const getBackgroundPattern = () => ({
+  type: types.GET_BACKGROUND_PATTERNS
+})
+
+const getBackgroundImagesFromMedia = params => ({
+  type: types.GET_BACKGROUND_IMAGES_FROM_MEDIA,
+  params
 })
 
 export {
@@ -96,5 +118,10 @@ export {
   getTransitions,
   getAlertTypesAction,
   clearGetAlertTypesInfoAction,
-  getLocationInfo
+  getAirlines,
+  getAirports,
+  getLocationInfo,
+  clearMediaContentSource,
+  getBackgroundPattern,
+  getBackgroundImagesFromMedia
 }

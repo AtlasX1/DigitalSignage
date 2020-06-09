@@ -23,11 +23,11 @@ const getHeaderTabs = classes => {
   })
 }
 
-const TwitterSettings = ({ classes, onChange, data, activeTab }) => {
+const TwitterSettings = ({ classes, onChange, data, activeTab, changeTab }) => {
   const values = _get(data, `values.${activeTab}`, {})
   const errors = _get(data, `errors.${activeTab}`, {})
   const touched = _get(data, `touched.${activeTab}`, {})
-  const currentPath = `settings.${activeTab}`
+  const currentPath = `theme_settings.${activeTab}`
 
   return (
     <Grid container justify="center" className={classes.tweetSettingsContainer}>
@@ -44,14 +44,14 @@ const TwitterSettings = ({ classes, onChange, data, activeTab }) => {
               className={classes.tabToggleButtonGroup}
               value={activeTab}
               exclusive
-              onChange={(e, val) => val && onChange('settingsType', val)}
+              onChange={(e, val) => val && changeTab(val)}
             >
               {getHeaderTabs(classes)}
             </TabToggleButtonGroup>
           </Grid>
         </Grid>
 
-        <Grid container spacing={16} className={classes.themeCardBodyContainer}>
+        <Grid container spacing={16} className={classes.themeCardBottom}>
           {activeTab !== 'background' ? (
             <>
               <Grid item xs={6}>
@@ -65,9 +65,9 @@ const TwitterSettings = ({ classes, onChange, data, activeTab }) => {
                     <FormControlSketchColorPicker
                       rootClass={classes.colorPickerRootClass}
                       formControlInputClass={classes.formControlInputClass}
-                      color={values.fontColor}
+                      color={values.font_color}
                       onColorChange={color =>
-                        onChange(`${currentPath}.fontColor`, color)
+                        onChange(`${currentPath}.font_color`, color)
                       }
                     />
                   </Grid>
@@ -87,11 +87,11 @@ const TwitterSettings = ({ classes, onChange, data, activeTab }) => {
                       formControlContainerClass={classes.formControlInputNumber}
                       formControlLabelClass={classes.formControlLabelClass}
                       formControlInputClass={classes.formControlInputClass}
-                      value={values.fontSize}
-                      error={errors.fontSize}
-                      touched={touched.fontSize}
+                      value={values.font_size}
+                      error={errors.font_size}
+                      touched={touched.font_size}
                       handleChange={value =>
-                        onChange(`${currentPath}.fontSize`, value)
+                        onChange(`${currentPath}.font_size`, value)
                       }
                     />
                   </Grid>
@@ -111,11 +111,11 @@ const TwitterSettings = ({ classes, onChange, data, activeTab }) => {
                     <FormControlSketchColorPicker
                       formControlInputClass={classes.formControlInputClass}
                       rootClass={classes.colorPickerRootClass}
-                      color={values.oddRow}
-                      error={errors.oddRow}
-                      touched={touched.oddRow}
+                      color={values.odd_row}
+                      error={errors.odd_row}
+                      touched={touched.odd_row}
                       onColorChange={color =>
-                        onChange(`${currentPath}.oddRow`, color)
+                        onChange(`${currentPath}.odd_row`, color)
                       }
                     />
                   </Grid>
@@ -132,11 +132,11 @@ const TwitterSettings = ({ classes, onChange, data, activeTab }) => {
                     <FormControlSketchColorPicker
                       formControlInputClass={classes.formControlInputClass}
                       rootClass={classes.colorPickerRootClass}
-                      color={values.evenRow}
-                      error={errors.evenRow}
-                      touched={touched.evenRow}
+                      color={values.even_row}
+                      error={errors.even_row}
+                      touched={touched.even_row}
                       onColorChange={color =>
-                        onChange(`${currentPath}.evenRow`, color)
+                        onChange(`${currentPath}.even_row`, color)
                       }
                     />
                   </Grid>

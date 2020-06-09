@@ -7,6 +7,7 @@ import { useFormik } from 'formik'
 import update from 'immutability-helper'
 import * as Yup from 'yup'
 import { get as _get, isEmpty as _isEmpty } from 'lodash'
+import classNames from 'classnames'
 
 import { Scrollbars } from 'components/Scrollbars'
 
@@ -14,7 +15,6 @@ import {
   withStyles,
   Grid,
   Typography,
-  CircularProgress,
   Tooltip,
   Dialog,
   DialogTitle,
@@ -50,7 +50,6 @@ import { mediaConstants as constants } from '../../../constants'
 import {
   createMediaPostData,
   csvJSON,
-  getAllowedFeatureId,
   getMediaInfoFromBackendData,
   getMediaThemesSettings,
   ObjectToFormData
@@ -64,16 +63,13 @@ import {
   getMediaItemsAction
 } from 'actions/mediaActions'
 
-import {
-  clearMediaThemes,
-  getThemeOfMediaFeatureById,
-  getTransitions
-} from 'actions/configActions'
+import { clearMediaThemes, getTransitions } from 'actions/configActions'
 
 import { MediaInfo, MediaTabActions } from '../index'
 import InlineEditor from './InlineEditor/InlineEditor'
 import FormControlSketchColorPicker from 'components/Form/FormControlSketchColorPicker'
 import { CheckboxSwitcher } from 'components/Checkboxes'
+import useMediaTheme from 'hooks/useMediaTheme'
 
 const sample = require('../../../common/assets/media/profiles.csv')
 
@@ -183,7 +179,7 @@ const ProfileTab = ({ classes, number, name, position, image }) => (
 const styles = ({ palette, type, formControls, typography }) => {
   return {
     root: {
-      margin: '20px 25px',
+      margin: '15px 30px',
       fontFamily: typography.fontFamily
     },
     formWrapper: {
@@ -218,18 +214,16 @@ const styles = ({ palette, type, formControls, typography }) => {
       boxShadow: 'none'
     },
     previewMediaText: {
-      fontWeight: 'bold',
-      color: palette[type].sideModal.action.button.color
+      ...typography.lightText[type]
     },
     previewMediaRow: {
-      marginTop: '31px'
+      marginTop: 45
     },
     themeCardWrap: {
       // border: `solid 1px ${palette[type].pages.media.card.border}`,
       // backgroundColor: palette[type].pages.media.card.background,
       // borderRadius: '4px',
-      marginBottom: '10px',
-      padding: '10px 0 18px'
+      padding: '16px 0'
     },
     themeCardWrap1: {
       // border: `solid 1px ${palette[type].pages.media.card.border}`,
@@ -250,22 +244,10 @@ const styles = ({ palette, type, formControls, typography }) => {
     themeOptions1: {
       padding: '0 20px'
     },
-    mapViewClasses: {
-      width: '230px',
-      marginTop: '35px'
-    },
     detailLabel: {
       color: '#74809a',
       fontSize: '13px',
       lineHeight: '15px'
-    },
-    inputItem: {
-      padding: '0 10px',
-      margin: '0 -10px 24px'
-    },
-    themeInputContainer: {
-      padding: '0 7px',
-      margin: '0 -7px'
     },
     tabToggleButton: {
       width: '128px'
@@ -273,7 +255,7 @@ const styles = ({ palette, type, formControls, typography }) => {
     tabToggleButtonContainer: {
       justifyContent: 'center',
       background: 'transparent',
-      marginBottom: '20px'
+      marginBottom: 16
     },
     colorPaletteContainer: {
       display: 'flex',
@@ -293,8 +275,7 @@ const styles = ({ palette, type, formControls, typography }) => {
       width: '46px'
     },
     sliderInputLabel: {
-      color: '#74809A',
-      fontSize: '13px',
+      ...formControls.mediaApps.refreshEverySlider.label,
       lineHeight: '15px',
       marginRight: '15px'
     },
@@ -303,9 +284,6 @@ const styles = ({ palette, type, formControls, typography }) => {
       fontSize: '13px',
       lineHeight: '15px',
       paddingRight: '15px'
-    },
-    negativeMargin: {
-      marginBottom: '-15px'
     },
     numberInput: {
       '& span': {
@@ -323,23 +301,19 @@ const styles = ({ palette, type, formControls, typography }) => {
       }
     },
     formControlLabelClass: {
-      fontSize: '17px'
+      fontSize: '1.0833rem'
     },
     marginTop1: {
-      marginTop: '20px'
+      marginTop: 16
     },
     marginBottom1: {
-      marginBottom: '10px'
+      marginBottom: 16
     },
     marginBottom2: {
       marginBottom: '0px'
     },
-    inputContainer: {
-      padding: '0 8px',
-      margin: '0 -8px'
-    },
     transitionContainer: {
-      padding: '15px 15px 0'
+      padding: '15px 0 0'
     },
     saveDialog: {
       width: '100%',
@@ -477,26 +451,20 @@ const Profiles = props => {
   const dispatchAction = useDispatch()
 
   const [
-    configMediaCategory,
     addMediaReducer,
     mediaItemReducer,
-    themesReducer,
     transitionsReducer
   ] = useSelector(state => [
-    state.config.configMediaCategory,
     state.addMedia.gallery,
     state.media.mediaItem,
-    state.config.themeOfMedia.response,
     state.config.transitions
   ])
 
   const initialFormState = useRef({
     themeType: 'Modern'
   })
-  const [isLoading, setLoading] = useState(true)
   const [formSubmitting, setFormSubmitting] = useState(false)
   const [autoClose, setAutoClose] = useState(false)
-  const [featureId, setFeatureId] = useState(null)
 
   const [selectedProfileFieldType, setSelectedProfileFieldType] = useState(
     'title'
@@ -515,6 +483,11 @@ const Profiles = props => {
   const [isInlineEditorDialog, setInlineEditorDialog] = useState(false)
 
   const [prevThemeSettings, setPrevThemeSettings] = useState({})
+
+  const { themes: themesReducer, featureId } = useMediaTheme(
+    'Gallery',
+    'Profiles'
+  )
 
   const initialFormValues = useRef({
     themeId: undefined,
@@ -875,23 +848,9 @@ const Profiles = props => {
         mediaInfo: getMediaInfoFromBackendData(backendData)
       }
       form.setValues(initialFormValues.current)
-      setLoading(false)
     }
     // eslint-disable-next-line
   }, [backendData, themesReducer])
-
-  useEffect(() => {
-    if (!configMediaCategory.response.length) return
-    const id = getAllowedFeatureId(configMediaCategory, 'Gallery', 'Profiles')
-    setFeatureId(id)
-  }, [configMediaCategory])
-
-  useEffect(() => {
-    if (featureId) {
-      dispatchAction(getThemeOfMediaFeatureById(featureId))
-    }
-    // eslint-disable-next-line
-  }, [featureId])
 
   useEffect(() => {
     if (!formSubmitting) return
@@ -953,17 +912,6 @@ const Profiles = props => {
 
   useEffect(() => {
     if (
-      allowedThemeSetting &&
-      Object.keys(allowedThemeSetting).length &&
-      backendData
-    ) {
-      setLoading(false)
-    }
-    // eslint-disable-next-line
-  }, [allowedThemeSetting])
-
-  useEffect(() => {
-    if (
       _get(themesReducer, themeType) &&
       _get(themesReducer, themeType).length &&
       !backendData
@@ -987,7 +935,6 @@ const Profiles = props => {
       })
 
       setPrevThemeSettings(form.values.theme_settings)
-      setLoading(false)
     }
 
     if (
@@ -998,6 +945,9 @@ const Profiles = props => {
     }
     // eslint-disable-next-line
   }, [themesReducer, themeType])
+
+  console.log('themesReducer', themesReducer)
+  console.log('themeType', themeType)
 
   useEffect(() => {
     if (transitionsReducer.response) {
@@ -1111,7 +1061,7 @@ const Profiles = props => {
         return (
           <>
             <Grid container>
-              <Grid item xs={12} style={{ marginTop: -30 }}>
+              <Grid item xs={12}>
                 <FileUpload
                   multiple={false}
                   name="file"
@@ -1224,11 +1174,6 @@ const Profiles = props => {
 
   return (
     <form className={classes.formWrapper} onSubmit={form.handleSubmit}>
-      {isLoading && (
-        <div className={classes.loaderWrapper}>
-          <CircularProgress size={30} thickness={5} />
-        </div>
-      )}
       <Grid container className={classes.tabContent}>
         <Grid item xs={7} className={classes.overflowColumnWrapper}>
           <Scrollbars>
@@ -1243,7 +1188,7 @@ const Profiles = props => {
                       <Grid
                         container
                         justify="center"
-                        style={{ padding: '10px 0' }}
+                        style={{ padding: '16px 0' }}
                       >
                         {!!themes.length && (
                           <MediaThemeSelector
@@ -1290,7 +1235,13 @@ const Profiles = props => {
                       <Grid container>
                         <Grid item xs={12} className={classes.marginTop1}>
                           <TabToggleButtonGroup
-                            className={classes.tabToggleButtonContainer}
+                            className={classNames(
+                              classes.tabToggleButtonContainer,
+                              {
+                                [classes.marginBottom2]:
+                                  form.values.source === 'file'
+                              }
+                            )}
                             value={values.source}
                             exclusive
                             onChange={(e, v) => {
@@ -1375,12 +1326,8 @@ const Profiles = props => {
                             classes.transitionContainer
                           ].join(' ')}
                         >
-                          <Grid container justify="space-between">
-                            <Grid
-                              item
-                              xs={4}
-                              className={classes.inputContainer}
-                            >
+                          <Grid container justify="space-between" spacing={16}>
+                            <Grid item xs={4}>
                               <FormControlSelect
                                 label={'Transition'}
                                 custom
@@ -1402,11 +1349,7 @@ const Profiles = props => {
                                 options={transitionOptions}
                               />
                             </Grid>
-                            <Grid
-                              item
-                              xs={4}
-                              className={classes.inputContainer}
-                            >
+                            <Grid item xs={4}>
                               <FormControlTimeDurationPicker
                                 label={'Transition Duration'}
                                 value={
@@ -1420,11 +1363,7 @@ const Profiles = props => {
                                 }
                               />
                             </Grid>
-                            <Grid
-                              item
-                              xs={4}
-                              className={classes.inputContainer}
-                            >
+                            <Grid item xs={4}>
                               {values.theme_settings.animation_duration && (
                                 <FormControlTimeDurationPicker
                                   label={'Animation Duration'}
@@ -1866,7 +1805,7 @@ const Profiles = props => {
                           <Grid
                             container
                             justify="center"
-                            className={classes.negativeMargin}
+                            className={classes.marginTop1}
                           >
                             {profilesPalettePresets.map(item => (
                               <Grid

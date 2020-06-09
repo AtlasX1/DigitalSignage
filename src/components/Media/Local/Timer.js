@@ -13,13 +13,7 @@ import draftToHtml from 'draftjs-to-html'
 import { ContentState, convertToRaw, EditorState } from 'draft-js'
 import htmlToDraft from 'html-to-draftjs'
 
-import {
-  withStyles,
-  Grid,
-  Typography,
-  CircularProgress,
-  Tooltip
-} from '@material-ui/core'
+import { withStyles, Grid, Typography, Tooltip } from '@material-ui/core'
 
 import { FormControlInput, FormControlSelect, WysiwygEditor } from '../../Form'
 
@@ -34,7 +28,6 @@ import { mediaConstants as constants } from '../../../constants'
 
 import {
   createMediaPostData,
-  getAllowedFeatureId,
   getMediaInfoFromBackendData,
   getMediaThemesSettings
 } from '../../../utils/mediaUtils'
@@ -49,17 +42,13 @@ import {
   getMediaItemsAction
 } from '../../../actions/mediaActions'
 
-import {
-  clearMediaThemes,
-  getThemeOfMediaFeatureById
-} from '../../../actions/configActions'
-
 import MediaThemeSelector from '../MediaThemeSelector'
 import {
   FormControlDateTimePicker,
   FormControlTimeDurationPicker,
   FormControlSketchColorPicker
 } from '../../Form'
+import useMediaTheme from 'hooks/useMediaTheme'
 
 const fonts = [
   'Arial',
@@ -81,7 +70,7 @@ const fonts = [
 const styles = ({ palette, type, typography }) => {
   return {
     root: {
-      margin: '22px 25px',
+      margin: '15px 30px',
       fontFamily: typography.fontFamily
     },
     formWrapper: {
@@ -120,11 +109,10 @@ const styles = ({ palette, type, typography }) => {
       backgroundImage: palette[type].sideModal.action.button.background,
       borderRadius: '4px',
       boxShadow: 'none',
-      marginTop: '52px'
+      marginTop: 30
     },
     previewMediaText: {
-      fontWeight: 'bold',
-      color: palette[type].sideModal.action.button.color
+      ...typography.lightText[type]
     },
     themeCardWrap: {
       border: `solid 1px ${palette[type].pages.media.card.border}`,
@@ -161,23 +149,13 @@ const styles = ({ palette, type, typography }) => {
       marginRight: '9px'
     },
     formControlSelectLabel: {
-      fontSize: '17px'
+      fontSize: '1.0833rem'
     },
-    marginTop1: {
-      marginTop: '27px'
+    marginTop: {
+      marginTop: 16
     },
     marginTop2: {
-      marginTop: '33px'
-    },
-    marginTop3: {
-      marginTop: '26px'
-    },
-    marginTop4: {
-      marginTop: '24px'
-    },
-    columnWrapper: {
-      padding: '0 5px',
-      margin: '0 -5px'
+      marginTop: 8
     },
     durationWrapper: {
       marginBottom: 9,
@@ -190,10 +168,6 @@ const styles = ({ palette, type, typography }) => {
       padding: '5px 20px',
       fontSize: 12,
       color: 'red'
-    },
-    inputLabelClass: {
-      fontSize: 15.5,
-      marginBottom: 9
     }
   }
 }
@@ -246,16 +220,8 @@ const MediaTimer = props => {
   } = props
 
   const dispatchAction = useDispatch()
-  const { configMediaCategory } = useSelector(({ config }) => config)
   const addMediaReducer = useSelector(({ addMedia }) => addMedia.local)
   const mediaItemReducer = useSelector(({ media }) => media.mediaItem)
-
-  const themesReducer = useSelector(({ config }) => {
-    if (config.themeOfMedia && config.themeOfMedia.response) {
-      return config.themeOfMedia.response
-    }
-    return []
-  })
 
   const initialFormState = useRef({
     themeType: 'Modern'
@@ -264,8 +230,6 @@ const MediaTimer = props => {
   const [themeType, setThemeType] = useState(initialFormState.current.themeType)
   const [themes, setThemes] = useState([])
 
-  const [isLoading, setLoading] = useState(true)
-  const [featureId, setFeatureId] = useState(null)
   const [formSubmitting, setFormSubmitting] = useState(false)
   const [autoClose, setAutoClose] = useState(false)
   const [allowedThemeSetting, setAllowedThemeSetting] = useState(undefined)
@@ -274,6 +238,8 @@ const MediaTimer = props => {
   const [countUpTime, setCountUpTime] = useState(moment().format('HH:mm:ss'))
 
   const [editorState, setEditorState] = useState(EditorState.createEmpty())
+
+  const { themes: themesReducer, featureId } = useMediaTheme('Local', 'Timer')
 
   const initialFormValues = useRef({
     themeId: undefined,
@@ -344,12 +310,6 @@ const MediaTimer = props => {
   }, [handleShareState, onShareStateCallback])
 
   useEffect(() => {
-    if (!configMediaCategory.response.length) return
-    const id = getAllowedFeatureId(configMediaCategory, 'Local', 'Timer')
-    setFeatureId(id)
-  }, [configMediaCategory])
-
-  useEffect(() => {
     if (!formSubmitting) return
     const currentReducer = addMediaReducer[selectedTab]
     if (!currentReducer) return
@@ -407,24 +367,6 @@ const MediaTimer = props => {
   }, [mediaItemReducer])
 
   useEffect(() => {
-    if (featureId) {
-      dispatchAction(getThemeOfMediaFeatureById(featureId))
-    }
-    // eslint-disable-next-line
-  }, [featureId])
-
-  useEffect(() => {
-    if (
-      allowedThemeSetting &&
-      Object.keys(allowedThemeSetting).length &&
-      backendData
-    ) {
-      setLoading(false)
-    }
-    // eslint-disable-next-line
-  }, [allowedThemeSetting])
-
-  useEffect(() => {
     if (
       _get(themesReducer, themeType) &&
       _get(themesReducer, themeType).length &&
@@ -449,7 +391,6 @@ const MediaTimer = props => {
         initialFormValues.current = newValues
       }
       form.setValues(newValues)
-      setLoading(false)
     }
 
     if (
@@ -513,7 +454,6 @@ const MediaTimer = props => {
         }
       }
       form.setValues(initialFormValues.current)
-      setLoading(false)
     }
     // eslint-disable-next-line
   }, [backendData, themesReducer])
@@ -524,14 +464,6 @@ const MediaTimer = props => {
     },
     // eslint-disable-next-line
     [countUpTime, countUpDate]
-  )
-
-  useEffect(
-    () => () => {
-      dispatchAction(clearMediaThemes())
-    },
-    // eslint-disable-next-line
-    []
   )
 
   const handleBackendErrors = errors => {
@@ -685,8 +617,13 @@ const MediaTimer = props => {
     switch (form.values.type) {
       case 'countDown':
         return (
-          <Grid container justify={'space-between'}>
-            <Grid item xs={6} className={classes.columnWrapper}>
+          <Grid
+            container
+            justify="space-between"
+            spacing={16}
+            className={classes.marginTop2}
+          >
+            <Grid item xs={6}>
               <FormControlSelect
                 custom={true}
                 label={'Mode'}
@@ -703,7 +640,7 @@ const MediaTimer = props => {
                 handleChange={e => form.setFieldValue('mode', e.target.value)}
               />
             </Grid>
-            <Grid item xs={6} className={classes.columnWrapper}>
+            <Grid item xs={6}>
               {values.mode === 'date' && (
                 <FormControlDateTimePicker
                   label={'Date:'}
@@ -733,8 +670,13 @@ const MediaTimer = props => {
         )
       case 'countUp':
         return (
-          <Grid container justify={'space-between'}>
-            <Grid item xs={6} className={classes.columnWrapper}>
+          <Grid
+            container
+            justify="space-between"
+            spacing={16}
+            className={classes.marginTop2}
+          >
+            <Grid item xs={6}>
               <FormControlDateTimePicker
                 label={'Date'}
                 customClasses={{
@@ -749,7 +691,7 @@ const MediaTimer = props => {
                 isTime={false}
               />
             </Grid>
-            <Grid item xs={6} className={classes.columnWrapper}>
+            <Grid item xs={6}>
               <FormControlTimeDurationPicker
                 label={'Time'}
                 value={countUpTime}
@@ -796,7 +738,7 @@ const MediaTimer = props => {
 
     if (Array.isArray(item)) {
       return (
-        <Grid item xs={6} className={classes.columnWrapper} key={key}>
+        <Grid item xs={6} key={key}>
           <FormControlSelect
             label={t(key)}
             formControlContainerClass={classes.selectInput}
@@ -812,14 +754,13 @@ const MediaTimer = props => {
       )
     } else if (key.includes('_color') || colorFields.includes(key)) {
       return (
-        <Grid item xs={6} className={classes.columnWrapper} key={key}>
+        <Grid item xs={6} key={key}>
           <FormControlSketchColorPicker
             marginBottom={false}
             label={t(key)}
             formControlInputWrapClass={classes.inputClass}
             formControlInputRootClass={classes.inputClass}
             formControlInputClass={classes.inputClass}
-            formControlLabelClass={classes.inputLabelClass}
             rootClass={classes.colorPickerRootClass}
             color={value}
             onColorChange={color => form.setFieldValue(valuePath, color)}
@@ -828,7 +769,7 @@ const MediaTimer = props => {
       )
     } else if (textFields.includes(key)) {
       return (
-        <Grid item xs={6} className={classes.columnWrapper} key={key}>
+        <Grid item xs={6} key={key}>
           <FormControlInput
             label={t(key)}
             formControlRootClass={[
@@ -855,13 +796,8 @@ const MediaTimer = props => {
 
   return (
     <form className={classes.formWrapper} onSubmit={form.handleSubmit}>
-      {isLoading && (
-        <div className={classes.loaderWrapper}>
-          <CircularProgress size={30} thickness={5} />
-        </div>
-      )}
       <Grid container className={classes.tabContent}>
-        <Grid item xs={7} className={classes.overflowColumnWrapper}>
+        <Grid item xs={7}>
           <div className={classes.root}>
             <Grid container justify="center">
               <Grid item xs={12} className={classes.themeCardWrap}>
@@ -905,7 +841,7 @@ const MediaTimer = props => {
                 </Grid>
               </Grid>
             </Grid>
-            <Grid container justify="center" className={classes.marginTop1}>
+            <Grid container justify="center" className={classes.marginTop}>
               <Grid item>
                 <TabToggleButtonGroup
                   value={values.type}
@@ -931,13 +867,18 @@ const MediaTimer = props => {
               container
               justify="space-between"
               alignItems="center"
-              className={classes.marginTop2}
+              className={classes.marginTop1}
             >
               {getSelectedTabContent()}
             </Grid>
             {themeType === 'Modern' && (
-              <Grid container justify="space-between" style={{ marginTop: 10 }}>
-                <Grid item xs={6} className={classes.columnWrapper}>
+              <Grid
+                container
+                justify="space-between"
+                className={classes.marginTop2}
+                spacing={16}
+              >
+                <Grid item xs={6}>
                   <FormControlSelect
                     custom
                     label={'Font Family'}
@@ -957,13 +898,12 @@ const MediaTimer = props => {
                     }))}
                   />
                 </Grid>
-                <Grid item xs={6} className={classes.columnWrapper}>
+                <Grid item xs={6}>
                   <FormControlSketchColorPicker
                     marginBottom={false}
                     label={'Font Color'}
                     formControlInputWrapClass={classes.inputClass}
                     formControlInputClass={classes.inputClass}
-                    formControlLabelClass={classes.inputLabelClass}
                     rootClass={classes.colorPickerRootClass}
                     color={values.font_color}
                     onColorChange={color =>
@@ -975,15 +915,16 @@ const MediaTimer = props => {
             )}
             <Grid
               container
-              justify={'space-between'}
-              className={classes.marginTop3}
+              justify="space-between"
+              className={classes.marginTop2}
+              spacing={16}
             >
               {!!allowedThemeSetting &&
                 Object.keys(allowedThemeSetting).map(key =>
                   getLegacyThemeContent(allowedThemeSetting[key], key)
                 )}
             </Grid>
-            <Grid container className={classes.marginTop3}>
+            <Grid container className={classes.marginTop}>
               <Grid item>
                 <WysiwygEditor
                   label={'Display text on countdown completion:'}

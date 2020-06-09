@@ -7,7 +7,7 @@ import { bindActionCreators } from 'redux'
 import * as Yup from 'yup'
 import { useFormik } from 'formik'
 import classNames from 'classnames'
-import { isEmpty } from 'lodash'
+import { isEmpty, get as _get } from 'lodash'
 
 import { getItem, postItem, putItem } from 'actions/clientUsersActions'
 
@@ -66,7 +66,8 @@ const AddEditUser = ({
     path,
     params: { id }
   },
-  history
+  history,
+  details
 }) => {
   const [backup, setBackup] = useState({})
 
@@ -80,6 +81,20 @@ const AddEditUser = ({
     () => (isEdit ? [...orgRoles, ...enterpriseRoles] : orgRoles),
     [orgRoles, enterpriseRoles, isEdit]
   )
+
+  const isCurrentUserRestricted = useMemo(
+    () => _get(details, 'response.role.restricted', 1),
+    [details]
+  )
+
+  const userStatusOptions = useMemo(
+    () => [
+      { label: t('Active'), value: 'Active' },
+      { label: t('Inactive'), value: 'Inactive' }
+    ],
+    [t]
+  )
+
   const translate = useMemo(
     () => ({
       title: isEdit ? t('Edit Client User') : t('Add New Client User'),
@@ -91,7 +106,8 @@ const AddEditUser = ({
       confirmPassword: t('Confirm Password'),
       roleId: t('User Type'),
       tag: t('Create New / Add Tag'),
-      client: t('Add to Client')
+      client: t('Add to Client'),
+      status: t('Status')
     }),
     [isEdit, t]
   )
@@ -105,6 +121,7 @@ const AddEditUser = ({
       password: '',
       passwordConfirmation: '',
       roleId: null,
+      status: userStatusOptions[0],
       clientId: null,
       profile: null,
       tag: []
@@ -186,6 +203,7 @@ const AddEditUser = ({
         lastName,
         phone,
         role: { id: roleId },
+        status,
         email,
         tag,
         client
@@ -198,6 +216,7 @@ const AddEditUser = ({
         phone: checkData(phone, ''),
         email,
         roleId,
+        status: checkData(status, null),
         clientId: client ? client.id : null,
         tag: selectUtils.convertArr(tag, selectUtils.toChipObj)
       })
@@ -323,6 +342,16 @@ const AddEditUser = ({
               values={form.values.roleId}
               error={form.errors.roleId}
               touched={form.touched.roleId}
+            />
+            <FormControlReactSelect
+              label={translate.status}
+              name="status"
+              options={userStatusOptions}
+              handleChange={form.handleChange}
+              value={form.values.status}
+              error={form.errors.status}
+              touched={form.touched.status}
+              disabled={isCurrentUserRestricted}
             />
             <FormControlChips
               name="tag"

@@ -1,54 +1,60 @@
-import React, { useCallback, useEffect, useState, useRef } from 'react'
+import React, { useCallback, useEffect, useState, useRef, useMemo } from 'react'
+
+import update from 'immutability-helper'
 import { translate } from 'react-i18next'
 
+import * as Yup from 'yup'
 import {
-  withStyles,
-  Grid,
-  Typography,
-  CircularProgress,
-  Tooltip
-} from '@material-ui/core'
+  get as _get,
+  isEmpty as _isEmpty,
+  isArray as _isArray,
+  cloneDeep as _cloneDeep
+} from 'lodash'
+import PropTypes from 'prop-types'
+
+import { useFormik } from 'formik'
+
+import { withStyles, Grid, Typography, Tooltip } from '@material-ui/core'
 
 import {
   WhiteButton,
   TabToggleButton,
   TabToggleButtonGroup
-} from '../../Buttons'
+} from 'components/Buttons'
 
 import {
   FormControlPalettePicker,
   FormControlInput,
-  FormControlSelect,
-  FormControlSpeedInput
-} from '../../Form'
+  FormControlSpeedInput,
+  SliderInputRange,
+  FormControlReactSelect
+} from 'components/Form'
+
 import MediaHtmlCarousel from '../MediaHtmlCarousel'
-import { socialWallPalettePresets } from '../../../utils/palettePresets'
+
 import { useDispatch, useSelector } from 'react-redux'
 import { MediaInfo, MediaTabActions } from '../index'
-import { useFormik } from 'formik'
-import { mediaConstants as constants } from '../../../constants'
+import SocialWallHelperDialog from './SocialWallHelperDialog'
+
 import {
   createMediaPostData,
-  getAllowedFeatureId,
-  getMediaInfoFromBackendData
-} from '../../../utils/mediaUtils'
-import update from 'immutability-helper'
+  getMediaInfoFromBackendData,
+  getMediaThemesSettings
+} from 'utils/mediaUtils'
+
 import {
   addMedia,
   clearAddedMedia,
   editMedia,
   generateMediaPreview,
   getMediaItemsAction
-} from '../../../actions/mediaActions'
-import * as Yup from 'yup'
-import { get as _get, isEmpty as _isEmpty } from 'lodash'
-import {
-  clearMediaThemes,
-  getContentSourceOfMediaFeatureById,
-  getThemeOfMediaFeatureById
-} from '../../../actions/configActions'
-import PropTypes from 'prop-types'
-import SocialWallHelperDialog from './SocialWallHelperDialog'
+} from 'actions/mediaActions'
+
+import { mediaConstants as constants } from '../../../constants'
+
+import useMediaTheme from 'hooks/useMediaTheme'
+import SocialWallNetworkSettings from './SocialWallNetworkSettings'
+import moment from 'moment'
 
 const TabIconStyles = () => ({
   tabIconWrap: {
@@ -68,7 +74,7 @@ const InfoMessageStyles = ({ typography }) => ({
   infoMessageContainer: {
     display: 'flex',
     alignItems: 'flex-start',
-    padding: '0 5px'
+    padding: 0
   },
   infoMessage: {
     marginLeft: '20px',
@@ -111,70 +117,350 @@ const fonts = [
 
 const networks = [
   {
-    value: 'deviantart',
-    label: 'Deviantart',
-    settings: {}
-  },
-  {
-    value: 'facebook',
-    label: 'Facebook',
-    settings: {}
-  },
-  {
-    value: 'flickr',
-    label: 'Flickr',
-    settings: {}
-  },
-  {
-    value: 'google',
-    label: 'Google',
-    settings: {}
-  },
-  {
-    value: 'pinterest',
-    label: 'Pinterest',
-    settings: {}
-  },
-  {
-    value: 'rss',
-    label: 'RSS',
-    settings: {}
-  },
-  {
-    value: 'soundcloud',
-    label: 'SoundCloud',
-    settings: {}
-  },
-  {
-    value: 'stumbleupon',
-    label: 'Stumbleupon',
-    settings: {}
-  },
-  {
-    value: 'tumblr',
-    label: 'Tumblr',
-    settings: {}
+    value: 'instagram',
+    label: 'Instagram',
+    network_settings: {
+      instagram_images: [
+        {
+          value: 'thumbnail',
+          label: 'Thumbnail'
+        },
+        {
+          value: 'low_resolution',
+          label: 'Low Resolution'
+        },
+        {
+          value: 'standard_resolution',
+          label: 'Standard Resolution'
+        }
+      ],
+      instagram_comments: 0,
+      instagram_likes: 0,
+      instagram_output: 'title,thumb,text,comments,likes,user,share,info,tags'
+    }
   },
   {
     value: 'twitter',
     label: 'Twitter',
-    settings: {}
+    network_settings: {
+      twitter_feeds: 'retweets,replies',
+      twitter_output: 'thumb,text,user,share,info',
+      twitter_images: 'thumb,small,medium,large',
+      twitter_since_id: 3,
+      twitter_max_id: 5
+    }
+  },
+  {
+    value: 'facebook',
+    label: 'Facebook',
+    network_settings: {
+      facebook_pagefeed: [
+        {
+          value: 'posts',
+          label: 'Posts'
+        },
+        {
+          value: 'tagged',
+          label: 'Tagged'
+        },
+        {
+          value: 'feed',
+          label: 'Feed'
+        }
+      ],
+      facebook_image_width: [
+        {
+          value: '180',
+          label: 'Thumb - 180px'
+        },
+        {
+          value: '300',
+          label: 'Tiny - 300px'
+        },
+        {
+          value: '480',
+          label: 'Very Small - 480px'
+        },
+        {
+          value: '640',
+          label: 'Small - 640px'
+        },
+        {
+          value: '720',
+          label: 'Medium - 720px'
+        },
+        {
+          value: '800',
+          label: 'Large - 800px'
+        },
+        {
+          value: '960',
+          label: 'Larger - 960px'
+        },
+        {
+          value: '1280',
+          label: 'X-Large - 1280px'
+        },
+        {
+          value: '1600',
+          label: 'XX-Large - 1600px'
+        }
+      ],
+      facebook_datetime_from: moment().format('YYYY/MM/DD'),
+      facebook_datetime_to: moment().format('YYYY/MM/DD'),
+      facebook_comments: 3,
+      facebook_likes: 5,
+      facebook_output: 'title,thumb,text,comments,likes,user,share,info'
+    }
+  },
+  {
+    value: 'tumblr',
+    label: 'Tumblr',
+    network_settings: {
+      tumblr_thumb: [
+        {
+          value: '75',
+          label: 'Width: 75px'
+        },
+        {
+          value: '100',
+          label: 'Width: 100px'
+        },
+        {
+          value: '250',
+          label: 'Width: 250px'
+        },
+        {
+          value: '400',
+          label: 'Width: 400px'
+        },
+        {
+          value: '500',
+          label: 'Width: 500px'
+        },
+        {
+          value: '1280',
+          label: 'Width: 1280px'
+        }
+      ],
+      tumblr_video: [
+        {
+          value: '250',
+          label: 'Width: 250px'
+        },
+        {
+          value: '400',
+          label: 'Width: 400px'
+        },
+        {
+          value: '500',
+          label: 'Width: 500px'
+        }
+      ],
+      tumblr_embed: false,
+      tumblr_output: 'title,thumb,text,user,share,info'
+    }
   },
   {
     value: 'vimeo',
     label: 'Vimeo',
-    settings: {}
+    network_settings: {
+      vimeo_thumb: [
+        {
+          value: 'small',
+          label: 'Small - 100x75'
+        },
+        {
+          value: 'medium',
+          label: 'Medium - 200x150'
+        },
+        {
+          value: 'large',
+          label: 'Large - 640'
+        }
+      ],
+      vimeo_output: 'title,thumb,text,user,share,info'
+    }
   },
   {
     value: 'vk',
     label: 'Vk',
-    settings: {}
+    network_settings: {
+      vk_feed: [
+        {
+          value: 'owner',
+          label: 'Owner'
+        },
+        {
+          value: 'tagged',
+          label: 'Tagged'
+        },
+        {
+          value: 'all',
+          label: 'All'
+        }
+      ],
+      vk_image_width: [
+        {
+          value: '75',
+          label: '75px'
+        },
+        {
+          value: '130',
+          label: '130px'
+        },
+        {
+          value: '604',
+          label: '604px'
+        },
+        {
+          value: '807',
+          label: '807px'
+        },
+        {
+          value: '1280',
+          label: '1280px'
+        },
+        {
+          value: '2560',
+          label: '2560px'
+        }
+      ],
+      vk_output: 'thumb,text,stat,user,share,info'
+    }
+  },
+  {
+    value: 'flickr',
+    label: 'Flickr',
+    network_settings: {
+      flickr_thumb: [
+        {
+          value: 's',
+          label: 'Small square 75x75'
+        },
+        {
+          value: 'q',
+          label: 'Large square 150x150'
+        },
+        {
+          value: 't',
+          label: 'Tiny, 100 on longest side'
+        },
+        {
+          value: 'm',
+          label: 'Thumbnail. 240 on longest side'
+        },
+        {
+          value: 'n',
+          label: 'Small, 320 on longest side'
+        },
+        {
+          value: 'z',
+          label: 'Medium 640, 640 on longest side'
+        },
+        {
+          value: 'c',
+          label: 'Large, 800 on longest side'
+        },
+        {
+          value: 'b',
+          label: 'X-Large, 1024 on longest side'
+        }
+      ],
+      flickr_output: 'title,thumb,text,user,share,info,tags'
+    }
+  },
+  {
+    value: 'google',
+    label: 'Google'
+  },
+  {
+    value: 'deviantart',
+    label: 'Deviantart'
+  },
+  {
+    value: 'soundcloud',
+    label: 'SoundCloud',
+    network_settings: {
+      soundcloud_output: 'title,text,thumb,user,share,info,meta,tags'
+    }
+  },
+  {
+    value: 'linkedin',
+    label: 'Linked In'
+  },
+  {
+    value: 'pinterest',
+    label: 'Pinterest',
+    network_settings: {
+      pinterest_image_width: [
+        {
+          value: '237',
+          label: 'Thumb - 237px'
+        },
+        {
+          value: '736',
+          label: 'Large - 736px'
+        }
+      ],
+      pinterest_output: 'title,thumb,text,user,share,info'
+    }
+  },
+  {
+    value: 'youtube',
+    label: 'YouTube',
+    network_settings: {
+      youtube_thumb: 'default,medium,high,standard,maxres',
+      youtube_output: 'title,thumb,text,user,share,info'
+    }
+  },
+  {
+    value: 'rss',
+    label: 'RSS',
+    network_settings: {
+      rss_text: true,
+      rss_output: 'title,thumb,text,user,tags,share,info'
+    }
   }
 ]
 
-const styles = ({ palette, type }) => ({
+const parsePalettes = skins => {
+  const newPalettes = []
+
+  skins.forEach((skin, index) => {
+    newPalettes[index] = {}
+    newPalettes[index].id = index + 1
+    newPalettes[index].palette = {}
+
+    Object.keys(skin).forEach(key => {
+      newPalettes[index].palette[key] = {}
+
+      newPalettes[index].palette[key].tooltip = getTooltip(key)
+      newPalettes[index].palette[key].value = skin[key]
+    })
+  })
+
+  return newPalettes
+}
+
+const getTooltip = key => {
+  switch (key) {
+    case 'font_color':
+      return 'Font color'
+    case 'item_background_color':
+      return 'Item background color'
+    case 'item_border_color':
+      return 'Item border color'
+    case 'link_color':
+      return 'Link color'
+    default:
+      return key
+  }
+}
+
+const styles = ({ palette, type, formControls, typography }) => ({
   root: {
-    margin: '31px 30px'
+    margin: '15px 30px'
   },
   formWrapper: {
     position: 'relative',
@@ -197,7 +483,7 @@ const styles = ({ palette, type }) => ({
     zIndex: 1
   },
   tabToggleButtonGroup: {
-    marginBottom: '19px'
+    marginBottom: 16
   },
   tabToggleButton: {
     width: '128px'
@@ -210,11 +496,10 @@ const styles = ({ palette, type }) => ({
     boxShadow: 'none'
   },
   previewMediaRow: {
-    marginTop: '33px'
+    marginTop: 45
   },
   previewMediaText: {
-    fontWeight: 'bold',
-    color: palette[type].sideModal.action.button.color
+    ...typography.lightText[type]
   },
   featureIconTabContainer: {
     justifyContent: 'center'
@@ -259,24 +544,12 @@ const styles = ({ palette, type }) => ({
     marginRight: 10,
     cursor: 'pointer'
   },
-  themeOptions2: {
-    padding: '0 15px',
-    marginTop: '31px'
-  },
-  themeOptions3: {
-    padding: '0 15px',
-    margin: '5px 0 29px'
-  },
   inputLabel: {
     display: 'block',
     fontSize: '13px',
     color: '#74809a',
     transform: 'none !important',
     marginRight: '10px'
-  },
-  themeInputContainer: {
-    padding: '0 7px',
-    margin: '0 -7px'
   },
   colorPaletteContainer: {
     display: 'flex',
@@ -298,36 +571,19 @@ const styles = ({ palette, type }) => ({
     marginBottom: 0
   },
   palettePickerContainer: {
-    marginBottom: '3px'
+    marginBottom: 16
   },
   accountSettingsContainer: {
-    margin: '12px 0 20px',
-    padding: '0 15px'
+    padding: 15
   },
-  marginTop1: {
-    marginTop: '30px'
-  },
-  marginTop2: {
-    marginTop: '10px'
-  },
-  marginTop3: {
-    marginTop: '8px'
-  },
-  marginTop4: {
-    marginTop: '16px'
-  },
-  marginTop5: {
-    marginTop: '20px'
-  },
-  marginTop6: {
-    marginTop: '18px'
+  marginTop: {
+    marginTop: 16
   },
   sliderInputClass: {
     width: '46px'
   },
   sliderInputLabel: {
-    color: '#74809A',
-    fontSize: '13px',
+    ...formControls.mediaApps.refreshEverySlider.label,
     lineHeight: '15px',
     marginRight: '15px'
   },
@@ -350,16 +606,12 @@ const styles = ({ palette, type }) => ({
     fontSize: '14px !important'
   },
   formContainer: {
-    padding: '0 20px 15px'
+    padding: '0 15px 16px'
   },
   formControlNumericInputRootClass: {
     '& > span': {
       height: '38px !important'
     }
-  },
-  inputContainer: {
-    padding: '0 8px',
-    margin: '0 -8px'
   },
   paddingLeft: {
     paddingLeft: '30px'
@@ -376,7 +628,7 @@ const styles = ({ palette, type }) => ({
 const validationSchema = Yup.object().shape({
   themeId: Yup.number().required('Select theme'),
   items_per_page: Yup.number().min(5).required('Enter field'),
-  duration: Yup.number().min(1).max(150),
+  scroll_speed: Yup.number().min(20).max(1000),
   network: Yup.array()
     .min(0)
     .of(
@@ -406,30 +658,30 @@ const SocialWall = props => {
   } = props
 
   const dispatchAction = useDispatch()
-  const { configMediaCategory } = useSelector(({ config }) => config)
   const addMediaReducer = useSelector(({ addMedia }) => addMedia.social)
   const mediaItemReducer = useSelector(({ media }) => media.mediaItem)
-  const wallThemes = useSelector(({ config }) => {
-    if (
-      config.themeOfMedia &&
-      config.themeOfMedia.response &&
-      config.themeOfMedia.response.Legacy
-    ) {
-      return config.themeOfMedia.response.Legacy
-    }
-    return []
-  })
+
+  const { themes, featureId } = useMediaTheme('Social', 'Socialwall')
+  const wallThemes = useMemo(() => themes.Legacy || [], [themes.Legacy])
 
   const initialFormState = useRef({
     selectedPaletteType: 'presets',
-    selectedPalette: {}
+    selectedPalette: {},
+    palettePresets: []
   })
 
-  const [isLoading, setLoading] = useState(false)
   const [formSubmitting, setFormSubmitting] = useState(false)
   const [autoClose, setAutoClose] = useState(false)
-  const [featureId, setFeatureId] = useState(null)
   const [isDialog, setIsDialog] = useState(false)
+
+  const [selectedNetwork, setSelectedNetwork] = useState('')
+  const [selectedNetworkSettings, setSelectedNetworkSettings] = useState(
+    undefined
+  )
+
+  const [palettePresets, setPalettePresets] = useState(
+    initialFormState.current.palettePresets
+  )
 
   const [selectedPaletteType, setSelectedPaletteType] = useState(
     initialFormState.current.selectedPaletteType
@@ -441,22 +693,24 @@ const SocialWall = props => {
   const initialFormValues = useRef({
     themeId: undefined,
     items_per_page: 5,
-    duration: 5,
+    scroll_speed: 20,
     network: [
       {
         network: '',
         value: ''
       }
     ],
+    network_settings: {},
     theme_settings: {
-      font_color: '#fff',
-      link_color: '#076EB6',
-      item_background_color: '#79858b',
-      item_border_color: '#000',
+      font_color: 'rgba(255,255,255,1)',
+      link_color: 'rgba(255,255,255,1)',
+      item_background_color: 'rgba(59, 68, 81, 1)',
+      item_border_color: 'rgba(255,255,255,1)',
       font_type: 'arial'
     },
     item_width: 140,
     breakpoint_width: 3,
+    refresh_every: 1,
     mediaInfo: { ...constants.mediaInfoInitvalue }
   })
   const form = useFormik({
@@ -470,21 +724,25 @@ const SocialWall = props => {
       const {
         themeId,
         items_per_page,
-        duration,
+        scroll_speed,
         network,
         theme_settings,
         item_width,
-        breakpoint_width
+        refresh_every,
+        breakpoint_width,
+        network_settings
       } = values
 
       const postData = createMediaPostData(values.mediaInfo, mode)
       const attributes = {
         items_per_page,
-        duration,
+        scroll_speed,
         network: prepareNetworks(network),
         theme_settings,
         item_width,
-        breakpoint_width
+        refresh_every,
+        breakpoint_width,
+        network_settings
       }
 
       const requestData = update(postData, {
@@ -509,12 +767,22 @@ const SocialWall = props => {
   })
 
   const onWallThemesChange = useCallback(() => {
-    if (wallThemes.length && mode === 'add') {
-      form.setValues(
-        update(form.values, {
-          themeId: { $set: wallThemes[0].id }
-        })
+    if (!!wallThemes.length && !backendData) {
+      const defaultTheme = getMediaThemesSettings(
+        wallThemes[0].customProperties,
+        true
       )
+
+      !!defaultTheme &&
+        form.setValues(
+          update(form.values, {
+            theme_settings: { $set: defaultTheme }
+          })
+        )
+    }
+
+    if (wallThemes.length && mode === 'add') {
+      handleSlideClick(wallThemes[0].id)
     }
     // eslint-disable-next-line
   }, [wallThemes, mode])
@@ -557,11 +825,13 @@ const SocialWall = props => {
     const {
       themeId,
       items_per_page,
-      duration,
+      scroll_speed,
       network,
       theme_settings,
       item_width,
-      breakpoint_width
+      refresh_every,
+      breakpoint_width,
+      network_settings
     } = values
 
     form.setTouched(
@@ -585,11 +855,13 @@ const SocialWall = props => {
           themeId,
           attributes: {
             items_per_page,
-            duration,
+            scroll_speed,
             network: prepareNetworks(network),
             theme_settings,
             item_width,
-            breakpoint_width
+            refresh_every,
+            breakpoint_width,
+            network_settings
           }
         })
       )
@@ -625,8 +897,71 @@ const SocialWall = props => {
       form.setFieldValue(`theme_settings.${key}`, palette[key].value)
     )
   }
+
   const handlePaletteTypeChanges = (event, selectedPaletteType) =>
     setSelectedPaletteType(selectedPaletteType)
+
+  const isNetworkSettings = network =>
+    networks.find(n => n.value === network) &&
+    networks.find(n => n.value === network).network_settings
+
+  const openNetworkSettings = network => {
+    const settings = networks.find(n => n.value === network).network_settings
+
+    const defaultSettings = () => {
+      const temp = { ...settings }
+
+      Object.keys(temp).forEach(key => {
+        if (_isArray(temp[key])) {
+          temp[key] = temp[key][0].value
+        }
+      })
+
+      return temp
+    }
+
+    !form.values.network_settings[network] &&
+      form.setFieldValue(`network_settings.${network}`, defaultSettings())
+
+    setSelectedNetwork(network)
+    setSelectedNetworkSettings(settings)
+  }
+
+  const handleNetworkSettingsSave = data => {
+    form.setFieldValue(`network_settings.${selectedNetwork}`, data)
+
+    setSelectedNetwork('')
+  }
+
+  const handleSlideClick = themeId => {
+    if (wallThemes.length) {
+      const theme = wallThemes.find(i => i.id === themeId)
+      let defaultTheme
+
+      if (theme)
+        defaultTheme = getMediaThemesSettings(theme.customProperties, true)
+
+      handlePalettesChange(themeId)
+
+      form.setValues({
+        ...form.values,
+        themeId: themeId,
+        ...(defaultTheme && { theme_settings: defaultTheme })
+      })
+    }
+  }
+
+  const handlePalettesChange = themeId => {
+    const theme = wallThemes.find(i => i.id === themeId)
+
+    if (_get(theme, 'customProperties.conditions.skin')) {
+      const palettes = parsePalettes(
+        _get(theme, 'customProperties.conditions.skin')
+      )
+
+      setPalettePresets(_cloneDeep(palettes))
+    }
+  }
 
   useEffect(() => {
     if (!formSubmitting) return
@@ -698,26 +1033,22 @@ const SocialWall = props => {
   }, [])
 
   useEffect(() => {
-    if (!configMediaCategory.response.length) return
-    const id = getAllowedFeatureId(configMediaCategory, 'Social', 'Socialwall')
-    setFeatureId(id)
-  }, [configMediaCategory])
-
-  useEffect(() => {
     onShareStateCallback(handleShareState)
   }, [handleShareState, onShareStateCallback])
 
   useEffect(() => {
-    if (backendData && backendData.id) {
+    if (backendData && backendData.id && wallThemes.length) {
       const {
         themeId,
         attributes: {
           items_per_page,
-          duration,
+          scroll_speed,
           network,
           theme_settings,
           item_width,
-          breakpoint_width
+          refresh_every,
+          breakpoint_width,
+          network_settings
         }
       } = backendData
 
@@ -725,34 +1056,66 @@ const SocialWall = props => {
         ...form.values,
         themeId,
         items_per_page,
-        duration,
+        scroll_speed,
         network: prepareNetworks(network, true),
         theme_settings,
         item_width,
         breakpoint_width,
+        refresh_every,
+        network_settings,
         mediaInfo: getMediaInfoFromBackendData(backendData)
       }
+
+      handlePalettesChange(themeId)
+
       form.setValues(initialFormValues.current)
-
-      setLoading(false)
     }
     // eslint-disable-next-line
-  }, [backendData])
-
-  useEffect(() => {
-    if (featureId) {
-      dispatchAction(getThemeOfMediaFeatureById(featureId))
-      dispatchAction(getContentSourceOfMediaFeatureById(featureId))
-    }
-    // eslint-disable-next-line
-  }, [featureId])
+  }, [backendData, wallThemes])
 
   useEffect(
-    () => () => {
-      dispatchAction(clearMediaThemes())
+    () => {
+      !selectedNetwork && setSelectedNetworkSettings(undefined)
     },
     // eslint-disable-next-line
-    []
+    [selectedNetwork]
+  )
+
+  useEffect(
+    () => {
+      if (!!palettePresets.length) {
+        const { theme_settings } = form.values
+
+        const option = palettePresets.find(({ palette }) => {
+          return (
+            palette.font_color.value === theme_settings.font_color &&
+            palette.link_color.value === theme_settings.link_color &&
+            palette.item_background_color.value ===
+              theme_settings.item_background_color &&
+            palette.item_border_color.value === theme_settings.item_border_color
+          )
+        })
+
+        if (option) {
+          setSelectedPalette(option)
+        } else {
+          console.log('theme_settings', theme_settings)
+          setSelectedPaletteType('custom')
+          setSelectedPalette({
+            palette: {
+              font_color: { value: theme_settings.font_color },
+              link_color: { value: theme_settings.link_color },
+              item_background_color: {
+                value: theme_settings.item_background_color
+              },
+              item_border_color: { value: theme_settings.item_border_color }
+            }
+          })
+        }
+      }
+    },
+    // eslint-disable-next-line
+    [form.values.theme_settings, palettePresets]
   )
 
   const { values, errors, touched, submitCount, isValid } = form
@@ -760,16 +1123,11 @@ const SocialWall = props => {
 
   return (
     <form className={classes.formWrapper} onSubmit={form.handleSubmit}>
-      {isLoading && (
-        <div className={classes.loaderWrapper}>
-          <CircularProgress size={30} thickness={5} />
-        </div>
-      )}
       <Grid container className={classes.tabContent}>
         <Grid item xs={7}>
           <div className={classes.root}>
             <InfoMessage iconClassName={'icon-interface-information-1'} />
-            <Grid container justify="center" className={classes.marginTop1}>
+            <Grid container justify="center" className={classes.marginTop}>
               <Grid item xs={12} className={classes.themeCardWrap}>
                 <header className={classes.themeHeader}>
                   <Typography className={classes.themeHeaderText}>
@@ -798,16 +1156,14 @@ const SocialWall = props => {
                         }))}
                         error={errors.themeId}
                         touched={touched.themeId}
-                        onSlideClick={slide =>
-                          form.setFieldValue('themeId', slide.name)
-                        }
+                        onSlideClick={slide => handleSlideClick(slide.name)}
                       />
                     )}
                   </Grid>
                 </Grid>
               </Grid>
             </Grid>
-            <Grid container justify="center" className={classes.marginTop1}>
+            <Grid container justify="center" className={classes.marginTop}>
               <Grid item xs={12} className={classes.themeCardWrap}>
                 <header className={classes.themeHeader}>
                   <Typography
@@ -818,91 +1174,102 @@ const SocialWall = props => {
                   </Typography>
                   <TabIcon iconClassName={'icon-interface-information-1'} />
                 </header>
-                {values.network.map((network, index) => (
-                  <Grid
-                    key={index}
-                    container
-                    alignItems="center"
-                    justify="space-between"
-                    className={classes.accountSettingsContainer}
-                  >
-                    <Grid item xs={5}>
-                      <FormControlSelect
-                        custom={true}
-                        marginBottom={false}
-                        value={network.network}
-                        error={
-                          errors.network && errors.network[index]
-                            ? errors.network[index].network
-                            : ''
-                        }
-                        touched={touched.network}
-                        handleChange={e => {
-                          const updatedNetworks = update(values.network, {
-                            [index]: {
-                              $set: {
-                                network: e.target.value,
-                                value: ''
+                {values.network.map((network, index) => {
+                  return (
+                    <Grid
+                      key={index}
+                      container
+                      alignItems="center"
+                      className={classes.accountSettingsContainer}
+                      spacing={16}
+                    >
+                      <Grid item xs={5}>
+                        <FormControlReactSelect
+                          marginBottom={0}
+                          value={network.network}
+                          error={
+                            errors.network && errors.network[index]
+                              ? errors.network[index].network
+                              : ''
+                          }
+                          touched={touched.network}
+                          handleChange={e => {
+                            const updatedNetworks = update(values.network, {
+                              [index]: {
+                                $set: {
+                                  network: e.target.value,
+                                  value: ''
+                                }
                               }
-                            }
-                          })
-                          form.setFieldValue('network', updatedNetworks)
-                        }}
-                        options={networks.map(({ value, label }) => ({
-                          component: <span>{label}</span>,
-                          value
-                        }))}
-                      />
-                    </Grid>
-                    <Grid item xs={5}>
-                      <FormControlInput
-                        formControlRootClass={classes.formControlRootClass}
-                        error={
-                          errors.network && errors.network[index]
-                            ? errors.network[index].value
-                            : ''
-                        }
-                        placeholder="ID"
-                        touched={touched.network}
-                        value={network.value}
-                        handleChange={e => {
-                          const updatedNetworks = update(values.network, {
-                            [index]: {
-                              $set: {
-                                network: values.network[index].network,
-                                value: e.target.value
+                            })
+                            form.setFieldValue('network', updatedNetworks)
+                          }}
+                          options={networks.map(({ value, label }) => ({
+                            label: <span>{label}</span>,
+                            value
+                          }))}
+                        />
+                      </Grid>
+                      <Grid item xs={5}>
+                        <FormControlInput
+                          formControlRootClass={classes.formControlRootClass}
+                          error={
+                            errors.network && errors.network[index]
+                              ? errors.network[index].value
+                              : ''
+                          }
+                          placeholder="ID"
+                          touched={touched.network}
+                          value={network.value}
+                          handleChange={e => {
+                            const updatedNetworks = update(values.network, {
+                              [index]: {
+                                $set: {
+                                  network: values.network[index].network,
+                                  value: e.target.value
+                                }
                               }
-                            }
-                          })
-                          form.setFieldValue('network', updatedNetworks)
-                        }}
-                      />
+                            })
+                            form.setFieldValue('network', updatedNetworks)
+                          }}
+                        />
+                      </Grid>
+                      <Grid item xs={1}>
+                        <WhiteButton
+                          className={classes.addNetworkBtn}
+                          onClick={() => {
+                            const updatedNetworks = update(values.network, {
+                              $push: [
+                                {
+                                  network: '',
+                                  value: ''
+                                }
+                              ]
+                            })
+                            form.setFieldValue('network', updatedNetworks)
+                          }}
+                        >
+                          <i className={'icon-add-circle-1'} />
+                        </WhiteButton>
+                      </Grid>
+                      <Grid item xs={1}>
+                        {isNetworkSettings(network.network) && (
+                          <WhiteButton
+                            className={classes.addNetworkBtn}
+                            onClick={() => openNetworkSettings(network.network)}
+                          >
+                            <i className={'icon-settings-1'} />
+                          </WhiteButton>
+                        )}
+                      </Grid>
                     </Grid>
-                    <Grid item xs={1}>
-                      <WhiteButton
-                        className={classes.addNetworkBtn}
-                        onClick={() => {
-                          const updatedNetworks = update(values.network, {
-                            $push: [
-                              {
-                                network: '',
-                                value: ''
-                              }
-                            ]
-                          })
-                          form.setFieldValue('network', updatedNetworks)
-                        }}
-                      >
-                        <i className={'icon-add-circle-1'} />
-                      </WhiteButton>
-                    </Grid>
-                  </Grid>
-                ))}
+                  )
+                })}
               </Grid>
             </Grid>
-            <Grid container justify="center" className={classes.marginTop3}>
+            <Grid container justify="center" className={classes.marginTop}>
               <Grid item xs={12} className={classes.themeCardWrap}>
-                <Grid container justify="center" className={classes.marginTop2}>
+                <Grid container justify="center" className={classes.marginTop}>
                   <Grid item>
                     <TabToggleButtonGroup
                       className={classes.tabToggleButtonGroup}
@@ -934,14 +1301,14 @@ const SocialWall = props => {
                     <Grid item>
                       <FormControlPalettePicker
                         id={1}
-                        preset={socialWallPalettePresets[0]}
+                        preset={selectedPalette}
                         allowChangeColor={true}
                         selected={selectedPalette}
                         onSelectPalette={onSelectPalette}
                       />
                     </Grid>
                   ) : (
-                    socialWallPalettePresets.map(item => (
+                    palettePresets.map(item => (
                       <Grid
                         item
                         xs={6}
@@ -961,7 +1328,7 @@ const SocialWall = props => {
                 </Grid>
               </Grid>
             </Grid>
-            <Grid container justify="center" className={classes.marginTop3}>
+            <Grid container justify="center" className={classes.marginTop}>
               <Grid
                 item
                 xs={12}
@@ -972,9 +1339,10 @@ const SocialWall = props => {
                 <Grid
                   container
                   justify="space-between"
-                  className={classes.marginTop6}
+                  className={classes.marginTop}
+                  spacing={16}
                 >
-                  <Grid item xs={5} className={classes.inputContainer}>
+                  <Grid item xs={5}>
                     <Grid container alignItems="center" justify="flex-end">
                       <Grid item>
                         <Typography className={classes.formInputLabel}>
@@ -1004,7 +1372,7 @@ const SocialWall = props => {
                       </Grid>
                     </Grid>
                   </Grid>
-                  <Grid item xs={7} className={classes.inputContainer}>
+                  <Grid item xs={7}>
                     <Grid container alignItems="center" justify="flex-end">
                       <Grid item>
                         <Typography className={classes.formInputLabel}>
@@ -1012,9 +1380,8 @@ const SocialWall = props => {
                         </Typography>
                       </Grid>
                       <Grid item xs>
-                        <FormControlSelect
-                          custom
-                          marginBottom={false}
+                        <FormControlReactSelect
+                          marginBottom={0}
                           value={values.theme_settings.font_type}
                           error={
                             errors.theme_settings
@@ -1035,7 +1402,7 @@ const SocialWall = props => {
                             input: classes.formControlSelectInput
                           }}
                           options={fonts.map(name => ({
-                            component: (
+                            label: (
                               <span key={name} style={{ fontFamily: name }}>
                                 {name}
                               </span>
@@ -1046,13 +1413,7 @@ const SocialWall = props => {
                       </Grid>
                     </Grid>
                   </Grid>
-                </Grid>
-                <Grid
-                  container
-                  justify="space-between"
-                  className={classes.marginTop4}
-                >
-                  <Grid item xs={5} className={classes.inputContainer}>
+                  <Grid item xs={5}>
                     <Grid container alignItems="center" justify="flex-end">
                       <Grid item>
                         <Typography className={classes.formInputLabel}>
@@ -1081,7 +1442,7 @@ const SocialWall = props => {
                       </Grid>
                     </Grid>
                   </Grid>
-                  <Grid item xs={7} className={classes.inputContainer}>
+                  <Grid item xs={7}>
                     <Grid container alignItems="center">
                       <Grid item>
                         <Typography className={classes.formInputLabel}>
@@ -1114,19 +1475,38 @@ const SocialWall = props => {
                 <Grid
                   container
                   justify="space-between"
-                  className={classes.marginTop5}
+                  className={classes.marginTop}
                 >
                   <Grid item xs={6} className={classes.paddingLeft}>
                     <FormControlSpeedInput
-                      step={1}
-                      value={values.duration}
-                      maxValue={150}
-                      minValue={1}
-                      onChange={val => form.setFieldValue('duration', val)}
+                      step={20}
+                      value={values.scroll_speed}
+                      maxValue={1000}
+                      minValue={20}
+                      onChange={val => form.setFieldValue('scroll_speed', val)}
                       inputRangeContainerSASS="CreateMediaSettings__slider--Wrap"
                       labelClass={classes.speedInputLabel}
                       labelRightClass={classes.speedInputLabel}
                       labelLeftClass={classes.speedInputLabel}
+                    />
+                  </Grid>
+                  <Grid item xs={6}>
+                    <SliderInputRange
+                      label={'Refresh Every'}
+                      tooltip={
+                        'Frequency of content refresh during playback (in minutes)'
+                      }
+                      labelAtEnd={false}
+                      step={1}
+                      value={values.refresh_every}
+                      error={errors.refresh_every}
+                      touched={touched.refresh_every}
+                      maxValue={360}
+                      minValue={1}
+                      onChange={val => form.setFieldValue('refresh_every', val)}
+                      rootClass={classes.sliderContainerClass}
+                      labelClass={classes.sliderLabelClass}
+                      inputRangeContainerSASS="CreateMediaSettings__slider--Wrap"
                     />
                   </Grid>
                 </Grid>
@@ -1192,6 +1572,14 @@ const SocialWall = props => {
       <SocialWallHelperDialog
         isDialogOpen={isDialog}
         onClose={() => setIsDialog(false)}
+      />
+
+      <SocialWallNetworkSettings
+        open={!!selectedNetwork}
+        onClose={() => setSelectedNetwork('')}
+        onSave={handleNetworkSettingsSave}
+        settings={selectedNetworkSettings}
+        values={values.network_settings[selectedNetwork]}
       />
     </form>
   )

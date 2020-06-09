@@ -32,7 +32,6 @@ import { MediaInfo, MediaTabActions } from '../index'
 
 import {
   createMediaPostData,
-  getAllowedFeatureId,
   getMediaInfoFromBackendData
 } from 'utils/mediaUtils'
 
@@ -44,15 +43,11 @@ import {
   getMediaItemsAction
 } from 'actions/mediaActions'
 
-import {
-  getContentSourceOfMediaFeatureById,
-  getTransitions
-} from 'actions/configActions'
-
-import CircularProgress from '@material-ui/core/CircularProgress'
+import { getTransitions } from 'actions/configActions'
 
 import { labelToSec, secToLabel } from 'utils/secToLabel'
 import classNames from 'classnames'
+import useMediaContentSource from 'hooks/useMediaContentSource'
 
 const TabIconStyles = theme => ({
   tabIconWrap: {
@@ -68,13 +63,13 @@ const TabIcon = withStyles(TabIconStyles)(({ iconClassName = '', classes }) => (
 ))
 
 const styles = theme => {
-  const { palette, type } = theme
+  const { palette, type, typography } = theme
   return {
     root: {
-      margin: '20px 24px'
+      margin: '15px 30px'
     },
     tabToggleButtonGroup: {
-      marginBottom: '14px'
+      marginBottom: 16
     },
     tabToggleButton: {
       width: '128px'
@@ -107,11 +102,10 @@ const styles = theme => {
       boxShadow: 'none'
     },
     previewMediaRow: {
-      marginTop: '50px'
+      marginTop: 45
     },
     previewMediaText: {
-      fontWeight: 'bold',
-      color: palette[type].sideModal.action.button.color
+      ...typography.lightText[type]
     },
     featureIconTabContainer: {
       justifyContent: 'center'
@@ -125,26 +119,18 @@ const styles = theme => {
       border: `solid 1px ${palette[type].pages.media.card.border}`,
       backgroundColor: palette[type].pages.media.card.background,
       borderRadius: '4px',
-      marginBottom: '45px'
+      margin: '16px 0'
     },
     themeHeader: {
       padding: '0 15px',
       borderBottom: `1px solid ${palette[type].pages.media.card.border}`,
       backgroundColor: palette[type].pages.media.card.header.background
     },
-    themeInputContainer: {
-      padding: '0 7px',
-      margin: '0 -7px'
-    },
-    sliderInputLabelClass: {
-      paddingRight: '15px',
-      fontStyle: 'normal'
-    },
     checkboxSwitcherLabelClass: {
       fontSize: '13px'
     },
     labelClass: {
-      fontSize: '17px'
+      fontSize: '1.0833rem'
     },
     inputContainerClass: {
       margin: '0 10px'
@@ -160,11 +146,8 @@ const styles = theme => {
       height: 38,
       fontSize: 14
     },
-    mediaUrlContainer: {
-      padding: '0 15px'
-    },
-    marginTop1: {
-      marginTop: '14px'
+    marginTop: {
+      marginTop: 16
     }
   }
 }
@@ -200,14 +183,10 @@ const MediaRSS = props => {
   const dispatchAction = useDispatch()
 
   const [
-    configMediaCategory,
-    contentSourceOfMediaFeature,
     addMediaReducer,
     mediaItemReducer,
     transitionsReducer
   ] = useSelector(state => [
-    state.config.configMediaCategory,
-    state.config.contentSourceOfMediaFeature,
     state.addMedia.web,
     state.media.mediaItem,
     state.config.transitions
@@ -216,10 +195,10 @@ const MediaRSS = props => {
     selectedFeedId: null
   })
 
-  const [isLoading, setLoading] = useState(true)
+  const { contentSources, featureId } = useMediaContentSource('Web', 'MediaRSS')
+
   const [formSubmitting, setFormSubmitting] = useState(false)
   const [autoClose, setAutoClose] = useState(false)
-  const [featureId, setFeatureId] = useState(null)
   const [transitionOptions, setTransitionOptions] = useState([])
 
   const [contentTabs, setContentTabs] = useState([])
@@ -403,7 +382,6 @@ const MediaRSS = props => {
         mediaInfo: getMediaInfoFromBackendData(backendData)
       }
       form.setValues(initialFormValues.current)
-      setLoading(false)
     }
     // eslint-disable-next-line
   }, [backendData])
@@ -419,12 +397,6 @@ const MediaRSS = props => {
   )
 
   useEffect(() => {
-    if (!configMediaCategory.response.length) return
-    const id = getAllowedFeatureId(configMediaCategory, 'Web', 'MediaRSS')
-    setFeatureId(id)
-  }, [configMediaCategory])
-
-  useEffect(() => {
     if (transitionsReducer.response) {
       setTransitionOptions(
         transitionsReducer.response.map(i => ({
@@ -437,46 +409,36 @@ const MediaRSS = props => {
   }, [transitionsReducer])
 
   useEffect(() => {
-    if (featureId) {
-      dispatchAction(getContentSourceOfMediaFeatureById(featureId))
-    }
-    // eslint-disable-next-line
-  }, [featureId])
+    if (contentSources && contentSources.length) {
+      setContentTabs(contentSources)
 
-  useEffect(() => {
-    if (contentSourceOfMediaFeature.response) {
-      const { response = [] } = contentSourceOfMediaFeature
-      setContentTabs(response)
-
-      if (response[0]) {
+      if (contentSources) {
         const { contentSourceId } = form.values
         const selectedFeed = contentSourceId
-          ? response.find(
+          ? contentSources.find(
               ({ source }) =>
                 source &&
                 source.length &&
                 source.some(({ id }) => id === contentSourceId)
-            ) || response[0]
-          : response[0]
+            ) || contentSources[0]
+          : contentSources[0]
 
         initialFormState.current.selectedFeedId = selectedFeed.id
         setSelectedFeedId(selectedFeed.id)
 
         if (mode === 'add') {
-          initialFormValues.current.contentSourceId = response[0].source[0].id
-          form.setFieldValue('contentSourceId', response[0].source[0].id)
+          initialFormValues.current.contentSourceId =
+            contentSources[0].source[0].id
+          form.setFieldValue('contentSourceId', contentSources[0].source[0].id)
         }
       }
-
-      setLoading(false)
     }
     // eslint-disable-next-line
-  }, [contentSourceOfMediaFeature])
+  }, [contentSources])
 
   useEffect(() => {
     if (contentTabs.length) {
       handleFeedIdChange({}, selectedFeedId)
-      setLoading(false)
     }
     // eslint-disable-next-line
   }, [contentTabs])
@@ -549,20 +511,12 @@ const MediaRSS = props => {
 
   return (
     <form className={classes.formWrapper} onSubmit={form.handleSubmit}>
-      {isLoading && (
-        <div className={classes.loaderWrapper}>
-          <CircularProgress size={30} thickness={5} />
-        </div>
-      )}
       <Grid container className={classes.tabContent}>
         <Grid item xs={7}>
           <div className={classes.root}>
             <Grid container justify="center">
               <TabToggleButtonGroup
-                className={[
-                  classes.tabToggleButtonContainer,
-                  classes.marginTop1
-                ].join(' ')}
+                className={classes.tabToggleButtonContainer}
                 value={values.custom}
                 onChange={(e, v) => form.setFieldValue('custom', v)}
                 exclusive
@@ -582,7 +536,7 @@ const MediaRSS = props => {
               </TabToggleButtonGroup>
 
               {values.custom ? (
-                <Grid item xs={12}>
+                <Grid item xs={12} className={classes.marginTop}>
                   <FormControlInput
                     label="Media RSS feed URL:"
                     fullWidth={true}
@@ -596,12 +550,7 @@ const MediaRSS = props => {
                   />
                 </Grid>
               ) : (
-                <Grid
-                  item
-                  xs={12}
-                  className={classes.themeCardWrap}
-                  style={{ marginTop: 10 }}
-                >
+                <Grid item xs={12} className={classes.themeCardWrap}>
                   {!!contentTabs.length && (
                     <div>
                       <header className={classes.themeHeader}>
@@ -652,8 +601,8 @@ const MediaRSS = props => {
               )}
             </Grid>
 
-            <Grid container justify="space-between">
-              <Grid item xs={6} className={classes.themeInputContainer}>
+            <Grid container justify="space-between" spacing={16}>
+              <Grid item xs={6}>
                 <FormControlSelect
                   formControlLabelClass={classes.formControlLabelClass}
                   label={'Transition'}
@@ -668,7 +617,7 @@ const MediaRSS = props => {
                   marginBottom={false}
                 />
               </Grid>
-              <Grid item xs={6} className={classes.themeInputContainer}>
+              <Grid item xs={6}>
                 <FormControlTimeDurationPicker
                   label={'Duration'}
                   formControlLabelClass={classes.labelClass}

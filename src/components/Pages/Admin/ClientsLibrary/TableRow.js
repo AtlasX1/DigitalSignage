@@ -16,6 +16,7 @@ import CustomBadge from 'components/Badge'
 import TypeCircle from 'components/TypeCircle'
 import { getUrlPrefix } from 'utils'
 import routeByName from 'constants/routes'
+import LibraryTagChips from '../../../../components/LibraryTagChips'
 
 const TableRow = ({
   t,
@@ -31,7 +32,8 @@ const TableRow = ({
     createdAt,
     featurePackage: { title: featureTitle },
     totalDevice: { all: countOfAllDevices },
-    totalUser: { all: countOfAllUsers }
+    totalUser: { all: countOfAllUsers },
+    tag
   },
   onToggleSelect
 }) => {
@@ -158,6 +160,12 @@ const TableRow = ({
                 </TableLibraryCell>
               )
             }
+            case 'tag':
+              return (
+                <TableLibraryCell key={`cell-client-${column}`} align="center">
+                  <LibraryTagChips tags={tag} />
+                </TableLibraryCell>
+              )
             default:
               return null
           }

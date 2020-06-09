@@ -1,16 +1,16 @@
 import { withStyles, Chip } from '@material-ui/core'
 import React from 'react'
+import { makeStyles } from '@material-ui/styles'
 
-export const StatusChip = withStyles({
+export const StatusChip = withStyles(({ typography, type }) => ({
   root: {
+    ...typography.lightText[type],
     width: 80,
     height: 25,
-    fontSize: '12px',
-    fontWeight: 'bold',
-    color: '#fff',
-    textAlign: 'center'
+    textAlign: 'center',
+    color: '#fff'
   }
-})(Chip)
+}))(Chip)
 
 export const ActiveStatusChip = withStyles({
   root: {
@@ -42,7 +42,7 @@ export const FlexTrialChip = withStyles({
   }
 })(TrialChip)
 
-export const TagChip = withStyles({
+const useStyles = makeStyles({
   root: {
     position: 'relative',
     margin: '0 20px 0 0',
@@ -52,7 +52,8 @@ export const TagChip = withStyles({
     borderRight: 'none',
     fontSize: '11px',
     lineHeight: '20px',
-    background: '#f1f4f9',
+    background: ({ background }) => (background ? background : '#f1f4f9'),
+    color: ({ color }) => (color ? color : 'initial'),
     borderRadius: '2px 0 0 2px',
 
     '&:before, &:after': {
@@ -77,13 +78,20 @@ export const TagChip = withStyles({
       right: '-10px',
       borderTop: '10px solid transparent',
       borderBottom: '10px solid transparent',
-      borderLeft: '10px solid #f1f4f9'
+      borderLeft: ({ background }) =>
+        `10px solid ${background ? background : '#f1f4f9'}`
+    },
+
+    '& > span': {
+      padding: 0
     }
-  },
-  label: {
-    padding: 0
   }
-})(Chip)
+})
+
+export const TagChip = props => {
+  const classes = useStyles(props)
+  return <Chip className={classes.root} {...props} />
+}
 
 export const ColoredTagChip = withStyles({
   tag: {

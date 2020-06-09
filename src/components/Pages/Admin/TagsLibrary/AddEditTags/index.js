@@ -27,7 +27,8 @@ const styles = theme => {
       marginTop: '24px'
     },
     bootstrapFormLabel: {
-      fontSize: 16,
+      fontSize: '1.0833rem',
+      lineHeight: '24px',
       color: palette[type].pages.tags.add.label.color
     }
   }

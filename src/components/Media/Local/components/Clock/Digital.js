@@ -9,7 +9,7 @@ import {
   FormControlSketchColorPicker
 } from '../../../../Form'
 
-const styles = () => ({
+const styles = ({ formControls }) => ({
   themeCardWrap: {
     border: 'solid 1px #e4e9f3',
     backgroundColor: 'rgba(245, 246, 250, 0.5)',
@@ -20,8 +20,7 @@ const styles = () => ({
     fontSize: '13px'
   },
   sliderInputLabel: {
-    color: '#74809A',
-    fontSize: '13px',
+    ...formControls.mediaApps.refreshEverySlider.label,
     lineHeight: '15px',
     marginRight: '15px'
   },

@@ -59,7 +59,11 @@ function* putClient({ id, data }) {
 
 function* getGroupItems(action) {
   try {
-    const response = yield call(clientsService.getGroupItems, action.payload)
+    const response = yield call(
+      clientsService.getGroupItems,
+      action.payload.id,
+      action.payload.params
+    )
     yield put({ type: types.GET_CLIENT_GROUP_ITEMS_SUCCESS, payload: response })
   } catch (error) {
     yield put({ type: types.GET_CLIENT_GROUP_ITEMS_ERROR, payload: error })

@@ -2,7 +2,9 @@ import { call, put } from 'redux-saga/effects'
 
 import * as types from '../actions'
 
-import { configService } from '../services'
+import { configService, mediaService } from '../services'
+import { isEmpty } from 'lodash'
+import { transformMeta } from 'utils/tableUtils'
 
 function* getConfigOrgRole() {
   try {
@@ -192,13 +194,6 @@ function* getLocation(action) {
   }
 }
 
-function* clearMediaThemes() {
-  yield put({
-    type: types.CLEAR_THEME_OF_MEDIA_SUCCESS,
-    payload: []
-  })
-}
-
 function* getTransitions() {
   try {
     const response = yield call(configService.getTransitions)
@@ -223,12 +218,68 @@ function* getAlertTypes() {
   }
 }
 
+function* getAirlines({ params }) {
+  try {
+    let response = yield call(configService.getAirlines, params)
+    if (isEmpty(response)) {
+      response = []
+    }
+    yield put({ type: types.GET_AIRLINES_SUCCESS, payload: response })
+  } catch (error) {
+    yield put({ type: types.GET_AIRLINES_ERROR, payload: error })
+  }
+}
+
+function* getAirports({ params }) {
+  try {
+    const response = yield call(configService.getAirports, params)
+    yield put({ type: types.GET_AIRPORTS_SUCCESS, payload: response })
+  } catch (error) {
+    yield put({ type: types.GET_AIRPORTS_ERROR, payload: error })
+  }
+}
+
 function* getLocationInfo({ location }) {
   try {
     const { data } = yield call(configService.getLocationInfo, location)
     yield put({ type: types.GET_LOCATION_INFO_SUCCESS, payload: data })
   } catch (error) {
     yield put({ type: types.GET_LOCATION_INFO_ERROR, payload: error })
+  }
+}
+
+function* getBackgroundPattern() {
+  try {
+    const { data } = yield call(configService.getBackgroundPattern)
+    yield put({ type: types.GET_BACKGROUND_PATTERNS_SUCCESS, payload: data })
+  } catch (error) {
+    yield put({ type: types.GET_BACKGROUND_PATTERNS_ERROR, payload: error })
+  }
+}
+
+function* getBackgroundImagesFromMedia({ params }) {
+  try {
+    const { data: groups } = yield call(configService.getMediaGroups)
+
+    const { id: imageId } = groups.find(({ name }) => name === 'Image')
+
+    const { data, meta } = yield call(mediaService.getMediaLibraryItems, {
+      ...params,
+      featureId: imageId,
+      limit: 6
+    })
+
+    const modifiedMeta = transformMeta(meta)
+
+    yield put({
+      type: types.GET_BACKGROUND_IMAGES_FROM_MEDIA_SUCCESS,
+      payload: { data, meta: modifiedMeta }
+    })
+  } catch (error) {
+    yield put({
+      type: types.GET_BACKGROUND_IMAGES_FROM_MEDIA_ERROR,
+      payload: error
+    })
   }
 }
 
@@ -245,8 +296,11 @@ export default {
   getThemeOfMediaFeatureById,
   getContentSourceOfMediaFeatureById,
   getLocation,
-  clearMediaThemes,
   getTransitions,
+  getAirlines,
+  getAirports,
   getAlertTypes,
-  getLocationInfo
+  getLocationInfo,
+  getBackgroundPattern,
+  getBackgroundImagesFromMedia
 }

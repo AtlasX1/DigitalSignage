@@ -1,21 +1,29 @@
-import React, { useState, useEffect, useMemo } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { withStyles } from '@material-ui/core'
+import React, { useState, useEffect } from 'react'
+
 import classNames from 'classnames'
+
+import { useDispatch, useSelector } from 'react-redux'
+
 import { isBoolean as _isBoolean } from 'lodash'
 
+import { withStyles } from '@material-ui/core'
+
+import update from 'immutability-helper'
+
 import {
-  FormControlSelect,
   FormControlInput,
-  FormControlSketchColorPicker
+  FormControlSketchColorPicker,
+  FormControlAutocompleteSync
 } from 'components/Form'
-import { getSavedFonts } from 'actions/fontsActions'
+
 import TextBoldIcon from '../icons/TextBoldIcon'
 import TextItalicIcon from '../icons/TextItalicIcon'
 import TextUnderlineIcon from '../icons/TextUnderlineIcon'
 import TextThroughIcon from '../icons/TextThroughIcon'
 import TextCapsIcon from '../icons/TextCapsIcon'
 import { useCanvasState } from '../canvas/CanvasProvider'
+
+import { getSavedFonts, mergeWebFontConfig } from 'actions/fontsActions'
 
 const styles = theme => ({
   selectInput: {
@@ -42,12 +50,19 @@ const styles = theme => ({
     color: '#4c5057'
   },
   colorPickerRoot: {
-    width: '150px !important'
+    width: '90px !important'
+  },
+  colorPickerInputWrap: {
+    width: '100%'
   },
   colorPickerInput: {
     padding: '9px !important',
     height: '28px !important',
     fontSize: '10px !important'
+  },
+  formControlAutocompleteClass: {
+    flexGrow: 1,
+    marginRight: 10
   }
 })
 
@@ -89,6 +104,11 @@ const FontStyle = props => {
   const { fontLabels } = useSelector(({ fonts }) => fonts)
   const [selectedFont, setSelectedFont] = useState()
   const [{ canvasHandlers, canvasUtils }] = useCanvasState()
+
+  const [fontPage, setFontPage] = useState(1)
+  const [fontList, setFontList] = useState([])
+  const [searchVal, setSearchVal] = useState('')
+
   const {
     getObjectsStyleValue,
     isTextBoxObjects,
@@ -107,11 +127,72 @@ const FontStyle = props => {
 
     if (fontLabels.length) {
       setSelectedFont('')
+      setFontList(
+        fontLabels
+          .map(f => ({
+            label: <span style={{ fontFamily: f }}>{f}</span>,
+            value: f
+          }))
+          .slice(0, 20)
+      )
     } else {
       dispatch(getSavedFonts())
     }
     // eslint-disable-next-line
   }, [fontLabels])
+
+  useEffect(
+    () => {
+      if (fontPage > 1) {
+        const updatedValues = fontLabels
+          .map(f => ({
+            label: <span style={{ fontFamily: f }}>{f}</span>,
+            value: f
+          }))
+          .slice(fontList.length - 1, fontPage * 20)
+
+        !!searchVal && updatedValues.filter(i => i.value.includes(searchVal))
+
+        setFontList(
+          update(fontList, {
+            $push: [...updatedValues]
+          })
+        )
+      }
+    },
+    // eslint-disable-next-line
+    [fontPage]
+  )
+
+  useEffect(
+    () => {
+      dispatch(mergeWebFontConfig(fontList.map(i => i.value)))
+    },
+    // eslint-disable-next-line
+    [fontList]
+  )
+
+  useEffect(
+    () => {
+      if (searchVal) {
+        setFontPage(1)
+
+        setFontList(
+          update(fontList, {
+            $set: fontLabels
+              .map(f => ({
+                label: <span style={{ fontFamily: f }}>{f}</span>,
+                value: f
+              }))
+              .filter(i => i.value.includes(searchVal))
+              .slice(0, 20)
+          })
+        )
+      }
+    },
+    // eslint-disable-next-line
+    [searchVal]
+  )
 
   const getActiveClass = (value, propName) => {
     if (!activeObject) return false
@@ -140,89 +221,117 @@ const FontStyle = props => {
     }
   }
 
-  return useMemo(() => {
-    return (
-      <>
-        <div
-          className={classNames('sidebar-row sidebar-row__border', {
-            'is-disabled': !isTextBoxObjects()
-          })}
-        >
-          <FormControlSelect
-            value={getObjectsStyleValue('fontFamily') || selectedFont}
-            marginBottom={false}
-            formControlContainerClass={classes.selectContainerClass}
-            inputClasses={{ input: classes.selectInput }}
-            options={fontLabels}
-            handleChange={e => onFontFamilyChange(e.target.value)}
-            placeholder={'Select font'}
-          />
-          <FormControlInput
-            custom
-            type="number"
-            value={getObjectsStyleValue('fontSize') || 0}
-            formControlContainerClass={'numeric-input sm-size'}
-            formControlInputClass={'form-control'}
-            name={'key'}
-            handleChange={value => onTextStyleChange('fontSize', value)}
-          />
+  const changeFontFamily = val => {
+    onFontFamilyChange(val)
+
+    setFontPage(1)
+
+    setFontList(
+      update(fontList, {
+        $set: fontLabels
+          .map(f => ({
+            label: <span style={{ fontFamily: f }}>{f}</span>,
+            value: f
+          }))
+          .slice(0, 20)
+      })
+    )
+  }
+
+  return (
+    <>
+      <div
+        className={classNames('sidebar-row sidebar-row__border', {
+          'is-disabled': !isTextBoxObjects()
+        })}
+      >
+        <FormControlAutocompleteSync
+          marginBottom={0}
+          formControlContainerClass={classes.formControlAutocompleteClass}
+          label={null}
+          value={getObjectsStyleValue('fontFamily') || selectedFont}
+          handleChange={e => changeFontFamily(e.target.value)}
+          options={fontList}
+          isClearable
+          handleInputChange={val => setSearchVal(val)}
+          handleMenuScrollToBottom={() => setFontPage(fontPage + 1)}
+        />
+        <FormControlInput
+          custom
+          type="number"
+          value={getObjectsStyleValue('fontSize') || 0}
+          formControlContainerClass={'numeric-input'}
+          formControlInputClass={'form-control'}
+          name={'key'}
+          handleChange={value => onTextStyleChange('fontSize', value)}
+        />
+      </div>
+      <div
+        className={classNames('sidebar-row sidebar-row__border', {
+          'is-disabled': !isTextBoxObjects()
+        })}
+      >
+        {fontStylesControls.map(({ value, propName, icon, label }, key) => (
+          <div
+            key={key}
+            onClick={() => onFontStyleChange(propName, value)}
+            className={classNames('item item-column item__fill', {
+              item__active: getActiveClass(value, propName),
+              item__disable: !isTextBoxObjects()
+            })}
+          >
+            <div className={'item-icon'}>{icon}</div>
+            <div className={'item-label'}>{label}</div>
+          </div>
+        ))}
+      </div>
+      <div
+        className={classNames('sidebar-row sidebar-row__border', {
+          'is-disabled': !isTextBoxObjects()
+        })}
+      >
+        <div className={'item item-column item__fill item-input-wrap'}>
+          <div>
+            <FormControlSketchColorPicker
+              rootClass={`${classes.colorPickerRoot}`}
+              formControlInputRootClass={classes.colorPickerInputRoot}
+              formControlInputClass={classes.colorPickerInput}
+              formControlInputWrapClass={classes.colorPickerInputWrap}
+              hexColorClass={classes.colorPickerHexColor}
+              pickerWrapClass={classes.colorPickerWrap}
+              color={getObjectsStyleValue('fill') || '#0378ba'}
+              withBorder={true}
+              marginBottom={false}
+              isHex={true}
+              position={'bottom left'}
+              onColorChange={value => onTextStyleChange('fill', value)}
+              colorPickerProps={{
+                width: 250
+              }}
+              width={250}
+            />
+          </div>
+          <div className={'item-input-label'}>
+            <span>Color</span>
+          </div>
         </div>
-        <div
-          className={classNames('sidebar-row sidebar-row__border', {
-            'is-disabled': !isTextBoxObjects()
-          })}
-        >
-          {fontStylesControls.map(({ value, propName, icon, label }, key) => (
-            <div
-              key={key}
-              onClick={() => onFontStyleChange(propName, value)}
-              className={classNames('item item-column item__fill', {
-                item__active: getActiveClass(value, propName),
-                item__disable: !isTextBoxObjects()
-              })}
-            >
-              <div className={'item-icon'}>{icon}</div>
-              <div className={'item-label'}>{label}</div>
-            </div>
-          ))}
-        </div>
-        <div
-          className={classNames('sidebar-row sidebar-row__border', {
-            'is-disabled': !isTextBoxObjects()
-          })}
-        >
-          <span>Color</span>
-          <FormControlSketchColorPicker
-            rootClass={`${classes.colorPickerRoot} ml-auto`}
-            formControlInputRootClass={classes.colorPickerInputRoot}
-            formControlInputClass={classes.colorPickerInput}
-            hexColorClass={classes.colorPickerHexColor}
-            pickerWrapClass={classes.colorPickerWrap}
-            color={getObjectsStyleValue('fill') || '#000'}
-            withBorder={true}
-            onColorChange={value => onTextStyleChange('fill', value)}
-          />
-        </div>
-        <div
-          className={classNames('sidebar-row sidebar-row__border', {
-            'is-disabled': !isTextBoxObjects()
-          })}
-        >
-          <span>Letter spacing</span>
+        <div className="item item-column item__fill item-input-wrap">
           <FormControlInput
             custom
             type="number"
             value={getObjectsStyleValue('charSpacing') || 0}
-            formControlContainerClass={'numeric-input ml-auto'}
+            formControlContainerClass={'numeric-input'}
             formControlInputClass={'form-control'}
             name={'key'}
             handleChange={value => onTextStyleChange('charSpacing', value)}
           />
+          <div className="item-input-label">
+            <span>Padding</span>
+          </div>
         </div>
-      </>
-    )
-    // eslint-disable-next-line
-  }, [props, activeObject, fontLabels, selectedFont])
+      </div>
+    </>
+  )
 }
 
 export default withStyles(styles)(FontStyle)

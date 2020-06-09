@@ -6,7 +6,6 @@ import {
   Warning,
   TouchApp,
   PlaylistAdd,
-  LibraryBooks,
   FontDownload,
   Subscriptions
 } from '@material-ui/icons'
@@ -14,7 +13,7 @@ import NavigationLink from './NavigationLink'
 
 import { roles } from 'utils/index'
 import routeByName from 'constants/routes'
-import { ANNOUNCEMENT, HTML_CONTENT } from 'constants/library'
+import { HTML_CONTENT } from 'constants/library'
 import featureConstants from 'constants/featureConstants'
 
 const {
@@ -22,7 +21,6 @@ const {
   RSSFeed,
   DemoFeeds,
   MediaRSS,
-  LicensedChannels,
   YouTube,
   Radio,
   CustomWidget
@@ -128,12 +126,6 @@ const Navigation = ({ t, classes, detailsReducer }) => {
           render: role.system
         },
         {
-          linkTo: routeByName[LicensedChannels].root,
-          label: t('Licensed Channels'),
-          iconClassName: 'icon-tag-lock',
-          render: role.system
-        },
-        {
           linkTo: routeByName.workplacePoster.root,
           label: t('Workplace Posters'),
           iconClassName: 'icon-picture-layer-2',
@@ -156,12 +148,6 @@ const Navigation = ({ t, classes, detailsReducer }) => {
           label: t('Custom Widgets'),
           iconClassName: 'icon-paint-palette',
           render: role.system
-        },
-        {
-          linkTo: routeByName[ANNOUNCEMENT].root,
-          label: t('Announcements Library'),
-          icon: LibraryBooks,
-          render: role.system
         }
       ]
     },
@@ -173,22 +159,22 @@ const Navigation = ({ t, classes, detailsReducer }) => {
       render: role.org,
       menuItems: [
         {
-          linkTo: '/playlist-library/create/',
+          linkTo: routeByName.playlist.create,
           label: t('Create Playlist'),
           icon: PlaylistAdd
         },
         {
-          linkTo: '/playlist-library/smart-playlist',
+          linkTo: routeByName.playlist.smart,
           label: t('Smart Playlist'),
           iconClassName: 'icon-lightbulb-4'
         },
         {
-          linkTo: '',
+          linkTo: routeByName.playlist.interactive,
           label: t('Interactive Playlist'),
           icon: TouchApp
         },
         {
-          linkTo: '/playlist-library',
+          linkTo: routeByName.playlist.root,
           label: t('Playlist Library'),
           icon: Subscriptions
         }

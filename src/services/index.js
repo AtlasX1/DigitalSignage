@@ -25,7 +25,6 @@ import * as feedsService from './feedsService'
 import settingsService from './settingsService'
 import dashboardService from './dashboardService'
 import feedbackService from './feedbackService'
-import signageEditorService from './signageEditorService'
 import clientPackageService from './clientPackageService'
 import configService from './configService'
 import HTMLContentService from './HTMLContentService'
@@ -38,7 +37,6 @@ import helpService from './helpService'
 import categoriesService from './categoriesService'
 import contentsService from './contentsService'
 import roleService from './roleService'
-import announcementService from './announcementService'
 import workplacePosterService from './workplacePosterService'
 import customEmailTemplateService from './customEmailTemplateService'
 import preferenceService from './preferenceService'
@@ -46,6 +44,7 @@ import clientUsersService from './clientUsersService'
 import whiteLabelService from './whiteLabelService'
 import quoteService from './quoteService'
 import ipService from './ipService'
+import smartPlaylistService from './smartPlaylistService'
 import alertServices from './alertServices'
 import designGalleryService from './designGalleryService'
 
@@ -76,7 +75,6 @@ export {
   settingsService,
   feedbackService,
   dashboardService,
-  signageEditorService,
   fontsService,
   clientSettingsService,
   HTMLContentService,
@@ -88,7 +86,6 @@ export {
   categoriesService,
   contentsService,
   roleService,
-  announcementService,
   workplacePosterService,
   customEmailTemplateService,
   preferenceService,
@@ -97,5 +94,6 @@ export {
   ipService,
   clientUsersService,
   alertServices,
+  smartPlaylistService,
   designGalleryService
 }

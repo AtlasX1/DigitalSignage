@@ -1,8 +1,10 @@
 import { call, put } from 'redux-saga/effects'
-
 import { alertServices } from '../services'
-
 import * as types from '../actions'
+import {
+  associateCapAlertSuccess,
+  associateCapAlertError
+} from 'actions/alertActions'
 
 function* getAlertDevicesById(action) {
   try {
@@ -115,6 +117,15 @@ function* disableDeviceAlert(action) {
   }
 }
 
+function* associateCapAlertWorker({ payload }) {
+  try {
+    const { data } = yield call(alertServices.associateCapAlert, payload)
+    yield put(associateCapAlertSuccess(data))
+  } catch (error) {
+    yield put(associateCapAlertError(error))
+  }
+}
+
 export default {
   getAlertDevicesById,
   postAlertTrigger,
@@ -123,5 +134,6 @@ export default {
   getDeviceMediaCapAlert,
   putDeviceMediaCapAlert,
   disableAlert,
-  disableDeviceAlert
+  disableDeviceAlert,
+  associateCapAlertWorker
 }

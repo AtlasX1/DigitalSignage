@@ -7,7 +7,6 @@ import { get as _get } from 'lodash'
 import { compose } from 'redux'
 import { useDispatch, useSelector } from 'react-redux'
 import {
-  CircularProgress,
   Grid,
   Dialog,
   DialogTitle,
@@ -27,7 +26,6 @@ import SliderInputRange from '../../Form/SliderInputRange'
 import { TabToggleButton, TabToggleButtonGroup } from '../../Buttons'
 import {
   createMediaPostData,
-  getAllowedFeatureId,
   getMediaInfoFromBackendData,
   ObjectToFormData
 } from '../../../utils/mediaUtils'
@@ -38,9 +36,10 @@ import {
   getMediaItemsAction
 } from '../../../actions/mediaActions'
 import { CheckboxSwitcher } from '../../Checkboxes'
+import useDetermineMediaFeatureId from 'hooks/useDetermineMediaFeatureId'
 
 const styles = theme => {
-  const { palette, type } = theme
+  const { palette, type, typography } = theme
   return {
     root: {
       margin: '15px 30px'
@@ -64,11 +63,11 @@ const styles = theme => {
     },
     header: {
       borderBottom: `1px solid ${palette[type].sideModal.content.border}`,
-      marginBottom: '15px'
+      marginBottom: 16
     },
     headerText: {
-      lineHeight: '42px',
-      color: '#74809a'
+      ...typography.lightText[type],
+      fontSize: '0.875rem'
     },
     tabToggleButton: {
       paddingLeft: '35px',
@@ -83,8 +82,7 @@ const styles = theme => {
       boxShadow: 'none'
     },
     previewMediaText: {
-      fontWeight: 'bold',
-      color: palette[type].sideModal.action.button.color
+      ...typography.lightText[type]
     },
     formControlRootClass: {
       marginBottom: '0'
@@ -208,18 +206,17 @@ const Upload = props => {
     onShareStateCallback
   } = props
   const dispatchAction = useDispatch()
-  const { configMediaCategory } = useSelector(({ config }) => config)
   const addMediaReducer = useSelector(({ addMedia }) => addMedia.general)
   const mediaItemReducer = useSelector(({ media }) => media.mediaItem)
 
   const initialFormState = useRef({ activeTab: 'upload' })
 
-  const [isLoading, setLoading] = useState(false)
   const [formSubmitting, setFormSubmitting] = useState(false)
   const [autoClose, setAutoClose] = useState(false)
-  const [featureId, setFeatureId] = useState(null)
   const [activeTab, setActiveTab] = useState(initialFormState.current.activeTab)
   const [isShowDurationInfoDialog, setShowDurationInfoDialog] = useState(false)
+
+  const featureId = useDetermineMediaFeatureId('General', 'File')
 
   const initialFormValues = useRef({
     type: 'upload',
@@ -495,27 +492,13 @@ const Upload = props => {
         setActiveTab('web')
         form.setFieldValue('webFileUrl', media_file_url)
       }
-
-      setLoading(false)
     }
     // eslint-disable-next-line
   }, [backendData])
 
   useEffect(() => {
-    if (!configMediaCategory.response.length) return
-    const id = getAllowedFeatureId(configMediaCategory, 'General', 'File')
-    setFeatureId(id)
-  }, [configMediaCategory])
-
-  useEffect(() => {
     onShareStateCallback(handleShareState)
   }, [handleShareState, onShareStateCallback])
-
-  useEffect(() => {
-    if (mode === 'edit') {
-      setLoading(true)
-    }
-  }, [mode])
 
   const { values, errors, touched, submitCount, isValid } = form
   const isButtonsDisable = formSubmitting || (submitCount > 0 && !isValid)
@@ -524,11 +507,6 @@ const Upload = props => {
   return (
     <>
       <form className={classes.formWrapper} onSubmit={form.handleSubmit}>
-        {isLoading && (
-          <div className={classes.loaderWrapper}>
-            <CircularProgress size={30} thickness={5} />
-          </div>
-        )}
         <Grid container className={classes.tabContent}>
           <Grid item xs={7}>
             <div className={classes.root}>

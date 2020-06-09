@@ -8,6 +8,7 @@ import update from 'immutability-helper'
 import PropTypes from 'prop-types'
 import React, { useCallback, useMemo, useState } from 'react'
 import { TableLibraryFooter, TableLibraryHead, TableLibraryRow } from './index'
+import { stableSort } from 'utils'
 
 const styles = theme => ({
   root: {
@@ -120,25 +121,38 @@ const BaseTable = ({
     [fetcher, meta.lastPage, meta.perPage, sortParams]
   )
 
-  const handleCustomizeTable = useCallback(
-    (index, value) => {
-      toggleDisplayColumn(index, value)
-    },
-    [toggleDisplayColumn]
-  )
-
   const handleReorder = useCallback(
     ({ source, destination }) => {
-      if (source && destination) {
-        const { index: sInd } = source
-        const { index: dInd } = destination
-
-        const shiftedColumns = update(columns, {
-          $set: arrayMove(columns, sInd, dInd)
-        })
-
-        changeColumns(shiftedColumns)
+      if (!source || !destination) {
+        return
       }
+
+      const sourceId = columns[source.index].id
+      const destinationId = columns[destination.index].id
+
+      const newColumns = stableSort(
+        columns,
+        (lhs, rhs) => (lhs.sortOrder || 0) - (rhs.sortOrder || 0)
+      )
+      let sIdx = -1
+      let dIdx = -1
+
+      newColumns.forEach(({ id }, idx) => {
+        if (id === sourceId) {
+          sIdx = idx
+        }
+        if (id === destinationId) {
+          dIdx = idx
+        }
+      })
+
+      const shiftedColumns = update(newColumns, {
+        $set: arrayMove(columns, sIdx, dIdx)
+      })
+
+      changeColumns(
+        shiftedColumns.map((col, idx) => ({ ...col, sortOrder: idx }))
+      )
     },
     [columns, changeColumns]
   )
@@ -157,7 +171,7 @@ const BaseTable = ({
             rowCount={meta.count}
             columns={columns}
             noType={noType}
-            handleColumnChange={handleCustomizeTable}
+            handleColumnChange={toggleDisplayColumn}
             handleReorder={handleReorder}
           />
           <TableBody>

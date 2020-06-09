@@ -4,19 +4,16 @@ import PropTypes from 'prop-types'
 
 import { Grid, withStyles, Typography } from '@material-ui/core'
 
-const styles = ({ palette, type }) => ({
+const styles = ({ palette, type, typography }) => ({
   detailRow: {
     minHeight: '36px',
     borderBottom: `1px solid ${palette[type].deviceCard.row.background}`
   },
   detailLabel: {
-    fontSize: '12px',
-    color: '#74809a'
+    ...typography.lightText[type]
   },
   detailValue: {
-    fontSize: '12px',
-    fontWeight: 'bold',
-    color: palette[type].deviceCard.row.value
+    ...typography.darkText[type]
   }
 })
 

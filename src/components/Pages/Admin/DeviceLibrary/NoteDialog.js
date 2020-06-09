@@ -24,6 +24,7 @@ import { BlueButton, WhiteButton } from '../../../Buttons'
 import { FormControlInput } from '../../../Form'
 import UserPic from '../../../UserPic'
 import { getUrlPrefix } from 'utils/index'
+import { UserNameView } from 'components/TableLibrary'
 
 const styles = theme => {
   const { palette, type } = theme
@@ -227,7 +228,12 @@ const NoteDialog = ({
                     className={classes.name}
                     component="h1"
                     title={note.user.email}
-                  >{`${note.user.firstName} ${note.user.lastName}`}</Typography>
+                  >
+                    <UserNameView
+                      firstName={note.user.firstName}
+                      lastName={note.user.lastName}
+                    />
+                  </Typography>
                   <Typography className={classes.time} component="h2">
                     {`${new Date(note.time).toLocaleDateString(i18n.language)} |
                       ${new Date(note.time).toLocaleTimeString(i18n.language, {

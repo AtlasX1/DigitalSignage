@@ -1,13 +1,37 @@
-import React, { useState } from 'react'
+import React, { useEffect } from 'react'
 import { translate } from 'react-i18next'
+
 import { withStyles, Grid, Typography } from '@material-ui/core'
 
-import { FormControlInput, FormControlSelect } from '../../../Form'
-import { Card } from '../../../Card'
-import { CheckboxSwitcher } from '../../../Checkboxes'
-import RedoSchedule from './RedoShedule'
-import { TabToggleButtonGroup, TabToggleButton } from 'components/Buttons'
+import { useDispatch, useSelector } from 'react-redux'
+import { get as _get } from 'lodash'
+
+import { FormControlChips, FormControlInput } from 'components/Form'
+import { Card } from 'components/Card'
+import { CheckboxSwitcher } from 'components/Checkboxes'
 import { Scrollbars } from 'components/Scrollbars'
+import RedoSchedule from './RedoShedule'
+
+import { labelToSec, secToLabel } from 'utils/secToLabel'
+import selectUtils from 'utils/select'
+
+import * as tagsActions from 'actions/tagsActions'
+import { getScheduleGroupsAction } from 'actions/scheduleActions'
+import { TabToggleButton, TabToggleButtonGroup } from '../../../Buttons'
+
+const deviceItem = (text, i, classes) => (
+  <Grid
+    key={`contents-item-${i}`}
+    container
+    className={classes.detailRow}
+    justify="space-between"
+    alignItems="center"
+  >
+    <Grid item>
+      <Typography className={classes.detailLabel}>{text}</Typography>
+    </Grid>
+  </Grid>
+)
 
 const styles = theme => {
   const { palette, type } = theme
@@ -44,7 +68,6 @@ const styles = theme => {
       paddingLeft: '15px'
     },
     mediaNameTitle: {
-      marginLeft: '20px',
       paddingTop: '10px',
       paddingLeft: '20px',
       borderLeft: `1px solid ${palette[type].sideModal.content.border}`
@@ -85,14 +108,15 @@ const styles = theme => {
       color: '#0378ba'
     },
     contentsList: {
-      overflowX: 'auto'
+      height: '100%'
     },
     detailRow: {
       padding: '0 15px',
       borderBottom: `1px solid ${palette[type].sideModal.content.border}`
     },
     detailLabel: {
-      color: '#74809a'
+      color: '#74809a',
+      lineHeight: '42px'
     },
     detailValue: {
       lineHeight: '42px',
@@ -110,7 +134,13 @@ const styles = theme => {
       borderBottom: `solid 1px ${palette[type].sideModal.content.border}`
     },
     devicesList: {
-      padding: '15px'
+      height: 115,
+      overflow: 'auto'
+    },
+    fieldError: {
+      color: 'red',
+      border: `solid 5px #ce3636`,
+      background: '#dc8383'
     },
     noSelectedDevices: {
       borderRadius: '4px',
@@ -123,41 +153,70 @@ const styles = theme => {
     noSelectedDevicesIcon: {
       fontSize: '20px',
       color: '#f5a623'
+    },
+    reactSelectContainer: {
+      '& .react-select__control': {
+        paddingTop: 0,
+        paddingBottom: 0
+      }
+    },
+    noPadding: {
+      padding: 0
     }
   }
 }
 
-const PlaylistInformation = ({ t, classes }) => {
-  const [scheduleType, setScheduleType] = useState('timed')
-  const totalDuration = '00:05:35'
-  const contents = [
-    {
-      label: 'Title',
-      duration: '00:00:55'
+const ScheduleInfo = props => {
+  const {
+    t,
+    classes,
+    handleValueChange = (f, v) => {},
+    values,
+    errors,
+    touched,
+    selectedDevices
+  } = props
+
+  const dispatchAction = useDispatch()
+
+  const groups = useSelector(({ schedule }) =>
+    _get(schedule, 'groups.response.data')
+  )
+  const tags = useSelector(({ tags }) => _get(tags, 'items.response'))
+
+  useEffect(
+    () => {
+      dispatchAction(
+        getScheduleGroupsAction({
+          limit: 9999
+        })
+      )
+      dispatchAction(
+        tagsActions.getItems({
+          limit: 9999
+        })
+      )
     },
-    {
-      label: 'Tips For Designing An Effective Business Card',
-      duration: '00:00:25'
-    },
-    {
-      label: 'Buy Youtube Views',
-      duration: '00:00:55'
-    },
-    {
-      label: 'Title',
-      duration: '00:00:55'
-    },
-    {
-      label: 'Tips For Designing An Effective Business Card',
-      duration: '00:00:25'
-    }
-  ]
+    // eslint-disable-next-line
+    []
+  )
+
+  const totalDuration = secToLabel(
+    values.scheduleContent
+      .map(i => labelToSec(i.duration))
+      .reduce((a, b) => a + b, 0)
+  )
+
   const handleChangeRedoSchedule = value => {
-    // TODO implement logic
+    Object.keys(value).forEach(key => {
+      handleValueChange(key, value[key])
+    })
   }
 
-  const toggleScheduleType = value => {
-    setScheduleType(value)
+  const handleStatusChange = val => {
+    if (val) {
+      handleValueChange('status', 'Active')
+    } else handleValueChange('status', 'Inactive')
   }
 
   return (
@@ -170,11 +229,13 @@ const PlaylistInformation = ({ t, classes }) => {
       >
         <TabToggleButtonGroup
           exclusive
-          value={scheduleType}
-          onChange={(_, value) => toggleScheduleType(value)}
+          value={values.scheduleType}
+          onChange={(e, value) =>
+            value && handleValueChange('scheduleType', value)
+          }
         >
-          <TabToggleButton value="timed">{t('Timed')}</TabToggleButton>
-          <TabToggleButton value="failover">{t('Failover')}</TabToggleButton>
+          <TabToggleButton value="Timed">{t('Timed')}</TabToggleButton>
+          <TabToggleButton value="Failover">{t('Failover')}</TabToggleButton>
         </TabToggleButtonGroup>
       </Grid>
 
@@ -185,27 +246,45 @@ const PlaylistInformation = ({ t, classes }) => {
         radius={false}
         removeSidePaddings={true}
         headerSidePaddings={true}
+        rootClassName={classes.noPadding}
         removeNegativeHeaderSideMargins={true}
         title={t('Schedule Info').toUpperCase()}
         headerClasses={[classes.header]}
         headerTextClasses={[classes.headerText]}
       >
-        <Grid container className={classes.scheduleInfoRow}>
-          <Grid item className={classes.mediaStatus}>
+        <Grid
+          container
+          className={classes.scheduleInfoRow}
+          style={{ margin: '0 0 -20px 0' }}
+        >
+          <Grid item xs={4} className={classes.mediaStatus}>
             <Typography className={classes.boldTitle}>{t('Status')}</Typography>
-            <CheckboxSwitcher label={t('Active')} />
+            <CheckboxSwitcher
+              label={t(values.status)}
+              value={values.status === 'Active'}
+              handleChange={handleStatusChange}
+            />
           </Grid>
-          <Grid item xs className={classes.mediaNameTitle}>
+          <Grid item xs={8} className={classes.mediaNameTitle}>
             <FormControlInput
               id="media-name-title"
               label={t('Name / Title')}
+              value={values.title}
+              error={errors.title}
+              touched={touched.title}
+              handleChange={e => handleValueChange('title', e.target.value)}
               fullWidth={true}
             />
           </Grid>
         </Grid>
 
-        {scheduleType === 'timed' && (
-          <RedoSchedule handleChange={handleChangeRedoSchedule} />
+        {values.scheduleType === 'Timed' && (
+          <RedoSchedule
+            values={values}
+            errors={errors}
+            touched={touched}
+            handleChange={handleChangeRedoSchedule}
+          />
         )}
 
         <div
@@ -217,13 +296,18 @@ const PlaylistInformation = ({ t, classes }) => {
             container
             direction="column"
             wrap="nowrap"
-            className={classes.contentsCard}
+            className={[
+              classes.contentsCard,
+              errors.scheduleContent && touched.scheduleContent
+                ? classes.fieldError
+                : ''
+            ].join(' ')}
           >
             <Grid item className={classes.contentsCardHeader}>
               <Grid container justify="space-between">
                 <Grid item>
                   <Typography className={classes.boldTitle}>
-                    {t('Contents')}
+                    {t('Content')}
                   </Typography>
                 </Grid>
                 <Grid item>
@@ -237,30 +321,41 @@ const PlaylistInformation = ({ t, classes }) => {
                 </Grid>
               </Grid>
             </Grid>
-            <Scrollbars>
-              <Grid item className={classes.contentsList}>
-                {contents.map((content, index) => (
-                  <Grid
-                    key={`contents-item-${index}`}
-                    container
-                    className={classes.detailRow}
-                    justify="space-between"
-                    alignItems="center"
-                  >
-                    <Grid item>
-                      <Typography className={classes.detailLabel}>
-                        {content.label}
-                      </Typography>
+
+            <Grid item className={classes.contentsList}>
+              {!!!values.scheduleContent.length && (
+                <Typography className={classes.noSelectedDevices}>
+                  <i
+                    className={`icon-interface-alert-triangle ${classes.noSelectedDevicesIcon}`}
+                  />
+                  {t('Content must be selected before scheduling')}
+                </Typography>
+              )}
+
+              <Scrollbars>
+                {!!values.scheduleContent.length &&
+                  values.scheduleContent.map((content, index) => (
+                    <Grid
+                      key={`contents-item-${index}`}
+                      container
+                      className={classes.detailRow}
+                      justify="space-between"
+                      alignItems="center"
+                    >
+                      <Grid item>
+                        <Typography className={classes.detailLabel}>
+                          {content.title}
+                        </Typography>
+                      </Grid>
+                      <Grid item>
+                        <Typography className={classes.detailValue}>
+                          {content.duration}
+                        </Typography>
+                      </Grid>
                     </Grid>
-                    <Grid item>
-                      <Typography className={classes.detailValue}>
-                        {content.duration}
-                      </Typography>
-                    </Grid>
-                  </Grid>
-                ))}
-              </Grid>
-            </Scrollbars>
+                  ))}
+              </Scrollbars>
+            </Grid>
           </Grid>
         </div>
 
@@ -269,7 +364,10 @@ const PlaylistInformation = ({ t, classes }) => {
             container
             direction="column"
             wrap="nowrap"
-            className={classes.devicesCard}
+            className={[
+              classes.devicesCard,
+              errors.deviceList && touched.deviceList ? classes.fieldError : ''
+            ].join(' ')}
           >
             <Grid item className={classes.devicesCardHeader}>
               <Grid container>
@@ -281,32 +379,62 @@ const PlaylistInformation = ({ t, classes }) => {
               </Grid>
             </Grid>
             <Grid item className={classes.devicesList}>
-              <Typography className={classes.noSelectedDevices}>
-                <i
-                  className={`icon-interface-alert-triangle ${classes.noSelectedDevicesIcon}`}
-                />
-                {t('Devices must be selected before scheduling')}
-              </Typography>
+              <Scrollbars>
+                {(!!!values.deviceList.length || !!!selectedDevices.length) && (
+                  <Typography className={classes.noSelectedDevices}>
+                    <i
+                      className={`icon-interface-alert-triangle ${classes.noSelectedDevicesIcon}`}
+                    />
+                    {t('Devices must be selected before scheduling')}
+                  </Typography>
+                )}
+                {!!selectedDevices.length
+                  ? selectedDevices.map((device, index) =>
+                      deviceItem(device.name, index, classes)
+                    )
+                  : !!values.deviceList.length
+                  ? values.deviceList.map((deviceId, index) =>
+                      deviceItem(deviceId, index, classes)
+                    )
+                  : null}
+              </Scrollbars>
             </Grid>
           </Grid>
         </div>
 
         <div className={classes.scheduleInfoRow}>
-          <FormControlSelect
-            id="group"
-            fullWidth={true}
+          <FormControlChips
+            isMulti={false}
+            customClass={classes.reactSelectContainer}
             label={t('Create New / Add to Group')}
+            options={selectUtils.convertArr(groups, selectUtils.toChipObj)}
+            values={values.group.value ? values.group.value : values.group}
+            handleChange={e => {
+              const group = selectUtils
+                .convertArr(groups, selectUtils.toChipObj)
+                .find(i => i.value === e.target.value)
+              handleValueChange('group', [group])
+            }}
+            error={errors.group}
+            touched={touched.group}
           />
         </div>
 
         <div className={classes.scheduleInfoRow}>
-          <FormControlSelect id="tags" fullWidth={true} label={t('Add Tags')} />
+          <FormControlChips
+            customClass={classes.reactSelectContainer}
+            label={t('Add Tags')}
+            options={selectUtils.convertArr(tags, selectUtils.tagToChipObj)}
+            values={values.tag}
+            error={errors.tag}
+            touched={touched.tag}
+            handleChange={e => handleValueChange('tag', e.target.value)}
+            marginBottom={0}
+          />
         </div>
       </Card>
     </>
   )
 }
 
-export default translate('translations')(
-  withStyles(styles)(PlaylistInformation)
-)
+export default translate('translations')(withStyles(styles)(ScheduleInfo))

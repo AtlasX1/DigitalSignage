@@ -14,7 +14,7 @@ document.body.appendChild(portal)
 const styles = () => ({
   root: {
     display: 'flex',
-    marginTop: '20px'
+    marginTop: 16
   },
   column: {
     flexGrow: '1',

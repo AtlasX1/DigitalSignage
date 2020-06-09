@@ -7,18 +7,12 @@ import { translate } from 'react-i18next'
 import { useFormik } from 'formik'
 import { compose } from 'redux'
 import { useDispatch, useSelector } from 'react-redux'
-import {
-  withStyles,
-  Grid,
-  Typography,
-  CircularProgress
-} from '@material-ui/core'
+import { withStyles, Grid, Typography } from '@material-ui/core'
 
 import { MediaInfo, MediaTabActions } from '../index'
 import { mediaConstants as constants } from '../../../constants'
 import {
   createMediaPostData,
-  getAllowedFeatureId,
   getMediaInfoFromBackendData
 } from '../../../utils/mediaUtils'
 import {
@@ -31,10 +25,11 @@ import {
 import { WhiteButton } from '../../Buttons'
 import { CheckboxSwitcher } from '../../Checkboxes'
 import { FormControlInput, SliderInputRange } from '../../Form'
+import useDetermineMediaFeatureId from 'hooks/useDetermineMediaFeatureId'
 
 const styles = ({ palette, type, typography }) => ({
   root: {
-    margin: '24px',
+    margin: '15px 30px',
     fontFamily: typography.fontFamily
   },
   formWrapper: {
@@ -65,8 +60,7 @@ const styles = ({ palette, type, typography }) => ({
     boxShadow: 'none'
   },
   previewMediaText: {
-    fontWeight: 'bold',
-    color: palette[type].sideModal.action.button.color
+    ...typography.lightText[type]
   },
   formControlRootClass: {
     marginBottom: 0
@@ -74,27 +68,20 @@ const styles = ({ palette, type, typography }) => ({
   switchContainerClass: {
     width: '160px'
   },
-  inputContainerClass: {
-    margin: '0 10px'
-  },
   inputClass: {
     width: '46px'
   },
   previewMediaRow: {
-    marginTop: '42px'
-  },
-  sliderInputLabelClass: {
-    paddingRight: '15px',
-    fontStyle: 'normal'
+    marginTop: 45
   },
   checkboxSwitcherLabelClass: {
     fontSize: '13px'
   },
   labelClass: {
-    fontSize: '17px'
+    fontSize: '1.0833rem'
   },
   formControlInputWrap: {
-    marginBottom: '12px'
+    marginBottom: 5
   }
 })
 
@@ -130,14 +117,12 @@ const Google = props => {
     onShareStateCallback
   } = props
   const dispatchAction = useDispatch()
-  const { configMediaCategory } = useSelector(({ config }) => config)
   const addMediaReducer = useSelector(({ addMedia }) => addMedia.web)
   const mediaItemReducer = useSelector(({ media }) => media.mediaItem)
 
-  const [isLoading, setLoading] = useState(false)
   const [formSubmitting, setFormSubmitting] = useState(false)
   const [autoClose, setAutoClose] = useState(false)
-  const [featureId, setFeatureId] = useState(null)
+  const featureId = useDetermineMediaFeatureId('Web', 'GoogleDocs')
 
   const initialFormValues = useRef({
     url: '',
@@ -327,37 +312,19 @@ const Google = props => {
         mediaInfo: getMediaInfoFromBackendData(backendData)
       }
       form.setValues(initialFormValues.current)
-      setLoading(false)
     }
 
     // eslint-disable-next-line
   }, [backendData])
 
   useEffect(() => {
-    if (!configMediaCategory.response.length) return
-    const id = getAllowedFeatureId(configMediaCategory, 'Web', 'GoogleDocs')
-    setFeatureId(id)
-  }, [configMediaCategory])
-
-  useEffect(() => {
     onShareStateCallback(handleShareState)
   }, [handleShareState, onShareStateCallback])
-
-  useEffect(() => {
-    if (mode === 'edit') {
-      setLoading(true)
-    }
-  }, [mode])
 
   const { values, errors, touched, submitCount, isValid } = form
   const isButtonsDisable = formSubmitting || (submitCount > 0 && !isValid)
   return (
     <form className={classes.formWrapper} onSubmit={form.handleSubmit}>
-      {isLoading && (
-        <div className={classes.loaderWrapper}>
-          <CircularProgress size={30} thickness={5} />
-        </div>
-      )}
       <Grid container className={classes.tabContent}>
         <Grid item xs={7}>
           <div className={classes.root}>
@@ -412,7 +379,6 @@ const Google = props => {
                   maxValue={360}
                   minValue={5}
                   labelAtEnd={false}
-                  inputContainerClass={classes.inputContainerClass}
                   inputRangeContainerSASS="CreateMediaSettings__slider--Wrap"
                   value={values.refreshEvery}
                   error={errors.refreshEvery}

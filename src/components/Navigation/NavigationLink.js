@@ -12,81 +12,76 @@ import {
 } from '@material-ui/core'
 import { DropdownHover } from '../Dropdowns'
 
-const styles = theme => {
-  const { palette, type } = theme
-  return {
-    navigationLinkWrap: {
-      display: 'flex',
-      alignItems: 'stretch',
-      margin: '0 0.5rem',
-      paddingBottom: '2px',
-      cursor: 'default',
-      '&:hover': {
-        borderBottom: '2px solid transparent',
-        paddingBottom: 0
-      }
-    },
-    navigationItemIcon: {
-      fontSize: 18,
-      marginRight: '0.5rem'
-    },
-    dropdownContainer: {
-      display: 'flex',
-      alignItems: 'stretch'
-    },
-    dropdownButton: {
-      display: 'flex',
-      alignItems: 'center',
-      padding: '0 8px',
-      fontSize: '0.875rem',
-      textTransform: 'capitalize'
-    },
-    navigationText: {
-      color: palette[type].header.navItem.color
-    },
-    navigationLinkActive: {
-      fontWeight: 'bold',
-      color: palette[type].header.navItem.activeColor
-    },
-    navigationSubMenu: {
-      width: '300px',
-      top: '70%'
-    },
-    navigationSubMenuList: {
-      padding: '35px 0 30px 35px',
-      maxHeight: '90vh',
-      overflowY: 'auto'
-    },
-    navigationSubMenuItem: {
-      padding: '5px 0 0'
-    },
-    navigationSubMenuText: {
-      color: palette[type].header.navItem.color,
-      transition: 'all .4s'
-    },
-    navigationSubMenuActive: {
-      fontWeight: 'bold',
-      color: palette[type].header.navItem.activeColor
-    },
-    subMenuItem: {
-      '&:hover $subMenuIcon': {
-        opacity: 1
-      },
-      '&:hover $navigationSubMenuText': {
-        fontWeight: 'bold',
-        color: palette[type].header.navItem.activeColor
-      }
-    },
-    subMenuIcon: {
-      fontSize: '25px',
-      opacity: 0.3,
-      transition: 'all .4s'
-    },
-    subMenuIconActive: {
-      opacity: 1
+const styles = ({ type, typography }) => ({
+  navigationLinkWrap: {
+    display: 'flex',
+    alignItems: 'stretch',
+    margin: '0 0.5rem',
+    paddingBottom: '2px',
+    cursor: 'default',
+    '&:hover': {
+      borderBottom: '2px solid transparent',
+      paddingBottom: 0
     }
+  },
+  navigationItemIcon: {
+    fontSize: 18,
+    marginRight: '0.5rem'
+  },
+  dropdownContainer: {
+    display: 'flex',
+    alignItems: 'stretch'
+  },
+  dropdownButton: {
+    display: 'flex',
+    alignItems: 'center',
+    padding: '0 8px',
+    fontSize: '0.875rem',
+    textTransform: 'capitalize'
+  },
+  navigationText: {
+    ...typography.lightText[type],
+    fontSize: '0.9375rem'
+  },
+  navigationLinkActive: {
+    fontWeight: 'bold'
+  },
+  navigationSubMenu: {
+    width: '300px',
+    top: '70%'
+  },
+  navigationSubMenuList: {
+    padding: '35px 0 30px 35px',
+    maxHeight: '90vh',
+    overflowY: 'auto'
+  },
+  navigationSubMenuItem: {
+    padding: '5px 0 0'
+  },
+  navigationSubMenuText: {
+    ...typography.lightText[type],
+    transition: 'all .4s'
+  },
+  navigationSubMenuActive: {
+    fontWeight: 'bold'
+  },
+  subMenuItem: {
+    '&:hover $subMenuIcon': {
+      opacity: 1
+    },
+    '&:hover $navigationSubMenuText': {
+      fontWeight: 'bold'
+    }
+  },
+  subMenuIcon: {
+    fontSize: '25px',
+    opacity: 0.3,
+    transition: 'all .4s'
+  },
+  subMenuIconActive: {
+    opacity: 1
   }
-}
+})
 
 const dropdownFadeTransition = 500
 

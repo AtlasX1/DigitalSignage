@@ -8,13 +8,14 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
 import { Button, Grid, List, Typography, withStyles } from '@material-ui/core'
+import Tooltip from 'components/Tooltip'
 
 import {
   DropdownHoverListItem,
   DropdownHoverListItemIcon,
   DropdownHoverListItemText
 } from 'components/Dropdowns'
-import EmailLink from 'components/EmailLink'
+import { UserNameView } from 'components/TableLibrary'
 
 import { CheckboxSwitcher } from 'components/Checkboxes'
 
@@ -58,6 +59,7 @@ const styles = theme => {
       background: palette[type].groupCard.dropdown.content.background
     },
     contentItem: {
+      flexWrap: 'nowrap',
       '&:not(:last-child)': {
         borderBottom: `1px solid ${palette[type].groupCard.dropdown.border}`
       }
@@ -95,6 +97,9 @@ const styles = theme => {
     },
     loaderTitle: {
       fontSize: 15
+    },
+    switchContainer: {
+      flexShrink: 0
     }
   }
 }
@@ -197,7 +202,7 @@ const ActionDropdown = ({
   }
 
   const getReadInfo = userId => {
-    const per = permission.find(p => p.user.id === userId)
+    const per = permission.find(p => p.user && p.user.id === userId)
     if (per && typeof per.readPermission === 'number') {
       return per.readPermission === 1
     }
@@ -205,7 +210,7 @@ const ActionDropdown = ({
   }
 
   const getWriteInfo = userId => {
-    const per = permission.find(p => p.user.id === userId)
+    const per = permission.find(p => p.user && p.user.id === userId)
     if (per && typeof per.writePermission === 'number') {
       return per.writePermission === 1
     }
@@ -294,43 +299,58 @@ const ActionDropdown = ({
           />
         ) : (
           <Grid container direction="column">
-            {users.map(user => (
-              <Grid
-                key={user.id}
-                container
-                justify="space-between"
-                className={classes.contentItem}
-              >
-                <Grid item>
-                  <Typography className={classes.userName}>
-                    <EmailLink email={user.email} />
-                  </Typography>
-                </Grid>
-                <Grid item xs={5}>
-                  <Grid container justify="flex-end">
-                    <Grid item>
-                      <CheckboxSwitcher
-                        disabled={getReadInfo(user.id)}
-                        value={getReadInfo(user.id)}
-                        switchBaseClass={classes.switcherBase}
-                        handleChange={value =>
-                          handleChange(user.id, value, 'readPermission')
-                        }
-                      />
-                    </Grid>
-                    <Grid item>
-                      <CheckboxSwitcher
-                        value={getWriteInfo(user.id)}
-                        switchBaseClass={classes.switcherBase}
-                        handleChange={value =>
-                          handleChange(user.id, value, 'writePermission')
-                        }
-                      />
-                    </Grid>
-                  </Grid>
-                </Grid>
-              </Grid>
-            ))}
+            {users &&
+              users
+                .sort((a, b) => (a.firstName > b.firstName ? 1 : -1))
+                .map(
+                  user =>
+                    !!user.role.restricted && (
+                      <Grid
+                        key={user.id}
+                        container
+                        justify="space-between"
+                        className={classes.contentItem}
+                      >
+                        <Grid item>
+                          <Tooltip title={user.email}>
+                            <Typography className={classes.userName}>
+                              <UserNameView
+                                firstName={user.firstName}
+                                lastName={user.lastName}
+                              />
+                            </Typography>
+                          </Tooltip>
+                        </Grid>
+                        <Grid item className={classes.switchContainer}>
+                          <Grid container justify="flex-end">
+                            <Grid item>
+                              <CheckboxSwitcher
+                                disabled={getReadInfo(user.id)}
+                                value={getReadInfo(user.id)}
+                                switchBaseClass={classes.switcherBase}
+                                handleChange={value =>
+                                  handleChange(user.id, value, 'readPermission')
+                                }
+                              />
+                            </Grid>
+                            <Grid item>
+                              <CheckboxSwitcher
+                                value={getWriteInfo(user.id)}
+                                switchBaseClass={classes.switcherBase}
+                                handleChange={value =>
+                                  handleChange(
+                                    user.id,
+                                    value,
+                                    'writePermission'
+                                  )
+                                }
+                              />
+                            </Grid>
+                          </Grid>
+                        </Grid>
+                      </Grid>
+                    )
+                )}
           </Grid>
         )}
       </div>

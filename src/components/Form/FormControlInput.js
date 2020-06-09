@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import NumericInput from 'react-numeric-input'
 import {
   withStyles,
@@ -25,7 +25,7 @@ const styles = ({ palette, type, spacing, transitions, typography }) => ({
   },
   bootstrapRoot: {
     'label + &': {
-      marginTop: '7px'
+      marginTop: 0
     }
   },
   bootstrapRootWithoutMargin: {
@@ -55,7 +55,8 @@ const styles = ({ palette, type, spacing, transitions, typography }) => ({
     height: '87px'
   },
   bootstrapFormLabel: {
-    fontSize: 16,
+    fontSize: '1.0833rem',
+    lineHeight: '24px',
     color: palette[type].formControls.label.color
   },
   labelRightComponentContainer: {
@@ -108,10 +109,12 @@ const styles = ({ palette, type, spacing, transitions, typography }) => ({
   },
   labelLink: {
     position: 'unset !important',
-    borderBottom: '1px dashed #0A83C8',
+    textDecoration: 'underline',
+    textDecorationStyle: 'dotted',
+    textDecorationColor: '#0378ba',
     '&:hover': {
       cursor: 'pointer',
-      borderBottomStyle: 'solid'
+      textDecorationStyle: 'solid'
     }
   }
 })
@@ -125,6 +128,7 @@ const FormControlInput = ({
   value = '',
   fullWidth = false,
   placeholder = null,
+  formikMode = false,
   min = 0,
   max = 9999999,
   formControlContainerClass = '',
@@ -153,6 +157,16 @@ const FormControlInput = ({
   tooltip = '',
   ...props
 }) => {
+  const handleChangeNumericInput = useCallback(
+    value => {
+      if (formikMode) {
+        handleChange({ target: { value, name } })
+      } else {
+        handleChange(value, name)
+      }
+    },
+    [formikMode, handleChange, name]
+  )
   return (
     <div className={classNames(classes.root, formControlContainerClass)}>
       <FormControl
@@ -216,7 +230,7 @@ const FormControlInput = ({
               value={value}
               disabled={disabled}
               name={name}
-              onChange={val => handleChange(val, name)}
+              onChange={handleChangeNumericInput}
               className={classNames(
                 classes.bootstrapInput,
                 formControlInputClass,

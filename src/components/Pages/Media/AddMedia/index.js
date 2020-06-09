@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo, useCallback } from 'react'
+import React, { useEffect, useState, useCallback } from 'react'
 import PropTypes from 'prop-types'
 import { translate } from 'react-i18next'
 import { Link, Route } from 'react-router-dom'
@@ -10,20 +10,12 @@ import { withStyles } from '@material-ui/core'
 
 import { SideModal } from 'components/Modal'
 import { SideTabs, SideTab, TabIcon } from 'components/Tabs'
-import {
-  AddMediaGeneralTab,
-  AddMediaWebTab,
-  AddMediaLocalTab,
-  AddMediaGalleryTab,
-  AddMediaSocialTab,
-  AddMediaPremiumTab,
-  AddMediaLicensedTab,
-  AddMediaKioskTab,
-  AddMediaCustomTab
-} from './Tabs'
 import { getMediaGroupsAction } from 'actions/mediaActions'
 import { getItems } from 'actions/tagsActions'
 import { getConfigMediaCategory } from 'actions/configActions'
+import { sortBySortOrder } from 'utils/libraryUtils'
+import MediaComponent from './MediaComponent'
+import { Scrollbars } from 'components/Scrollbars'
 
 const styles = theme => ({
   root: {
@@ -55,7 +47,18 @@ const webFontLoaderConfig = {
       'Montserrat',
       'Pacifico',
       'Poppins',
-      'Rasa'
+      'Rasa',
+      'Roboto',
+      'Times',
+      'Courier',
+      'Verdana',
+      'Palatino',
+      'Garamond',
+      'Bookman',
+      'Comic Sans MS',
+      'Candara',
+      'Arial Black',
+      'Impact'
     ]
   },
   events: false,
@@ -71,12 +74,15 @@ const AddMedia = ({
   tags,
   groups,
   configMediaCategory,
-  getConfigMediaCategory
+  getConfigMediaCategory,
+  isPending
 }) => {
-  const { mode: mediaMode, currentTab } = match.params
+  const { mode: mediaMode, currentTab, ownTabName } = match.params
   const isEditMode = mediaMode === 'edit'
 
-  const [selectedTab, setSelectedTab] = useState('general')
+  const [selectedTab, setSelectedTab] = useState(
+    ownTabName ? ownTabName : 'general'
+  )
   const handleChange = useCallback(
     (event, tab) => {
       setSelectedTab(tab)
@@ -84,44 +90,25 @@ const AddMedia = ({
     [setSelectedTab]
   )
 
-  const leftSidebarTabs = useMemo(() => {
-    const tabs = [
-      {
-        name: 'favorites',
-        icon: 'icon-vote-heart-favorite-star',
-        label: 'Favorite Tab'
-      },
-      { name: 'general', icon: 'icon-file-copy', label: 'General Tab' },
-      { name: 'local', icon: 'icon-close-bubble', label: 'Local Tab' },
-      { name: 'web', icon: 'icon-world-wide-web', label: 'Web Tab' },
-      { name: 'gallery', icon: 'icon-sheriff-star', label: 'Gallery Tab' },
-      { name: 'social', icon: 'icon-pet-dog', label: 'Social Tab' },
-      { name: 'premium', icon: 'icon-user-business-man', label: 'Premium Tab' },
-      {
-        name: 'licensed',
-        icon: 'icon-romance-marriage-license',
-        label: 'Licensed Tab'
-      },
-      { name: 'kiosk', icon: 'icon-hurricane-1', label: 'Kiosk Tab' },
-      { name: 'custom', icon: 'icon-cog-play', label: 'Custom Tab' }
-    ]
+  const leftSidebarTabs = () => {
+    const tabs = sortBySortOrder(configMediaCategory.response)
 
-    return tabs.map(tab => {
-      const { name, icon, label } = tab
+    return tabs.map(({ name, icon, id }) => {
+      const value = name.toLowerCase()
       return (
         <SideTab
-          key={name}
-          disabled={isEditMode && selectedTab !== name}
+          key={id}
+          disabled={(isEditMode && selectedTab !== value) || isPending}
           disableRipple={true}
           icon={<TabIcon iconClassName={icon} />}
           component={Link}
-          label={t(label)}
-          value={name}
-          to={`/media-library/media/${mediaMode}/${name}`}
+          label={t(name)}
+          value={value}
+          to={`/media-library/media/${mediaMode}/${value}`}
         />
       )
     })
-  }, [t, isEditMode, mediaMode, selectedTab])
+  }
 
   useEffect(() => {
     if (!groups.response) {
@@ -162,46 +149,16 @@ const AddMedia = ({
       >
         <div className={classes.addMediaTabsWrap}>
           <SideTabs value={selectedTab} onChange={handleChange}>
-            {leftSidebarTabs}
+            {leftSidebarTabs()}
           </SideTabs>
         </div>
         <div className={classes.addMediaContent}>
-          <Route
-            path={`/media-library/media/:mode/general/:currentTab?/:id?`}
-            component={AddMediaGeneralTab}
-          />
-          <Route
-            path={`/media-library/media/:mode/web/:currentTab?/:id?`}
-            component={AddMediaWebTab}
-          />
-          <Route
-            path={`/media-library/media/:mode/local/:currentTab?/:id?`}
-            component={AddMediaLocalTab}
-          />
-          <Route
-            path={`/media-library/media/:mode/gallery/:currentTab?/:id?`}
-            component={AddMediaGalleryTab}
-          />
-          <Route
-            path={`/media-library/media/:mode/social/:currentTab?/:id?`}
-            component={AddMediaSocialTab}
-          />
-          <Route
-            path={`/media-library/media/:mode/premium/:currentTab?/:id?`}
-            component={AddMediaPremiumTab}
-          />
-          <Route
-            path={`/media-library/media/:mode/licensed/:currentTab?/:id?`}
-            component={AddMediaLicensedTab}
-          />
-          <Route
-            path={`/media-library/media/:mode/kiosk/:currentTab?/:id?`}
-            component={AddMediaKioskTab}
-          />
-          <Route
-            path={`/media-library/media/:mode/custom/:currentTab?/:id?`}
-            component={AddMediaCustomTab}
-          />
+          <Scrollbars>
+            <Route
+              path={`/media-library/media/:mode/:ownTabName(general|web|local|gallery|social|premium|licensed|kiosk|custom)/:currentTab?/:id?`}
+              component={MediaComponent}
+            />
+          </Scrollbars>
         </div>
       </SideModal>
     </WebFontLoader>
@@ -212,10 +169,11 @@ AddMedia.propTypes = {
   classes: PropTypes.object.isRequired
 }
 
-const mapStateToProps = ({ tags, media, config }) => ({
+const mapStateToProps = ({ tags, media, config, appReducer }) => ({
   groups: media.groups,
   tags: tags.items,
-  configMediaCategory: config.configMediaCategory
+  configMediaCategory: config.configMediaCategory,
+  isPending: appReducer.isPending
 })
 
 const mapDispatchToProps = dispatch => {

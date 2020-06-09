@@ -31,7 +31,7 @@ const InfoMessageStyles = ({ typography }) => ({
   infoMessageContainer: {
     display: 'flex',
     alignItems: 'flex-start',
-    padding: '0 5px 15px'
+    padding: '0 0 16px'
   },
   infoMessage: {
     marginLeft: '20px',
@@ -54,17 +54,17 @@ const InfoMessage = withStyles(InfoMessageStyles)(
   )
 )
 
-const styles = ({ palette, type, typography }) => {
+const styles = ({ palette, type, typography, formControls }) => {
   return {
     root: {
-      margin: '31px 25px',
+      margin: '15px 30px',
       fontFamily: typography.fontFamily
     },
     themeCardWrap: {
       border: `solid 1px ${palette[type].pages.media.card.border}`,
       backgroundColor: palette[type].pages.media.card.background,
       borderRadius: '4px',
-      marginBottom: '22px'
+      marginBottom: 16
     },
     themeHeader: {
       padding: '0 15px',
@@ -82,11 +82,10 @@ const styles = ({ palette, type, typography }) => {
       background: 'transparent'
     },
     themeOptions1: {
-      padding: '0 15px',
-      margin: '12px 0'
+      padding: 15
     },
     authorizationContainer: {
-      padding: '0 82px 0 41px'
+      padding: 0
     },
     registerButton: {
       width: '124px',
@@ -103,22 +102,20 @@ const styles = ({ palette, type, typography }) => {
       width: '114px'
     },
     registerContainer: {
-      paddingRight: '34px',
       borderRight: `1px solid ${palette[type].sideModal.tabs.header.border}`
     },
     loginContainer: {
-      paddingLeft: '27px',
-      paddingBottom: '31px'
+      paddingLeft: 16,
+      paddingBottom: 16
     },
     formControlRootClass: {
       width: '264px'
     },
     previewMediaRow: {
-      marginTop: '33px'
+      marginTop: 45
     },
     sliderInputLabel: {
-      color: '#74809A',
-      fontSize: '13px',
+      ...formControls.mediaApps.refreshEverySlider.label,
       lineHeight: '15px',
       marginRight: '15px'
     }

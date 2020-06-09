@@ -15,10 +15,10 @@ import { GoogleCalendar, ImportFile, WebFeed } from './components/Events/index'
 
 import MediaThemeSelector from '../MediaThemeSelector'
 
-const styles = ({ palette, type, typography }) => {
+const styles = ({ palette, type, typography, formControls }) => {
   return {
     root: {
-      margin: '20px 25px',
+      margin: '15px 30px',
       fontFamily: typography.fontFamily
     },
     previewMediaBtn: {
@@ -27,11 +27,10 @@ const styles = ({ palette, type, typography }) => {
       backgroundImage: palette[type].sideModal.action.button.background,
       borderRadius: '4px',
       boxShadow: 'none',
-      marginTop: '37px'
+      marginTop: 45
     },
     previewMediaText: {
-      fontWeight: 'bold',
-      color: palette[type].sideModal.action.button.color
+      ...typography.lightText[type]
     },
     themeCardWrap: {
       border: `solid 1px ${palette[type].pages.media.general.card.border}`,
@@ -54,27 +53,13 @@ const styles = ({ palette, type, typography }) => {
       background: 'transparent'
     },
     themeOptions1: {
-      padding: '0 15px',
-      margin: '12px 0'
+      padding: 15
     },
-    marginTop1: {
-      marginTop: '27px'
-    },
-    marginTop2: {
-      marginTop: '21px'
-    },
-    marginTop3: {
-      marginTop: '22px'
-    },
-    marginTop4: {
-      marginTop: '10px'
-    },
-    marginTop5: {
-      marginTop: '17px'
+    marginTop: {
+      marginTop: 16
     },
     sliderInputLabel: {
-      color: '#74809A',
-      fontSize: '13px',
+      ...formControls.mediaApps.refreshEverySlider.label,
       lineHeight: '15px',
       marginRight: '15px'
     },
@@ -138,7 +123,7 @@ class ScheduleOfEvents extends Component {
             onChange={this.handleThemeTypeChanges}
           />
         </Grid>
-        <Grid container justify="center" className={classes.marginTop1}>
+        <Grid container justify="center" className={classes.marginTop}>
           <Grid item>
             <TabToggleButtonGroup
               className={classes.tabToggleButtonContainer}
@@ -160,7 +145,7 @@ class ScheduleOfEvents extends Component {
           </Grid>
         </Grid>
         {this.getSelectedTabContent()}
-        <Grid container justify="center" className={classes.marginTop2}>
+        <Grid container justify="center" className={classes.marginTop}>
           <Grid item xs={12} className={classes.themeCardWrap}>
             <header className={classes.themeHeader}>
               <Grid container justify="space-between" alignItems="center">
@@ -200,7 +185,7 @@ class ScheduleOfEvents extends Component {
           container
           alignItems="center"
           justify="space-between"
-          className={classes.marginTop3}
+          className={classes.marginTop}
         >
           <Grid item xs={6} className={classes.inputContainer}>
             <FormControlSelect label="Duration" marginBottom={false} />

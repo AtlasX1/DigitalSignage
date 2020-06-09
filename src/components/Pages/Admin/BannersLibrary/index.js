@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useMemo } from 'react'
+import React, { Fragment, useCallback, useEffect, useMemo } from 'react'
 import { Link, Route } from 'react-router-dom'
 import { translate } from 'react-i18next'
 import { withStyles } from '@material-ui/core'
@@ -14,13 +14,13 @@ import {
   clearResponseInfo,
   deleteSelectedItems
 } from 'actions/bannerActions'
-import { notificationAnalyzer } from 'utils'
 import { getConfigOrgRole } from 'actions/configActions'
 import BaseTable from 'components/TableLibrary/BaseTable'
 import TableRow from './TableRow'
 import routeByName from 'constants/routes'
 import PageTitle from 'components/PageContainer/PageTitle'
 import useSelectedList from 'hooks/tableLibrary/useSelectedList'
+import useNotifyAnalyzer from 'hooks/tableLibrary/useNotifyAnalyzer'
 
 const styles = ({ palette, type }) => ({
   actionIcons: {
@@ -40,6 +40,11 @@ const initialColumns = [
     id: 'expirationDate',
     label: 'Expiration Date',
     align: 'center'
+  },
+  {
+    id: 'activationDate',
+    label: 'Activation Date',
+    align: 'center'
   }
 ]
 
@@ -54,7 +59,7 @@ const BannersLibrary = ({
   getItems,
   enqueueSnackbar,
   deleteSelectedItems,
-  getConfigOrgRole,
+  closeSnackbar,
   clearResponseInfo
 }) => {
   const rowsIds = useMemo(() => items.map(({ id }) => id), [items])
@@ -70,29 +75,28 @@ const BannersLibrary = ({
     [t]
   )
 
+  const fetcher = useCallback(() => {
+    getItems({
+      page: 1,
+      limit: meta.perPage
+    })
+  }, [getItems, meta.perPage])
+
   useEffect(() => {
     getItems({
       page: 1
     })
-    getConfigOrgRole()
-  }, [getConfigOrgRole, getItems, t, translate.tabTitle])
+    //eslint-disable-next-line
+  }, [])
 
-  useEffect(() => {
-    const wasNotify = notificationAnalyzer(
-      enqueueSnackbar,
-      [post, put, del],
-      'Banner'
-    )
-
-    if (wasNotify) {
-      clearResponseInfo()
-      getItems({
-        page: 1,
-        limit: meta.perPage
-      })
-    }
-    // eslint-disable-next-line
-  }, [post, put, del])
+  useNotifyAnalyzer(
+    fetcher,
+    clearResponseInfo,
+    enqueueSnackbar,
+    closeSnackbar,
+    'Banner',
+    [post, put, del]
+  )
 
   return (
     <PageContainer

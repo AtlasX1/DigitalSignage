@@ -43,15 +43,9 @@ import { MediaInfo, MediaTabActions } from '../index'
 
 import {
   createMediaPostData,
-  getAllowedFeatureId,
   getMediaInfoFromBackendData,
   getMediaThemesSettings
-} from '../../../utils/mediaUtils'
-
-import {
-  clearMediaThemes,
-  getThemeOfMediaFeatureById
-} from '../../../actions/configActions'
+} from 'utils/mediaUtils'
 
 import {
   addMedia,
@@ -59,11 +53,12 @@ import {
   editMedia,
   generateMediaPreview,
   getMediaItemsAction
-} from '../../../actions/mediaActions'
+} from 'actions/mediaActions'
+import useMediaTheme from 'hooks/useMediaTheme'
 
 const styles = ({ palette, type, typography }) => ({
   root: {
-    margin: '32px 25px',
+    margin: '15px 30px',
     fontFamily: typography.fontFamily
   },
   formWrapper: {
@@ -72,19 +67,6 @@ const styles = ({ palette, type, typography }) => ({
   },
   tabContent: {
     height: '100%'
-  },
-  loaderWrapper: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingTop: '100px',
-    width: '100%',
-    height: '100%',
-    position: 'absolute',
-    top: '0',
-    left: '0',
-    backgroundColor: 'rgba(255,255,255,.5)',
-    zIndex: 1
   },
   smallLoaderWrapper: {
     display: 'flex',
@@ -120,11 +102,10 @@ const styles = ({ palette, type, typography }) => ({
     backgroundImage: palette[type].sideModal.action.button.background,
     borderRadius: '4px',
     boxShadow: 'none',
-    marginTop: '81px'
+    marginTop: 45
   },
   previewMediaText: {
-    fontWeight: 'bold',
-    color: palette[type].sideModal.action.button.color
+    ...typography.lightText[type]
   },
   templateLabel: {
     fontSize: '12px',
@@ -145,10 +126,9 @@ const styles = ({ palette, type, typography }) => ({
     borderRight: `1px solid ${palette[type].pages.media.local.card.border}`
   },
   inputLabel: {
-    fontSize: '12px',
     display: 'block',
     width: '104px',
-    color: palette[type].pages.media.local.card.input.label.color
+    ...typography.lightText[type]
   },
   numberInput: {
     '& span': {
@@ -169,7 +149,7 @@ const styles = ({ palette, type, typography }) => ({
     }
   },
   periodTypeContainer: {
-    margin: '14px 0 33px'
+    margin: '16px 0'
   },
   inputClasses: {
     input: {
@@ -191,11 +171,8 @@ const styles = ({ palette, type, typography }) => ({
       height: '24px'
     }
   },
-  marginTop1: {
-    marginTop: '20px'
-  },
-  marginTop2: {
-    marginTop: '7px'
+  marginTop: {
+    marginTop: 16
   },
   marginRight1: {
     marginRight: '10px'
@@ -204,7 +181,7 @@ const styles = ({ palette, type, typography }) => ({
     borderBottom: `1px solid ${palette[type].pages.media.local.card.border}`
   },
   templateContainer: {
-    padding: '0 18px 28px'
+    padding: '0 0 16px'
   },
   skinsWrapper: {},
   buttonView: {
@@ -215,8 +192,7 @@ const styles = ({ palette, type, typography }) => ({
     width: 130
   },
   formControlInputClass: {
-    height: '38px !important',
-    fontSize: '14px !important'
+    height: '38px !important'
   },
   formControlNumericInputRootClass: {
     height: '38px !important',
@@ -296,34 +272,27 @@ const ButtonApp = props => {
   } = props
 
   const dispatchAction = useDispatch()
-  const { configMediaCategory } = useSelector(({ config }) => config)
-  const addMediaReducer = useSelector(({ addMedia }) => addMedia.kiosk)
-  const ButtonThemes = useSelector(({ config }) => {
-    if (
-      config.themeOfMedia &&
-      config.themeOfMedia.response &&
-      config.themeOfMedia.response.Legacy
-    ) {
-      return config.themeOfMedia.response.Legacy
-    }
-    return []
-  })
-  const mediaItemReducer = useSelector(({ media }) => media.mediaItem)
+
+  const [addMediaReducer, mediaItemReducer] = useSelector(state => [
+    state.addMedia.kiosk,
+    state.media.mediaItem
+  ])
 
   const initialFormState = useRef({
     templateType: 'Preset'
   })
 
-  const [isLoading, setLoading] = useState(true)
   const [isValueExist, setValueExist] = useState(false)
   const [templateType, setTemplateType] = useState(
     initialFormState.current.templateType
   )
   const [formSubmitting, setFormSubmitting] = useState(false)
   const [autoClose, setAutoClose] = useState(false)
-  const [featureId, setFeatureId] = useState(null)
   const [defaultSkins, setDefaultSkins] = useState([])
   const [allowedSettings, setAllowedSettings] = useState({})
+
+  const { themes, featureId } = useMediaTheme('Kiosk', 'Button')
+  const ButtonThemes = themes.Legacy || []
 
   const initialFormValues = useRef({
     mediaInfo: { ...constants.mediaInfoInitvalue },
@@ -562,11 +531,6 @@ const ButtonApp = props => {
       form.setValues(values)
       setValueExist(true)
     }
-    // WebFont.load({
-    //   google: {
-    //     families: fonts
-    //   }
-    // })
     // eslint-disable-next-line
   }, [])
 
@@ -614,20 +578,14 @@ const ButtonApp = props => {
       form.setValues(initialFormValues.current)
 
       setValueExist(true)
-      setLoading(false)
     }
     // eslint-disable-next-line
   }, [backendData, ButtonThemes])
-  useEffect(() => {
-    if (featureId) {
-      dispatchAction(getThemeOfMediaFeatureById(featureId))
-    }
-    // eslint-disable-next-line
-  }, [featureId])
 
   useEffect(() => {
     if (ButtonThemes.length && !isValueExist && !backendData) {
       const { customProperties } = ButtonThemes[0]
+
       if (customProperties) {
         setAllowedSettings(getMediaThemesSettings(customProperties))
         const {
@@ -663,35 +621,14 @@ const ButtonApp = props => {
         }
         form.setValues(initialFormValues.current)
         setDefaultSkins(defaultSkins)
-        setLoading(false)
       }
     }
     // eslint-disable-next-line
   }, [ButtonThemes])
 
   useEffect(() => {
-    if (!configMediaCategory.response.length) return
-    const id = getAllowedFeatureId(configMediaCategory, 'Kiosk', 'Button')
-    setFeatureId(id)
-  }, [configMediaCategory])
-
-  useEffect(() => {
     onShareStateCallback(handleShareState)
   }, [handleShareState, onShareStateCallback])
-
-  useEffect(() => {
-    if (mode === 'edit') {
-      setLoading(true)
-    }
-  }, [mode])
-
-  useEffect(
-    () => () => {
-      dispatchAction(clearMediaThemes())
-    },
-    // eslint-disable-next-line
-    []
-  )
 
   const { values, errors, touched, submitCount, isValid } = form
   const isButtonsDisable = formSubmitting || (submitCount > 0 && !isValid)
@@ -699,11 +636,6 @@ const ButtonApp = props => {
 
   return (
     <form className={classes.formWrapper} onSubmit={form.handleSubmit}>
-      {isLoading && (
-        <div className={classes.loaderWrapper}>
-          <CircularProgress size={30} thickness={5} />
-        </div>
-      )}
       <Grid container className={classes.tabContent}>
         <Grid item xs={7}>
           <div className={classes.root}>
@@ -738,7 +670,7 @@ const ButtonApp = props => {
                 )}
               </Grid>
             </Grid>
-            <Grid container className={classes.marginTop2}>
+            <Grid container className={classes.marginTop}>
               <Grid item xs={12}>
                 <Typography className={classes.templateLabel}>
                   Template Style
@@ -854,7 +786,7 @@ const ButtonApp = props => {
                           <Grid
                             container
                             alignItems="center"
-                            className={classes.marginTop1}
+                            className={classes.marginTop}
                           >
                             <Grid item xs={4}>
                               <InputLabel className={classes.inputLabel}>
@@ -887,7 +819,7 @@ const ButtonApp = props => {
                           <Grid
                             container
                             alignItems="center"
-                            className={classes.marginTop1}
+                            className={classes.marginTop}
                           >
                             <Grid item xs={4}>
                               <InputLabel className={classes.inputLabel}>
@@ -931,7 +863,7 @@ const ButtonApp = props => {
                           <Grid
                             container
                             alignItems="center"
-                            className={classes.marginTop1}
+                            className={classes.marginTop}
                           >
                             <Grid item xs={4}>
                               <InputLabel className={classes.inputLabel}>
@@ -957,7 +889,7 @@ const ButtonApp = props => {
                           <Grid
                             container
                             alignItems="center"
-                            className={classes.marginTop1}
+                            className={classes.marginTop}
                           >
                             <Grid item xs={4}>
                               <InputLabel className={classes.inputLabel}>
@@ -983,7 +915,7 @@ const ButtonApp = props => {
                           <Grid
                             container
                             alignItems="center"
-                            className={classes.marginTop1}
+                            className={classes.marginTop}
                           >
                             <Grid item xs={4}>
                               <InputLabel className={classes.inputLabel}>

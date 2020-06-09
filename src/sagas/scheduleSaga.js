@@ -5,6 +5,50 @@ import * as types from '../actions'
 import { scheduleService } from '../services'
 import { transformMeta } from 'utils/tableUtils'
 
+function* postSchedule(action) {
+  try {
+    const response = yield call(scheduleService.postSchedule, action.data)
+    yield put({
+      type: types.POST_SCHEDULE_SUCCESS,
+      payload: response,
+      meta: action.meta
+    })
+  } catch (error) {
+    yield put({
+      type: types.POST_SCHEDULE_ERROR,
+      payload: error,
+      meta: action.meta
+    })
+  }
+}
+
+function* getSchedule(action) {
+  try {
+    const response = yield call(scheduleService.getSchedule, action.data)
+    yield put({
+      type: types.GET_SCHEDULE_BY_ID_SUCCESS,
+      payload: response
+    })
+  } catch (error) {
+    yield put({ type: types.GET_SCHEDULE_BY_ID_ERROR, payload: error })
+  }
+}
+
+function* editSchedule(action) {
+  try {
+    const response = yield call(scheduleService.editSchedule, {
+      id: action.meta.id,
+      data: action.data
+    })
+    yield put({
+      type: types.PUT_SCHEDULE_SUCCESS,
+      payload: response
+    })
+  } catch (error) {
+    yield put({ type: types.PUT_SCHEDULE_ERROR, payload: error })
+  }
+}
+
 function* getItems({ params }) {
   try {
     const { data, meta } = yield call(scheduleService.getItems, params)
@@ -52,7 +96,11 @@ function* getGroups() {
 
 function* getGroupItems(action) {
   try {
-    const response = yield call(scheduleService.getGroupItems, action.payload)
+    const response = yield call(
+      scheduleService.getGroupItems,
+      action.payload.id,
+      action.payload.params
+    )
     yield put({
       type: types.GET_SCHEDULE_GROUP_ITEMS_SUCCESS,
       payload: response
@@ -129,6 +177,9 @@ function* deleteScheduleById({ id }) {
 }
 
 export default {
+  postSchedule,
+  getSchedule,
+  editSchedule,
   getItems,
   getPreference,
   putPreference,

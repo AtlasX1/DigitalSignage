@@ -41,9 +41,9 @@ const getUngroupedUsers = () => ({
   type: types.GET_UNGROUPED_USERS
 })
 
-const getUsersGroupItems = id => ({
+const getUsersGroupItems = (id, params) => ({
   type: types.GET_USERS_GROUP_ITEMS,
-  id
+  payload: { id, params }
 })
 
 const postUsersGroupItem = data => ({

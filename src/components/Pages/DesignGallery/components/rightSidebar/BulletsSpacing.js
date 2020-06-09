@@ -19,9 +19,11 @@ const controls = [
   }
 ]
 
-const BulletsSpacing = ({ activeObject, onListChange }) => {
+const BulletsSpacing = ({ activeObject, onListChange, onTextStyleChange }) => {
   const [{ canvasHandlers }] = useCanvasState()
   const { isTextBoxObjects } = canvasHandlers
+
+  const { getObjectsStyleValue } = canvasHandlers
 
   return (
     <div
@@ -41,17 +43,20 @@ const BulletsSpacing = ({ activeObject, onListChange }) => {
           <div className={'item-label'}>{item.label}</div>
         </div>
       ))}
-      <div className={'numeric-wrapper ml-auto'}>
+      <div className="item item-column item__fill item-input-wrap">
         <FormControlInput
           custom
           type="number"
-          value={28}
+          value={getObjectsStyleValue('lineHeight') || 1}
+          min={1}
           formControlContainerClass={'numeric-input'}
           formControlInputClass={'form-control'}
           name={'key'}
-          handleChange={() => {}}
+          handleChange={value => onTextStyleChange('lineHeight', value)}
         />
-        <span className={'helper-text'}>Line Spacing</span>
+        <div className="item-input-label">
+          <span>Line Spacing</span>
+        </div>
       </div>
     </div>
   )

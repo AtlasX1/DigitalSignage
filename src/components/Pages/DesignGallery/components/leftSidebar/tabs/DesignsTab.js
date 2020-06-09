@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react'
+import React, { useState, useEffect } from 'react'
 
 import { useSelector, useDispatch } from 'react-redux'
 import { translate } from 'react-i18next'
@@ -11,8 +11,9 @@ import ConfirmModal from '../../modals/ConfirmModal'
 import LeftSidebarPanel from '../LeftSidebarPanel'
 import PreviewGrids from '../grids/PreviewGrids'
 
-import { getTemplates } from 'actions/signageEditorActions'
-import { TEMPLATES_GROUPS, SORTING_TYPES } from '../../../constans'
+import { SORTING_TYPES, TABS_NAMES } from '../../../constans'
+
+import { getDesigns } from 'actions/designGalleryActions'
 
 const Title = () => {
   return (
@@ -30,54 +31,25 @@ const DesignsTab = ({ t }) => {
   const [isLoading, setLoading] = useState(false)
   const [scrollPosition, setScrollPosition] = useState(null)
 
+  const [activeTab, setActiveTab] = useState(TABS_NAMES.myDesigns) // stock
+
   const {
-    templates,
-    templatesPage,
-    templatesTabQuery,
-    templatesFilter,
+    designs,
+    designsPage,
+    designsTabQuery,
+    designsFilter,
     perPage
   } = useSelector(({ editor }) => editor.leftSidebar)
+
   const [{ canvasHistory, canvasHandlers }] = useCanvasState()
-  const [searchTerm, setSearchTerm] = useState(templatesTabQuery)
-  const templatesOptions = TEMPLATES_GROUPS.map(name => {
-    return { label: t(name), value: name.toLowerCase() }
-  })
+  const [searchTerm, setSearchTerm] = useState(designsTabQuery)
 
-  useEffect(() => {
-    if (!templates.length) {
-      dispatch(
-        getTemplates({
-          filter: templatesFilter,
-          query: searchTerm,
-          templatesPage,
-          perPage
-        })
-      )
-    }
-    // eslint-disable-next-line
-  }, [])
-
-  useEffect(() => {
-    setLoading(false)
-    setScrollPosition(null)
-    // eslint-disable-next-line
-  }, [templates])
-
-  useEffect(() => {
-    dispatch(
-      getTemplates({
-        filter: templatesFilter,
-        query: searchTerm,
-        templatesPage: 0,
-        perPage
-      })
-    )
-    // eslint-disable-next-line
-  }, [searchTerm])
+  // ---- methods
 
   const handleChangeSearch = term => {
     setScrollPosition(0)
     setSearchTerm(term)
+    //TODO: add live search when BE will be ready
   }
 
   const handlePreviewClick = item => {
@@ -97,30 +69,35 @@ const DesignsTab = ({ t }) => {
   const handleContentScrollEnd = () => {
     setLoading(true)
     dispatch(
-      getTemplates({
-        filter: templatesFilter,
+      getDesigns({
+        filter: designsFilter,
         query: searchTerm,
-        templatesPage: templatesPage + 1,
+        designsPage: designsPage + 1,
         perPage
       })
     )
   }
 
   const handleChangeFilter = filter => {
-    setScrollPosition(0)
-    setLoading(true)
-    dispatch(
-      getTemplates({
-        filter,
-        query: searchTerm,
-        templatesPage: templatesPage,
-        perPage
-      })
-    )
+    // setScrollPosition(0)
+    // setLoading(true)
+    // dispatch(
+    //   getDesigns({
+    //     filter,
+    //     query: searchTerm,
+    //     designsPage: designsPage,
+    //     perPage
+    //   })
+    // )
+    console.log('filter', filter)
   }
 
   const handleChangeSorting = type => {
     setSortingType(type)
+  }
+
+  const handleChangeTab = tab => {
+    setActiveTab(tab)
   }
 
   const getColWidth = type => {
@@ -134,58 +111,106 @@ const DesignsTab = ({ t }) => {
     }
   }
 
-  return useMemo(() => {
-    return (
-      <>
-        <LeftSidebarPanel
-          title={<Title />}
-          withFilter
-          filterOptions={templatesOptions}
-          sortingBy={sortingType}
-          onChangeSorting={handleChangeSorting}
-          onChangeFilter={handleChangeFilter}
-          searchTerm={searchTerm}
-          placeholder={'Search Designs'}
-          onChangeSearch={handleChangeSearch}
-          content={
-            <>
-              {isLoading && (
-                <CanvasBgSettingLoader itemsLength={templates.length} />
-              )}
-              <PreviewGrids
-                isVisible
-                isLoading={isLoading}
-                grids={templates}
-                onPreviewClick={handlePreviewClick}
-                colWidth={getColWidth(sortingType)}
-              />
-            </>
-          }
-          scrollPosition={scrollPosition}
-          onContentScrollEnd={handleContentScrollEnd}
-        />
+  // ---- effects
 
-        <ConfirmModal
-          isShow={isConfirmDialogOpen}
-          title={'Apply a template to your design'}
-          contentText={
-            'By applying a template you will lose your existing design. To restore, click Undo button.'
-          }
-          onApply={handleCloseDialog}
-          onCancel={() => setConfirmDialogOpen(false)}
-          onClose={() => setConfirmDialogOpen(false)}
-        />
-      </>
+  useEffect(() => {
+    if (!designs.length) {
+      dispatch(
+        getDesigns({
+          filter: designsFilter,
+          query: searchTerm,
+          designsPage,
+          perPage
+        })
+      )
+    }
+    // eslint-disable-next-line
+  }, [])
+
+  useEffect(() => {
+    setLoading(false)
+    setScrollPosition(null)
+    // eslint-disable-next-line
+  }, [designs])
+
+  useEffect(() => {
+    dispatch(
+      getDesigns({
+        filter: designsFilter,
+        query: searchTerm,
+        designsPage: 0,
+        perPage
+      })
     )
     // eslint-disable-next-line
-  }, [
-    templates,
-    isLoading,
-    scrollPosition,
-    sortingType,
-    isConfirmDialogOpen,
-    canvasHistory
-  ])
+  }, [searchTerm])
+
+  useEffect(
+    () => {
+      //TODO: fix requests when BE will be ready
+      dispatch(
+        getDesigns({
+          filter: activeTab,
+          query: searchTerm,
+          designsPage,
+          perPage
+        })
+      )
+    },
+    // eslint-disable-next-line
+    [activeTab]
+  )
+  // ---- UI
+
+  return (
+    <>
+      <LeftSidebarPanel
+        withTabs
+        withFilter
+        activeTab={activeTab}
+        title={<Title />}
+        sortingBy={sortingType}
+        onChangeSorting={handleChangeSorting}
+        onChangeFilter={handleChangeFilter}
+        searchTerm={searchTerm}
+        placeholder={'Search Designs'}
+        onChangeSearch={handleChangeSearch}
+        tabButtons={[
+          { text: TABS_NAMES.myDesigns },
+          { text: TABS_NAMES.stockDesigns },
+          { text: TABS_NAMES.sharedDesigns }
+        ]}
+        onChangeTabs={handleChangeTab}
+        content={
+          <>
+            {isLoading && (
+              <CanvasBgSettingLoader itemsLength={designs.length} />
+            )}
+            <PreviewGrids
+              isVisible
+              isLoading={isLoading}
+              grids={designs}
+              onPreviewClick={handlePreviewClick}
+              colWidth={getColWidth(sortingType)}
+            />
+          </>
+        }
+        scrollPosition={scrollPosition}
+        onContentScrollEnd={handleContentScrollEnd}
+      />
+
+      <ConfirmModal
+        isShow={isConfirmDialogOpen}
+        title={'Apply a template to your design'}
+        contentText={
+          'By applying a template you will lose your existing design. To restore, click Undo button.'
+        }
+        onApply={handleCloseDialog}
+        onCancel={() => setConfirmDialogOpen(false)}
+        onClose={() => setConfirmDialogOpen(false)}
+      />
+    </>
+  )
 }
 
 export default translate('translations')(DesignsTab)

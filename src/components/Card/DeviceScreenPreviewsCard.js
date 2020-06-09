@@ -5,6 +5,7 @@ import { translate } from 'react-i18next'
 import { withStyles, Typography } from '@material-ui/core'
 
 import Card from './Card'
+import moment from 'moment'
 
 const styles = theme => ({
   cardRoot: {
@@ -97,7 +98,9 @@ class DeviceScreenPreviewsCard extends Component {
         </div>
         <footer className={classes.footer}>
           <Typography className={classes.footerText}>
-            {t('Last Updated', { lastUpdated })}
+            {t('Last Updated', {
+              lastUpdated: moment(lastUpdated).format('DD MMM, YYYY, hh:mm')
+            })}
           </Typography>
         </footer>
       </Card>

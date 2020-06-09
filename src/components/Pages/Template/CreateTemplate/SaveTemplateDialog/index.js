@@ -60,8 +60,7 @@ const styles = ({ palette, type, typography }) => {
       boxShadow: 'none'
     },
     previewMediaText: {
-      fontWeight: 'bold',
-      color: palette[type].sideModal.action.button.color
+      ...typography.lightText[type]
     },
     switchContainerClass: {
       width: '180px'
@@ -78,12 +77,8 @@ const styles = ({ palette, type, typography }) => {
     formGroup: {
       marginTop: '12px'
     },
-    sliderInputLabelClass: {
-      paddingRight: '15px',
-      fontStyle: 'normal'
-    },
     labelClass: {
-      fontSize: '17px'
+      fontSize: '1.0833rem'
     },
     formControlLabelClass: {
       fontSize: '13px'

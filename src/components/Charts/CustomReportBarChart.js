@@ -1,66 +1,97 @@
-import React from 'react'
+import React, { useMemo, useCallback, useEffect, useState } from 'react'
 
-import {
-  BarChart,
-  CartesianGrid,
-  XAxis,
-  YAxis,
-  Bar,
-  Cell,
-  Tooltip
-} from 'recharts'
+import { Bar } from '@nivo/bar'
+import { withTheme } from '@material-ui/core'
+import { capitalize } from 'utils'
 
 const COLORS = ['#d0021b', '#f5a623', '#7ed321', '#4a90e2', '#9013fe']
 
-const CustomReportBarChart = ({ chartData }) => {
-  const fontFamily = [
-    '"Nunito Sans"',
-    '-apple-system',
-    'BlinkMacSystemFont',
-    '"Segoe UI"',
-    'Roboto',
-    '"Helvetica Neue"',
-    'Arial',
-    'sans-serif',
-    '"Apple Color Emoji"',
-    '"Segoe UI Emoji"',
-    '"Segoe UI Symbol"'
-  ].join(',')
+const CustomReportBarChart = ({
+  chartData = [],
+  theme,
+  layout,
+  barPadding = 0.075
+}) => {
+  const [initialRender, setInitialRender] = useState(true)
+
+  const chartTheme = useMemo(
+    () => ({
+      fontFamily: theme.typography.fontFamily,
+      fontSize: 12,
+      axis: {
+        ticks: {
+          line: { fill: '#74809A' },
+          text: { fill: '#74809A' }
+        }
+      },
+      tooltip: {
+        container: {
+          fontFamily: theme.typography.fontFamily,
+          fontSize: 12
+        }
+      },
+      grid: {
+        line: { stroke: '#74809A', strokeDasharray: '1 5' }
+      }
+    }),
+    [theme.typography.fontFamily]
+  )
+
+  const tooltip = useCallback(
+    ({ data }) => (
+      <>
+        <div>{capitalize(data.name)}</div>
+        <div>Value: {data.value || 0}</div>
+      </>
+    ),
+    []
+  )
+
+  useEffect(() => {
+    setInitialRender(false)
+  }, [])
 
   return (
-    <BarChart height={218} width={536} data={chartData}>
-      <CartesianGrid vertical={false} strokeDasharray="1 5" stroke="#888996" />
-      <XAxis
-        dataKey="name"
-        tick={{
-          fill: '#888996',
-          fontSize: '12px',
-          fontFamily
-        }}
-      />
-      <YAxis
-        axisLine={false}
-        tickCount={3}
-        tick={{
-          fill: 'rgba(0, 0, 0, 0.25)',
-          fontSize: '12px',
-          fontFamily
-        }}
-      />
-      <Tooltip
-        cursor={false}
-        contentStyle={{
-          fontSize: '14px',
-          fontFamily
-        }}
-      />
-      <Bar dataKey="value" radius={[3, 3, 3, 3]} barSize={31}>
-        {chartData.map((entry, index) => (
-          <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-        ))}
-      </Bar>
-    </BarChart>
+    <Bar
+      data={initialRender ? [] : chartData}
+      height={218}
+      width={536}
+      borderRadius={3}
+      indexBy="name"
+      colorBy="index"
+      margin={{
+        left: 80,
+        top: 10,
+        right: 10,
+        bottom: 44
+      }}
+      padding={1 - chartData.length * barPadding}
+      layout={layout}
+      colors={COLORS}
+      theme={chartTheme}
+      axisBottom={{
+        tickSize: 5,
+        tickPadding: 5,
+        legend: 'name',
+        legendPosition: 'middle',
+        legendOffset: 100
+      }}
+      axisLeft={{
+        tickSize: 5,
+        tickPadding: 5,
+        tickValues: 4,
+        legend: 'value',
+        legendPosition: 'middle',
+        legendOffset: -100
+      }}
+      enableGridX={layout === 'horizontal'}
+      enableLabel={false}
+      labelSkipWidth={10}
+      labelSkipHeight={12}
+      legends={[]}
+      tooltip={tooltip}
+      animate={true}
+    />
   )
 }
-
-export default CustomReportBarChart
+export default withTheme()(CustomReportBarChart)

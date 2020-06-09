@@ -7,32 +7,8 @@ import {
 } from '../../../../Form/index'
 
 const styles = () => ({
-  header: {
-    borderBottom: '1px solid #f5f6fa',
-    marginBottom: '15px'
-  },
-  headerText: {
-    lineHeight: '42px',
-    color: '#74809a'
-  },
-  tabToggleButton: {
-    paddingLeft: '35px',
-    paddingRight: '35px'
-  },
-  previewMediaBtn: {
-    marginTop: '20px',
-    padding: '10px 25px 8px',
-    border: 'solid 1px #cbd3e3',
-    backgroundImage: 'linear-gradient(to right, #ffffff, #fefefe)',
-    borderRadius: '4px',
-    boxShadow: 'none'
-  },
-  previewMediaText: {
-    fontWeight: 'bold',
-    color: '#818ca4'
-  },
   formControlLabelClass: {
-    fontSize: '17px',
+    fontSize: '1.0833rem',
     color: '#74809A',
     paddingRight: '15px'
   },
@@ -42,33 +18,19 @@ const styles = () => ({
     color: '#818ca4'
   },
   formControlLabelLink: {
-    borderBottom: '1px dashed #0A83C8',
+    textDecoration: 'underline',
+    textDecorationStyle: 'dotted',
+    textDecorationColor: '#0378ba',
     '&:hover': {
       cursor: 'pointer',
-      borderBottomStyle: 'solid'
+      textDecorationStyle: 'solid'
     }
   },
   formControlRootClass: {
     marginBottom: '0'
   },
-  formLabel: {
-    fontSize: '13px',
-    color: '#74809A'
-  },
-  numberInput: {
-    '& span': {
-      width: '76px',
-      height: '36px'
-    }
-  },
-  marginTop1: {
-    marginTop: '29px'
-  },
-  marginTop2: {
-    marginTop: '13px'
-  },
-  marginTop3: {
-    marginTop: '2px'
+  marginTop: {
+    marginTop: 16
   },
   inputContainer: {
     padding: '0 8px',
@@ -78,7 +40,7 @@ const styles = () => ({
     border: 'solid 1px #e4e9f3',
     backgroundColor: 'rgba(245, 246, 250, 0.5)',
     borderRadius: '4px',
-    padding: '17px 15px'
+    padding: '15px 23px'
   },
   helperCardWrap: {
     backgroundColor: '#f5fcff',
@@ -118,7 +80,7 @@ const FileFromWebUrl = ({
       <Grid
         container
         justify="center"
-        className={classes.marginTop1}
+        className={classes.marginTop}
         spacing={16}
       >
         <Grid item xs={12}>
@@ -136,7 +98,7 @@ const FileFromWebUrl = ({
           />
         </Grid>
       </Grid>
-      <Grid container className={classes.marginTop3}>
+      <Grid container className={classes.marginTop}>
         <Grid item xs={12} className={classes.helperCardWrap}>
           <Grid container>
             <Grid item xs={3}>
@@ -174,7 +136,7 @@ const FileFromWebUrl = ({
           </Grid>
         </Grid>
       </Grid>
-      <Grid container className={classes.marginTop2}>
+      <Grid container className={classes.marginTop}>
         <Grid item xs={12} className={classes.themeCardWrap}>
           <Grid item xs={6}>
             <FormControlTimeDurationPicker

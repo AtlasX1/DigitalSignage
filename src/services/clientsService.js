@@ -68,11 +68,12 @@ const putClient = async (id, data) => {
   }
 }
 
-const getGroupItems = async id => {
+const getGroupItems = async (id, params) => {
   try {
     const response = await api({
       method: 'GET',
-      url: `/client/group/${id}`
+      url: `/client/group/${id}`,
+      params
     })
 
     return response.data

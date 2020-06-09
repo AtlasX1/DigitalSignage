@@ -73,6 +73,7 @@ const UsersCard = ({
           height={32}
           chartData={[{ name: 'users', ...data[period] }]}
           fillColors={['#b2df63', '#dedede']}
+          tooltipColors={['#b2df63', '#888996']}
         />
         <Grid
           container

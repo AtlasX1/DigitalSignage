@@ -1,16 +1,20 @@
-import React from 'react'
+import React, { useState, useCallback } from 'react'
 import { translate } from 'react-i18next'
 import PropTypes from 'prop-types'
 import { useDrag } from 'react-dnd'
+import { getMediaPreview, showMediaPreview } from 'actions/mediaActions'
 
+import { disabledPreviewMediaFeatures } from 'constants/media'
 import { withStyles, Grid, Typography, RootRef } from '@material-ui/core'
 
 import LibraryTypeIcon from '../../../LibraryTypeIcon'
 import { dndConstants } from '../../../../constants'
 import moment from 'moment'
+import uuidv4 from 'uuid/v4'
+import { useDispatch, useSelector } from 'react-redux'
 
 const styles = theme => {
-  const { palette, type } = theme
+  const { palette, type, typography } = theme
   return {
     mediaItem: {
       padding: '15px 0',
@@ -24,37 +28,31 @@ const styles = theme => {
       paddingTop: '5px'
     },
     typeIconWrap: {
+      cursor: 'pointer',
       textAlign: 'center',
       marginRight: '15px'
     },
     mediaTitle: {
-      fontSize: '14px',
-      fontWeight: 'bold',
-      lineHeight: '18px',
-      color: palette[type].sideModal.tabs.item.titleColor,
       maxWidth: '25ch',
-      whiteSpace: 'nowrap',
       textOverflow: 'ellipsis',
-      overflow: 'hidden'
+      overflow: 'hidden',
+      whiteSpace: 'normal',
+      ...typography.darkAccent[type]
     },
 
     rightSide: {
       textAlign: 'right'
     },
     mediaDuration: {
-      fontSize: '14px',
-      lineHeight: '18px',
-      color: palette[type].sideModal.tabs.item.titleColor
+      ...typography.darkAccent[type]
     },
     mediaResolution: {
-      fontSize: '11px',
-      lineHeight: '18px',
-      color: '#9EA0AB'
+      ...typography.lightText[type],
+      fontSize: '11px'
     },
     lastUpdated: {
-      fontSize: '11px',
-      lineHeight: '18px',
-      color: '#9EA0AB'
+      ...typography.lightText[type],
+      fontSize: '11px'
     },
     mediaItemAction: {
       marginLeft: '20px'
@@ -63,15 +61,36 @@ const styles = theme => {
 }
 
 const MediaListItem = ({ t, classes, media }) => {
+  const dispatchAction = useDispatch()
+  const mediaPreview = useSelector(({ media }) => media.preview)
+
+  const [uid, setUid] = useState(uuidv4())
   const [{ isDragging }, drag] = useDrag({
     item: {
       type: dndConstants.schedulePublishItemTypes.MEDIA_ITEM,
-      id: media.id
+      id: media.id,
+      uid
+    },
+    end: () => {
+      setUid(uuidv4())
     },
     collect: monitor => ({
       isDragging: monitor.isDragging()
     })
   })
+
+  const handlePreviewClick = useCallback(() => {
+    const { id, feature } = media
+    if (disabledPreviewMediaFeatures.includes(feature.name)) {
+      return
+    }
+
+    if (mediaPreview.id !== id || mediaPreview.error) {
+      dispatchAction(getMediaPreview(id))
+    } else {
+      dispatchAction(showMediaPreview())
+    }
+  }, [dispatchAction, media, mediaPreview])
 
   const opacity = isDragging ? 0 : 1
 
@@ -85,16 +104,17 @@ const MediaListItem = ({ t, classes, media }) => {
                 <LibraryTypeIcon
                   type={media.type}
                   wrapHelperClass={classes.typeIconWrap}
+                  onClick={handlePreviewClick}
                 />
               </Grid>
               <Grid item>
-                <Typography noWrap={true} className={classes.mediaTitle}>
+                <Typography className={classes.mediaTitle}>
                   {media.title}
                 </Typography>
                 <Typography className={classes.lastUpdated}>
                   {t('Last Updated', {
                     lastUpdated: moment(media.updatedAt).format(
-                      'DD MMM YYYY hh:mm'
+                      'DD MMM, YYYY, hh:mm'
                     )
                   })}
                 </Typography>
@@ -106,12 +126,14 @@ const MediaListItem = ({ t, classes, media }) => {
               {media.duration}
             </Typography>
             <Typography className={classes.mediaResolution}>
-              {t('Media Resolution', {
-                resolution:
-                  media.resolution && media.resolution !== 'x'
+              {(media.width || media.resolution) &&
+                t('Media Resolution', {
+                  resolution: media.width
+                    ? `${media.width}x${media.height}`
+                    : media.resolution && media.resolution !== 'x'
                     ? media.resolution
                     : t('Responsive')
-              })}
+                })}
             </Typography>
           </Grid>
         </Grid>

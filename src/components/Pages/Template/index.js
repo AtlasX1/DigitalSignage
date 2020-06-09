@@ -91,6 +91,7 @@ const initialColumns = [
   { id: 'resolution', label: 'Resolution', display: true },
   { id: 'orientation', label: 'Orientation', display: true },
   { id: 'displayQty', label: 'Displays', align: 'center', display: true },
+  { id: 'tag', label: 'Tags', align: 'center', display: true },
   { id: 'status', label: 'Status', align: 'center', display: true }
 ]
 
@@ -121,8 +122,7 @@ const TemplateLibrary = ({
   deleteTemplateGroupItemAction,
   postGroupItemReducer,
   groupItemsReducer,
-  deleteGroupItemReducer,
-  modalHeight
+  deleteGroupItemReducer
 }) => {
   const translate = useMemo(
     () => ({
@@ -147,7 +147,7 @@ const TemplateLibrary = ({
     initialColumns,
     fetcher: getItems,
     entity: entityConstants.TemplateLibrary,
-    perPage: meta.perPage
+    initialPerPage: meta.perPage
   })
 
   const fetchItems = useCallback(
@@ -203,140 +203,145 @@ const TemplateLibrary = ({
     },
     [deleteTemplateGroupItemAction]
   )
-
+  const groupTemplates = useMemo(
+    () =>
+      libraryUtils
+        .sortByName(items)
+        .map(template => (
+          <TemplateItem key={template.id} template={template} />
+        )),
+    [items]
+  )
   return (
-    <div style={{ height: modalHeight }}>
-      <PageContainer
-        pageTitle={translate.title}
-        PageTitleComponent={
-          <PageTitle
-            selectedCount={selectedList.count}
-            title={translate.title}
-          />
-        }
-        ActionButtonsComponent={
-          <Fragment>
-            <WhiteButton
-              className={`hvr-radial-out ${classes.actionIcons}`}
-              component={Link}
-              to={routeByName.template.groups}
-            >
-              <i
-                className={`${classes.iconColor} icon-navigation-show-more-vertical`}
+    <PageContainer
+      pageTitle={translate.title}
+      PageTitleComponent={
+        <PageTitle selectedCount={selectedList.count} title={translate.title} />
+      }
+      ActionButtonsComponent={
+        <Fragment>
+          <WhiteButton
+            className={`hvr-radial-out ${classes.actionIcons}`}
+            component={Link}
+            to={routeByName.template.groups}
+          >
+            <i
+              className={`${classes.iconColor} icon-navigation-show-more-vertical`}
+            />
+            {translate.groups}
+          </WhiteButton>
+          <WhiteButton
+            className={`hvr-radial-out ${classes.actionIcons}`}
+            component={Link}
+            to={routeByName.template.create}
+          >
+            <i className={`${classes.iconColor} icon-folder-video`} />
+            {translate.add}
+          </WhiteButton>
+        </Fragment>
+      }
+      SubHeaderMenuComponent={<TemplateSearchForm />}
+      SubHeaderRightActionComponent={
+        <Fragment>
+          <CircleIconButton
+            className={`hvr-grow ${classes.circleButton}`}
+            component={Link}
+            to={routeByName.template.grid}
+          >
+            <GridOn />
+          </CircleIconButton>
+          <CircleIconButton
+            className={`hvr-grow ${classes.circleButton}`}
+            component={Link}
+            to={routeByName.template.list}
+          >
+            <List />
+          </CircleIconButton>
+        </Fragment>
+      }
+      subHeader={!createTemplateRoute}
+      header={!createTemplateRoute}
+    >
+      <Route
+        exact
+        path={routeByName.template.root}
+        render={() => <Redirect to={routeByName.template.list} />}
+      />
+      <Route
+        exact={createTemplateRoute}
+        path={routeByName.template.list}
+        render={() => (
+          <BaseTable
+            meta={meta}
+            fetcher={getItems}
+            columns={preference.columns}
+            preferenceActions={preference.actions}
+            deleteSelectedItems={deleteSelectedItems}
+            selectedList={selectedList}
+            placeholderMessage="No saved template"
+          >
+            {items.map(row => (
+              <TemplateTableRow
+                row={row}
+                columns={preference.columns}
+                selected={selectedList.isSelect(row.id)}
+                onToggleSelect={selectedList.toggle}
+                onUnselect={selectedList.unselect}
+                key={`template-row-${row.id}`}
+                onClone={handleCloneRow}
               />
-              {translate.groups}
-            </WhiteButton>
-            <WhiteButton
-              className={`hvr-radial-out ${classes.actionIcons}`}
-              component={Link}
-              to={routeByName.template.create}
-            >
-              <i className={`${classes.iconColor} icon-folder-video`} />
-              {translate.add}
-            </WhiteButton>
-          </Fragment>
-        }
-        SubHeaderMenuComponent={<TemplateSearchForm />}
-        SubHeaderRightActionComponent={
-          <Fragment>
-            <CircleIconButton
-              className={`hvr-grow ${classes.circleButton}`}
-              component={Link}
-              to={routeByName.template.grid}
-            >
-              <GridOn />
-            </CircleIconButton>
-            <CircleIconButton
-              className={`hvr-grow ${classes.circleButton}`}
-              component={Link}
-              to={routeByName.template.list}
-            >
-              <List />
-            </CircleIconButton>
-          </Fragment>
-        }
-        subHeader={!createTemplateRoute}
-        header={!createTemplateRoute}
-      >
-        <Route
-          exact
-          path={routeByName.template.root}
-          render={() => <Redirect to={routeByName.template.list} />}
-        />
-        <Route
-          exact={createTemplateRoute}
-          path={routeByName.template.list}
-          render={() => (
-            <BaseTable
-              meta={meta}
-              fetcher={getItems}
-              columns={preference.columns}
-              preferenceActions={preference.actions}
-              deleteSelectedItems={deleteSelectedItems}
-              selectedList={selectedList}
-              placeholderMessage="No saved template"
-            >
-              {items.map(row => (
-                <TemplateTableRow
-                  row={row}
-                  columns={preference.columns}
-                  selected={selectedList.isSelect(row.id)}
-                  onToggleSelect={selectedList.toggle}
-                  onUnselect={selectedList.unselect}
-                  key={`template-row-${row.id}`}
-                  onClone={handleCloneRow}
-                />
-              ))}
-            </BaseTable>
-          )}
-        />
-        <CopyItemModal
-          data={dataOfCopyModal}
-          onCloseModal={handleCloseModal}
-          modalTitle="Copy template"
-          inputPlaceholder="Template name"
-          onClickSave={handleCopyPlaylist}
-        />
-        <Route path={routeByName.template.grid} component={TemplateGridView} />
-        <Route
-          exact
-          path={routeByName.template.groups}
-          render={props => (
-            <GroupModal
-              {...props}
-              title={t('Template Groups')}
-              closeLink={routeByName.template.list}
-              entity={entityGroupsConstants.Template}
-              groupItemsTitle={t('Templates')}
-              dropItemType={dndConstants.templateGroupsItemTypes.TEMPLATE_ITEM}
-              onMoveItem={handleMoveItem}
-              itemsLoading={meta.isLoading}
-              groupItemsReducer={groupItemsReducer}
-              postGroupItemReducer={postGroupItemReducer}
-              deleteGroupItemReducer={deleteGroupItemReducer}
-              clearGroupItemsInfo={clearTemplateGroupItemsInfo}
-              displayOverflow={true}
-              itemsPopupProps={{
-                getGroupItems: getTemplateGroupItemsAction,
-                onDeleteItem: handleDeleteGroupItem,
-                clearGroupItemsInfo: clearGetTemplateGroupItemsInfoAction
-              }}
-            >
-              <Grid container className={classes.templatesItemsContainer}>
-                {libraryUtils.sortByName(items).map((template, index) => (
-                  <TemplateItem key={`template-${index}`} template={template} />
-                ))}
-              </Grid>
-            </GroupModal>
-          )}
-        />
-        <Route
-          exact
-          path={routeByName.template.edit}
-          component={CreateTemplate}
-        />
-      </PageContainer>
-    </div>
+            ))}
+          </BaseTable>
+        )}
+      />
+      <CopyItemModal
+        data={dataOfCopyModal}
+        onCloseModal={handleCloseModal}
+        modalTitle="Copy template"
+        inputPlaceholder="Template name"
+        onClickSave={handleCopyPlaylist}
+      />
+      <Route path={routeByName.template.grid} component={TemplateGridView} />
+      <Route
+        exact
+        path={routeByName.template.groups}
+        render={props => (
+          <GroupModal
+            {...props}
+            title={t('Template Groups')}
+            closeLink={routeByName.template.list}
+            entity={entityGroupsConstants.Template}
+            groupItemsTitle={t('Templates')}
+            dropItemType={dndConstants.templateGroupsItemTypes.TEMPLATE_ITEM}
+            onMoveItem={handleMoveItem}
+            itemsLoading={meta.isLoading}
+            groupItemsReducer={groupItemsReducer}
+            postGroupItemReducer={postGroupItemReducer}
+            deleteGroupItemReducer={deleteGroupItemReducer}
+            clearGroupItemsInfo={clearTemplateGroupItemsInfo}
+            itemsPopupProps={{
+              getGroupItems: id =>
+                getTemplateGroupItemsAction(id, {
+                  order: 'asc',
+                  sort: 'title',
+                  fields: 'id,title'
+                }),
+              onDeleteItem: handleDeleteGroupItem,
+              clearGroupItemsInfo: clearGetTemplateGroupItemsInfoAction
+            }}
+          >
+            <Grid container className={classes.templatesItemsContainer}>
+              {groupTemplates}
+            </Grid>
+          </GroupModal>
+        )}
+      />
+      <Route
+        exact
+        path={routeByName.template.edit}
+        component={CreateTemplate}
+      />
+    </PageContainer>
   )
 }
 
@@ -348,8 +353,7 @@ const mapStateToProps = ({
     postGroupItem,
     groupItems,
     deleteGroupItem
-  },
-  appReducer
+  }
 }) => ({
   items,
   meta,
@@ -357,8 +361,7 @@ const mapStateToProps = ({
   clone,
   postGroupItemReducer: postGroupItem,
   groupItemsReducer: groupItems,
-  deleteGroupItemReducer: deleteGroupItem,
-  modalHeight: appReducer.height
+  deleteGroupItemReducer: deleteGroupItem
 })
 
 const mapDispatchToProps = dispatch =>

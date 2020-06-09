@@ -17,7 +17,7 @@ import routeByName from 'constants/routes'
 import featureConstants from 'constants/featureConstants'
 import { checkData } from 'utils/tableUtils'
 
-const styles = () => ({
+const styles = ({ typography, type }) => ({
   imgClass: {
     maxWidth: 100,
     maxHeight: 45,
@@ -28,6 +28,9 @@ const styles = () => ({
     justifyContent: 'center',
     alignItems: 'center',
     maxWidth: '100px'
+  },
+  name: {
+    ...typography.darkAccent[type]
   }
 })
 
@@ -50,8 +53,7 @@ const TableRow = ({
   const translate = useMemo(
     () => ({
       edit: t('Edit action'),
-      del: t('Delete'),
-      formatDate: t('Banners expirationDate format')
+      del: t('Delete')
     }),
     [t]
   )
@@ -99,7 +101,7 @@ const TableRow = ({
           )}
         </Grid>
       </TableLibraryCell>
-      <TableLibraryCell style={{ fontWeight: 'bold' }}>
+      <TableLibraryCell className={classes.name}>
         {checkData(name)}
       </TableLibraryCell>
       <TableLibraryCell>{checkData(categoryName)}</TableLibraryCell>

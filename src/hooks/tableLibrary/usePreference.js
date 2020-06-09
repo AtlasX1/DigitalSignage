@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { isEmpty } from 'lodash'
 import { useDispatch, useSelector } from 'react-redux'
 import {
@@ -6,17 +6,31 @@ import {
   getPreferenceByEntity
 } from 'actions/preferenceActions'
 import useUserRole from 'hooks/tableLibrary/useUserRole'
+import { stableSort } from 'utils'
 
 const usePreference = (
-  { fetcher, initialColumns, entity, perPage },
+  { fetcher, initialColumns, entity, initialPerPage, ...fetcherParams },
   newColumns
 ) => {
   const [columns, setColumns] = useState(initialColumns)
+  const [perPage, setPerPage] = useState(initialPerPage)
+  const [isDefault, setIsDefault] = useState(false)
   const role = useUserRole()
 
+  const setColumnsWithSortOrder = useCallback(
+    cols =>
+      setColumns(
+        stableSort(
+          cols,
+          (lhs, rhs) => (lhs.sortOrder || 0) - (rhs.sortOrder || 0)
+        )
+      ),
+    [setColumns]
+  )
+
   useEffect(() => {
-    if (!isEmpty(newColumns)) setColumns(newColumns)
-  }, [newColumns])
+    if (!isEmpty(newColumns)) setColumnsWithSortOrder(newColumns)
+  }, [newColumns, setColumnsWithSortOrder])
 
   const preference = useSelector(
     ({
@@ -46,19 +60,20 @@ const usePreference = (
   useEffect(() => {
     if (!isEmpty(preference)) {
       const { gridColumn, recordsPerPage } = preference
-
-      if (Array.isArray(gridColumn)) {
-        // add newly created columns not set in the preferences to the end of column list
-        const localColumns = columns.filter(
-          col =>
-            !gridColumn.some(gridCol => gridCol.id && gridCol.id === col.id)
-        )
-
-        setColumns([...gridColumn, ...localColumns])
+      if (gridColumn.length === 0) {
+        setIsDefault(true)
       }
-
+      const newColumns = columns.map(column => {
+        const gridCol = Array.isArray(gridColumn)
+          ? gridColumn.find(gridCol => gridCol.id && gridCol.id === column.id)
+          : null
+        return gridCol ? { ...column, ...gridCol } : column
+      })
+      setColumnsWithSortOrder(newColumns)
+      setPerPage(recordsPerPage)
       fetcher({
-        limit: recordsPerPage
+        limit: recordsPerPage,
+        ...fetcherParams
       })
     } else if (status === 'empty') {
       fetcher({
@@ -67,11 +82,11 @@ const usePreference = (
     }
 
     // eslint-disable-next-line
-  }, [preference])
+  }, [preference, setColumnsWithSortOrder])
 
   const changeColumns = useCallback(
     values => {
-      setColumns(values)
+      setColumnsWithSortOrder(values)
 
       if (!role.enterprise) {
         dispatch(
@@ -82,11 +97,12 @@ const usePreference = (
         )
       }
     },
-    [dispatch, entity, role, perPage]
+    [dispatch, entity, role, perPage, setColumnsWithSortOrder]
   )
 
   const changeRecordsPerPage = useCallback(
     limit => {
+      setPerPage(limit)
       if (!role.enterprise) {
         dispatch(
           putPreferenceByEntity(entity, {
@@ -100,25 +116,30 @@ const usePreference = (
   )
 
   const toggleDisplayColumn = useCallback(
-    index => {
-      setColumns(values => {
-        const modifiedColumns = values.map((value, ind) =>
-          ind === index ? { ...value, display: !value.display } : value
+    (id, display) => {
+      setIsDefault(false)
+
+      const modifiedColumns = columns.map(value =>
+        id === value.id
+          ? {
+              ...value,
+              display: display == null ? value.display === false : display
+            }
+          : value
+      )
+
+      if (!role.enterprise) {
+        dispatch(
+          putPreferenceByEntity(entity, {
+            recordsPerPage: perPage,
+            gridColumn: modifiedColumns
+          })
         )
-
-        if (!role.enterprise) {
-          dispatch(
-            putPreferenceByEntity(entity, {
-              recordsPerPage: perPage,
-              gridColumn: modifiedColumns
-            })
-          )
-        }
-
-        return modifiedColumns
-      })
+      }
+      setColumnsWithSortOrder(modifiedColumns)
+      return modifiedColumns
     },
-    [dispatch, entity, role, perPage]
+    [dispatch, entity, role, perPage, columns, setColumnsWithSortOrder]
   )
 
   return {
@@ -127,8 +148,26 @@ const usePreference = (
       changeRecordsPerPage,
       toggleDisplayColumn
     },
-    columns
+    columns,
+    perPage,
+    isDefault
   }
 }
 
 export default usePreference
+
+export const withPreference = mapPropsToPreference => Component => {
+  return props => {
+    const { actions, columns, perPage } = usePreference(
+      mapPropsToPreference(props)
+    )
+    return (
+      <Component
+        preferenceActions={actions}
+        preferenceColumns={columns}
+        preferencePerPage={perPage}
+        {...props}
+      />
+    )
+  }
+}

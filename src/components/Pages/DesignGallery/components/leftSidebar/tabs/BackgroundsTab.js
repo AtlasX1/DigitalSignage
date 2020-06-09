@@ -3,10 +3,8 @@ import { useSelector, useDispatch } from 'react-redux'
 import { Typography } from '@material-ui/core'
 import { debounce as _debounce } from 'lodash'
 
-import {
-  getPatterns,
-  getBackgroundImages
-} from '../../../../../../actions/signageEditorActions'
+import { getPatterns, getBackgroundImages } from 'actions/designGalleryActions'
+
 import LeftSidebarPanel from '../LeftSidebarPanel'
 import PreviewGrids from '../grids/PreviewGrids'
 import CanvasBgSettingLoader from '../../commonBlocks/CanvasBgSettingLoader'
@@ -16,7 +14,7 @@ import { useCanvasState } from '../../canvas/CanvasProvider'
 const Title = () => {
   return (
     <Typography variant="h6" className={'h6'}>
-      Background
+      Textures
     </Typography>
   )
 }
@@ -65,9 +63,13 @@ const BackgroundsTab = () => {
     }))
   }
 
-  const handlePreviewClick = ({ id, src, type }) => {
-    const url = src.original ? src.original : src.small
-    canvasHandlers.setBackground({ id, url, type })
+  const handlePreviewClick = ({ id, src, type, selected }) => {
+    if (selected) {
+      canvasHandlers.removeBackground()
+    } else {
+      const url = src.original ? src.original : src.small
+      canvasHandlers.setBackground({ id, url, type })
+    }
   }
 
   const handleChangeSearch = term => {
@@ -112,8 +114,9 @@ const BackgroundsTab = () => {
 
   useEffect(() => {
     if (activeTab === TABS_NAMES.patterns) {
+      setSearchTerm('')
       if (lastSearchTerms[activeTab] !== searchTerm || !patterns.length) {
-        dispatch(getPatterns({ query: searchTerm, patternsPage, perPage }))
+        dispatch(getPatterns({ query: '', patternsPage, perPage }))
       }
     }
     if (activeTab === TABS_NAMES.background) {

@@ -67,8 +67,6 @@ const DesignGallery = props => {
     onSubmit: values => {
       const { mediaInfo } = values
 
-      console.log('values', values)
-
       const requestData = {
         ...mediaInfo
       }
@@ -91,11 +89,6 @@ const DesignGallery = props => {
   })
 
   // ---- methods
-
-  const handleReset = () => {
-    // canvasHandlers.resetCanvas()
-    // history.push('/media-library')
-  }
 
   const showSnackbar = title => {
     props.enqueueSnackbar(title, {
@@ -170,17 +163,16 @@ const DesignGallery = props => {
         <DndProvider backend={HTML5Backend}>
           <CanvasReady>
             <LeftSidebar />
-            <RightSidebar
-              onSave={() => setSaveDialog(true)} // if edit do not open save dialog
-              onSaveAs={() => setSaveDialog(true)}
-              onReset={handleReset}
-            />
+            <RightSidebar />
           </CanvasReady>
 
           <Content />
         </DndProvider>
 
-        <Footer />
+        <Footer
+          onSave={() => setSaveDialog(true)} // if edit do not open save dialog
+          onSaveAs={() => setSaveDialog(true)}
+        />
       </CanvasProvider>
 
       <SaveDialog

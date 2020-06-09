@@ -11,32 +11,33 @@ import { SingleHorizontalBarChart } from '../../Charts'
 
 import { minTwoDigits, getUrlPrefix } from '../../../utils'
 
-const styles = theme => {
-  const { palette, type } = theme
-  return {
-    cardWrapper: {
-      width: 330,
-      marginBottom: '20px'
-    },
-    cardTransparentBorder: {
-      borderColor: 'transparent'
-    },
-    devicesChartLabelsWrap: {
-      marginTop: '10px',
-      marginBottom: '20px'
-    },
-    devicesChartLabel: {
-      fontSize: '11px',
-      color: '#888996',
-      textTransform: 'uppercase'
-    },
-    devicesChartCount: {
-      fontSize: '15px',
-      fontWeight: 'bold',
-      color: palette[type].charts.devices.countColor
-    }
+const styles = ({ palette, type, typography }) => ({
+  cardWrapper: {
+    width: 330,
+    marginBottom: '20px'
+  },
+  cardTransparentBorder: {
+    borderColor: 'transparent'
+  },
+  devicesChartLabelsWrap: {
+    ...typography.lightText[type],
+    marginTop: '10px',
+    marginBottom: '20px'
+  },
+  devicesChartLabel: {
+    fontSize: '11px',
+    color: '#888996',
+    textTransform: 'uppercase'
+  },
+  devicesChartCount: {
+    fontSize: '15px',
+    fontWeight: 'bold',
+    color: palette[type].charts.devices.countColor
+  },
+  menuContainer: {
+    whiteSpace: 'nowrap'
   }
-}
+})
 
 const DevicesCard = ({
   t,
@@ -77,12 +78,16 @@ const DevicesCard = ({
         rootClassName={[hoverClassName, dragging ? draggingClassName : ''].join(
           ' '
         )}
+        menuDropdownContainerClassName={classes.menuContainer}
       >
         <SingleHorizontalBarChart
           width={270}
           height={32}
-          chartData={[{ name: 'device', ...data[period] }]}
+          chartData={[
+            { name: t('Devices Library dashboard tooltip'), ...data[period] }
+          ]}
           fillColors={['#b2df63', '#dedede']}
+          tooltipColors={['#b2df63', '#888996']}
         />
         <Grid
           container

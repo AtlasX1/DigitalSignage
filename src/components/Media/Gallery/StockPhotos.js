@@ -5,12 +5,7 @@ import update from 'immutability-helper'
 
 import selectUtils from '../../../utils/select'
 
-import {
-  withStyles,
-  Grid,
-  Typography,
-  CircularProgress
-} from '@material-ui/core'
+import { withStyles, Grid, Typography } from '@material-ui/core'
 import { useDispatch, useSelector } from 'react-redux'
 import * as Yup from 'yup'
 import { get as _get } from 'lodash'
@@ -24,7 +19,6 @@ import MediaHtmlCarousel from '../MediaHtmlCarousel'
 import { MediaInfo, MediaTabActions } from '../index'
 import {
   createMediaPostData,
-  getAllowedFeatureId,
   getMediaInfoFromBackendData
 } from 'utils/mediaUtils'
 import {
@@ -34,6 +28,7 @@ import {
   generateMediaPreview,
   getMediaItemsAction
 } from 'actions/mediaActions'
+import useDetermineMediaFeatureId from 'hooks/useDetermineMediaFeatureId'
 
 const TabIconStyles = () => ({
   tabIconWrap: {
@@ -53,7 +48,7 @@ const InfoMessageStyles = ({ typography }) => ({
   infoMessageContainer: {
     display: 'flex',
     alignItems: 'flex-start',
-    padding: '0 5px 30px'
+    paddingBottom: 16
   },
   infoMessage: {
     marginLeft: '20px',
@@ -79,7 +74,7 @@ const InfoMessage = withStyles(InfoMessageStyles)(
 
 const styles = ({ palette, type, typography, formControls }) => ({
   root: {
-    margin: '20px 25px',
+    margin: '15px 30px',
     fontFamily: typography.fontFamily
   },
   previewMediaBtn: {
@@ -90,38 +85,23 @@ const styles = ({ palette, type, typography, formControls }) => ({
     boxShadow: 'none'
   },
   previewMediaText: {
-    fontWeight: 'bold',
-    color: palette[type].sideModal.action.button.color
+    ...typography.lightText[type]
   },
   previewMediaRow: {
-    marginTop: '45px'
+    marginTop: 45
   },
   themeCardWrap: {
     border: `solid 1px ${palette[type].pages.media.card.border}`,
     backgroundColor: palette[type].pages.media.card.background,
-    borderRadius: '4px',
-    marginBottom: '22px'
-  },
-  inputItem: {
-    padding: '0 10px',
-    margin: '0 -10px 24px'
-  },
-  themeInputContainer: {
-    padding: '0 12px',
-    margin: '0 -12px'
-  },
-  inputItemContainer: {
-    padding: '0 10px',
-    margin: '0 -10px'
+    borderRadius: '4px'
   },
   sliderInputLabel: {
-    color: '#74809A',
-    fontSize: '13px',
+    ...formControls.mediaApps.refreshEverySlider.label,
     lineHeight: '15px',
     marginRight: '15px'
   },
   marginTop1: {
-    marginTop: '21px'
+    marginTop: 16
   },
   numberControls: {
     display: 'inline-block',
@@ -434,14 +414,13 @@ const StockPhotos = ({
   onShowSnackbar
 }) => {
   const dispatchAction = useDispatch()
-  const { configMediaCategory } = useSelector(({ config }) => config)
   const addMediaReducer = useSelector(({ addMedia }) => addMedia.gallery)
   const mediaItemReducer = useSelector(({ media }) => media.mediaItem)
 
-  const [isLoading, setLoading] = useState(false)
   const [formSubmitting, setFormSubmitting] = useState(false)
   const [autoClose, setAutoClose] = useState(false)
-  const [featureId, setFeatureId] = useState(null)
+  const featureId = useDetermineMediaFeatureId('Gallery', 'StockPhotos')
+
   const initialFormValues = useRef({
     provider: options.provider[0],
     feature: options.feature[0],
@@ -623,30 +602,13 @@ const StockPhotos = ({
         mediaInfo: getMediaInfoFromBackendData(backendData)
       }
       form.setValues(initialFormValues.current)
-      setLoading(false)
     }
     // eslint-disable-next-line
   }, [backendData])
 
   useEffect(() => {
-    if (!configMediaCategory.response.length) return
-    const id = getAllowedFeatureId(
-      configMediaCategory,
-      'Gallery',
-      'StockPhotos'
-    )
-    setFeatureId(id)
-  }, [configMediaCategory])
-
-  useEffect(() => {
     onShareStateCallback(handleShareState)
   }, [handleShareState, onShareStateCallback])
-
-  useEffect(() => {
-    if (mode === 'edit') {
-      setLoading(true)
-    }
-  }, [mode])
 
   const setFieldValue = field => val => form.setFieldValue(field, val)
 
@@ -681,22 +643,21 @@ const StockPhotos = ({
 
   return (
     <form className={classes.formWrapper} onSubmit={form.handleSubmit}>
-      {isLoading && (
-        <div className={classes.loaderWrapper}>
-          <CircularProgress size={30} thickness={5} />
-        </div>
-      )}
       <Grid container className={classes.tabContent}>
         <Grid item xs={7}>
           <div className={classes.root}>
             <InfoMessage iconClassName={'icon-interface-information-1'} />
-            <Grid container justify="space-between" alignItems="center">
-              <Grid item xs={4} className={classes.inputItemContainer}>
+            <Grid
+              container
+              justify="space-between"
+              alignItems="center"
+              spacing={16}
+            >
+              <Grid item xs={4}>
                 <FormControlSelect
                   name="provider"
                   addEmptyOption={false}
                   label={t('Provider')}
-                  formControlContainerClass={classes.inputItem}
                   marginBottom={false}
                   options={providerOptions}
                   value={form.values.provider}
@@ -706,12 +667,11 @@ const StockPhotos = ({
                 />
               </Grid>
               {isPixabayProvider && (
-                <Grid item xs={4} className={classes.inputItemContainer}>
+                <Grid item xs={4}>
                   <FormControlSelect
                     name="feature"
                     addEmptyOption={false}
                     label={t('Feature')}
-                    formControlContainerClass={classes.inputItem}
                     marginBottom={false}
                     options={featureOptions}
                     value={form.values.feature}
@@ -721,13 +681,12 @@ const StockPhotos = ({
                   />
                 </Grid>
               )}
-              <Grid item xs={4} className={classes.inputItemContainer}>
+              <Grid item xs={4}>
                 <FormControlSelect
                   key={form.values.provider}
                   name={`category.${form.values.provider}`}
                   addEmptyOption={false}
                   label={t('Category')}
-                  formControlContainerClass={classes.inputItem}
                   marginBottom={false}
                   options={categoryOptions[form.values.provider]}
                   value={_get(form.values.category, form.values.provider, null)}
@@ -741,26 +700,22 @@ const StockPhotos = ({
                 />
               </Grid>
               {!isPixabayProvider && (
-                <Grid item xs={4} className={classes.inputItemContainer}>
-                  {renderTransitionField({
-                    formControlContainerClass: classes.inputItem
-                  })}
+                <Grid item xs={4}>
+                  {renderTransitionField()}
                 </Grid>
               )}
-            </Grid>
-            <Grid container justify="center">
-              <Grid item xs={12} className={classes.themeCardWrap}>
-                <MediaHtmlCarousel />
+              <Grid item xs={12}>
+                <div className={classes.themeCardWrap}>
+                  <MediaHtmlCarousel />
+                </div>
               </Grid>
-            </Grid>
-            <Grid container justify="space-between">
               {isPixabayProvider && (
-                <Grid item xs={6} className={classes.themeInputContainer}>
+                <Grid item xs={6}>
                   {renderTransitionField()}
                 </Grid>
               )}
               {isPixabayProvider && (
-                <Grid item xs={6} className={classes.themeInputContainer}>
+                <Grid item xs={6}>
                   <FormControlSelect
                     name="image_type"
                     addEmptyOption={false}
@@ -774,13 +729,7 @@ const StockPhotos = ({
                   />
                 </Grid>
               )}
-            </Grid>
-            <Grid
-              container
-              justify="space-between"
-              className={classes.marginTop1}
-            >
-              <Grid item xs={6} className={classes.themeInputContainer}>
+              <Grid item xs={6}>
                 <FormControlInput
                   custom
                   label={t('Number of Images')}
@@ -816,7 +765,7 @@ const StockPhotos = ({
                   handleChange={setFieldValue('duration')}
                 />
               </Grid>
-              <Grid item xs={6} className={classes.themeInputContainer}>
+              <Grid item xs={6}>
                 <Grid container justify="flex-start" alignItems="center">
                   <Grid item>
                     <Typography className={classes.sliderInputLabel}>

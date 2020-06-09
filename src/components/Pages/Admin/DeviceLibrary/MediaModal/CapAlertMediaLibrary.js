@@ -1,11 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React, { memo, useCallback, useEffect, useMemo, useState } from 'react'
 import PropTypes from 'prop-types'
-
-import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
-
+import { useSelector, useDispatch } from 'react-redux'
+import { compose } from 'redux'
 import { translate } from 'react-i18next'
-
+import { createSelector } from 'reselect'
 import {
   withStyles,
   Dialog,
@@ -18,15 +16,16 @@ import {
   TableHead,
   TableBody
 } from '@material-ui/core'
-
-import { ModalPaper } from '../../../../Paper'
 import { Close as CloseIcon } from '@material-ui/icons'
-import { BlueButton } from '../../../../Buttons'
+import classNames from 'classnames'
 
-import {
-  getMediaItemsAction,
-  clearGetMediaItemsInfoAction
-} from '../../../../../actions/mediaActions'
+import { ModalPaper } from 'components/Paper'
+import { BlueButton } from 'components/Buttons'
+import { CircularLoader } from 'components/Loaders'
+
+import { getMediaCapAlert } from 'actions/mediaActions'
+import { isEmpty, isEqual, isFalsy } from 'utils/generalUtils'
+import { mediaCapAlertSelector } from 'selectors/mediaSelectors'
 
 const styles = ({ palette, type }) => ({
   dialogPaper: {
@@ -66,12 +65,12 @@ const styles = ({ palette, type }) => ({
     height: 45
   },
   tableRowSelected: {
-    background: palette[type].table.head.background
+    background: palette[type].table.body.row.selected.background
   },
   tableCell: {
     border: 'none',
     borderColor: palette[type].table.head.border,
-    borderBottomWidth: 2,
+    borderBottomWidth: 1,
     borderBottomStyle: 'solid',
     color: palette[type].table.body.cell.color,
     width: '33.3%',
@@ -85,6 +84,9 @@ const styles = ({ palette, type }) => ({
     '&:last-child': {
       borderRight: 'none'
     }
+  },
+  tableCellFullWidth: {
+    width: '100%'
   },
   noFoundText: {
     width: '100%',
@@ -102,43 +104,99 @@ const styles = ({ palette, type }) => ({
   }
 })
 
-const CapAlertMediaLibrary = ({
+function SingleRow({ id, title, isSelected, onClick, classes }) {
+  const handleClick = useCallback(() => {
+    onClick(id)
+  }, [onClick, id])
+  return (
+    <TableRow
+      className={classNames(classes.tableRow, {
+        [classes.tableRowSelected]: isSelected
+      })}
+      onClick={handleClick}
+    >
+      <TableCell className={classes.tableCell} align="center">
+        {title}
+      </TableCell>
+      <TableCell className={classes.tableCell} align="center" />
+      <TableCell className={classes.tableCell} />
+    </TableRow>
+  )
+}
+
+const SingleRowMemoized = memo(SingleRow)
+
+const selector = createSelector(
+  mediaCapAlertSelector,
+  ({ isFetching, isFetched, items, error }) => ({
+    isFetching,
+    isFetched,
+    items,
+    error
+  })
+)
+
+function CapAlertMediaLibrary({
   t,
   classes,
-  open = false,
-  selectedMediaId = null,
-  handleClose = f => f,
-  mediaLibraryReducer,
-  getMediaItemsAction,
-  clearGetMediaItemsInfoAction,
-  onSuccess = f => f
-}) => {
-  const [data, setData] = useState([])
+  open,
+  selectedMediaId,
+  handleClose,
+  onSuccess
+}) {
+  const dispatch = useDispatch()
+  const { isFetching, isFetched, items } = useSelector(selector)
   const [selectedId, setSelectedId] = useState(selectedMediaId)
 
   useEffect(() => {
-    getMediaItemsAction({
-      featureId: 42
-    })
-    // eslint-disable-next-line
-  }, [])
-
-  useEffect(() => {
-    if (mediaLibraryReducer.response) {
-      setData(mediaLibraryReducer.response.data)
-      clearGetMediaItemsInfoAction()
-    } else if (mediaLibraryReducer.error) {
-      clearGetMediaItemsInfoAction()
+    if (isFalsy(isFetched)) {
+      dispatch(getMediaCapAlert())
     }
-    // eslint-disable-next-line
-  }, [mediaLibraryReducer])
+  }, [dispatch, isFetched])
 
-  const handleSave = () => {
+  const handleSave = useCallback(() => {
     if (selectedId) {
-      const item = data.find(d => d.id === selectedId)
-      onSuccess(item)
+      onSuccess(
+        items.find(({ id }) => {
+          return isEqual(id, selectedId)
+        })
+      )
     }
-  }
+  }, [selectedId, onSuccess, items])
+
+  const renderRows = useMemo(() => {
+    if (isEmpty(items)) {
+      return (
+        <TableRow className={classes.tableRow}>
+          <TableCell
+            className={classNames(
+              classes.tableCell,
+              classes.tableCellFullWidth
+            )}
+          >
+            <Typography className={classes.noFoundText}>
+              {t('No Records Found')}
+            </Typography>
+          </TableCell>
+        </TableRow>
+      )
+    }
+    return items.map(({ id, title }) => (
+      <SingleRowMemoized
+        key={id}
+        id={id}
+        title={title}
+        classes={classes}
+        onClick={setSelectedId}
+        isSelected={isEqual(id, selectedId)}
+      />
+    ))
+  }, [classes, items, t, selectedId])
+
+  const renderLoader = useMemo(() => {
+    if (isFalsy(isFetching)) return null
+    return <CircularLoader />
+  }, [isFetching])
 
   return (
     <Dialog
@@ -148,6 +206,7 @@ const CapAlertMediaLibrary = ({
         paper: classes.dialogPaper
       }}
     >
+      {renderLoader}
       <ModalPaper className={classes.paper}>
         <Typography className={classes.title}>
           {t('Cap Alert Media Library').toUpperCase()}
@@ -171,33 +230,8 @@ const CapAlertMediaLibrary = ({
                   <TableCell className={classes.tableCell} align="center" />
                 </TableRow>
               </TableHead>
-              {!!data.length && (
-                <TableBody>
-                  {data.map(m => (
-                    <TableRow
-                      className={[
-                        classes.tableRow,
-                        selectedId === m.id ? classes.tableRowSelected : ''
-                      ].join(' ')}
-                      key={m.id}
-                      onClick={() => setSelectedId(m.id)}
-                    >
-                      <TableCell className={classes.tableCell} align="center">
-                        {m.title}
-                      </TableCell>
-                      <TableCell className={classes.tableCell} align="center" />
-                      <TableCell className={classes.tableCell} />
-                    </TableRow>
-                  ))}
-                </TableBody>
-              )}
+              <TableBody>{renderRows}</TableBody>
             </Table>
-
-            {!data.length && (
-              <Typography className={classes.noFoundText}>
-                {t('No Records Found')}
-              </Typography>
-            )}
           </Grid>
 
           <Grid container justify="flex-end">
@@ -219,25 +253,16 @@ CapAlertMediaLibrary.propTypes = {
   classes: PropTypes.object,
   deviceId: PropTypes.number,
   selectedMediaId: PropTypes.number,
-  onSuccess: PropTypes.func,
-  onFail: PropTypes.func
+  onSuccess: PropTypes.func
 }
 
-const mapStateToProps = ({ media, alert }) => ({
-  mediaLibraryReducer: media.library
-})
+CapAlertMediaLibrary.defaultProps = {
+  onSuccess: f => f,
+  open: false,
+  selectedMediaId: null
+}
 
-const mapDispatchToProps = dispatch =>
-  bindActionCreators(
-    {
-      getMediaItemsAction,
-      clearGetMediaItemsInfoAction
-    },
-    dispatch
-  )
-
-export default translate('translations')(
-  withStyles(styles)(
-    connect(mapStateToProps, mapDispatchToProps)(CapAlertMediaLibrary)
-  )
-)
+export default compose(
+  translate('translations'),
+  withStyles(styles)
+)(CapAlertMediaLibrary)

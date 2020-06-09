@@ -79,6 +79,7 @@ const Header = ({
   clearLoginInfo,
   enqueueSnackbar,
   whiteLabelReducer,
+  theme,
   ...props
 }) => {
   const [userPic, setUserPic] = useState('')
@@ -89,6 +90,11 @@ const Header = ({
   const whiteLabelInfo = useMemo(() => {
     return whiteLabelUtils.parseReducer(whiteLabelReducer)
   }, [whiteLabelReducer])
+
+  const isLightLogo = useMemo(
+    () => theme.type === 'dark' && whiteLabelInfo.headerLogoLight,
+    [theme.type, whiteLabelInfo.headerLogoLight]
+  )
 
   useEffect(() => {
     if (details.response) {
@@ -173,7 +179,11 @@ const Header = ({
                 <Grid item>
                   <img
                     className={classes.logoImage}
-                    src={whiteLabelInfo.headerLogo}
+                    src={
+                      isLightLogo
+                        ? whiteLabelInfo.headerLogoLight
+                        : whiteLabelInfo.headerLogo
+                    }
                     alt="Logo"
                   />
                 </Grid>
@@ -231,7 +241,7 @@ const mapDispatchToProps = dispatch =>
   )
 
 export default translate('translations')(
-  withStyles(styles)(
+  withStyles(styles, { withTheme: true })(
     connect(
       mapStateToProps,
       mapDispatchToProps

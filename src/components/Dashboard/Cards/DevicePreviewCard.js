@@ -13,7 +13,7 @@ import { withStyles, Grid, Typography } from '@material-ui/core'
 import { Card } from 'components/Card'
 import MediaHtmlCarousel from 'components/Media/MediaHtmlCarousel'
 
-const styles = {
+const styles = ({ typography, type }) => ({
   cardWrapper: {
     width: 330,
     marginBottom: 20
@@ -36,8 +36,12 @@ const styles = {
     width: '100%',
     height: 'auto',
     objectFit: 'contain'
+  },
+  lastUpdated: {
+    ...typography.lightText[type],
+    fontSize: '0.75rem'
   }
-}
+})
 
 const openInNewWindow = url => window.open(url, '_blank')
 
@@ -99,7 +103,7 @@ const DevicePreviewCard = ({
             }}
           />
         </Grid>
-        <Typography>
+        <Typography className={classes.lastUpdated}>
           Last Updated:{' '}
           {data[activeIndex]
             ? data[activeIndex].lastUpdate

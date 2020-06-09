@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Tabs, Tab, Tooltip } from '@material-ui/core'
+import { Tabs, Tab, Tooltip, withStyles } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 import classNames from 'classnames'
 import { translate } from 'react-i18next'
 
+import {
+  setOpenLeftSidebar,
+  setOpenRightSidebar
+} from 'actions/designGalleryActions'
+
 import '../styles/_verticalSidebarTabs.scss'
-import { setOpenLeftSidebar } from '../../../../actions/signageEditorActions'
 
 const TabsStyles = makeStyles({
   flexContainer: {
@@ -43,6 +47,12 @@ const TabLayoutStyles = makeStyles({
   }
 })
 
+const StyledTooltip = withStyles({
+  tooltip: {
+    margin: '-15px 0 0 0'
+  }
+})(Tooltip)
+
 const LayoutTab = translate('translations')(
   ({ t, icon, tooltip, ...props }) => {
     const { tReady, i18nOptions, defaultNS, reportNS, ...tabProps } = props
@@ -52,9 +62,9 @@ const LayoutTab = translate('translations')(
         disableRipple
         icon={
           tooltip ? (
-            <Tooltip title={t(tooltip)}>
+            <StyledTooltip title={t(tooltip)}>
               <div className={iconContainer}>{icon}</div>
-            </Tooltip>
+            </StyledTooltip>
           ) : (
             icon
           )
@@ -83,6 +93,7 @@ const VerticalSidebarTabs = ({ layout }) => {
 
   useEffect(() => {
     dispatch(setOpenLeftSidebar(activeTab !== false))
+    dispatch(setOpenRightSidebar(activeTab === false))
     // eslint-disable-next-line
   }, [activeTab])
 

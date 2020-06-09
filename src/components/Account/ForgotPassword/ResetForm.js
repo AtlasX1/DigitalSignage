@@ -1,28 +1,23 @@
 import React, { useState, useEffect } from 'react'
+import { Link as RouterLink } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import { translate } from 'react-i18next'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
-
 import { withStyles, Typography, Link, IconButton } from '@material-ui/core'
 import { Visibility, VisibilityOff } from '@material-ui/icons'
-
 import { FormControlInput } from '../../Form'
 import { FabBlueButton } from '../../Buttons'
-
-import { resetAction } from '../../../actions/authenticationActions'
-import { Link as RouterLink } from 'react-router-dom'
+import { resetAction } from 'actions/authenticationActions'
 
 const styles = theme => {
   const { palette, type } = theme
   return {
     form: {
       width: '569px',
-      padding: '0 65px',
-      marginBottom: '15px',
-      borderBottom: `1px solid ${palette[type].pages.singIn.border}`
+      padding: '0 65px'
     },
     formTitle: {
       fontSize: '30px',

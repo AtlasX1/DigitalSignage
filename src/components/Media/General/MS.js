@@ -1,38 +1,41 @@
 import React, { useEffect, useState, useCallback, useRef } from 'react'
+
+import PropTypes from 'prop-types'
+
+import update from 'immutability-helper'
+import { get as _get } from 'lodash'
+
+import { useDispatch, useSelector } from 'react-redux'
+
+import * as Yup from 'yup'
+import { useFormik } from 'formik'
 import { translate } from 'react-i18next'
 
-import {
-  withStyles,
-  Grid,
-  Typography,
-  CircularProgress
-} from '@material-ui/core'
+import { withStyles, Grid, Typography } from '@material-ui/core'
 
-import { FormControlTimeDurationPicker } from '../../Form'
+import { FormControlTimeDurationPicker } from 'components/Form'
+import { FormControlSelect } from 'components/Form'
 
-import { FormControlSelect } from '../../Form'
-import PropTypes from 'prop-types'
-import { useDispatch, useSelector } from 'react-redux'
-import { useFormik } from 'formik'
+import FileUpload from './components/Upload/FileUpload'
+import { MediaInfo, MediaTabActions } from '../index'
+
 import { mediaConstants as constants } from '../../../constants'
+
 import {
   createMediaPostData,
-  getAllowedFeatureId,
   getMediaInfoFromBackendData,
   ObjectToFormData
-} from '../../../utils/mediaUtils'
-import update from 'immutability-helper'
+} from 'utils/mediaUtils'
+
 import {
   addMedia,
   clearAddedMedia,
   editMedia,
   getMediaItemsAction
-} from '../../../actions/mediaActions'
-import * as Yup from 'yup'
-import { get as _get } from 'lodash'
-import { MediaInfo, MediaTabActions } from '../index'
-import FileUpload from './components/Upload/FileUpload'
-import { getTransitions } from '../../../actions/configActions'
+} from 'actions/mediaActions'
+
+import { getTransitions } from 'actions/configActions'
+import useDetermineMediaFeatureId from 'hooks/useDetermineMediaFeatureId'
 
 const TabIconStyles = () => ({
   tabIconWrap: {
@@ -51,8 +54,7 @@ const TabIcon = withStyles(TabIconStyles)(({ iconClassName = '', classes }) => (
 const InfoMessageStyles = ({ typography }) => ({
   infoMessageContainer: {
     display: 'flex',
-    alignItems: 'flex-start',
-    padding: '0 5px 30px'
+    alignItems: 'flex-start'
   },
   infoMessage: {
     marginLeft: '20px',
@@ -78,10 +80,10 @@ const InfoMessage = withStyles(InfoMessageStyles)(
 
 const styles = ({ palette, type, typography }) => ({
   root: {
-    margin: '30px 20px 0 30px'
+    margin: '15px 30px'
   },
   chartTypeContainer: {
-    paddingBottom: '26px'
+    paddingBottom: '16px'
   },
   formWrapper: {
     position: 'relative',
@@ -137,17 +139,22 @@ const styles = ({ palette, type, typography }) => ({
     width: '128px'
   },
   formControlLabelClass: {
-    fontSize: '17px',
+    fontSize: '1.0833rem',
     color: '#74809A'
   }
 })
 
-const validationSchema = Yup.object().shape({
-  files: Yup.array().min(1),
-  mediaInfo: Yup.object().shape({
-    title: Yup.string().required('Enter field')
+const validationSchema = mode =>
+  Yup.object().shape({
+    files: Yup.array().when(mode, {
+      is: val => val !== 'edit',
+      then: Yup.array().required('Please, select file'),
+      otherwise: Yup.array()
+    }),
+    mediaInfo: Yup.object().shape({
+      title: Yup.string().required('Enter field')
+    })
   })
-})
 
 const MS = ({
   t,
@@ -162,16 +169,15 @@ const MS = ({
   onShareStateCallback
 }) => {
   const dispatchAction = useDispatch()
-  const { configMediaCategory } = useSelector(({ config }) => config)
   const addMediaReducer = useSelector(({ addMedia }) => addMedia.general)
   const mediaItemReducer = useSelector(({ media }) => media.mediaItem)
   const transitionsReducer = useSelector(({ config }) => config.transitions)
 
-  const [isLoading, setLoading] = useState(true)
   const [formSubmitting, setFormSubmitting] = useState(false)
   const [autoClose, setAutoClose] = useState(false)
-  const [featureId, setFeatureId] = useState(null)
   const [transitionOptions, setTransitionOptions] = useState([])
+
+  const featureId = useDetermineMediaFeatureId('General', 'MSOffice')
 
   const initialFormValues = useRef({
     mediaInfo: { ...constants.mediaInfoInitvalue },
@@ -184,7 +190,7 @@ const MS = ({
     enableReinitialize: false,
     validateOnChange: true,
     validateOnBlur: true,
-    validationSchema,
+    validationSchema: validationSchema(mode),
     onSubmit: async values => {
       initialFormValues.current = values
       const { files, transition, duration } = values
@@ -201,29 +207,17 @@ const MS = ({
         }
       })
 
-      if (files.length > 1) {
-        files.forEach((file, key) => {
-          const fileBlob = new Blob([file], { type: file.type })
-          const fileName = `file[${key}]`
-          requestData[fileName] = fileBlob
-        })
-      } else {
-        requestData.file = new Blob([files[0]], { type: files[0].type })
+      if (files.length) {
+        requestData.file = files[0]
       }
 
       const actionOptions = {
         mediaName: 'general',
         tabName: selectedTab,
-        data: ObjectToFormData(requestData)
+        data: requestData.file ? ObjectToFormData(requestData) : requestData
       }
 
-      form.setTouched({ files: true })
-
       try {
-        await validationSchema.validate(
-          { files },
-          { strict: true, abortEarly: false }
-        )
         if (mode === 'add') {
           dispatchAction(addMedia(actionOptions))
         } else {
@@ -365,7 +359,6 @@ const MS = ({
   }, [])
 
   useEffect(() => {
-    setLoading(true)
     if (backendData && backendData.id) {
       const {
         attributes: { transition, duration }
@@ -378,43 +371,23 @@ const MS = ({
       }
       form.setValues(initialFormValues.current)
     }
-    setLoading(false)
     // eslint-disable-next-line
   }, [backendData])
-
-  useEffect(() => {
-    if (!configMediaCategory.response.length) return
-    const id = getAllowedFeatureId(configMediaCategory, 'General', 'MSOffice')
-    setFeatureId(id)
-  }, [configMediaCategory])
 
   useEffect(() => {
     onShareStateCallback(handleShareState)
   }, [handleShareState, onShareStateCallback])
 
-  useEffect(() => {
-    if (mode === 'edit') {
-      setLoading(true)
-    }
-  }, [mode])
-
   const { values, errors, touched } = form
-  const isButtonsDisable = formSubmitting
-  const isEditMode = !!_get(backendData, 'id', false)
 
   return (
     <form className={classes.formWrapper} onSubmit={form.handleSubmit}>
-      {isLoading && (
-        <div className={classes.loaderWrapper}>
-          <CircularProgress size={30} thickness={5} />
-        </div>
-      )}
       <Grid container className={classes.tabContent}>
         <Grid item xs={7}>
           <div className={classes.root}>
             <InfoMessage iconClassName={'icon-interface-information-1'} />
             <FileUpload
-              multiple={!isEditMode}
+              multiple={false}
               name="files"
               files={values.files}
               error={errors.files}
@@ -439,11 +412,7 @@ const MS = ({
               </Grid>
             </Grid>
             <Grid container justify="space-between">
-              <Grid
-                item
-                xs={6}
-                style={{ margin: '0 -7.5px', padding: '0 7.5px' }}
-              >
+              <Grid item xs={6} style={{ padding: '0 8px' }}>
                 <FormControlSelect
                   formControlLabelClass={classes.formControlLabelClass}
                   label={'Transition'}
@@ -458,11 +427,7 @@ const MS = ({
                   marginBottom={false}
                 />
               </Grid>
-              <Grid
-                item
-                xs={6}
-                style={{ margin: '0 -7.5px', padding: '0 7.5px' }}
-              >
+              <Grid item xs={6} style={{ padding: '0 8px' }}>
                 <FormControlTimeDurationPicker
                   value={values.duration}
                   onChange={val => form.setFieldValue('duration', val)}
@@ -490,7 +455,7 @@ const MS = ({
             <Grid container alignItems={'flex-end'}>
               <MediaTabActions
                 mode={mode}
-                disabled={isButtonsDisable}
+                disabled={formSubmitting}
                 onReset={() => form.resetForm(initialFormValues.current)}
                 onAdd={form.handleSubmit}
                 onAddAndClose={() => {

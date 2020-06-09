@@ -5,7 +5,6 @@ import * as Yup from 'yup'
 import { useDispatch, useSelector } from 'react-redux'
 import { useFormik } from 'formik'
 import update from 'immutability-helper'
-import CircularProgress from '@material-ui/core/CircularProgress'
 import { get as _get } from 'lodash'
 import PropTypes from 'prop-types'
 import {
@@ -38,7 +37,6 @@ import { CheckboxSwitcher } from 'components/Checkboxes'
 import { mediaConstants as constants } from 'constants/index'
 import {
   createMediaPostData,
-  getAllowedFeatureId,
   getMediaInfoFromBackendData
 } from 'utils/mediaUtils'
 import {
@@ -48,7 +46,7 @@ import {
   generateMediaPreview,
   getMediaItemsAction
 } from 'actions/mediaActions'
-import { getContentSourceOfMediaFeatureById } from 'actions/configActions'
+import useMediaContentSource from 'hooks/useMediaContentSource'
 
 const TabIconStyles = () => ({
   tabIconWrap: {
@@ -70,13 +68,13 @@ const TabIcon = withStyles(TabIconStyles)(
 )
 
 const styles = theme => {
-  const { palette, type } = theme
+  const { palette, type, formControls, typography } = theme
   return {
     root: {
-      margin: '20px 25px'
+      margin: '15px 30px'
     },
     tabToggleButtonGroup: {
-      marginBottom: '14px'
+      marginBottom: 16
     },
     tabToggleButton: {
       width: '128px'
@@ -110,11 +108,10 @@ const styles = theme => {
       boxShadow: 'none'
     },
     previewMediaRow: {
-      marginTop: '49px'
+      marginTop: 45
     },
     previewMediaText: {
-      fontWeight: 'bold',
-      color: palette[type].sideModal.action.button.color
+      ...typography.lightText[type]
     },
     featureIconTabContainer: {
       justifyContent: 'center'
@@ -131,7 +128,7 @@ const styles = theme => {
       border: `solid 1px ${palette[type].pages.media.card.border}`,
       backgroundColor: palette[type].pages.media.card.background,
       borderRadius: '4px',
-      marginBottom: '49px'
+      marginBottom: 16
     },
     themeHeader: {
       padding: '0 15px',
@@ -145,12 +142,6 @@ const styles = theme => {
       color: palette[type].pages.media.card.header.color,
       marginBottom: '12px'
     },
-    themeOptions1: {
-      margin: '22px 0 8px 0'
-    },
-    themeOptions2: {
-      marginTop: 10
-    },
     inputLabel: {
       display: 'block',
       fontSize: '13px',
@@ -158,12 +149,8 @@ const styles = theme => {
       transform: 'none !important',
       marginRight: '10px'
     },
-    themeInputContainer: {
-      padding: '0 7px',
-      margin: '0 -7px'
-    },
     formControlLabelClass: {
-      fontSize: '17px',
+      fontSize: '1.0833rem',
       position: 'relative',
       flex: '1'
     },
@@ -171,6 +158,7 @@ const styles = theme => {
       fontSize: '14px'
     },
     sliderInputLabelClass: {
+      ...formControls.mediaApps.refreshEverySlider.label,
       paddingRight: '15px',
       fontStyle: 'normal'
     },
@@ -202,15 +190,11 @@ const styles = theme => {
     inputClass: {
       width: '46px'
     },
-    inputContainer: {
-      padding: '0 7px',
-      margin: '0 -7px'
-    },
     radioUrlContainer: {
       padding: '0 15px'
     },
-    marginTop1: {
-      marginTop: '14px'
+    marginTop: {
+      marginTop: 16
     },
     formControlInputClass: {
       fontSize: '14px !important',
@@ -220,7 +204,10 @@ const styles = theme => {
     layoutOptionInner: { padding: '6px 10px 6px 0px', background: '#ffffff' },
     layoutOptionTitle: { padding: 7, display: 'inline' },
     layoutOptionContent: { display: 'inline', marginLeft: 10 },
-    layoutOptionContentInner: { marginLeft: 5 }
+    layoutOptionContentInner: { marginLeft: 5 },
+    hideCheckboxContainer: {
+      padding: 0
+    }
   }
 }
 
@@ -544,14 +531,7 @@ const RSS = props => {
 
   const dispatchAction = useDispatch()
 
-  const [
-    configMediaCategory,
-    contentSourceOfMediaFeature,
-    addMediaReducer,
-    mediaItemReducer
-  ] = useSelector(state => [
-    state.config.configMediaCategory,
-    state.config.contentSourceOfMediaFeature,
+  const [addMediaReducer, mediaItemReducer] = useSelector(state => [
     state.addMedia.web,
     state.media.mediaItem
   ])
@@ -560,10 +540,10 @@ const RSS = props => {
     selectedFeedId: null
   })
 
-  const [isLoading, setLoading] = useState(true)
+  const { contentSources, featureId } = useMediaContentSource('Web', 'RSSFeed')
+
   const [formSubmitting, setFormSubmitting] = useState(false)
   const [autoClose, setAutoClose] = useState(false)
-  const [featureId, setFeatureId] = useState(null)
 
   const [contentTabs, setContentTabs] = useState([])
   const [selectedFeedId, setSelectedFeedId] = useState(
@@ -800,7 +780,6 @@ const RSS = props => {
         mediaInfo: getMediaInfoFromBackendData(backendData)
       }
       form.setValues(initialFormValues.current)
-      setLoading(false)
     }
     // eslint-disable-next-line
   }, [backendData])
@@ -816,53 +795,36 @@ const RSS = props => {
   )
 
   useEffect(() => {
-    if (!configMediaCategory.response.length) return
-    const id = getAllowedFeatureId(configMediaCategory, 'Web', 'RSSFeed')
-    setFeatureId(id)
-  }, [configMediaCategory])
+    if (contentSources) {
+      setContentTabs(contentSources)
 
-  useEffect(() => {
-    if (featureId) {
-      setLoading(true)
-      dispatchAction(getContentSourceOfMediaFeatureById(featureId))
-    }
-    // eslint-disable-next-line
-  }, [featureId])
-
-  useEffect(() => {
-    if (contentSourceOfMediaFeature.response) {
-      const { response = [] } = contentSourceOfMediaFeature
-      setContentTabs(response)
-
-      if (response[0]) {
+      if (contentSources[0]) {
         const { contentSourceId } = form.values
         const selectedFeed = contentSourceId
-          ? response.find(
+          ? contentSources.find(
               ({ source }) =>
                 source &&
                 source.length &&
                 source.some(({ id }) => id === contentSourceId)
-            ) || response[0]
-          : response[0]
+            ) || contentSources[0]
+          : contentSources[0]
 
         initialFormState.current.selectedFeedId = selectedFeed.id
         setSelectedFeedId(selectedFeed.id)
 
         if (mode === 'add') {
-          initialFormValues.current.contentSourceId = response[0].source[0].id
-          form.setFieldValue('contentSourceId', response[0].source[0].id)
+          initialFormValues.current.contentSourceId =
+            contentSources[0].source[0].id
+          form.setFieldValue('contentSourceId', contentSources[0].source[0].id)
         }
       }
-
-      setLoading(false)
     }
     // eslint-disable-next-line
-  }, [contentSourceOfMediaFeature])
+  }, [contentSources])
 
   useEffect(() => {
     if (contentTabs.length) {
       handleFeedIdChange({}, selectedFeedId)
-      setLoading(false)
     }
     // eslint-disable-next-line
   }, [contentTabs])
@@ -943,20 +905,12 @@ const RSS = props => {
 
   return (
     <form className={classes.formWrapper} onSubmit={form.handleSubmit}>
-      {isLoading && (
-        <div className={classes.loaderWrapper}>
-          <CircularProgress size={30} thickness={5} />
-        </div>
-      )}
       <Grid container className={classes.tabContent}>
         <Grid item xs={7}>
           <div className={classes.root}>
             <Grid container justify="center">
               <TabToggleButtonGroup
-                className={classNames(
-                  classes.tabToggleButtonContainer,
-                  classes.marginTop1
-                )}
+                className={classes.tabToggleButtonContainer}
                 value={values.custom}
                 onChange={(e, v) => form.setFieldValue('custom', v)}
                 exclusive
@@ -976,7 +930,7 @@ const RSS = props => {
               </TabToggleButtonGroup>
 
               {values.custom ? (
-                <Grid item xs={12}>
+                <Grid item xs={12} className={classes.marginTop}>
                   <FormControlInput
                     label="Media RSS feed URL:"
                     fullWidth={true}
@@ -993,8 +947,10 @@ const RSS = props => {
                 <Grid
                   item
                   xs={12}
-                  className={classes.themeCardWrap}
-                  style={{ marginTop: 10 }}
+                  className={classNames(
+                    classes.themeCardWrap,
+                    classes.marginTop
+                  )}
                 >
                   {!!contentTabs.length && (
                     <div>
@@ -1077,8 +1033,13 @@ const RSS = props => {
                 </TabToggleButtonGroup>
               </Grid>
             </Grid>
-            <Grid container justify="space-between">
-              <Grid item xs={6} className={classes.themeInputContainer}>
+            <Grid
+              container
+              justify="space-between"
+              alignItems="flex-end"
+              spacing={16}
+            >
+              <Grid item xs={6}>
                 <FormControlSketchColorPicker
                   marginBottom={false}
                   label={'Font Color'}
@@ -1092,7 +1053,7 @@ const RSS = props => {
                   }
                 />
               </Grid>
-              <Grid item xs={6} className={classes.themeInputContainer}>
+              <Grid item xs={6}>
                 <FormControlSketchColorPicker
                   marginBottom={false}
                   label={'Background Color'}
@@ -1107,7 +1068,7 @@ const RSS = props => {
                 />
               </Grid>
               <Grid item xs={6} />
-              <Grid item className={classes.themeInputContainer}>
+              <Grid item className={classes.hideCheckboxContainer}>
                 <CheckboxSwitcher
                   label="Hide"
                   value={values[selectedTextType].hide}
@@ -1116,9 +1077,7 @@ const RSS = props => {
                   }
                 />
               </Grid>
-            </Grid>
-            <Grid container justify="space-between">
-              <Grid item xs={6} className={classes.themeInputContainer}>
+              <Grid item xs={6}>
                 <FormControlInput
                   label={'Font Size'}
                   custom={true}
@@ -1138,7 +1097,7 @@ const RSS = props => {
                   formControlInputClass={classes.formControlInputClass}
                 />
               </Grid>
-              <Grid item xs={6} className={classes.themeInputContainer}>
+              <Grid item xs={6}>
                 <FormControlReactSelect
                   label={'Font Family'}
                   value={values.font_family}
@@ -1160,11 +1119,7 @@ const RSS = props => {
                   }))}
                 />
               </Grid>
-              <Grid
-                item
-                className={classes.themeInputContainer}
-                style={{ margin: '10px 0' }}
-              >
+              <Grid item xs={6}>
                 <SliderInputRange
                   step={1}
                   value={values.duration}
@@ -1180,154 +1135,124 @@ const RSS = props => {
                   labelClass={classes.sliderInputLabelClass}
                 />
               </Grid>
-            </Grid>
-            <Grid container justify="center">
+              <Grid item xs={6} />
               <Grid item xs={12}>
-                <Grid
-                  container
-                  justify="space-between"
-                  className={classes.themeOptions1}
-                >
-                  <Grid item xs={12} className={classes.themeInputContainer}>
-                    <FormControlReactSelect
-                      label={'Theme Type'}
-                      value={values.layout}
-                      error={errors.layout}
-                      touched={touched.layout}
-                      handleChange={e =>
-                        form.setFieldValue('layout', e.target.value)
-                      }
-                      options={layouts(classes)}
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <Grid
-                      container
-                      justify="space-between"
-                      alignItems="flex-end"
+                <FormControlReactSelect
+                  label={'Theme Type'}
+                  value={values.layout}
+                  error={errors.layout}
+                  touched={touched.layout}
+                  handleChange={e =>
+                    form.setFieldValue('layout', e.target.value)
+                  }
+                  options={layouts(classes)}
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <FormControlReactSelect
+                  label={'Animation'}
+                  value={values.animation}
+                  error={errors.animation}
+                  touched={touched.animation}
+                  handleChange={e =>
+                    form.setFieldValue('animation', e.target.value)
+                  }
+                  className={'test-animation-test'}
+                  options={animations[values.direction]}
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <Grid container alignItems="center">
+                  <Grid item>
+                    <InputLabel
+                      shrink
+                      variant="filled"
+                      className={classes.inputLabel}
                     >
-                      <Grid item xs={6} className={classes.themeInputContainer}>
-                        <FormControlReactSelect
-                          label={'Animation'}
-                          value={values.animation}
-                          error={errors.animation}
-                          touched={touched.animation}
-                          handleChange={e =>
-                            form.setFieldValue('animation', e.target.value)
-                          }
-                          className={'test-animation-test'}
-                          options={animations[values.direction]}
-                          marginBottom={false}
-                        />
-                      </Grid>
-                      <Grid item xs={6} className={classes.inputContainer}>
-                        <Grid container alignItems="center">
-                          <Grid item>
-                            <InputLabel
-                              shrink
-                              variant="filled"
-                              className={classes.inputLabel}
-                            >
-                              Direction
-                            </InputLabel>
-                          </Grid>
-                          <Grid item>
-                            <DirectionToggleButtonGroup
-                              value={values.direction}
-                              exclusive
-                              onChange={(e, v) =>
-                                form.setFieldValue('direction', v)
-                              }
-                            >
-                              <DirectionToggleButton value="left">
-                                <TabIcon iconClassName="icon-arrow-left-1" />
-                              </DirectionToggleButton>
-                              <DirectionToggleButton value="right">
-                                <TabIcon iconClassName="icon-arrow-right-1" />
-                              </DirectionToggleButton>
-                              <DirectionToggleButton value="up">
-                                <TabIcon iconClassName="icon-arrow-up" />
-                              </DirectionToggleButton>
-                              <DirectionToggleButton value="down">
-                                <TabIcon iconClassName="icon-arrow-down" />
-                              </DirectionToggleButton>
-                            </DirectionToggleButtonGroup>
-                          </Grid>
-                        </Grid>
-                      </Grid>
+                      Direction
+                    </InputLabel>
+                  </Grid>
+                  <Grid item>
+                    <DirectionToggleButtonGroup
+                      value={values.direction}
+                      exclusive
+                      onChange={(e, v) => form.setFieldValue('direction', v)}
+                    >
+                      <DirectionToggleButton value="left">
+                        <TabIcon iconClassName="icon-arrow-left-1" />
+                      </DirectionToggleButton>
+                      <DirectionToggleButton value="right">
+                        <TabIcon iconClassName="icon-arrow-right-1" />
+                      </DirectionToggleButton>
+                      <DirectionToggleButton value="up">
+                        <TabIcon iconClassName="icon-arrow-up" />
+                      </DirectionToggleButton>
+                      <DirectionToggleButton value="down">
+                        <TabIcon iconClassName="icon-arrow-down" />
+                      </DirectionToggleButton>
+                    </DirectionToggleButtonGroup>
+                  </Grid>
+                </Grid>
+              </Grid>
+              <Grid item xs={6}>
+                {values.direction !== 'down' &&
+                  values.animation === 'scrolling' && (
+                    <Grid container>
+                      <FormControlSpeedInput
+                        maxValue={45}
+                        minValue={1}
+                        step={1}
+                        value={values.speed}
+                        onChange={val => form.setFieldValue('speed', val)}
+                        inputContainerClass={classes.inputContainerClass}
+                        inputRangeContainerSASS="CreateMediaSettings__slider--Wrap"
+                        labelClass={classes.sliderInputLabelClass}
+                      />
                     </Grid>
-                  </Grid>
-                </Grid>
-                <Grid
-                  container
-                  justify="space-between"
-                  alignItems="flex-end"
-                  className={classes.themeOptions2}
-                >
-                  <Grid item xs={6} className={classes.inputContainer}>
-                    {values.direction !== 'down' &&
-                      values.animation === 'scrolling' && (
-                        <Grid container>
-                          <FormControlSpeedInput
-                            maxValue={45}
-                            minValue={1}
-                            step={1}
-                            value={values.speed}
-                            onChange={val => form.setFieldValue('speed', val)}
-                            inputContainerClass={classes.inputContainerClass}
-                            inputRangeContainerSASS="CreateMediaSettings__slider--Wrap"
-                            labelClass={classes.sliderInputLabelClass}
-                          />
-                        </Grid>
+                  )}
+                {(values.direction === 'down' || values.direction === 'up') &&
+                  values.animation === 'slideUp' && (
+                    <FormControlReactSelect
+                      label={'No. Of feeds display'}
+                      value={values.no_of_rss_feed}
+                      error={errors.no_of_rss_feed}
+                      touched={touched.no_of_rss_feed}
+                      handleChange={e =>
+                        form.setFieldValue('no_of_rss_feed', e.target.value)
+                      }
+                      options={[
+                        {
+                          value: 'Multiple',
+                          label: 'Multiple'
+                        },
+                        {
+                          value: 'Single',
+                          label: 'Single'
+                        }
+                      ]}
+                    />
+                  )}
+                {(values.direction === 'down' || values.direction === 'up') &&
+                  values.animation === 'zipper' && (
+                    <FormControlInput
+                      label={'No. Of feeds to display'}
+                      custom={true}
+                      min={1}
+                      max={10}
+                      value={values.no_of_rss_items}
+                      error={errors.no_of_rss_items}
+                      touched={touched.no_of_rss_items}
+                      handleChange={val =>
+                        form.setFieldValue('no_of_rss_items', val)
+                      }
+                      formControlRootClass={classNames(
+                        classes.formControlRootClass,
+                        classes.numberInput
                       )}
-                    {(values.direction === 'down' ||
-                      values.direction === 'up') &&
-                      values.animation === 'slideUp' && (
-                        <FormControlReactSelect
-                          label={'No. Of feeds display'}
-                          value={values.no_of_rss_feed}
-                          error={errors.no_of_rss_feed}
-                          touched={touched.no_of_rss_feed}
-                          handleChange={e =>
-                            form.setFieldValue('no_of_rss_feed', e.target.value)
-                          }
-                          options={[
-                            {
-                              value: 'Multiple',
-                              label: 'Multiple'
-                            },
-                            {
-                              value: 'Single',
-                              label: 'Single'
-                            }
-                          ]}
-                          marginBottom={false}
-                        />
-                      )}
-                    {(values.direction === 'down' ||
-                      values.direction === 'up') &&
-                      values.animation === 'zipper' && (
-                        <FormControlInput
-                          label={'No. Of feeds to display'}
-                          custom={true}
-                          min={1}
-                          max={10}
-                          value={values.no_of_rss_items}
-                          error={errors.no_of_rss_items}
-                          touched={touched.no_of_rss_items}
-                          handleChange={val =>
-                            form.setFieldValue('no_of_rss_items', val)
-                          }
-                          formControlRootClass={classNames(
-                            classes.formControlRootClass,
-                            classes.numberInput
-                          )}
-                          marginBottom={false}
-                          formControlInputClass={classes.formControlInputClass}
-                        />
-                      )}
-                  </Grid>
-                </Grid>
+                      marginBottom={false}
+                      formControlInputClass={classes.formControlInputClass}
+                    />
+                  )}
               </Grid>
             </Grid>
 

@@ -109,6 +109,24 @@ const disableDeviceAlert = async deviceId => {
   }
 }
 
+async function associateCapAlert({ mediaId, deviceId, password }) {
+  try {
+    const response = await api({
+      method: 'PUT',
+      url: '/capAlert/device',
+      data: {
+        mediaId,
+        deviceId,
+        password
+      }
+    })
+
+    return response.data
+  } catch (error) {
+    throw errorHandler(error)
+  }
+}
+
 export default {
   getAlertDevicesById,
   postAlertTrigger,
@@ -117,5 +135,6 @@ export default {
   getDeviceMediaCapAlert,
   putDeviceMediaCapAlert,
   disableAlert,
-  disableDeviceAlert
+  disableDeviceAlert,
+  associateCapAlert
 }

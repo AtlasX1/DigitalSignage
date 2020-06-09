@@ -7,6 +7,17 @@
     height: 21px;
   }
 
+  .CreateTemplateSettings__slider--Wrap-overlay & {
+    width: 100px;
+    height: 21px;
+    margin-right: 10px;
+  }
+
+  .CreateTemplateSettings__slider-big & {
+    width: 180px;
+    height: 21px;
+  }
+
   .CreateTemplateSettings__slider-small & {
     width: 55px;
     height: 21px;
@@ -14,6 +25,7 @@
 
   .CreateMediaSettings__slider--Wrap & {
     width: 128px;
+    height: 100%;
   }
 
   .bandwidth-slider & {
