@@ -16,7 +16,7 @@
     "@okta/okta-react": "^1.2.3",
     "@okta/okta-signin-widget": "^3.2.2",
     "array-move": "^2.1.0",
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "classnames": "^2.2.6",
     "country-list": "^2.2.0",
     "debounce": "^1.2.0",
